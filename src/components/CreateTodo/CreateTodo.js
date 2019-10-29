@@ -1,37 +1,35 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import { TextField } from 'formik-material-ui';
-import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import get from 'lodash/get'
+import useForm from 'react-hook-form'
+import isUndefined from 'lodash/isUndefined'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-const formConfig = {
-    initialValues: { todoName: '' },
-    validationSchema: Yup.object({
-        todoName: Yup.string()
-            .min(3, 'Не менее 3 символов')
-            .required('Обязательно')
-    }),
-    onSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-        }, 400);
-    }
-}
+const validationSchema = Yup.object({
+    todoName: Yup.string()
+        .min(3, 'Не менее 3 символов')
+        .required('Обязательно')
+})
 
 export default function CreateTodo(props) {
+    const { register, handleSubmit, formState, errors, reset } = useForm({ validationSchema })
+    const isSubmitDisabled = isUndefined(props.isValid) ? (errors.todoName || formState.isSubmitting) : true
+    function onSubmit(values) {
+        console.log('values: ', values);
+        reset({})
+    }
     return (
-        <Formik {...formConfig}>
-            {({ isValid, isSubmitting }) => {
-                return (
-                    <Form>
-                        <Field type="text" margin="normal" component={TextField} name="todoName" label="Создать задачу" />
-                        <br />
-                        <Button disabled={!isValid || isSubmitting} type="submit">Сохранить</Button>
-                    </Form>
-                )
-            }}
-        </Formik>
-    );
-
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+                label="Создать задачу"
+                name="todoName"
+                error={errors.todoName}
+                inputRef={register}
+                helperText={get(errors, 'todoName.message')}
+            />
+            <br />
+            <Button disabled={isSubmitDisabled} type="submit">Сохранить</Button>
+        </form>
+    )
 }

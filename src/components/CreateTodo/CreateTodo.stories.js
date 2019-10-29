@@ -8,6 +8,6 @@ export default {
 
 export const normal = () => <CreateTodo />;
 
-export const withError = () => <CreateTodo />
+export const invalid = () => <CreateTodo isValid={false} />
 
-withError.title = 'With error'
+invalid.title = 'Invalid'

@@ -10,4 +10,6 @@ export const normal = () => <CreateTodo />;
 
 export const invalid = () => <CreateTodo isValid={false} />
 
-invalid.title = 'Invalid'
+export const withError = () => <CreateTodo error="Error occured" />
+
+withError.title = "With error"

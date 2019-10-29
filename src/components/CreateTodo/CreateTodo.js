@@ -14,7 +14,10 @@ const validationSchema = Yup.object({
 
 export default function CreateTodo(props) {
     const { register, handleSubmit, formState, errors, reset } = useForm({ validationSchema })
-    const isSubmitDisabled = isUndefined(props.isValid) ? (errors.todoName || formState.isSubmitting) : true
+    const error = props.error || get(errors, 'todoName.message')
+    const isSubmitDisabled = isUndefined(props.isValid) ?
+        (error || formState.isSubmitting) :
+        true
     function onSubmit(values) {
         console.log('values: ', values);
         reset({})
@@ -24,9 +27,9 @@ export default function CreateTodo(props) {
             <TextField
                 label="Создать задачу"
                 name="todoName"
-                error={errors.todoName}
+                error={Boolean(error)}
                 inputRef={register}
-                helperText={get(errors, 'todoName.message')}
+                helperText={error}
             />
             <br />
             <Button disabled={isSubmitDisabled} type="submit">Сохранить</Button>

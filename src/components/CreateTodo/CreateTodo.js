@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
 import { TextField } from 'formik-material-ui';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -23,12 +22,12 @@ const formConfig = {
 export default function CreateTodo(props) {
     return (
         <Formik {...formConfig}>
-            {(formik) => {
+            {({ isValid, isSubmitting }) => {
                 return (
                     <Form>
                         <Field type="text" margin="normal" component={TextField} name="todoName" label="Создать задачу" />
                         <br />
-                        <Button disabled={!formik.isValid || formik.isSubmitting} type="submit">Сохранить</Button>
+                        <Button disabled={!isValid || isSubmitting} type="submit">Сохранить</Button>
                     </Form>
                 )
             }}

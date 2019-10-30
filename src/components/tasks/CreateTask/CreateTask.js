@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
     .required('Обязательно'),
 });
 
-export default function CreateTodo(props) {
+export default function CreateTask(props) {
   const {
     register, handleSubmit, formState, errors, reset,
   } = useForm({ validationSchema });

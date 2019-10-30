@@ -49,6 +49,7 @@ export const LoginOrLogoutButton = () => {
   if (loading) return <CircularProgress color="secondary" />;
   if (user) {
     const openMenu = (event) => setAnchor(event.currentTarget);
+    const signOut = () => auth().signOut();
     return (
       <>
         <Button className={classes.link} onClick={openMenu}>{user.displayName}</Button>
@@ -58,7 +59,7 @@ export const LoginOrLogoutButton = () => {
           open={Boolean(menuAnchor)}
           onClose={() => setAnchor(null)}
         >
-          <MenuItem onClick={auth().signOut}>Выйти</MenuItem>
+          <MenuItem onClick={signOut}>Выйти</MenuItem>
         </Menu>
       </>
     );

@@ -24,7 +24,7 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy": "npm run build && npx firebase deploy",
+    "deploy": "npm run build && npx firebase-tools deploy",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {

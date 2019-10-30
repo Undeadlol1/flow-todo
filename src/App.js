@@ -5,8 +5,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 import React from 'react';
-import NavBar from './components/ui/NavBar/NavBar';
-import CreateTask from './components/tasks/CreateTask/CreateTask';
+import Router from './Router';
 import './App.css';
 
 // Initialize Firebase
@@ -24,8 +23,7 @@ firebase.initializeApp({
 function App() {
   return (
     <div className="App">
-      <NavBar />
-      <CreateTask />
+      <Router />
     </div>
   );
 }

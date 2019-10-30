@@ -16,14 +16,17 @@ export default function CreateTask(props) {
   const {
     register, handleSubmit, formState, errors, reset,
   } = useForm({ validationSchema });
-  const error = props.error || get(errors, 'todoName.message');
-  const isSubmitDisabled = isUndefined(props.isValid)
-    ? (error || formState.isSubmitting)
-    : true;
+
+  const error = props.error || get(errors, 'todoName.message'),
+    isSubmitDisabled = isUndefined(props.isValid)
+      ? (error || formState.isSubmitting)
+      : true;
+
   function onSubmit(values) {
     console.log('values: ', values);
     reset({});
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField

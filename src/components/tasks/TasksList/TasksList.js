@@ -29,7 +29,7 @@ export const TasksListContainer = (props) => {
 
 export default function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return <CircularProgress />;
-  if (tasks.empty) return <h2>Нет задач</h2>;
+  if (!tasks || tasks.empty) return <h2>Нет задач</h2>;
   return (
     <List>
       {tasks.docs.map((task) => (

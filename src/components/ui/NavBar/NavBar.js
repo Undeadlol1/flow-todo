@@ -4,48 +4,70 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
+import { auth } from 'firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
   },
   link: {
-    color: 'inherit',
+    color: 'white',
     textDecoration: 'none',
   },
 }));
 
 export default function ButtonAppBar() {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>
               App
             </Link>
           </Typography>
-          <Link to="/signIn" className={classes.link}>
-            <Button color="inherit">
-              Войти
-            </Button>
-          </Link>
+          <LoginOrLogoutButton />
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+export const LoginOrLogoutButton = () => {
+  const classes = useStyles();
+  const [user, loading] = useAuthState(auth());
+  const [menuAnchor, setAnchor] = React.useState(null);
+  if (loading) return <CircularProgress color="secondary" />;
+  if (user) {
+    const openMenu = (event) => setAnchor(event.currentTarget);
+    return (
+      <>
+        <Button className={classes.link} onClick={openMenu}>{user.displayName}</Button>
+        <Menu
+          keepMounted
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={() => setAnchor(null)}
+        >
+          <MenuItem onClick={auth().signOut}>Выйти</MenuItem>
+        </Menu>
+      </>
+    );
+  }
+  return (
+    <Link to="/signIn" className={classes.link}>
+      <Button color="inherit">
+      Войти
+      </Button>
+    </Link>
+  );
+};

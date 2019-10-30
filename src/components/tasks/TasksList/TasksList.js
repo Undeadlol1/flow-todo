@@ -13,8 +13,7 @@ export const TasksListContainer = (props) => {
 
 export default function TasksList(props) {
   if (props.loading) return <CircularProgress />;
-  console.log('props.tasks: ', props.tasks);
-  if (props.tasks.empty) return <h1>No tasks</h1>;
+  if (props.tasks.empty) return <h2>No tasks</h2>;
   return (
     <ul>
       {props.tasks.docs.map((task) => <li key={task.id}>{task.data().name}</li>)}

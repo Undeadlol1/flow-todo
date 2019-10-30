@@ -25,10 +25,10 @@ export default (props) => {
   const [task, loading] = useDocumentData(
     firestore().collection('tasks').doc(taskId),
   );
+  const mergedProps = {
+    task, loading, taskId, ...props,
+  };
   return (
-    <TaskPage {...{
-      task, loading, taskId, ...props,
-    }}
-    />
+    <TaskPage {...mergedProps} />
   );
 };

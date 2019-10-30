@@ -26,7 +26,7 @@ export default function CreateTask(props) {
 
   const error = props.error || get(errors, 'todoName.message');
   const isSubmitDisabled = isUndefined(props.isValid)
-    ? (error || formState.isSubmitting)
+    ? !props.user || (error || formState.isSubmitting)
     : true;
 
   function onSubmit(values) {
@@ -45,6 +45,7 @@ export default function CreateTask(props) {
         error={Boolean(error)}
         inputRef={register}
         helperText={error}
+        autoComplete="off"
       />
       <br />
       <Button disabled={isSubmitDisabled} type="submit">Сохранить</Button>

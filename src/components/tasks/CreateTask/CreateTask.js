@@ -14,9 +14,9 @@ const validationSchema = Yup.object({
     .required('Обязательно'),
 });
 
-export const CreateTaskContainer = () => {
+export const CreateTaskContainer = (props) => {
   const [user] = useAuthState(auth());
-  return <CreateTask user={user} />;
+  return <CreateTask user={user} {...props} />;
 };
 
 export default function CreateTask(props) {
@@ -29,7 +29,7 @@ export default function CreateTask(props) {
     ? !props.user || (error || formState.isSubmitting)
     : true;
 
-  function onSubmit(values) {
+  function createDocumentAndReset(values) {
     return firestore().collection('tasks').add({
       name: values.todoName,
       userId: props.user.uid,
@@ -38,7 +38,7 @@ export default function CreateTask(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(createDocumentAndReset)}>
       <TextField
         label="Создать задачу"
         name="todoName"

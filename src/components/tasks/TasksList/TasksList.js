@@ -15,25 +15,25 @@ export const TasksListContainer = (props) => {
   const db = firestore().collection('tasks');
   const [tasks, loading] = useCollection(db);
 
-  function deleteTask(taskId) {
-    return db.doc(taskId).delete();
-  }
+  const mergeProps = {
+    ...props,
+    tasks,
+    loading,
+    deleteTask: (taskId) => db.doc(taskId).delete(),
+  };
 
   return (
-    <TasksList {...{
-      tasks, loading, deleteTask, ...props,
-    }}
-    />
+    <TasksList {...mergeProps} />
   );
 };
 
 export default function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return <CircularProgress />;
-  if (tasks.empty) return <h2>No tasks</h2>;
+  if (tasks.empty) return <h2>Нет задач</h2>;
   return (
     <List>
       {tasks.docs.map((task) => (
-        <ListItem component={Link} to={'/task/' + task.id} key={task.id}>
+        <ListItem component={Link} to={`/task/${task.id}`} key={task.id}>
           <ListItemText primary={task.data().name} />
           <ListItemSecondaryAction>
             <IconButton onClick={deleteTask.bind(this, task.id)} edge="end" aria-label="Удалить">

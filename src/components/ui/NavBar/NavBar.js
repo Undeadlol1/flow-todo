@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles(() => ({
   link: {
     color: 'white',
     textDecoration: 'none',
+  },
+  avatar: {
+    marginRight: '9px',
   },
 }));
 
@@ -52,7 +56,10 @@ export const LoginOrLogoutButton = () => {
     const signOut = () => auth().signOut();
     return (
       <>
-        <Button className={classes.link} onClick={openMenu}>{user.displayName}</Button>
+        <Button className={classes.link} onClick={openMenu}>
+          <Avatar className={classes.avatar} src={user.providerData[0].photoURL} />
+          {user.displayName}
+        </Button>
         <Menu
           keepMounted
           anchorEl={menuAnchor}

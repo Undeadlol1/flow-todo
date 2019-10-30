@@ -15,7 +15,7 @@ export default function HomePage() {
         <Grid item xs={12} align="center">
           <CreateTaskContainer />
         </Grid>
-        <Grid item xs={12} align="center">
+        <Grid item xs={6} align="center">
           <TasksListContainer />
         </Grid>
       </Grid>

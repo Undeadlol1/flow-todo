@@ -2,9 +2,11 @@ import React from 'react';
 import * as Yup from 'yup';
 import get from 'lodash/get';
 import useForm from 'react-hook-form';
+import { firestore, auth } from 'firebase/app';
 import isUndefined from 'lodash/isUndefined';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const validationSchema = Yup.object({
   todoName: Yup.string()
@@ -12,19 +14,27 @@ const validationSchema = Yup.object({
     .required('Обязательно'),
 });
 
+export const CreateTaskContainer = () => {
+  const [user] = useAuthState(auth());
+  return <CreateTask user={user} />;
+};
+
 export default function CreateTask(props) {
   const {
     register, handleSubmit, formState, errors, reset,
   } = useForm({ validationSchema });
 
-  const error = props.error || get(errors, 'todoName.message'),
-    isSubmitDisabled = isUndefined(props.isValid)
-      ? (error || formState.isSubmitting)
-      : true;
+  const error = props.error || get(errors, 'todoName.message');
+  const isSubmitDisabled = isUndefined(props.isValid)
+    ? (error || formState.isSubmitting)
+    : true;
 
   function onSubmit(values) {
-    console.log('values: ', values);
-    reset({});
+    return firestore().collection('tasks').add({
+      name: values.todoName,
+      userId: props.user.uid,
+    })
+      .then(() => reset({}));
   }
 
   return (

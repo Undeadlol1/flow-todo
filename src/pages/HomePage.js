@@ -1,9 +1,12 @@
 import React from 'react';
-import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import { CreateTaskContainer } from '../components/tasks/CreateTask/CreateTask';
+import { TasksListContainer } from '../components/tasks/TasksList/TasksList';
 
 export default function HomePage() {
   return (
-    <h1><center>Пливет</center></h1>
-    // <CreateTask />
+    <>
+      <CreateTaskContainer />
+      <TasksListContainer />
+    </>
   );
 }

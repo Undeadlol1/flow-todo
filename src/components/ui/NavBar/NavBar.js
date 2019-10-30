@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
-import { auth } from 'firebase';
+import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const useStyles = makeStyles(() => ({

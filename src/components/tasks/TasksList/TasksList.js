@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { firestore } from 'firebase/app';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -32,7 +33,7 @@ export default function TasksList({ loading, tasks, deleteTask }) {
   return (
     <List>
       {tasks.docs.map((task) => (
-        <ListItem key={task.id}>
+        <ListItem component={Link} to={'/task/' + task.id} key={task.id}>
           <ListItemText primary={task.data().name} />
           <ListItemSecondaryAction>
             <IconButton onClick={deleteTask.bind(this, task.id)} edge="end" aria-label="Удалить">

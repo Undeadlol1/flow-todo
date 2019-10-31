@@ -26,6 +26,7 @@ export function CreateTask(props) {
 
   function createDocumentAndReset(values) {
     return firestore().collection('tasks').add({
+      isDone: false,
       name: values.todoName,
       userId: props.user.uid,
     })

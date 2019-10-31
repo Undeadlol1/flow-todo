@@ -14,12 +14,7 @@ const validationSchema = Yup.object({
     .required('Обязательно'),
 });
 
-export const CreateTaskContainer = (props) => {
-  const [user] = useAuthState(auth());
-  return <CreateTask user={user} {...props} />;
-};
-
-export default function CreateTask(props) {
+export function CreateTask(props) {
   const {
     register, handleSubmit, formState, errors, reset,
   } = useForm({ validationSchema });
@@ -34,7 +29,8 @@ export default function CreateTask(props) {
       name: values.todoName,
       userId: props.user.uid,
     })
-      .then(() => reset({}));
+      .then(() => reset({}))
+      .catch((e) => console.error(e));
   }
 
   return (
@@ -51,4 +47,9 @@ export default function CreateTask(props) {
       <Button disabled={isSubmitDisabled} type="submit">Сохранить</Button>
     </form>
   );
+}
+
+export default function CreateTaskContainer(props) {
+  const [user] = useAuthState(auth());
+  return <CreateTask user={user} {...props} />;
 }

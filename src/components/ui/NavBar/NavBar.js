@@ -36,7 +36,7 @@ export default function ButtonAppBar() {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>
-              App
+              Flow TODO
             </Link>
           </Typography>
           <LoginOrLogoutButton />

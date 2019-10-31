@@ -57,7 +57,7 @@ export const LoginOrLogoutButton = () => {
     return (
       <>
         <Button className={classes.link} onClick={openMenu}>
-          <Avatar className={classes.avatar} src={user.providerData[0].photoURL} />
+          <Avatar className={classes.avatar} src={user.photoURL} />
           {user.displayName}
         </Button>
         <Menu

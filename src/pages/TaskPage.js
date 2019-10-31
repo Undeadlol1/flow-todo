@@ -45,7 +45,7 @@ export function TaskPage(props) {
     <Grid container direction="column">
       <Grid item xs align="center">
         <Link to={`/task/${props.taskId}`}>
-          <Typography variant="h2">{props.task.name}</Typography>
+          <Typography variant="h3">{props.task.name}</Typography>
         </Link>
       </Grid>
       <Switch>

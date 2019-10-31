@@ -15,6 +15,22 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
+const HardChoices = (props) => {
+  const { pathname } = useLocation();
+  return (
+    <Grid container direction="column">
+      <Grid item xs align="center">
+        <Button component={Link} to={`${pathname}/hard`}>Тяжело</Button>
+      </Grid>
+      <Grid item xs align="center">
+        <Button>Не хочу</Button>
+      </Grid>
+      <Grid item xs align="center">
+        <Button>Не могу сейчас</Button>
+      </Grid>
+    </Grid>
+  );
+};
 
 const TaskActions = (props) => {
   const { pathname } = useLocation();
@@ -50,7 +66,7 @@ export function TaskPage(props) {
       </Grid>
       <Switch>
         <Route path={`${props.path}/hard`}>
-          <h1>This is hard indeed</h1>
+          <HardChoices {...props} />
         </Route>
         <Route path={props.path}>
           <TaskActions {...props} />

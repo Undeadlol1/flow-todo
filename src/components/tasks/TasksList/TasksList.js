@@ -14,8 +14,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 export const TasksListContainer = (props) => {
   const [user] = useAuthState(auth());
-  const db = firestore().collection('tasks').where('userId', '==', user && user.uid);
-  const [tasks, loading] = useCollection(db);
+  const db = firestore().collection('tasks');
+  const [tasks, loading] = useCollection(
+    db
+      .where('userId', '==', user && user.uid)
+      .where('isDone', '==', false),
+  );
 
   const mergeProps = {
     ...props,

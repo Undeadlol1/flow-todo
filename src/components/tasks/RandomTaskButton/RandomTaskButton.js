@@ -12,16 +12,19 @@ import random from 'lodash/random';
 
 export function RandomTaskButton({ tasks, loading }) {
   if (loading) return <CircularProgress />;
+
   const docs = get(tasks, 'docs', []);
-  const randomTaskId = get(docs, `[${[random(0, docs.length)]}].id`);
-  const buttonProps = {
-    component: Link,
-    color: 'primary',
-    to: `/tasks/${randomTaskId}`,
-    disabled: loading || tasks.empty,
-  };
+  const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
+
   return (
-    <Button {...buttonProps}>test</Button>
+    <Button
+      color="primary"
+      component={Link}
+      to={`/tasks/${randomTaskId}`}
+      disabled={loading || tasks.empty}
+    >
+      Случайная задача
+    </Button>
   );
 }
 

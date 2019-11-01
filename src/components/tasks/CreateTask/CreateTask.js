@@ -7,6 +7,13 @@ import isUndefined from 'lodash/isUndefined';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  button: {
+    marginTop: '20px',
+  },
+});
 
 const validationSchema = Yup.object({
   todoName: Yup.string()
@@ -15,6 +22,7 @@ const validationSchema = Yup.object({
 });
 
 export function CreateTask(props) {
+  const classes = useStyles();
   const {
     register, handleSubmit, formState, errors, reset,
   } = useForm({ validationSchema });
@@ -37,15 +45,24 @@ export function CreateTask(props) {
   return (
     <form onSubmit={handleSubmit(createDocumentAndReset)}>
       <TextField
-        label="Создать задачу"
+        fullWidth
         name="todoName"
-        error={Boolean(error)}
-        inputRef={register}
-        helperText={error}
         autoComplete="off"
+        helperText={error}
+        inputRef={register}
+        error={Boolean(error)}
+        label="Создать задачу"
+        className="CreateTask__input"
       />
-      <br />
-      <Button disabled={isSubmitDisabled} type="submit">Сохранить</Button>
+      <Button
+        type="submit"
+        color="primary"
+        variant="contained"
+        className={classes.button}
+        disabled={isSubmitDisabled}
+      >
+       Сохранить
+      </Button>
     </form>
   );
 }

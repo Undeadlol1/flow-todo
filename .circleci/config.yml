@@ -1,9 +1,10 @@
 version: 2
 jobs:
     build:
-        branches:
-            only:
-                - master
+        filters:
+            branches:
+                only:
+                    - master
         docker:
             - image: circleci/node:10.16.0
         working_directory: ~/repo

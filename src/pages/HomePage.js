@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
-import { TasksListContainer } from '../components/tasks/TasksList/TasksList';
+import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 
 export default function HomePage() {
   return (
@@ -15,7 +15,7 @@ export default function HomePage() {
         <CreateTask />
       </Grid>
       <Grid item xs={12} sm={8} md={4} lg={4} align="center">
-        <TasksListContainer />
+        <RandomTaskButton />
       </Grid>
     </Grid>
   );

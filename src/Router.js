@@ -14,7 +14,7 @@ export default function Router() {
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <Route path="/task/:taskId">
+        <Route path="/tasks/:taskId">
           <TaskPage />
         </Route>
         <Route path="/signIn">

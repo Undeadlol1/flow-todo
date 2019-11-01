@@ -26,9 +26,9 @@ export function RandomTaskButton({ tasks, loading, className }) {
 
   return (
     <Button
-      className={[className]}
       color="primary"
       component={Link}
+      className={className}
       to={`/tasks/${randomTaskId}`}
       disabled={loading || tasks.empty}
     >

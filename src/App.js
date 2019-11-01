@@ -19,6 +19,13 @@ firebase.initializeApp({
   appId: '1:772125171665:web:3fffadc4031335de290af0',
   measurementId: 'G-DLFD2VSSK1',
 });
+// Use Firestore emulator for local development
+if (process.env.NODE_ENV !== 'production') {
+  firebase.firestore().settings({
+    ssl: false,
+    host: 'localhost:8080',
+  });
+}
 
 function App() {
   return (

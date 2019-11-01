@@ -15,6 +15,27 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  title: {
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  link: {
+    textDecoration: 'none',
+  },
+  doneButton: {
+    marginTop: '20px',
+  },
+  loadingContainer: {
+    position: 'absolute',
+    left: '50%',
+    top: 'calc(50% - 56px)',
+  },
+  loading: {
+  },
+});
 
 const HardChoices = () => {
   const { pathname } = useLocation();
@@ -51,10 +72,11 @@ const TaskActions = () => {
 };
 
 export function TaskPage(props) {
+  const classes = useStyles();
   if (props.loading) {
     return (
-      <Grid item xs align="center">
-        <CircularProgress />
+      <Grid item xs align="center" className={classes.loadingContainer}>
+        <CircularProgress className={classes.loading} />
       </Grid>
     );
   }
@@ -62,8 +84,8 @@ export function TaskPage(props) {
   return (
     <Grid container direction="column">
       <Grid item xs align="center">
-        <Link to={`/tasks/${props.taskId}`}>
-          <Typography variant="h3">{props.task.name}</Typography>
+        <Link className={classes.link} to={`/tasks/${props.taskId}`}>
+          <Typography className={classes.title} variant="h3">{props.task.name}</Typography>
         </Link>
       </Grid>
       <Switch>
@@ -76,6 +98,7 @@ export function TaskPage(props) {
       </Switch>
       <Grid item xs align="center">
         <Button
+          className={classes.doneButton}
           color="primary"
           variant="contained"
           onClick={props.setDone}

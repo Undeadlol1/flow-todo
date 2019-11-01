@@ -57,6 +57,7 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "faker": "^4.1.0",
+    "firebase-tools": "^7.6.2",
     "source-map-explorer": "^2.1.0"
   }
 }

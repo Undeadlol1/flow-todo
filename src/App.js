@@ -3,6 +3,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import isDarkMode from 'is-dark';
 
 import React from 'react';
 import Router from './Router';
@@ -27,10 +29,22 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+const theme = createMuiTheme({
+  palette: {
+    type: isDarkMode() ? 'dark' : 'light',
+  },
+});
+const style = {
+  minHeight: '100vh',
+  backgroundColor: theme.palette.background.default,
+};
+
 function App() {
   return (
-    <div className="App">
-      <Router />
+    <div className="App" style={style}>
+      <ThemeProvider theme={theme}>
+        <Router />
+      </ThemeProvider>
     </div>
   );
 }

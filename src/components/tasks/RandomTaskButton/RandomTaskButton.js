@@ -20,10 +20,9 @@ const useStyles = makeStyles({
 export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
 
-  if (loading) return <CircularProgress />;
-
   const docs = get(tasks, 'docs', []);
   const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
+  const buttonText = randomTaskId ? 'Случайная задача' : 'Нет задач';
 
   return (
     <Button
@@ -34,13 +33,14 @@ export function RandomTaskButton({ tasks, loading, className }) {
       disabled={loading || tasks.empty}
     >
       <Paper elevation={6} className={classes.paper}>
-        {randomTaskId ? 'Случайная задача' : 'Нет задач'}
+        {loading ? <CircularProgress /> : buttonText}
       </Paper>
     </Button>
   );
 }
 
 RandomTaskButton.propTypes = {
+  className: PropTypes.string,
   loading: PropTypes.bool.isRequired,
   tasks: PropTypes.object.isRequired,
 };

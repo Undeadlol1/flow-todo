@@ -1,22 +1,31 @@
 import React from 'react';
-import TasksList from './TasksList'
-import { random } from 'faker'
+import { random } from 'faker';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { TasksList } from './TasksList';
 
 export default {
-    component: TasksList,
-    title: 'TasksList',
+  component: TasksList,
+  title: 'TasksList',
+  decorators: [(storyFn) => <Router>{storyFn()}</Router>],
 };
 
 export const empty = () => <TasksList />;
 
-const tasks = [];
-for (let i = 0; i < 10; i++) {
-    tasks.push({
-        id: random.uuid(),
+export const loading = () => <TasksList loading />;
+
+const props = {
+  deleteTask() {
+    console.log('"deleteTask" clicked');
+  },
+  tasks: {
+    empty: false,
+    docs: Array(10).fill({
+      id: random.uuid(),
+      data: () => ({
         name: random.word(),
-    })
-}
+      }),
+    }),
+  },
+};
 
-export const withItems = () => <TasksList tasks={tasks} />
-
-withItems.title = "With items"
+export const withItems = () => (<TasksList {...props} />);

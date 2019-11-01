@@ -12,7 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export const TasksListContainer = (props) => {
+export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, loading] = useCollection(
@@ -31,9 +31,9 @@ export const TasksListContainer = (props) => {
   return (
     <TasksList {...mergeProps} />
   );
-};
+}
 
-export default function TasksList({ loading, tasks, deleteTask }) {
+export function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return <CircularProgress />;
   if (!tasks || tasks.empty) return <h2>Нет задач</h2>;
   return (
@@ -42,7 +42,7 @@ export default function TasksList({ loading, tasks, deleteTask }) {
         <ListItem component={Link} to={`/task/${task.id}`} key={task.id}>
           <ListItemText primary={task.data().name} />
           <ListItemSecondaryAction>
-            <IconButton onClick={deleteTask.bind(this, task.id)} edge="end" aria-label="Удалить">
+            <IconButton onClick={() => deleteTask(task.id)} edge="end" aria-label="Удалить">
               <DeleteIcon />
             </IconButton>
           </ListItemSecondaryAction>

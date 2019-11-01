@@ -4,7 +4,6 @@ import { firestore, auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
-
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import get from 'lodash/get';
@@ -23,7 +22,7 @@ export function RandomTaskButton({ tasks, loading }) {
       to={`/tasks/${randomTaskId}`}
       disabled={loading || tasks.empty}
     >
-      Случайная задача
+      {randomTaskId ? 'Случайная задача' : 'Нет задач'}
     </Button>
   );
 }

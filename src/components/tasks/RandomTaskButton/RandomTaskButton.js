@@ -4,12 +4,22 @@ import { firestore, auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import get from 'lodash/get';
 import random from 'lodash/random';
+import { makeStyles } from '@material-ui/core/styles';
 
-export function RandomTaskButton({ tasks, loading }) {
+const useStyles = makeStyles({
+  paper: {
+    padding: '100px',
+  },
+});
+
+export function RandomTaskButton({ tasks, loading, className }) {
+  const classes = useStyles();
+
   if (loading) return <CircularProgress />;
 
   const docs = get(tasks, 'docs', []);
@@ -17,12 +27,15 @@ export function RandomTaskButton({ tasks, loading }) {
 
   return (
     <Button
+      className={[className]}
       color="primary"
       component={Link}
       to={`/tasks/${randomTaskId}`}
       disabled={loading || tasks.empty}
     >
-      {randomTaskId ? 'Случайная задача' : 'Нет задач'}
+      <Paper elevation={6} className={classes.paper}>
+        {randomTaskId ? 'Случайная задача' : 'Нет задач'}
+      </Paper>
     </Button>
   );
 }

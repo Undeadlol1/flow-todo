@@ -9,13 +9,14 @@ import {
   Link,
   useRouteMatch,
   useLocation,
+  useHistory,
 } from 'react-router-dom';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
-const HardChoices = (props) => {
+const HardChoices = () => {
   const { pathname } = useLocation();
   return (
     <Grid container direction="column">
@@ -32,7 +33,7 @@ const HardChoices = (props) => {
   );
 };
 
-const TaskActions = (props) => {
+const TaskActions = () => {
   const { pathname } = useLocation();
   return (
     <Grid container direction="column">
@@ -57,6 +58,7 @@ export function TaskPage(props) {
       </Grid>
     );
   }
+
   return (
     <Grid container direction="column">
       <Grid item xs align="center">
@@ -72,25 +74,44 @@ export function TaskPage(props) {
           <TaskActions {...props} />
         </Route>
       </Switch>
+      <Grid item xs align="center">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={props.setDone}
+        >
+          Сделал
+        </Button>
+      </Grid>
     </Grid>
   );
 }
 
 TaskPage.propTypes = {
-  task: PropTypes.object,
+  task: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   taskId: PropTypes.string.isRequired,
+  setDone: PropTypes.func.isRequired,
 };
 
 export default (props) => {
   const { taskId } = useParams();
-  const [task, loading] = useDocumentData(
-    firestore().collection('tasks').doc(taskId),
-  );
+  const taskPointer = firestore().collection('tasks').doc(taskId);
+  const [task, loading] = useDocumentData(taskPointer);
   const { path } = useRouteMatch();
+  const history = useHistory();
   const mergedProps = {
-    task, loading, taskId, path, ...props,
+    setDone() {
+      return taskPointer
+        .update({ isDone: true })
+        .then(() => history.push('/'));
+    },
+    task: task || {},
+    loading,
+    taskId,
+    path,
+    ...props,
   };
   return (
     <TaskPage {...mergedProps} />

@@ -71,7 +71,7 @@ export function CreateTask(props) {
       />
       <Button
         type="submit"
-        color="primary"
+        color="secondary"
         variant="contained"
         className={classes.button}
         disabled={isSubmitDisabled}

@@ -19,7 +19,8 @@ export default function HomePage() {
       container
       justify="center"
       direction="column"
-      alignItems="center"
+      alignItems="stretch"
+      alignContent="center"
     >
       <Grid item xs={12} sm={12} align="center">
         <CreateTask />

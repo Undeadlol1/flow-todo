@@ -74,12 +74,15 @@ const yesterday = Date.now() - (1000 * 60 * 60 * 24);
 export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
-  const [tasks, loading] = useCollection(
+  const [tasks, loading, error] = useCollection(
     db
       .where('userId', '==', user && user.uid)
       .where('isDone', '==', true)
       .where('doneAt', '>', yesterday),
   );
+
+  if (error) throw error;
+
   const mergeProps = {
     ...props,
     tasks,

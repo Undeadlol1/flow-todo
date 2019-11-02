@@ -117,9 +117,9 @@ export function TaskPage(props) {
 }
 
 TaskPage.propTypes = {
+  loading: PropTypes.bool,
   task: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
   taskId: PropTypes.string.isRequired,
   setDone: PropTypes.func.isRequired,
 };

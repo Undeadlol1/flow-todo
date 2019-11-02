@@ -5,6 +5,7 @@ module.exports = {
     "jest/globals": true,
   },
   extends: [
+    "plugin:prettier/recommended",
     'airbnb',
   ],
   globals: {
@@ -21,13 +22,16 @@ module.exports = {
   plugins: [
     'react',
     'jest',
+    'prettier',
   ],
   rules: {
+    "prettier/prettier": ["error"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/destructuring-assignment": [0, "never"],
     "react/jsx-props-no-spreading": [0, "never"],
     "import/no-named-as-default": [0, "never"],
     "react/forbid-prop-types": [0, "never"],
     "react/require-default-props": [0, "never"],
+    "arrow-parens": [0, "never"],
   },
 };

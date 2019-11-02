@@ -15,6 +15,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
+  title: {
+    color: 'white',
+    margin: '20px 10px 10px',
+    textAlign: 'left',
+    display: 'block',
+  },
   list: {
     width: '100%',
   },
@@ -29,18 +35,23 @@ export function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return <CircularProgress />;
   if (!tasks || tasks.empty) return <Typography variant="h2">Нет задач</Typography>;
   return (
-    <List className={classes.list}>
-      {tasks.docs.map((task) => (
-        <ListItem component={Link} to={`/task/${task.id}`} className={classes.link} key={task.id}>
-          <ListItemText primary={task.data().name} />
-          <ListItemSecondaryAction>
-            <IconButton onClick={() => deleteTask(task.id)} edge="end" aria-label="Удалить">
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
+    <>
+      <Typography variant="subtitle1" className={classes.title}>
+        Выполненные задачи за день:
+      </Typography>
+      <List className={classes.list}>
+        {tasks.docs.map((task) => (
+          <ListItem component={Link} to={`/tasks/${task.id}`} className={classes.link} key={task.id}>
+            <ListItemText primary={task.data().name} />
+            <ListItemSecondaryAction>
+              <IconButton onClick={() => deleteTask(task.id)} edge="end" aria-label="Удалить">
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+    </>
   );
 }
 
@@ -55,16 +66,17 @@ TasksList.propTypes = {
   deleteTask: PropTypes.func.isRequired,
 };
 
+const yesterday = Date.now() - (1000 * 60 * 60 * 24);
+
 export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, loading] = useCollection(
     db
       .where('userId', '==', user && user.uid)
-      .where('isDone', '==', true),
-    // .where('doneAt', '>', Date.now() - 1000 * 60 * 60 * 24),
+      .where('isDone', '==', true)
+      .where('doneAt', '>', yesterday),
   );
-
   const mergeProps = {
     ...props,
     tasks,

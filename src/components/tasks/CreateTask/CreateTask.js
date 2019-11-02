@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
+import subtractDays from 'date-fns/subDays';
 
 const useStyles = makeStyles({
   container: {
@@ -28,7 +29,11 @@ const validationSchema = Yup.object({
 export function CreateTask(props) {
   const classes = useStyles();
   const {
-    register, handleSubmit, formState, errors, reset,
+    register,
+    handleSubmit,
+    formState,
+    errors,
+    reset,
   } = useForm({ validationSchema });
 
   const error = props.error || get(errors, 'todoName.message');
@@ -37,13 +42,16 @@ export function CreateTask(props) {
     : true;
 
   function createDocumentAndReset(values) {
-    return firestore().collection('tasks').add({
-      isDone: false,
-      name: values.todoName,
-      userId: props.user.uid,
-    })
+    return firestore()
+      .collection('tasks')
+      .add({
+        isDone: false,
+        name: values.todoName,
+        userId: props.user.uid,
+        dueAt: subtractDays(new Date(), 1).getTime(),
+      })
       .then(() => reset({}))
-      .catch((e) => console.error(e));
+      .catch(e => console.error(e));
   }
 
   return (
@@ -68,7 +76,7 @@ export function CreateTask(props) {
         className={classes.button}
         disabled={isSubmitDisabled}
       >
-       Сохранить
+        Сохранить
       </Button>
     </form>
   );

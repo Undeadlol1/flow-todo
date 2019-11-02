@@ -45,22 +45,26 @@ RandomTaskButton.propTypes = {
   tasks: PropTypes.object.isRequired,
 };
 
+const today = Date.now();
+
 export default function RandomTaskButtonContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
-  const [tasks, loading] = useCollection(
+  const [tasks, loading, error] = useCollection(
     db
       .where('userId', '==', user && user.uid)
-      .where('isDone', '==', false),
-  ) || {};
-
+      .where('isDone', '==', false)
+      .where('dueAt', '<', today),
+  );
+  if (error) throw error;
   return (
-    <RandomTaskButton {...{
-      ...props,
-      loading,
-      tasks: tasks || {},
-      deleteTask: (taskId) => db.doc(taskId).delete(),
-    }}
+    <RandomTaskButton
+      {...{
+        ...props,
+        loading,
+        tasks: tasks || {},
+        deleteTask: taskId => db.doc(taskId).delete(),
+      }}
     />
   );
 }

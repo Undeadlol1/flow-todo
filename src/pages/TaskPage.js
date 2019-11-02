@@ -11,6 +11,7 @@ import {
   useLocation,
   useHistory,
 } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   loading: {},
 }));
 
-const HardChoices = () => {
+const HardChoices = ({ postponeTask }) => {
   const { pathname } = useLocation();
   return (
     <Grid container direction="column">
@@ -55,10 +56,14 @@ const HardChoices = () => {
         <Button>Не хочу</Button>
       </Grid>
       <Grid item xs align="center">
-        <Button>Не могу сейчас</Button>
+        <Button onClick={postponeTask}>Не могу сейчас</Button>
       </Grid>
     </Grid>
   );
+};
+
+HardChoices.propTypes = {
+  postponeTask: PropTypes.func.isRequired,
 };
 
 const TaskActions = () => {
@@ -138,7 +143,7 @@ TaskPage.propTypes = {
   setDone: PropTypes.func.isRequired,
 };
 
-export default props => {
+export default withSnackbar(props => {
   const { taskId } = useParams();
   const [isRequested, setRequested] = React.useState();
   const taskPointer = firestore()
@@ -152,7 +157,18 @@ export default props => {
       setRequested(true);
       return taskPointer
         .update({ isDone: true, doneAt: Date.now() })
-        .then(() => history.push('/'));
+        .then(() => history.push('/'))
+        .catch(e => console.error(e));
+    },
+    postponeTask() {
+      setRequested(true);
+      return taskPointer
+        .update({ dueAt: Date.now() + 1000 * 60 * 60 * 24 })
+        .then(() => {
+          props.enqueueSnackbar('Отложено до завтра');
+          history.push('/');
+        })
+        .catch(e => console.error(e));
     },
     task: task || {},
     loading: loading || isRequested,
@@ -161,4 +177,4 @@ export default props => {
     ...props,
   };
   return <TaskPage {...mergedProps} />;
-};
+});

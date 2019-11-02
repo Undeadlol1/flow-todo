@@ -5,9 +5,11 @@
   "dependencies": {
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
+    "date-fns": "^2.6.0",
     "firebase": "^7.2.2",
     "is-dark": "^1.0.4",
     "lodash": "^4.17.15",
+    "notistack": "^0.9.5",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",

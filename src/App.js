@@ -8,6 +8,7 @@ import {
   createMuiTheme,
 } from '@material-ui/core/styles';
 import isDarkMode from 'is-dark';
+import { SnackbarProvider } from 'notistack';
 
 import React from 'react';
 import Router from './Router';
@@ -45,7 +46,9 @@ function App() {
   return (
     <div className="App" style={rootStyle}>
       <ThemeProvider theme={theme}>
-        <Router />
+        <SnackbarProvider>
+          <Router />
+        </SnackbarProvider>
       </ThemeProvider>
     </div>
   );

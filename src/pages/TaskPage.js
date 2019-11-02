@@ -120,18 +120,20 @@ TaskPage.propTypes = {
 
 export default (props) => {
   const { taskId } = useParams();
+  const [isRequested, setRequested] = React.useState();
   const taskPointer = firestore().collection('tasks').doc(taskId);
   const [task, loading] = useDocumentData(taskPointer);
   const { path } = useRouteMatch();
   const history = useHistory();
   const mergedProps = {
     setDone() {
+      setRequested(true);
       return taskPointer
-        .update({ isDone: true })
+        .update({ isDone: true, doneAt: Date.now() })
         .then(() => history.push('/'));
     },
     task: task || {},
-    loading,
+    loading: loading || isRequested,
     taskId,
     path,
     ...props,

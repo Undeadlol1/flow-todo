@@ -14,26 +14,29 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
-  title: {
-    color: 'white',
-    margin: '20px 10px 10px',
-    textAlign: 'left',
-    display: 'block',
-  },
-  list: {
-    width: '100%',
-  },
-  link: {
-    color: 'white',
-    textDecoration: 'none',
-  },
+const useStyles = makeStyles((theme) => {
+  const color = theme.palette.text.primary;
+  return ({
+    title: {
+      color,
+      display: 'block',
+      textAlign: 'left',
+      margin: '20px 10px 10px',
+    },
+    list: {
+      width: '100%',
+    },
+    link: {
+      color,
+      textDecoration: 'none',
+    },
+  });
 });
 
 export function TasksList({ loading, tasks, deleteTask }) {
   const classes = useStyles();
   if (loading) return <CircularProgress />;
-  if (!tasks || tasks.empty) return <Typography variant="h2">Нет задач</Typography>;
+  if (!tasks || tasks.empty) return null;
   return (
     <>
       <Typography variant="subtitle1" className={classes.title}>

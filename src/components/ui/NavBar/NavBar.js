@@ -26,6 +26,9 @@ const useStyles = makeStyles(() => ({
   avatar: {
     marginRight: '9px',
   },
+  username: {
+    paddingRight: 0,
+  },
 }));
 
 export default function ButtonAppBar() {
@@ -52,13 +55,16 @@ export const LoginOrLogoutButton = () => {
   const [menuAnchor, setAnchor] = React.useState(null);
   if (loading) return <CircularProgress color="secondary" />;
   if (user) {
-    const openMenu = (event) => setAnchor(event.currentTarget);
+    const openMenu = event => setAnchor(event.currentTarget);
     const signOut = () => auth().signOut();
     return (
       <>
-        <Button className={classes.link} onClick={openMenu}>
+        <Button
+          onClick={openMenu}
+          className={`${classes.link} ${classes.username}`}
+        >
           <Avatar className={classes.avatar} src={user.photoURL} />
-          {user.displayName}
+          <Typography>{user.displayName}</Typography>
         </Button>
         <Menu
           keepMounted
@@ -73,9 +79,7 @@ export const LoginOrLogoutButton = () => {
   }
   return (
     <Link to="/signIn" className={classes.link}>
-      <Button color="inherit">
-      Войти
-      </Button>
+      <Button color="inherit">Войти</Button>
     </Link>
   );
 };

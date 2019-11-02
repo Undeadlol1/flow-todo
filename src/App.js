@@ -3,14 +3,16 @@ import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import isDarkMode from 'is-dark';
 
 import React from 'react';
 import Router from './Router';
 import './App.css';
 
-// Initialize Firebase
 firebase.initializeApp({
   apiKey: 'AIzaSyAmCyhaB-8xjMH5yi9PoitoAyD-KeFnNtA',
   authDomain: 'flow-todo-5824b.firebaseapp.com',
@@ -34,14 +36,14 @@ const theme = createMuiTheme({
     type: isDarkMode() ? 'dark' : 'light',
   },
 });
-const style = {
+const rootStyle = {
   minHeight: '100vh',
   backgroundColor: theme.palette.background.default,
 };
 
 function App() {
   return (
-    <div className="App" style={style}>
+    <div className="App" style={rootStyle}>
       <ThemeProvider theme={theme}>
         <Router />
       </ThemeProvider>

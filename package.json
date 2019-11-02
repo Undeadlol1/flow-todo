@@ -70,6 +70,6 @@
     "source-map-explorer": "^2.1.0"
   },
   "optionalDependencies": {
-    "fsevents": "^1.0.0"
+    "fsevents": ">=0.0.1"
   }
 }

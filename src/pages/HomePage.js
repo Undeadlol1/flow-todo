@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
+import TasksList from '../components/tasks/TasksList/TasksList';
 
 const useStyles = makeStyles({
   CreateTask: {},
@@ -25,6 +26,9 @@ export default function HomePage() {
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6} align="center">
         <RandomTaskButton className={classes.Button} />
+      </Grid>
+      <Grid item xs={12} sm={8} md={8} lg={6} align="center">
+        <TasksList />
       </Grid>
     </Grid>
   );

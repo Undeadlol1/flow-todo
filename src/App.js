@@ -7,6 +7,7 @@ import {
   ThemeProvider,
   createMuiTheme,
 } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import isDarkMode from 'is-dark';
 import { SnackbarProvider } from 'notistack';
 
@@ -41,15 +42,11 @@ const theme = createMuiTheme({
   themeName: 'Malibu Blue Lagoon Zebu',
 });
 
-const rootStyle = {
-  minHeight: '100vh',
-  backgroundColor: theme.palette.background.default,
-};
-
 function App() {
   return (
-    <div className="App" style={rootStyle}>
+    <div className="App">
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <SnackbarProvider>
           <Router />
         </SnackbarProvider>

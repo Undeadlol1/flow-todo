@@ -18,15 +18,21 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  pageContainer: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+  },
   title: {
     marginTop: '20px',
     marginBottom: '20px',
   },
   link: {
+    color: 'white',
     textDecoration: 'none',
   },
   doneButton: {
-    marginTop: '20px',
+    marginTop: '30px',
   },
   loadingContainer: {
     position: 'absolute',
@@ -82,7 +88,7 @@ export function TaskPage(props) {
   }
 
   return (
-    <Grid container direction="column">
+    <Grid className={classes.pageContainer} container direction="column">
       <Grid item xs align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Typography className={classes.title} variant="h3">{props.task.name}</Typography>

@@ -15,7 +15,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
-  link: {},
+  list: {
+    width: '100%',
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+  },
 });
 
 export function TasksList({ loading, tasks, deleteTask }) {
@@ -23,9 +29,9 @@ export function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return <CircularProgress />;
   if (!tasks || tasks.empty) return <Typography variant="h2">Нет задач</Typography>;
   return (
-    <List>
+    <List className={classes.list}>
       {tasks.docs.map((task) => (
-        <ListItem component={Link} to={`/task/${task.id}`} key={task.id}>
+        <ListItem component={Link} to={`/task/${task.id}`} className={classes.link} key={task.id}>
           <ListItemText primary={task.data().name} />
           <ListItemSecondaryAction>
             <IconButton onClick={() => deleteTask(task.id)} edge="end" aria-label="Удалить">

@@ -14,9 +14,9 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles((theme) => {
+const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
-  return ({
+  return {
     title: {
       color,
       display: 'block',
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => {
       color,
       textDecoration: 'none',
     },
-  });
+  };
 });
 
 export function TasksList({ loading, tasks, deleteTask }) {
@@ -40,14 +40,23 @@ export function TasksList({ loading, tasks, deleteTask }) {
   return (
     <>
       <Typography variant="subtitle1" className={classes.title}>
-        Выполненные задачи за день:
+        Выполненные задачи сегодня:
       </Typography>
       <List className={classes.list}>
-        {tasks.docs.map((task) => (
-          <ListItem component={Link} to={`/tasks/${task.id}`} className={classes.link} key={task.id}>
+        {tasks.docs.map(task => (
+          <ListItem
+            component={Link}
+            to={`/tasks/${task.id}`}
+            className={classes.link}
+            key={task.id}
+          >
             <ListItemText primary={task.data().name} />
             <ListItemSecondaryAction>
-              <IconButton onClick={() => deleteTask(task.id)} edge="end" aria-label="Удалить">
+              <IconButton
+                onClick={() => deleteTask(task.id)}
+                edge="end"
+                aria-label="Удалить"
+              >
                 <DeleteIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -69,7 +78,7 @@ TasksList.propTypes = {
   deleteTask: PropTypes.func.isRequired,
 };
 
-const yesterday = Date.now() - (1000 * 60 * 60 * 24);
+const yesterday = Date.now() - 1000 * 60 * 60 * 24;
 
 export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
@@ -87,10 +96,8 @@ export default function CreateTaskContainer(props) {
     ...props,
     tasks,
     loading,
-    deleteTask: (taskId) => db.doc(taskId).delete(),
+    deleteTask: taskId => db.doc(taskId).delete(),
   };
 
-  return (
-    <TasksList {...mergeProps} />
-  );
+  return <TasksList {...mergeProps} />;
 }

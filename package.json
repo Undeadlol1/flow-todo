@@ -67,5 +67,8 @@
     "firebase-tools": "^7.6.2",
     "prettier": "1.18.2",
     "source-map-explorer": "^2.1.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^1.0.0"
   }
 }

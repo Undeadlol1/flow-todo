@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     "plugin:prettier/recommended",
     'airbnb',
+    "plugin:import/errors",
   ],
   globals: {
     Atomics: 'readonly',
@@ -34,5 +35,11 @@ module.exports = {
     "react/forbid-prop-types": [0, "never"],
     "react/require-default-props": [0, "never"],
     "arrow-parens": [0, "never"],
+    "react/jsx-sort-props": [1, {
+      "callbacksLast": true,
+      "shorthandFirst": true,
+      "reservedFirst": true,
+      "noSortAlphabetically": true,
+    }]
   },
 };

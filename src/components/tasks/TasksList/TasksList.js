@@ -38,23 +38,23 @@ export function TasksList({ loading, tasks, deleteTask }) {
   if (!tasks || tasks.empty) return null;
   return (
     <>
-      <Typography variant="subtitle1" className={classes.title}>
+      <Typography className={classes.title} variant="subtitle1">
         Выполненные задачи сегодня:
       </Typography>
       <List className={classes.list}>
         {tasks.docs.map(task => (
           <ListItem
-            component={Link}
-            to={`/tasks/${task.id}`}
-            className={classes.link}
             key={task.id}
+            component={Link}
+            className={classes.link}
+            to={`/tasks/${task.id}`}
           >
             <ListItemText primary={task.data().name} />
             <ListItemSecondaryAction>
               <IconButton
-                onClick={() => deleteTask(task.id)}
                 edge="end"
                 aria-label="Удалить"
+                onClick={() => deleteTask(task.id)}
               >
                 <DeleteIcon />
               </IconButton>

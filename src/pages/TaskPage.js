@@ -20,9 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
+    minHeight: 'calc(100vh - 64px)',
   },
   title: {
     marginTop: '20px',
@@ -103,10 +101,13 @@ export function TaskPage(props) {
   return (
     <Grid
       container
-      direction="column"
+      direction="row"
+      justify="center"
+      alignItems="center"
+      alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs align="center">
+      <Grid item xs md={6} lg={4} align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Typography className={classes.title} variant="h3">
             {props.task.name}

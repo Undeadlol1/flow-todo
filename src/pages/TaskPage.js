@@ -17,7 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   pageContainer: {
     position: 'absolute',
     top: '50%',
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     marginBottom: '20px',
   },
   link: {
-    color: 'white',
+    color: theme.palette.text.primary,
     textDecoration: 'none',
   },
   doneButton: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
   },
   loading: {
   },
-});
+}));
 
 const HardChoices = () => {
   const { pathname } = useLocation();

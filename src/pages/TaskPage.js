@@ -17,7 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   pageContainer: {
     position: 'absolute',
     top: '50%',
@@ -36,11 +36,10 @@ const useStyles = makeStyles((theme) => ({
   },
   loadingContainer: {
     position: 'absolute',
-    left: '50%',
+    left: 'calc(50% - 15px)',
     top: 'calc(50% - 56px)',
   },
-  loading: {
-  },
+  loading: {},
 }));
 
 const HardChoices = () => {
@@ -48,7 +47,9 @@ const HardChoices = () => {
   return (
     <Grid container direction="column">
       <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/hard`}>Тяжело</Button>
+        <Button component={Link} to={`${pathname}/hard`}>
+          Тяжело
+        </Button>
       </Grid>
       <Grid item xs align="center">
         <Button>Не хочу</Button>
@@ -65,7 +66,9 @@ const TaskActions = () => {
   return (
     <Grid container direction="column">
       <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/hard`}>Мне трудно</Button>
+        <Button component={Link} to={`${pathname}/hard`}>
+          Есть трудности
+        </Button>
       </Grid>
       <Grid item xs align="center">
         <Button>Сделал шаг вперед</Button>
@@ -81,17 +84,28 @@ export function TaskPage(props) {
   const classes = useStyles();
   if (props.loading) {
     return (
-      <Grid item xs align="center" className={classes.loadingContainer}>
+      <Grid
+        xs
+        item
+        align="center"
+        className={classes.loadingContainer}
+      >
         <CircularProgress className={classes.loading} />
       </Grid>
     );
   }
 
   return (
-    <Grid className={classes.pageContainer} container direction="column">
+    <Grid
+      container
+      direction="column"
+      className={classes.pageContainer}
+    >
       <Grid item xs align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
-          <Typography className={classes.title} variant="h3">{props.task.name}</Typography>
+          <Typography className={classes.title} variant="h3">
+            {props.task.name}
+          </Typography>
         </Link>
       </Grid>
       <Switch>
@@ -124,10 +138,12 @@ TaskPage.propTypes = {
   setDone: PropTypes.func.isRequired,
 };
 
-export default (props) => {
+export default props => {
   const { taskId } = useParams();
   const [isRequested, setRequested] = React.useState();
-  const taskPointer = firestore().collection('tasks').doc(taskId);
+  const taskPointer = firestore()
+    .collection('tasks')
+    .doc(taskId);
   const [task, loading] = useDocumentData(taskPointer);
   const { path } = useRouteMatch();
   const history = useHistory();
@@ -144,7 +160,5 @@ export default (props) => {
     path,
     ...props,
   };
-  return (
-    <TaskPage {...mergedProps} />
-  );
+  return <TaskPage {...mergedProps} />;
 };

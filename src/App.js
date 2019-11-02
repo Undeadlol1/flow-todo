@@ -35,8 +35,12 @@ if (process.env.NODE_ENV !== 'production') {
 const theme = createMuiTheme({
   palette: {
     type: isDarkMode() ? 'dark' : 'light',
+    primary: { main: '#81D4FA' },
+    secondary: { main: '#00838F', contrastText: '#ffffff' },
   },
+  themeName: 'Malibu Blue Lagoon Zebu',
 });
+
 const rootStyle = {
   minHeight: '100vh',
   backgroundColor: theme.palette.background.default,

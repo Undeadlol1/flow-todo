@@ -10,6 +10,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { makeStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
+import { If, Then, Else } from 'react-if';
+import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   paper: {
@@ -19,10 +23,11 @@ const useStyles = makeStyles({
 
 export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
+  const [t] = useTranslation();
 
   const docs = get(tasks, 'docs', []);
   const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
-  const buttonText = randomTaskId ? 'Случайная задача' : 'Нет задач';
+  const buttonText = t(randomTaskId ? 'randomTask' : 'noTasks');
 
   return (
     <Button
@@ -33,7 +38,14 @@ export function RandomTaskButton({ tasks, loading, className }) {
       disabled={loading || tasks.empty}
     >
       <Paper elevation={6} className={classes.paper}>
-        {loading ? <CircularProgress /> : buttonText}
+        <If condition={loading}>
+          <Then><CircularProgress /></Then>
+          <Else>
+            <Zoom in>
+              <Typography>{buttonText}</Typography>
+            </Zoom>
+          </Else>
+        </If>
       </Paper>
     </Button>
   );

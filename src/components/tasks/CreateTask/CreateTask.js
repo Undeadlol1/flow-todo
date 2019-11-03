@@ -11,6 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
 import { useTranslation } from 'react-i18next';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles({
   container: {
@@ -37,7 +38,7 @@ export function CreateTask(props) {
         .min(3, t('validation.atleast3Symbols'))
         .required(t('validation.required')),
     }),
- });
+  });
 
   const error = props.error || get(errors, 'todoName.message');
   const isSubmitDisabled = isUndefined(props.isValid)
@@ -58,30 +59,32 @@ export function CreateTask(props) {
   }
 
   return (
-    <form
-      className={classes.container}
-      onSubmit={handleSubmit(createDocumentAndReset)}
-    >
-      <TextField
-        fullWidth
-        name="todoName"
-        autoComplete="off"
-        helperText={error}
-        inputRef={register}
-        error={Boolean(error)}
-        label={t('createTask')}
-        className="CreateTask__input"
-      />
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        className={classes.button}
-        disabled={Boolean(isSubmitDisabled)}
+    <Grow in timeout={1300}>
+      <form
+        className={classes.container}
+        onSubmit={handleSubmit(createDocumentAndReset)}
       >
-        {t('save')}
-      </Button>
-    </form>
+        <TextField
+          fullWidth
+          name="todoName"
+          autoComplete="off"
+          helperText={error}
+          inputRef={register}
+          error={Boolean(error)}
+          label={t('createTask')}
+          className="CreateTask__input"
+        />
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          className={classes.button}
+          disabled={Boolean(isSubmitDisabled)}
+        >
+          {t('save')}
+        </Button>
+      </form>
+    </Grow>
   );
 }
 

@@ -75,7 +75,7 @@ export function CreateTask(props) {
         color="secondary"
         variant="contained"
         className={classes.button}
-        disabled={isSubmitDisabled}
+        disabled={Boolean(isSubmitDisabled)}
       >
         Сохранить
       </Button>

@@ -12,6 +12,7 @@ import { withSnackbar } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
@@ -68,9 +69,11 @@ export function TaskPage(props) {
       <Grid item xs md={6} lg={4} align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Button variant="outlined">
-            <Typography className={classes.title} variant="h3">
-              {props.task.name}
-            </Typography>
+            <Zoom in>
+              <Typography className={classes.title} variant="h3">
+                {props.task.name}
+              </Typography>
+            </Zoom>
           </Button>
         </Link>
       </Grid>

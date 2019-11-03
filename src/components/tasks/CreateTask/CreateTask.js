@@ -60,7 +60,7 @@ export function CreateTask(props) {
   }
 
   return (
-    <Grow in timeout={1300}>
+    <Grow in timeout={800}>
       <form
         className={classes.container}
         onSubmit={handleSubmit(createDocumentAndReset)}

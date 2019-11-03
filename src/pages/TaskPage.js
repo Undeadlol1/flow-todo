@@ -70,7 +70,7 @@ export function TaskPage(props) {
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Button variant="outlined">
             <Zoom in>
-              <Typography className={classes.title} variant="h3">
+              <Typography className={classes.title} variant="h5">
                 {props.task.name}
               </Typography>
             </Zoom>

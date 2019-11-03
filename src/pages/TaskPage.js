@@ -20,6 +20,11 @@ const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
   },
+  loadingContainer: {
+    position: 'absolute',
+    left: 'calc(50% - 15px)',
+    top: 'calc(50% - 56px)',
+  },
   title: {
     marginTop: '20px',
     marginBottom: '20px',
@@ -31,10 +36,8 @@ const useStyles = makeStyles(theme => ({
   doneButton: {
     marginTop: '30px',
   },
-  loadingContainer: {
-    position: 'absolute',
-    left: 'calc(50% - 15px)',
-    top: 'calc(50% - 56px)',
+  choices: {
+    marginTop: '20px',
   },
 }));
 
@@ -64,22 +67,14 @@ export function TaskPage(props) {
     >
       <Grid item xs md={6} lg={4} align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
-          <Typography className={classes.title} variant="h3">
-            {props.task.name}
-          </Typography>
+          <Button variant="outlined">
+            <Typography className={classes.title} variant="h3">
+              {props.task.name}
+            </Typography>
+          </Button>
         </Link>
       </Grid>
-      <TaskChoices {...props} />
-      <Grid item xs align="center">
-        <Button
-          className={classes.doneButton}
-          color="primary"
-          variant="contained"
-          onClick={props.setDone}
-        >
-          Сделал
-        </Button>
-      </Grid>
+      <TaskChoices className={classes.choices} {...props} />
     </Grid>
   );
 }

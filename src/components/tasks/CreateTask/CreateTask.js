@@ -19,6 +19,7 @@ const useStyles = makeStyles({
   },
   button: {
     marginTop: '20px',
+    width: '100%',
   },
 });
 
@@ -66,6 +67,8 @@ export function CreateTask(props) {
       >
         <TextField
           fullWidth
+          autoFocus
+          variant="outlined"
           name="todoName"
           autoComplete="off"
           helperText={error}

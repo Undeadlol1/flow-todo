@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   container: {
@@ -28,6 +29,7 @@ const validationSchema = Yup.object({
 
 export function CreateTask(props) {
   const classes = useStyles();
+  const [t] = useTranslation();
   const {
     register,
     handleSubmit,
@@ -67,7 +69,7 @@ export function CreateTask(props) {
         helperText={error}
         inputRef={register}
         error={Boolean(error)}
-        label="Создать задачу"
+        label={t('createTask')}
         className="CreateTask__input"
       />
       <Button
@@ -77,7 +79,7 @@ export function CreateTask(props) {
         className={classes.button}
         disabled={Boolean(isSubmitDisabled)}
       >
-        Сохранить
+        {t('save')}
       </Button>
     </form>
   );

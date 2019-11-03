@@ -8,6 +8,8 @@
     "date-fns": "^2.6.0",
     "firebase": "^7.2.2",
     "firebase-tools": "^7.6.2",
+    "i18next": "^19.0.0",
+    "i18next-browser-languagedetector": "^4.0.1",
     "lodash": "^4.17.15",
     "notistack": "^0.9.5",
     "prop-types": "^15.7.2",
@@ -16,6 +18,7 @@
     "react-firebase-hooks": "^2.1.0",
     "react-firebaseui": "^4.0.0",
     "react-hook-form": "^3.26.2",
+    "react-i18next": "^11.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "yup": "^0.27.0"

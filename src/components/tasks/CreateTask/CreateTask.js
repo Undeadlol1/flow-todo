@@ -11,6 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 const useStyles = makeStyles({
   container: {
@@ -19,12 +20,6 @@ const useStyles = makeStyles({
   button: {
     marginTop: '20px',
   },
-});
-
-const validationSchema = Yup.object({
-  todoName: Yup.string()
-    .min(3, 'Не менее 3 символов')
-    .required('Обязательно'),
 });
 
 export function CreateTask(props) {
@@ -37,7 +32,13 @@ export function CreateTask(props) {
     errors,
     reset,
     setError,
-  } = useForm({ validationSchema });
+  } = useForm({
+    validationSchema: Yup.object({
+      todoName: Yup.string()
+        .min(3, i18n.t('validation.atleast3Symbols'))
+        .required(i18n.t('validation.required')),
+    }),
+ });
 
   const error = props.error || get(errors, 'todoName.message');
   const isSubmitDisabled = isUndefined(props.isValid)

@@ -8,7 +8,7 @@ import {
   createMuiTheme,
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import isDarkMode from 'is-dark';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { SnackbarProvider } from 'notistack';
 
 import React from 'react';
@@ -33,16 +33,24 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-const theme = createMuiTheme({
-  palette: {
-    type: isDarkMode() ? 'dark' : 'light',
-    primary: { main: '#81D4FA' },
-    secondary: { main: '#00838F', contrastText: '#ffffff' },
-  },
-  themeName: 'Malibu Blue Lagoon Zebu',
-});
-
 function App() {
+  const prefersDarkMode = useMediaQuery(
+    '(prefers-color-scheme: dark)',
+  );
+
+  const theme = React.useMemo(
+    () => createMuiTheme({
+      palette: {
+        primary: { main: '#81D4FA' },
+        secondary: { main: '#00838F', contrastText: '#ffffff' },
+        type: prefersDarkMode ? 'dark' : 'light',
+      },
+      themeName: 'Malibu Blue Lagoon Zebu',
+    }),
+    [prefersDarkMode],
+  );
+
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>

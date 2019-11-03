@@ -8,46 +8,67 @@ import {
   useLocation,
   useRouteMatch,
 } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
+import Slide from '@material-ui/core/Slide';
+import Fade from '@material-ui/core/Fade';
 
+const useStyles = makeStyles(theme => ({
+  doneButton: {
+    marginTop: '30px',
+  },
+}));
+
+const CreateSubtask = props => (
+  <div>
+    This is a test
+  </div>
+);
+
+CreateSubtask.propTypes = {
+
+};
 
 const HardChoices = () => {
   const [t] = useTranslation();
   return (
-    <Grid container direction="column">
-      <Grid item xs align="center">
-        <Button>
-          {/* TODO: add translations */}
-          {t('Refactor')}
-        </Button>
+    <Slide in direction="left">
+      <Grid container direction="column">
+        <Grid item xs align="center">
+          <Button>
+            {t('Rework task')}
+          </Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button>
+            {t('Add subtasks')}
+          </Button>
+          <CreateSubtask />
+        </Grid>
       </Grid>
-      <Grid item xs align="center">
-        <Button>
-          {/* TODO: add translations */}
-          {t('Add subtasks')}
-        </Button>
-      </Grid>
-    </Grid>
+    </Slide>
   );
 };
 
 const TroublesChoices = ({ postponeTask }) => {
   const { pathname } = useLocation();
   return (
-    <Grid container direction="column">
-      <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/isHard`}>
-          Тяжело
-        </Button>
+    <Slide in direction="left">
+      <Grid container direction="column">
+        <Grid item xs align="center">
+          <Button component={Link} to={`${pathname}/isHard`}>
+            Тяжело
+          </Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button>Не хочу</Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button onClick={postponeTask}>Не могу сейчас</Button>
+        </Grid>
       </Grid>
-      <Grid item xs align="center">
-        <Button>Не хочу</Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button onClick={postponeTask}>Не могу сейчас</Button>
-      </Grid>
-    </Grid>
+    </Slide>
   );
 };
 
@@ -55,23 +76,41 @@ TroublesChoices.propTypes = {
   postponeTask: PropTypes.func.isRequired,
 };
 
-const TaskActions = () => {
+const TaskActions = props => {
+  const classes = useStyles();
   const { pathname } = useLocation();
   return (
-    <Grid container direction="column">
-      <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/isTroublesome`}>
-          Есть трудности
-        </Button>
+    <Fade in timeout={1200}>
+      <Grid container direction="column" classes={{ root: props.className }}>
+        <Grid item xs align="center">
+          <Button component={Link} to={`${pathname}/isTroublesome`}>
+            Есть трудности
+          </Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button>Сделал шаг вперед</Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button>Сильно продвинулся</Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button
+            className={classes.doneButton}
+            color="primary"
+            variant="contained"
+            onClick={props.setDone}
+          >
+            Сделал
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs align="center">
-        <Button>Сделал шаг вперед</Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button>Сильно продвинулся</Button>
-      </Grid>
-    </Grid>
+    </Fade>
   );
+};
+
+TaskActions.propTypes = {
+  className: PropTypes.string,
+  setDone: PropTypes.func.isRequired,
 };
 
 export default props => {
@@ -88,5 +127,5 @@ export default props => {
         <TaskActions {...props} />
       </Route>
     </Switch>
-);
+  );
 };

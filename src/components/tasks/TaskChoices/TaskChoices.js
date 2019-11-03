@@ -2,62 +2,91 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import {
-    Switch,
-    Route,
-    Link,
-    useLocation,
+  Switch,
+  Route,
+  Link,
+  useLocation,
+  useRouteMatch,
 } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import { useTranslation } from 'react-i18next';
 
-const HardChoices = ({ postponeTask }) => {
-    const { pathname } = useLocation();
-    return (
-      <Grid container direction="column">
-        <Grid item xs align="center">
-          <Button component={Link} to={`${pathname}/hard`}>
-                    Тяжело
-          </Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button>Не хочу</Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button onClick={postponeTask}>Не могу сейчас</Button>
-        </Grid>
+
+const HardChoices = () => {
+  const [t] = useTranslation();
+  return (
+    <Grid container direction="column">
+      <Grid item xs align="center">
+        <Button>
+          {/* TODO: add translations */}
+          {t('Refactor')}
+        </Button>
       </Grid>
-    );
+      <Grid item xs align="center">
+        <Button>
+          {/* TODO: add translations */}
+          {t('Add subtasks')}
+        </Button>
+      </Grid>
+    </Grid>
+  );
 };
 
-HardChoices.propTypes = {
-    postponeTask: PropTypes.func.isRequired,
+const TroublesChoices = ({ postponeTask }) => {
+  const { pathname } = useLocation();
+  return (
+    <Grid container direction="column">
+      <Grid item xs align="center">
+        <Button component={Link} to={`${pathname}/isHard`}>
+          Тяжело
+        </Button>
+      </Grid>
+      <Grid item xs align="center">
+        <Button>Не хочу</Button>
+      </Grid>
+      <Grid item xs align="center">
+        <Button onClick={postponeTask}>Не могу сейчас</Button>
+      </Grid>
+    </Grid>
+  );
+};
+
+TroublesChoices.propTypes = {
+  postponeTask: PropTypes.func.isRequired,
 };
 
 const TaskActions = () => {
-    const { pathname } = useLocation();
-    return (
-      <Grid container direction="column">
-        <Grid item xs align="center">
-          <Button component={Link} to={`${pathname}/hard`}>
-                    Есть трудности
-          </Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button>Сделал шаг вперед</Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button>Сильно продвинулся</Button>
-        </Grid>
+  const { pathname } = useLocation();
+  return (
+    <Grid container direction="column">
+      <Grid item xs align="center">
+        <Button component={Link} to={`${pathname}/isTroublesome`}>
+          Есть трудности
+        </Button>
       </Grid>
-    );
+      <Grid item xs align="center">
+        <Button>Сделал шаг вперед</Button>
+      </Grid>
+      <Grid item xs align="center">
+        <Button>Сильно продвинулся</Button>
+      </Grid>
+    </Grid>
+  );
 };
 
-export default props => (
-  <Switch>
-    <Route path={`${props.path}/hard`}>
-      <HardChoices {...props} />
-    </Route>
-    <Route path={props.path}>
-      <TaskActions {...props} />
-    </Route>
-  </Switch>
+export default props => {
+  const { path } = useRouteMatch();
+  return (
+    <Switch>
+      <Route path={`${path}/isTroublesome/isHard`}>
+        <HardChoices {...props} />
+      </Route>
+      <Route path={`${path}/isTroublesome`}>
+        <TroublesChoices {...props} />
+      </Route>
+      <Route path={path}>
+        <TaskActions {...props} />
+      </Route>
+    </Switch>
 );
+};

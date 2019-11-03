@@ -11,7 +11,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 
 const useStyles = makeStyles({
   container: {
@@ -35,8 +34,8 @@ export function CreateTask(props) {
   } = useForm({
     validationSchema: Yup.object({
       todoName: Yup.string()
-        .min(3, i18n.t('validation.atleast3Symbols'))
-        .required(i18n.t('validation.required')),
+        .min(3, t('validation.atleast3Symbols'))
+        .required(t('validation.required')),
     }),
  });
 

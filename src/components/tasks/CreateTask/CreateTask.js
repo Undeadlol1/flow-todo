@@ -34,6 +34,7 @@ export function CreateTask(props) {
     formState,
     errors,
     reset,
+    setError,
   } = useForm({ validationSchema });
 
   const error = props.error || get(errors, 'todoName.message');
@@ -51,7 +52,7 @@ export function CreateTask(props) {
         dueAt: subtractDays(new Date(), 1).getTime(),
       })
       .then(() => reset({}))
-      .catch(e => console.error(e));
+      .catch(e => setError(e && e.message));
   }
 
   return (

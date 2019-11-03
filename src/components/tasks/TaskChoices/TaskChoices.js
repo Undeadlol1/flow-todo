@@ -15,7 +15,12 @@ const HardChoices = ({ postponeTask }) => {
       <Grid container direction="column">
         <Grid item xs align="center">
           <Button component={Link} to={`${pathname}/hard`}>
-                    Тяжело
+            Тяжело
+          </Button>
+        </Grid>
+        <Grid item xs align="center">
+          <Button component={Link} to={`${pathname}/hard`}>
+            Я не знаю деталей
           </Button>
         </Grid>
         <Grid item xs align="center">

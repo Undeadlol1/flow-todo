@@ -12,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
+import subtractHours from 'date-fns/subHours';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -77,7 +78,7 @@ TasksList.propTypes = {
   deleteTask: PropTypes.func.isRequired,
 };
 
-const yesterday = Date.now() - 1000 * 60 * 60 * 24;
+const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
@@ -86,7 +87,7 @@ export default function CreateTaskContainer(props) {
     db
       .where('userId', '==', user && user.uid)
       .where('isDone', '==', true)
-      .where('doneAt', '>', yesterday),
+      .where('doneAt', '>', lastSixteenHours),
   );
 
   if (error) throw error;

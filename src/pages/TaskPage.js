@@ -4,11 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
 import {
   useParams,
-  Switch,
-  Route,
   Link,
   useRouteMatch,
-  useLocation,
   useHistory,
 } from 'react-router-dom';
 import { withSnackbar } from 'notistack';
@@ -17,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -38,62 +36,19 @@ const useStyles = makeStyles(theme => ({
     left: 'calc(50% - 15px)',
     top: 'calc(50% - 56px)',
   },
-  loading: {},
 }));
 
-const HardChoices = ({ postponeTask }) => {
-  const { pathname } = useLocation();
-  return (
-    <Grid container direction="column">
-      <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/hard`}>
-          Тяжело
-        </Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button>Не хочу</Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button onClick={postponeTask}>Не могу сейчас</Button>
-      </Grid>
-    </Grid>
-  );
-};
-
-HardChoices.propTypes = {
-  postponeTask: PropTypes.func.isRequired,
-};
-
-const TaskActions = () => {
-  const { pathname } = useLocation();
-  return (
-    <Grid container direction="column">
-      <Grid item xs align="center">
-        <Button component={Link} to={`${pathname}/hard`}>
-          Есть трудности
-        </Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button>Сделал шаг вперед</Button>
-      </Grid>
-      <Grid item xs align="center">
-        <Button>Сильно продвинулся</Button>
-      </Grid>
-    </Grid>
-  );
-};
 
 export function TaskPage(props) {
   const classes = useStyles();
   if (props.loading) {
     return (
       <Grid
-        xs
         item
         align="center"
         className={classes.loadingContainer}
       >
-        <CircularProgress className={classes.loading} />
+        <CircularProgress />
       </Grid>
     );
   }
@@ -114,14 +69,7 @@ export function TaskPage(props) {
           </Typography>
         </Link>
       </Grid>
-      <Switch>
-        <Route path={`${props.path}/hard`}>
-          <HardChoices {...props} />
-        </Route>
-        <Route path={props.path}>
-          <TaskActions {...props} />
-        </Route>
-      </Switch>
+      <TaskChoices {...props} />
       <Grid item xs align="center">
         <Button
           className={classes.doneButton}

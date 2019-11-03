@@ -14,8 +14,10 @@ import { SnackbarProvider } from 'notistack';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-
 import React from 'react';
+import en from './locales/en';
+import ru from './locales/ru';
+
 import Router from './Router';
 import './App.css';
 
@@ -87,18 +89,8 @@ function initializeI18n() {
         escapeValue: false, // not needed for react as it escapes by default
       },
       resources: {
-        en: {
-          translation: {
-            save: 'save',
-            createTask: 'Create a task',
-          },
-        },
-        ru: {
-          translation: {
-            save: 'сохранить',
-            createTask: 'Создать задачу',
-          },
-        },
+        en,
+        ru,
       },
     });
 }

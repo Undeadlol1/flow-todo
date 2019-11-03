@@ -5,7 +5,7 @@ module.exports = {
     "jest/globals": true,
   },
   extends: [
-    "plugin:prettier/recommended",
+    // "plugin:prettier/recommended",
     'airbnb',
     "plugin:import/errors",
   ],
@@ -23,11 +23,12 @@ module.exports = {
   plugins: [
     'react',
     'jest',
-    'prettier',
+    // 'prettier',
   ],
   rules: {
+    "indent": [0, "never"], // prettier is responsible for indent
     "semicolon": [0, "never"],
-    "prettier/prettier": ["error"],
+    // "prettier/prettier": ["error"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/destructuring-assignment": [0, "never"],
     "react/jsx-props-no-spreading": [0, "never"],

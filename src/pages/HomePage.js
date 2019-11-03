@@ -6,6 +6,9 @@ import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskBut
 import TasksList from '../components/tasks/TasksList/TasksList';
 
 const useStyles = makeStyles({
+  pageContainer: {
+    minHeight: 'calc(100vh - 64px)',
+  },
   CreateTask: {},
   Button: {
     marginTop: '50px',
@@ -21,6 +24,7 @@ export default function HomePage() {
       direction="column"
       alignItems="stretch"
       alignContent="center"
+      className={classes.pageContainer}
     >
       <Grid item xs={12} sm={12} align="center">
         <CreateTask />

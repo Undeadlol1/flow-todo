@@ -80,7 +80,7 @@ TasksList.propTypes = {
 
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
-export default function CreateTaskContainer(props) {
+export default function TasksListContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, loading, error] = useCollection(

@@ -52,7 +52,11 @@ const HardChoices = () => {
 };
 
 const TroublesChoices = ({ postponeTask }) => {
+  const [t] = useTranslation();
   const { pathname } = useLocation();
+  function postPone() {
+    postponeTask(1, t('Posponed until tomorrow'), 'default');
+  }
   return (
     <Slide in direction="left">
       <Grid container direction="column">
@@ -65,7 +69,7 @@ const TroublesChoices = ({ postponeTask }) => {
           <Button>Не хочу</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button onClick={postponeTask}>Не могу сейчас</Button>
+          <Button onClick={postPone}>Не могу сейчас</Button>
         </Grid>
       </Grid>
     </Slide>
@@ -77,8 +81,11 @@ TroublesChoices.propTypes = {
 };
 
 const TaskActions = props => {
+  const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
+  const didGood = () => props.postponeTask(1, t('Good job!'));
+  const didGreat = () => props.postponeTask(3, t('Good job!'));
   return (
     <Fade in timeout={1200}>
       <Grid container direction="column" classes={{ root: props.className }}>
@@ -88,10 +95,10 @@ const TaskActions = props => {
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button>Сделал шаг вперед</Button>
+          <Button onClick={didGood}>Сделал шаг вперед</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button>Сильно продвинулся</Button>
+          <Button onClick={didGreat}>Сильно продвинулся</Button>
         </Grid>
         <Grid item xs align="center">
           <Button
@@ -111,6 +118,7 @@ const TaskActions = props => {
 TaskActions.propTypes = {
   className: PropTypes.string,
   setDone: PropTypes.func.isRequired,
+  postponeTask: PropTypes.func.isRequired,
 };
 
 export default props => {

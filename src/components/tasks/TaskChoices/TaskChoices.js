@@ -13,6 +13,9 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
+import get from 'lodash/get';
+import CreateSubtask from '../CreateSubtask/CreateSubtask';
+import { TasksList } from '../TasksList/TasksList';
 
 const useStyles = makeStyles(theme => ({
   doneButton: {
@@ -20,17 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CreateSubtask = props => (
-  <div>
-    This is a test
-  </div>
-);
-
-CreateSubtask.propTypes = {
-
-};
-
-const HardChoices = () => {
+const HardChoices = (props) => {
   const [t] = useTranslation();
   return (
     <Slide in direction="left">
@@ -44,7 +37,12 @@ const HardChoices = () => {
           <Button>
             {t('Add subtasks')}
           </Button>
-          <CreateSubtask />
+          <CreateSubtask taskId={props.taskId} />
+          {/* TODO: fix "deleteTask" */}
+          {
+            get(props, 'task.subtasks', []).map(t => <div key={t.name}>{t.name}</div>)
+          }
+          {/* <TasksList tasks={props.task.subtasks} deleteTask={() => {}} /> */}
         </Grid>
       </Grid>
     </Slide>

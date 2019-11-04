@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: 'calc(100vh - 64px)',
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     [theme.breakpoints.down('sm')]: {
       bottom: theme.spacing(2),
       right: theme.spacing(2),

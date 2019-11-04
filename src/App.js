@@ -71,6 +71,7 @@ function initializeFirebase() {
     .enablePersistence()
     .catch(e => console.error(e));
     // TODO: test to see if this is needed
+    // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
     // (function listenForConnectivity() {
     //   window.addEventListener('online', firestore.enableNetwork());
     //   window.addEventListener('offline', firestore.disableNetwork());

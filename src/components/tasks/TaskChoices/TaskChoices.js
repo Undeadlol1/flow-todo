@@ -40,13 +40,17 @@ const HardChoices = (props) => {
           <CreateSubtask taskId={props.taskId} />
           {/* TODO: fix "deleteTask" */}
           {
-            get(props, 'task.subtasks', []).map(t => <div key={t.name}>{t.name}</div>)
+            get(props, 'task.subtasks', []).map(({ name }) => <div key={name}>{name}</div>)
           }
           {/* <TasksList tasks={props.task.subtasks} deleteTask={() => {}} /> */}
         </Grid>
       </Grid>
     </Slide>
   );
+};
+
+HardChoices.propTypes = {
+  taskId: PropTypes.string.isRequired,
 };
 
 const TroublesChoices = ({ postponeTask }) => {

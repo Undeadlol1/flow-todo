@@ -63,9 +63,24 @@ function initializeFirebase() {
     appId: '1:772125171665:web:3fffadc4031335de290af0',
     measurementId: 'G-DLFD2VSSK1',
   });
-  // Use Firestore emulator for local development
-  if (process.env.NODE_ENV !== 'production') {
-    firebase.firestore().settings({
+
+  const firestore = firebase.firestore();
+  const isProduction = process.env.NODE_ENV === 'production';
+  if (isProduction) {
+    firestore
+    .enablePersistence()
+    .catch(e => console.error(e));
+    // TODO: test to see if this is needed
+    // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access
+    // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
+    // (function listenForConnectivity() {
+    //   window.addEventListener('online', firestore.enableNetwork());
+    //   window.addEventListener('offline', firestore.disableNetwork());
+    // }());
+  } else {
+    // Use Firestore emulator for local development
+    firestore
+    .settings({
       ssl: false,
       host: 'localhost:8080',
     });

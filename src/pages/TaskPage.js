@@ -8,13 +8,16 @@ import {
   useRouteMatch,
   useHistory,
 } from 'react-router-dom';
-import { withSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { addDays } from 'date-fns/esm';
+import { useTranslation } from 'react-i18next';
+import get from 'lodash/get';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +69,7 @@ export function TaskPage(props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs md={6} lg={4} align="center">
+      <Grid item xs md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Button variant="outlined">
             <Zoom in>
@@ -90,8 +93,11 @@ TaskPage.propTypes = {
   setDone: PropTypes.func.isRequired,
 };
 
-export default withSnackbar(props => {
+export default props => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const { taskId } = useParams();
+  const [t] = useTranslation();
   const [isRequested, setRequested] = React.useState();
   const taskPointer = firestore()
     .collection('tasks')
@@ -107,15 +113,18 @@ export default withSnackbar(props => {
         .then(() => history.push('/'))
         .catch(e => console.error(e));
     },
-    postponeTask() {
+    postponeTask(days = 1, message, variant = 'success') {
       setRequested(true);
       return taskPointer
-        .update({ dueAt: Date.now() + 1000 * 60 * 60 * 24 })
+        .update({ dueAt: addDays(new Date(), days).getTime() })
         .then(() => {
-          props.enqueueSnackbar('Отложено до завтра');
+          if (message) enqueueSnackbar(message, { variant });
           history.push('/');
         })
-        .catch(e => console.error(e));
+        .catch((e) => enqueueSnackbar(
+          get(e, 'message') || t('Something went wrong'),
+          { variant: 'error' },
+        ));
     },
     task: task || {},
     loading: loading || isRequested,
@@ -124,4 +133,4 @@ export default withSnackbar(props => {
     ...props,
   };
   return <TaskPage {...mergedProps} />;
-});
+};

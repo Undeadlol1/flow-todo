@@ -5,6 +5,7 @@ export default {
         save: 'save',
         noTasks: 'No tasks',
         createTask: 'Create a task',
+        'Successfully saved': 'Successfully saved',
         randomTask: 'Random task',
         'Rework task': 'Rework task',
         'Add subtasks': 'Add subtasks',

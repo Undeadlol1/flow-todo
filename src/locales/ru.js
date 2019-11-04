@@ -5,6 +5,7 @@ export default {
         save: 'сохранить',
         noTasks: 'Нет задач',
         createTask: 'Создать задачу',
+        'Successfully saved': 'Успешно сохранено',
         randomTask: 'Случайная задача',
         'Rework task': 'Переделать задачу',
         'Add subtasks': 'Добавьте подзадач',

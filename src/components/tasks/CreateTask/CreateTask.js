@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
 import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles({
   container: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 });
 
 export function CreateTask(props) {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [t] = useTranslation();
   const {
@@ -55,7 +57,10 @@ export function CreateTask(props) {
         userId: props.user.uid,
         dueAt: subtractDays(new Date(), 1).getTime(),
       })
-      .then(() => reset({}))
+      .then(() => {
+        reset({});
+        enqueueSnackbar(t('Successfully saved'));
+      })
       .catch(e => setError(e && e.message));
   }
 

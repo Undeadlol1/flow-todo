@@ -1,5 +1,7 @@
 export default {
     translation: {
+        'log in': 'Войти',
+        'log out': 'Выйти',
         save: 'сохранить',
         noTasks: 'Нет задач',
         createTask: 'Создать задачу',

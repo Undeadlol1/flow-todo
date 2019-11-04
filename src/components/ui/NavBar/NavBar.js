@@ -13,6 +13,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { If, Unless } from 'react-if';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,6 +53,7 @@ export default function ButtonAppBar() {
 }
 
 export const LoginOrLogoutButton = () => {
+  const [t] = useTranslation();
   const classes = useStyles();
   const [user, loading] = useAuthState(auth());
   const [menuAnchor, setAnchor] = React.useState(null);
@@ -80,14 +82,14 @@ export const LoginOrLogoutButton = () => {
           open={Boolean(menuAnchor)}
           onClose={() => setAnchor(null)}
         >
-          <MenuItem onClick={signOut}>Выйти</MenuItem>
+          <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
         </Menu>
       </>
     );
   }
   return (
     <Link to="/signIn" className={classes.link}>
-      <Button color="inherit">Войти</Button>
+      <Button color="inherit">{t('log in')}</Button>
     </Link>
   );
 };

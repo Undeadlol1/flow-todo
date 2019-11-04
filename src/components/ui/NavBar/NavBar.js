@@ -11,29 +11,27 @@ import { Link } from 'react-router-dom';
 import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { If, Unless } from 'react-if';
 
-const useStyles = makeStyles(theme => {
-  console.log('theme.pallete: ', theme.palette);
-  console.dir(theme.palette);
-  return ({
-    root: {
-      flexGrow: 1,
-    },
-    title: {
-      flexGrow: 1,
-    },
-    link: {
-      textDecoration: 'none',
-      color: theme.palette.primary.contrastText,
-    },
-    avatar: {
-      marginRight: '9px',
-    },
-    username: {
-      paddingRight: 0,
-    },
-  });
-});
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.contrastText,
+  },
+  avatar: {
+    marginRight: '9px',
+  },
+  username: {
+    paddingRight: 0,
+  },
+}));
 
 export default function ButtonAppBar() {
   const classes = useStyles();
@@ -57,6 +55,7 @@ export const LoginOrLogoutButton = () => {
   const classes = useStyles();
   const [user, loading] = useAuthState(auth());
   const [menuAnchor, setAnchor] = React.useState(null);
+  const hasPhoto = Boolean(user && user.photoURL);
   if (loading) return <CircularProgress color="secondary" />;
   if (user) {
     const openMenu = event => setAnchor(event.currentTarget);
@@ -67,7 +66,12 @@ export const LoginOrLogoutButton = () => {
           className={`${classes.link} ${classes.username}`}
           onClick={openMenu}
         >
-          <Avatar className={classes.avatar} src={user.photoURL} />
+          <If condition={hasPhoto}>
+            <Avatar className={classes.avatar} src={user.photoURL} />
+          </If>
+          <Unless condition={hasPhoto}>
+            <AccountCircle className={classes.avatar} />
+          </Unless>
           <Typography>{user.displayName}</Typography>
         </Button>
         <Menu

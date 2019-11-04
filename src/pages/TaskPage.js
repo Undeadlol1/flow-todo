@@ -69,7 +69,7 @@ export function TaskPage(props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs md={6} lg={4} align="center">
+      <Grid item xs md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${props.taskId}`}>
           <Button variant="outlined">
             <Zoom in>

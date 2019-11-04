@@ -12,24 +12,28 @@ import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  link: {
-    color: 'white',
-    textDecoration: 'none',
-  },
-  avatar: {
-    marginRight: '9px',
-  },
-  username: {
-    paddingRight: 0,
-  },
-}));
+const useStyles = makeStyles(theme => {
+  console.log('theme.pallete: ', theme.palette);
+  console.dir(theme.palette);
+  return ({
+    root: {
+      flexGrow: 1,
+    },
+    title: {
+      flexGrow: 1,
+    },
+    link: {
+      textDecoration: 'none',
+      color: theme.palette.primary.contrastText,
+    },
+    avatar: {
+      marginRight: '9px',
+    },
+    username: {
+      paddingRight: 0,
+    },
+  });
+});
 
 export default function ButtonAppBar() {
   const classes = useStyles();
@@ -60,8 +64,8 @@ export const LoginOrLogoutButton = () => {
     return (
       <>
         <Button
-          onClick={openMenu}
           className={`${classes.link} ${classes.username}`}
+          onClick={openMenu}
         >
           <Avatar className={classes.avatar} src={user.photoURL} />
           <Typography>{user.displayName}</Typography>

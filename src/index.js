@@ -8,4 +8,5 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 // Make app work offline and load faster.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register();
+if (process.env.NODE_ENV === 'production') serviceWorker.register();
+else serviceWorker.unregister();

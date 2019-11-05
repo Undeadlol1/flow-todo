@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
@@ -19,6 +19,14 @@ import { addDays } from 'date-fns/esm';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Collapse from '@material-ui/core/Collapse';
+import clsx from 'clsx';
+import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -44,19 +52,26 @@ const useStyles = makeStyles(theme => ({
   choices: {
     marginTop: '20px',
   },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
 }));
 
-
 export function TaskPage(props) {
+ const [t] = useTranslation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
+  const [expanded, setExpanded] = useState(false);
   if (loading) {
     return (
-      <Grid
-        item
-        align="center"
-        className={classes.loadingContainer}
-      >
+      <Grid item align="center" className={classes.loadingContainer}>
         <CircularProgress />
       </Grid>
     );
@@ -65,6 +80,7 @@ export function TaskPage(props) {
   return (
     <Grid
       container
+      spacing={4}
       direction="row"
       justify="center"
       alignItems="center"
@@ -82,8 +98,28 @@ export function TaskPage(props) {
           </Button>
         </Link>
       </Grid>
-      <Grid item align="center">
-        <UpsertNote taskId={taskId} defaultValue={task.note} />
+      <Grid item align="center" xs={12}>
+        <Card>
+          <CardActions disableSpacing>
+            <Typography>{t('A note')}</Typography>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              aria-expanded={expanded}
+              // TODO: add i18n
+              aria-label="show more"
+              onClick={() => setExpanded(!expanded)}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse unmountOnExit in={expanded} timeout="auto">
+            <CardContent>
+              <UpsertNote taskId={taskId} defaultValue={task.note} />
+            </CardContent>
+          </Collapse>
+        </Card>
       </Grid>
       <TaskChoices className={classes.choices} {...props} />
     </Grid>
@@ -126,10 +162,10 @@ export default props => {
           if (message) enqueueSnackbar(message, { variant });
           history.push('/');
         })
-        .catch((e) => enqueueSnackbar(
-          get(e, 'message') || t('Something went wrong'),
-          { variant: 'error' },
-        ));
+        .catch(e => enqueueSnackbar(
+            get(e, 'message') || t('Something went wrong'),
+            { variant: 'error' },
+          ));
     },
     task: task || {},
     loading: loading || isRequested,

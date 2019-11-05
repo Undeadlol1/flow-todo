@@ -14,6 +14,7 @@ export default {
     'Good job!': 'Good job!',
     'Something went wrong': 'Something went wrong',
     'Add a note': 'Add a note',
+    'A note': 'A note',
     validation: {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',

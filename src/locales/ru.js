@@ -14,6 +14,7 @@ export default {
     'Good job!': 'Молодец!',
     'Something went wrong': 'Что-то пошло не так',
     'Add a note': 'Добвить заметку',
+    'A note': 'Заметка',
     validation: {
       required: 'Обязательно',
       atleast3Symbols: 'Не менее 3 символов',

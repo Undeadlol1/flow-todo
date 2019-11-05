@@ -103,28 +103,30 @@ export function TaskPage(props) {
           </Button>
         </Link>
       </Grid>
-      <Grid item align="center" xs={12}>
-        <Card>
-          <CardActions disableSpacing onClick={toggleExpanded}>
-            <Typography>{t('A note')}</Typography>
-            <IconButton
-              className={clsx(classes.expand, {
+      <Grid item xs={12} align="center">
+        <Grid item xs={12} sm={8} md={6} lg={5}>
+          <Card>
+            <CardActions disableSpacing onClick={toggleExpanded}>
+              <Typography>{t('A note')}</Typography>
+              <IconButton
+                className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded,
               })}
-              aria-expanded={expanded}
-              // TODO: add i18n
-              aria-label="show more"
-              onClick={toggleExpanded}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <Collapse unmountOnExit in={expanded} timeout="auto">
-            <CardContent>
-              <UpsertNote taskId={taskId} defaultValue={task.note} />
-            </CardContent>
-          </Collapse>
-        </Card>
+                aria-expanded={expanded}
+                // TODO: add i18n
+                aria-label="show more"
+                onClick={toggleExpanded}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse unmountOnExit in={expanded} timeout="auto">
+              <CardContent>
+                <UpsertNote taskId={taskId} defaultValue={task.note} />
+              </CardContent>
+            </Collapse>
+          </Card>
+        </Grid>
       </Grid>
       <TaskChoices className={classes.choices} {...props} />
     </Grid>

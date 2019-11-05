@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { addDays } from 'date-fns/esm';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
+import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -48,7 +49,8 @@ const useStyles = makeStyles(theme => ({
 
 export function TaskPage(props) {
   const classes = useStyles();
-  if (props.loading) {
+  const { loading, taskId, task } = props;
+  if (loading) {
     return (
       <Grid
         item
@@ -69,16 +71,19 @@ export function TaskPage(props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs sm={8} md={4} lg={3} align="center">
-        <Link className={classes.link} to={`/tasks/${props.taskId}`}>
+      <Grid item xs={12} sm={8} md={4} lg={3} align="center">
+        <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Button variant="outlined">
             <Zoom in>
               <Typography className={classes.title} variant="h5">
-                {props.task.name}
+                {task.name}
               </Typography>
             </Zoom>
           </Button>
         </Link>
+      </Grid>
+      <Grid item align="center">
+        <UpsertNote taskId={taskId} defaultValue={task.note} />
       </Grid>
       <TaskChoices className={classes.choices} {...props} />
     </Grid>

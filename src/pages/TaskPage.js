@@ -72,9 +72,14 @@ export function TaskPage(props) {
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const [expanded, setExpanded] = useState(false);
+  const [touched, setTouched] = useState(false);
+  // TODO: better variable names
+  const isExpanded = touched ? expanded : Boolean(task.note);
+
   function toggleExpanded(event) {
     event.stopPropagation();
-    setExpanded(!expanded);
+    setTouched(true);
+    setExpanded(!isExpanded);
   }
 
   if (loading) {
@@ -110,11 +115,13 @@ export function TaskPage(props) {
         <Grid item xs={12} sm={8} md={6} lg={5}>
           <Card>
             <CardActions onClick={toggleExpanded}>
-              <Typography className={classes.collapsibleTitle}>{t('A note')}</Typography>
+              <Typography className={classes.collapsibleTitle}>
+                {t('A note')}
+              </Typography>
               <IconButton
                 className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
+                  [classes.expandOpen]: isExpanded,
+                })}
                 aria-expanded={expanded}
                 // TODO: add i18n
                 aria-label="show more"
@@ -123,9 +130,16 @@ export function TaskPage(props) {
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
-            <Collapse unmountOnExit in={expanded} timeout="auto">
+            <Collapse
+              unmountOnExit
+              timeout="auto"
+              in={isExpanded}
+            >
               <CardContent>
-                <UpsertNote taskId={taskId} defaultValue={task.note} />
+                <UpsertNote
+                  taskId={taskId}
+                  defaultValue={task.note}
+                />
               </CardContent>
             </Collapse>
           </Card>

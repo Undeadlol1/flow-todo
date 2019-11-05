@@ -14,8 +14,10 @@ import { SnackbarProvider } from 'notistack';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-
 import React from 'react';
+import en from './locales/en';
+import ru from './locales/ru';
+
 import Router from './Router';
 import './App.css';
 
@@ -61,9 +63,24 @@ function initializeFirebase() {
     appId: '1:772125171665:web:3fffadc4031335de290af0',
     measurementId: 'G-DLFD2VSSK1',
   });
-  // Use Firestore emulator for local development
-  if (process.env.NODE_ENV !== 'production') {
-    firebase.firestore().settings({
+
+  const firestore = firebase.firestore();
+  const isProduction = process.env.NODE_ENV === 'production';
+  if (isProduction) {
+    firestore
+    .enablePersistence()
+    .catch(e => console.error(e));
+    // TODO: test to see if this is needed
+    // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access
+    // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
+    // (function listenForConnectivity() {
+    //   window.addEventListener('online', firestore.enableNetwork());
+    //   window.addEventListener('offline', firestore.disableNetwork());
+    // }());
+  } else {
+    // Use Firestore emulator for local development
+    firestore
+    .settings({
       ssl: false,
       host: 'localhost:8080',
     });
@@ -81,24 +98,14 @@ function initializeI18n() {
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-      debug: true,
+      debug: false,
       fallbackLng: 'en',
       interpolation: {
         escapeValue: false, // not needed for react as it escapes by default
       },
       resources: {
-        en: {
-          translation: {
-            save: 'save',
-            createTask: 'Create a task',
-          },
-        },
-        ru: {
-          translation: {
-            save: 'сохранить',
-            createTask: 'Создать задачу',
-          },
-        },
+        en,
+        ru,
       },
     });
 }

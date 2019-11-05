@@ -11,6 +11,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import subtractDays from 'date-fns/subDays';
 import { useTranslation } from 'react-i18next';
+import Grow from '@material-ui/core/Grow';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles({
   container: {
@@ -18,16 +20,12 @@ const useStyles = makeStyles({
   },
   button: {
     marginTop: '20px',
+    width: '100%',
   },
 });
 
-const validationSchema = Yup.object({
-  todoName: Yup.string()
-    .min(3, 'Не менее 3 символов')
-    .required('Обязательно'),
-});
-
 export function CreateTask(props) {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [t] = useTranslation();
   const {
@@ -37,12 +35,22 @@ export function CreateTask(props) {
     errors,
     reset,
     setError,
-  } = useForm({ validationSchema });
+  } = useForm({
+    validationSchema: Yup.object({
+      todoName: Yup.string()
+        .min(3, t('validation.atleast3Symbols'))
+        .required(t('validation.required')),
+    }),
+  });
 
-  const error = props.error || get(errors, 'todoName.message');
-  const isSubmitDisabled = isUndefined(props.isValid)
-    ? !props.user || (error || formState.isSubmitting)
-    : true;
+  let error;
+  if (!props.user) error = t('Please login');
+  else error = props.error || get(errors, 'todoName.message');
+
+  let isSubmitDisabled = true;
+  if (isUndefined(props.isValid)) {
+    isSubmitDisabled = !props.user || (error || formState.isSubmitting);
+  }
 
   function createDocumentAndReset(values) {
     return firestore()
@@ -53,35 +61,42 @@ export function CreateTask(props) {
         userId: props.user.uid,
         dueAt: subtractDays(new Date(), 1).getTime(),
       })
-      .then(() => reset({}))
+      .then(() => {
+        reset({});
+        enqueueSnackbar(t('Successfully saved'));
+      })
       .catch(e => setError(e && e.message));
   }
 
   return (
-    <form
-      className={classes.container}
-      onSubmit={handleSubmit(createDocumentAndReset)}
-    >
-      <TextField
-        fullWidth
-        name="todoName"
-        autoComplete="off"
-        helperText={error}
-        inputRef={register}
-        error={Boolean(error)}
-        label={t('createTask')}
-        className="CreateTask__input"
-      />
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        className={classes.button}
-        disabled={Boolean(isSubmitDisabled)}
+    <Grow in timeout={800}>
+      <form
+        className={classes.container}
+        onSubmit={handleSubmit(createDocumentAndReset)}
       >
-        {t('save')}
-      </Button>
-    </form>
+        <TextField
+          fullWidth
+          autoFocus
+          variant="outlined"
+          name="todoName"
+          autoComplete="off"
+          helperText={error}
+          inputRef={register}
+          error={Boolean(error)}
+          label={t('createTask')}
+          className="CreateTask__input"
+        />
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          className={classes.button}
+          disabled={Boolean(isSubmitDisabled)}
+        >
+          {t('save')}
+        </Button>
+      </form>
+    </Grow>
   );
 }
 

@@ -12,7 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { SnackbarProvider } from 'notistack';
 // i18n
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import React from 'react';
 import en from './locales/en';
@@ -88,20 +88,15 @@ function initializeFirebase() {
 }
 
 function initializeI18n() {
-  // https://github.com/i18next/react-i18next/blob/master/example/react/src/i18n.js
   return i18n
-    // detect user language
-    // learn more: https://github.com/i18next/i18next-browser-languageDetector
-    .use(LanguageDetector)
-    // pass the i18n instance to react-i18next.
+    .use(languageDetector)
     .use(initReactI18next)
-    // init i18next
-    // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
       debug: false,
       fallbackLng: 'en',
       interpolation: {
-        escapeValue: false, // not needed for react as it escapes by default
+        // not needed for react as it escapes by default
+        escapeValue: false,
       },
       resources: {
         en,

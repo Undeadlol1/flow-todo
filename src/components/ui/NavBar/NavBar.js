@@ -11,8 +11,11 @@ import { Link } from 'react-router-dom';
 import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { If, Unless } from 'react-if';
+import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -20,8 +23,8 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
   },
   link: {
-    color: 'white',
     textDecoration: 'none',
+    color: theme.palette.primary.contrastText,
   },
   avatar: {
     marginRight: '9px',
@@ -50,9 +53,11 @@ export default function ButtonAppBar() {
 }
 
 export const LoginOrLogoutButton = () => {
+  const [t] = useTranslation();
   const classes = useStyles();
   const [user, loading] = useAuthState(auth());
   const [menuAnchor, setAnchor] = React.useState(null);
+  const hasPhoto = Boolean(user && user.photoURL);
   if (loading) return <CircularProgress color="secondary" />;
   if (user) {
     const openMenu = event => setAnchor(event.currentTarget);
@@ -60,10 +65,15 @@ export const LoginOrLogoutButton = () => {
     return (
       <>
         <Button
-          onClick={openMenu}
           className={`${classes.link} ${classes.username}`}
+          onClick={openMenu}
         >
-          <Avatar className={classes.avatar} src={user.photoURL} />
+          <If condition={hasPhoto}>
+            <Avatar className={classes.avatar} src={user.photoURL} />
+          </If>
+          <Unless condition={hasPhoto}>
+            <AccountCircle className={classes.avatar} />
+          </Unless>
           <Typography>{user.displayName}</Typography>
         </Button>
         <Menu
@@ -72,14 +82,14 @@ export const LoginOrLogoutButton = () => {
           open={Boolean(menuAnchor)}
           onClose={() => setAnchor(null)}
         >
-          <MenuItem onClick={signOut}>Выйти</MenuItem>
+          <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
         </Menu>
       </>
     );
   }
   return (
     <Link to="/signIn" className={classes.link}>
-      <Button color="inherit">Войти</Button>
+      <Button color="inherit">{t('log in')}</Button>
     </Link>
   );
 };

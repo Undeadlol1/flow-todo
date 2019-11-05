@@ -1,7 +1,8 @@
 export default {
     translation: {
-        'log in': 'Log in',
-        'log out': 'Log out',
+        'log in': 'Login',
+        'log out': 'Logout',
+        'Please login': 'Please login',
         save: 'save',
         noTasks: 'No tasks',
         createTask: 'Create a task',

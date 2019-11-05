@@ -43,10 +43,14 @@ export function CreateTask(props) {
     }),
   });
 
-  const error = props.error || get(errors, 'todoName.message');
-  const isSubmitDisabled = isUndefined(props.isValid)
-    ? !props.user || (error || formState.isSubmitting)
-    : true;
+  let error;
+  if (!props.user) error = t('Please login');
+  else error = props.error || get(errors, 'todoName.message');
+
+  let isSubmitDisabled = true;
+  if (isUndefined(props.isValid)) {
+    isSubmitDisabled = !props.user || (error || formState.isSubmitting);
+  }
 
   function createDocumentAndReset(values) {
     return firestore()

@@ -65,10 +65,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function TaskPage(props) {
- const [t] = useTranslation();
+  const [t] = useTranslation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const [expanded, setExpanded] = useState(false);
+  function toggleExpanded(event) {
+    event.stopPropagation();
+    setExpanded(!expanded);
+  }
+
   if (loading) {
     return (
       <Grid item align="center" className={classes.loadingContainer}>
@@ -100,7 +105,7 @@ export function TaskPage(props) {
       </Grid>
       <Grid item align="center" xs={12}>
         <Card>
-          <CardActions disableSpacing>
+          <CardActions disableSpacing onClick={toggleExpanded}>
             <Typography>{t('A note')}</Typography>
             <IconButton
               className={clsx(classes.expand, {
@@ -109,7 +114,7 @@ export function TaskPage(props) {
               aria-expanded={expanded}
               // TODO: add i18n
               aria-label="show more"
-              onClick={() => setExpanded(!expanded)}
+              onClick={toggleExpanded}
             >
               <ExpandMoreIcon />
             </IconButton>

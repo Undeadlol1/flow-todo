@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { useTranslation } from 'react-i18next';
-import Paper from '@material-ui/core/Paper';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
@@ -14,9 +13,6 @@ import CreateTask from '../components/tasks/CreateTask/CreateTask';
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
-  },
-  paper: {
-    padding: theme.spacing(1),
   },
   fab: {
     position: 'fixed',
@@ -54,9 +50,7 @@ export default function HomePage() {
         <RandomTaskButton />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6} align="center">
-        <Paper elevation={6} className={classes.paper}>
-          <TasksList />
-        </Paper>
+        <TasksList />
       </Grid>
       <Dialog
         open={isDialogOpen}

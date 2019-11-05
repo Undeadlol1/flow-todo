@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import subtractHours from 'date-fns/subHours';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => {
       color,
       textDecoration: 'none',
     },
+     paper: {
+      padding: theme.spacing(1),
+    },
   };
 });
 
@@ -38,7 +42,7 @@ export function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return null;
   if (!tasks || tasks.empty) return null;
   return (
-    <>
+    <Paper className={classes.paper}>
       <Typography className={classes.title} variant="subtitle1">
         Выполненные задачи сегодня:
       </Typography>
@@ -63,7 +67,7 @@ export function TasksList({ loading, tasks, deleteTask }) {
           </ListItem>
         ))}
       </List>
-    </>
+    </Paper>
   );
 }
 

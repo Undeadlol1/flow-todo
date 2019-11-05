@@ -68,7 +68,9 @@ function initializeFirebase() {
   const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction) {
     firestore
-    .enablePersistence()
+    .enablePersistence({
+      synchronizeTabs: true,
+    })
     .catch(e => console.error(e));
     // TODO: test to see if this is needed
     // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access

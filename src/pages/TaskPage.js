@@ -52,6 +52,9 @@ const useStyles = makeStyles(theme => ({
   choices: {
     marginTop: '20px',
   },
+  collapsibleTitle: {
+    marginLeft: theme.spacing(1),
+  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -106,8 +109,8 @@ export function TaskPage(props) {
       <Grid item xs={12} align="center">
         <Grid item xs={12} sm={8} md={6} lg={5}>
           <Card>
-            <CardActions disableSpacing onClick={toggleExpanded}>
-              <Typography>{t('A note')}</Typography>
+            <CardActions onClick={toggleExpanded}>
+              <Typography className={classes.collapsibleTitle}>{t('A note')}</Typography>
               <IconButton
                 className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded,

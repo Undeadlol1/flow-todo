@@ -50,7 +50,10 @@ const UpsertNote = props => {
     return firestore()
       .collection('tasks')
       .doc(props.taskId)
-      .update({ note: note && note.trim() })
+      .update({
+        noteUpdatedAt: Date.now(),
+        note: note && note.trim(),
+      })
       .then(() => enqueueSnackbar(t('Successfully saved')))
       .catch(e => setError(e && e.message));
   }

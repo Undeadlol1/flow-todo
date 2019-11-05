@@ -8,6 +8,10 @@ import {
   useLocation,
   useRouteMatch,
 } from 'react-router-dom';
+import SmileEmoticon from '@material-ui/icons/TagFaces';
+import HeartIcon from '@material-ui/icons/Favorite';
+import DoneIcon from '@material-ui/icons/Done';
+import ErrorIcon from '@material-ui/icons/Error';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
@@ -15,20 +19,17 @@ import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
   doneButton: {
     marginTop: '30px',
   },
 }));
 
-const CreateSubtask = props => (
-  <div>
-    This is a test
-  </div>
-);
+const CreateSubtask = props => <div>This is a test</div>;
 
-CreateSubtask.propTypes = {
-
-};
+CreateSubtask.propTypes = {};
 
 const HardChoices = () => {
   const [t] = useTranslation();
@@ -36,14 +37,10 @@ const HardChoices = () => {
     <Slide in direction="left">
       <Grid container direction="column">
         <Grid item xs align="center">
-          <Button>
-            {t('Rework task')}
-          </Button>
+          <Button>{t('Rework task')}</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button>
-            {t('Add subtasks')}
-          </Button>
+          <Button>{t('Add subtasks')}</Button>
           <CreateSubtask />
         </Grid>
       </Grid>
@@ -88,23 +85,37 @@ const TaskActions = props => {
   const didGreat = () => props.postponeTask(3, t('Good job!'));
   return (
     <Fade in timeout={1200}>
-      <Grid container direction="column" classes={{ root: props.className }}>
+      <Grid
+        container
+        direction="column"
+        classes={{ root: props.className }}
+      >
         <Grid item xs align="center">
-          <Button component={Link} to={`${pathname}/isTroublesome`}>
+          <Button
+            color="secondary"
+            variant="contained"
+            component={Link}
+            startIcon={<ErrorIcon />}
+            className={classes.button}
+            to={`${pathname}/isTroublesome`}
+          >
             Есть трудности
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button onClick={didGood}>Сделал шаг вперед</Button>
+          <Button className={classes.button} color="primary" variant="contained" startIcon={<HeartIcon />} nClick={didGood}>Сделал шаг вперед</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button onClick={didGreat}>Сильно продвинулся</Button>
+          <Button className={classes.button} color="primary" variant="contained" startIcon={<SmileEmoticon />} onClick={didGreat}>
+            Сильно продвинулся
+          </Button>
         </Grid>
         <Grid item xs align="center">
           <Button
             className={classes.doneButton}
             color="primary"
             variant="contained"
+            startIcon={<DoneIcon />}
             onClick={props.setDone}
           >
             Сделал

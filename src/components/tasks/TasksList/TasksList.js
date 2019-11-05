@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => {
       color,
       display: 'block',
       textAlign: 'left',
-      margin: '20px 10px 10px',
+      margin: '0 10px',
     },
     list: {
       width: '100%',

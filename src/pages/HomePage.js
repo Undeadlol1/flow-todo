@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <Grid
       container
-      spacing="2"
+      spacing={2}
       justify="center"
       direction="column"
       alignItems="stretch"

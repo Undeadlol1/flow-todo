@@ -103,7 +103,7 @@ const TaskActions = props => {
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button className={classes.button} color="primary" variant="contained" startIcon={<HeartIcon />} nClick={didGood}>Сделал шаг вперед</Button>
+          <Button className={classes.button} color="primary" variant="contained" startIcon={<HeartIcon />} onClick={didGood}>Сделал шаг вперед</Button>
         </Grid>
         <Grid item xs align="center">
           <Button className={classes.button} color="primary" variant="contained" startIcon={<SmileEmoticon />} onClick={didGreat}>

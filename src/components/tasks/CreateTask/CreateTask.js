@@ -49,7 +49,7 @@ export function CreateTask(props) {
 
   let isSubmitDisabled = true;
   if (isUndefined(props.isValid)) {
-    isSubmitDisabled = !props.user || (error || formState.isSubmitting);
+    isSubmitDisabled = error || formState.isSubmitting;
   }
 
   function createDocumentAndReset(values) {

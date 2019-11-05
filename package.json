@@ -37,9 +37,6 @@
     "deploy": "npm run build && npx firebase-tools deploy",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
   },
-  "installConfig": {
-    "pnp": true
-  },
   "eslintConfig": {
     "extends": "react-app"
   },

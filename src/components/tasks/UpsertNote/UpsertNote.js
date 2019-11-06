@@ -67,10 +67,10 @@ const UpsertNote = props => {
         name="note"
         autoComplete="off"
         helperText={error}
-        defaultValue={props.defaultValue}
-        inputRef={register()}
+        inputRef={register}
         error={Boolean(error)}
         label={t('Add a note')}
+        defaultValue={props.defaultValue}
         onChange={debounce(createNote, 1500)}
       />
     </form>

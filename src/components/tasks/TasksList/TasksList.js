@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => {
       color,
       textDecoration: 'none',
     },
-     paper: {
+    paper: {
       padding: theme.spacing(1),
     },
   };
@@ -42,7 +42,7 @@ export function TasksList({ loading, tasks, deleteTask }) {
   if (loading) return null;
   if (!tasks || tasks.empty) return null;
   return (
-    <Paper className={classes.paper}>
+    <Paper elevation={6} className={classes.paper}>
       <Typography className={classes.title} variant="subtitle1">
         Выполненные задачи сегодня:
       </Typography>

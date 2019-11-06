@@ -27,6 +27,7 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import Paper from '@material-ui/core/Paper';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -102,13 +103,15 @@ export function TaskPage(props) {
     >
       <Grid item xs={12} sm={8} md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${taskId}`}>
-          <Button variant="outlined">
-            <Zoom in>
-              <Typography className={classes.title} variant="h5">
-                {task.name}
-              </Typography>
-            </Zoom>
-          </Button>
+          <Paper elevation={6}>
+            <Button fullWidth variant="outlined">
+              <Zoom in>
+                <Typography className={classes.title} variant="h5">
+                  {task.name}
+                </Typography>
+              </Zoom>
+            </Button>
+          </Paper>
         </Link>
       </Grid>
       <Grid item xs={12} align="center">
@@ -130,11 +133,7 @@ export function TaskPage(props) {
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
-            <Collapse
-              unmountOnExit
-              timeout="auto"
-              in={isExpanded}
-            >
+            <Collapse unmountOnExit timeout="auto" in={isExpanded}>
               <CardContent>
                 <UpsertNote
                   taskId={taskId}

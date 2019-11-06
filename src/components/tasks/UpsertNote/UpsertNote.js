@@ -1,21 +1,19 @@
 import React from 'react';
-import * as Yup from 'yup';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import useForm from 'react-hook-form';
 import { firestore, auth } from 'firebase/app';
-import isUndefined from 'lodash/isUndefined';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
+import debounce from 'lodash/debounce';
 
 const useStyles = makeStyles({
   button: {
-    marginTop: '20px',
     width: '100%',
+    marginTop: '20px',
   },
 });
 
@@ -26,28 +24,27 @@ const UpsertNote = props => {
   const [user] = useAuthState(auth());
   const {
     register,
-    handleSubmit,
-    formState,
     errors,
     setError,
-  } = useForm({
-    validationSchema: Yup.object({
-      note: Yup.string()
-        .max(2000, t('validation.textIsTooLong')),
-    }),
-  });
+    getValues,
+    clearError,
+  } = useForm();
 
   let error;
   if (!user) error = t('Please login');
   else error = props.error || get(errors, 'note.message');
 
-  let isSubmitDisabled = true;
-  if (isUndefined(props.isValid)) {
-    isSubmitDisabled = error || formState.isSubmitting;
-  }
-
-  function createDocumentAndReset({ note }) {
-    return firestore()
+  function createNote() {
+    const { note } = getValues();
+    if (typeof note === 'undefined') return;
+    if (!note && !props.defaultValue) return;
+    if (note === props.defaultValue) return;
+    if (note.length > 2000) {
+      setError('note', 'tooLong', t('validation.textIsTooLong'));
+      return;
+    }
+    clearError('note');
+    firestore()
       .collection('tasks')
       .doc(props.taskId)
       .update({
@@ -59,36 +56,26 @@ const UpsertNote = props => {
   }
 
   return (
-    <form
-      className={classes.container}
-      onSubmit={handleSubmit(createDocumentAndReset)}
-    >
+    <form className={classes.container}>
       <TextField
-        fullWidth
         multiline
-        name="note"
+        fullWidth
         variant="outlined"
+        name="note"
+        autoComplete="off"
         helperText={error}
-        inputRef={register}
+        defaultValue={props.defaultValue}
+        inputRef={register()}
         error={Boolean(error)}
         label={t('Add a note')}
-        autoComplete="off"
-        defaultValue={props.defaultValue}
+        onChange={debounce(createNote, 1500)}
       />
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        className={classes.button}
-        disabled={Boolean(isSubmitDisabled)}
-      >
-        {t('save')}
-      </Button>
     </form>
   );
 };
 
 UpsertNote.propTypes = {
+  error: PropTypes.string,
   defaultValue: PropTypes.string,
   taskId: PropTypes.string.isRequired,
 };

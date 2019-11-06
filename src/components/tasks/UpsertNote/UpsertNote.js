@@ -11,6 +11,9 @@ import { useSnackbar } from 'notistack';
 import debounce from 'lodash/debounce';
 
 const useStyles = makeStyles({
+  container: {
+    textAlign: 'left',
+  },
   button: {
     width: '100%',
     marginTop: '20px',

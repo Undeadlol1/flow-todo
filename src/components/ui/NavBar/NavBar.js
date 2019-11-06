@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { If, Unless } from 'react-if';
 import { useTranslation } from 'react-i18next';
+import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,14 @@ const useStyles = makeStyles(theme => ({
   },
   username: {
     paddingRight: 0,
+  },
+  loading: {
+    [theme.breakpoints.up('sm')]: {
+      marginRight: theme.spacing(2),
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginRight: theme.spacing(3),
+    },
   },
 }));
 
@@ -58,24 +67,26 @@ export const LoginOrLogoutButton = () => {
   const [user, loading] = useAuthState(auth());
   const [menuAnchor, setAnchor] = React.useState(null);
   const hasPhoto = Boolean(user && user.photoURL);
-  if (loading) return <CircularProgress color="secondary" />;
+  if (loading) return <CircularProgress className={classes.loading} color="secondary" />;
   if (user) {
     const openMenu = event => setAnchor(event.currentTarget);
     const signOut = () => auth().signOut();
     return (
       <>
-        <Button
-          className={`${classes.link} ${classes.username}`}
-          onClick={openMenu}
-        >
-          <If condition={hasPhoto}>
-            <Avatar className={classes.avatar} src={user.photoURL} />
-          </If>
-          <Unless condition={hasPhoto}>
-            <AccountCircle className={classes.avatar} />
-          </Unless>
-          <Typography>{user.displayName}</Typography>
-        </Button>
+        <Slide in timeout={500} direction="left">
+          <Button
+            className={`${classes.link} ${classes.username}`}
+            onClick={openMenu}
+          >
+            <If condition={hasPhoto}>
+              <Avatar className={classes.avatar} src={user.photoURL} />
+            </If>
+            <Unless condition={hasPhoto}>
+              <AccountCircle className={classes.avatar} />
+            </Unless>
+            <Typography>{user.displayName}</Typography>
+          </Button>
+        </Slide>
         <Menu
           keepMounted
           anchorEl={menuAnchor}

@@ -10,6 +10,7 @@
     "debug": "^4.1.1",
     "firebase": "^7.2.2",
     "firebase-tools": "^7.6.2",
+    "firebaseui": "^4.2.0",
     "flow-bin": "^0.111.1",
     "i18next": "^19.0.0",
     "i18next-browser-languagedetector": "^4.0.1",

@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { useTranslation } from 'react-i18next';
+import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
@@ -34,8 +35,7 @@ const useStyles = makeStyles(theme => ({
 export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
-  const [isDialogOpen, setDialog] = React.useState(false);
-  const toggleDialog = () => setDialog(!isDialogOpen);
+  const [isDialogOpen, toggleDialog] = useToggle(false);
   return (
     <Grid
       container
@@ -58,7 +58,7 @@ export default function HomePage() {
         onClose={toggleDialog}
       >
         <DialogContent>
-          <CreateTask />
+          <CreateTask callback={toggleDialog} />
         </DialogContent>
       </Dialog>
       <Fab

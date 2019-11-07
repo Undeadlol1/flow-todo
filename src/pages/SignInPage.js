@@ -29,7 +29,7 @@ export default () => {
     // NOTE: GOOGLE_YOLO is a string "googleyolo".
     // NOTE: We can remove "firebaseui" module to save space by using said string
     // NOTE: Will it take no effect because react-firebaseui relies on it?
-    credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
+    // credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
   };
 
   console.log('uiConfig: ', uiConfig);

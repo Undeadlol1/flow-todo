@@ -1,8 +1,12 @@
 // @flow
 import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
+import formatDistance from 'date-fns/formatDistance';
+import debug from 'debug';
 
-type Interval = {
+const logger = debug('utils');
+
+type Repetition = {
   dueAt: number,
   repetitionLevel: number,
 };
@@ -10,11 +14,11 @@ type Interval = {
 type Confidence = 'bad' | 'normal' | 'good';
 
 function calculateNextRepetition(
-  previous: Interval,
+  task: Object,
   confidence: Confidence = 'normal',
-): Interval {
-  console.log('previous: ', previous);
-  console.log('confidence: ', confidence);
+): Repetition {
+  logger('task: ', task);
+  logger('confidence: ', confidence);
   const today = new Date();
   const levels = [
     addDays(today, 1),
@@ -26,16 +30,25 @@ function calculateNextRepetition(
     addMonths(today, 27),
   ];
 
-  let newLevelIndex = previous.repetitionLevel || -1;
+  let newLevelIndex = task.repetitionLevel || -1;
 
   if (confidence === 'normal') newLevelIndex += 1;
   else if (confidence === 'good') newLevelIndex += 2;
   else if (confidence === 'bad') newLevelIndex -= 2;
 
-  if (newLevelIndex <= 0) newLevelIndex = 0;
+  if (newLevelIndex < 0) newLevelIndex = 0;
   else if (newLevelIndex >= levels.length) newLevelIndex = levels.length - 1;
 
-  console.log('newPosition: ', newLevelIndex);
+  logger('levels: ', levels);
+  logger('newLevelIndex: ', newLevelIndex);
+  logger('dueAt', levels[newLevelIndex]);
+  logger(
+    `This means ${formatDistance(
+      Date.now(),
+      levels[newLevelIndex],
+    )} from now`,
+  );
+
   return {
     repetitionLevel: newLevelIndex,
     dueAt: levels[newLevelIndex].getTime(),

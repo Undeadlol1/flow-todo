@@ -40,7 +40,7 @@ function calculateNextRepetition(
   if (newLevelIndex < 0) newLevelIndex = 0;
   else if (newLevelIndex >= levels.length) newLevelIndex = levels.length - 1;
 
-  logger('levels: ', levels);
+  logger('levels: %O', levels);
   logger('newLevelIndex: ', newLevelIndex);
   logger('dueAt', levels[newLevelIndex]);
   logger(

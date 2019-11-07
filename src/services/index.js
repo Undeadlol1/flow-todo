@@ -31,7 +31,11 @@ function calculateNextRepetition(
     addMonths(today, 27),
   ];
 
-  let newLevelIndex = task.repetitionLevel || -1;
+  let newLevelIndex = -1;
+
+  if (task.repetitionLevel || task.repetitionLevel === 0) {
+    newLevelIndex = task.repetitionLevel;
+  }
 
   if (confidence === 'normal') newLevelIndex += 1;
   else if (confidence === 'good') newLevelIndex += 2;
@@ -42,17 +46,13 @@ function calculateNextRepetition(
 
   logger('levels: %O', levels);
   logger('newLevelIndex: ', newLevelIndex);
-  logger('dueAt', levels[newLevelIndex]);
-  logger(
-    `This means ${formatDistance(
-      Date.now(),
-      levels[newLevelIndex],
-    )} from now`,
-  );
+  const dueAt = levels[newLevelIndex];
+  logger('dueAt', dueAt);
+  logger(`New dueAt is ${formatDistance(today, dueAt)} from now`);
 
   return {
+    dueAt: dueAt.getTime(),
     repetitionLevel: newLevelIndex,
-    dueAt: levels[newLevelIndex].getTime(),
   };
 }
 

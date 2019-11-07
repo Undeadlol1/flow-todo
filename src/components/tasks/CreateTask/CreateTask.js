@@ -64,6 +64,7 @@ export function CreateTask(props) {
       .then(() => {
         reset({});
         enqueueSnackbar(t('Successfully saved'));
+        props.callback();
       })
       .catch(e => setError(e && e.message));
   }
@@ -100,10 +101,15 @@ export function CreateTask(props) {
   );
 }
 
+CreateTask.defaultValues = {
+  callback: () => {},
+};
+
 CreateTask.propTypes = {
   user: PropTypes.object,
   error: PropTypes.string,
   isValid: PropTypes.bool,
+  callback: PropTypes.func,
 };
 
 export default function CreateTaskContainer(props) {

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -17,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
+import { calculateNextRepetition } from 'services';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -77,12 +79,25 @@ TroublesChoices.propTypes = {
   postponeTask: PropTypes.func.isRequired,
 };
 
-const TaskActions = props => {
+type TaskActionsProps = {
+  className: ?string,
+  task: Object,
+  setDone: Function,
+  updateTask: Function,
+};
+
+const TaskActions = (props: TaskActionsProps) => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
-  const didGood = () => props.postponeTask(1, t('Good job!'));
-  const didGreat = () => props.postponeTask(3, t('Good job!'));
+  const didGood = () => props.updateTask(
+      calculateNextRepetition(props.task, 'normal'),
+      t('Good job!'),
+    );
+  const didGreat = () => props.updateTask(
+      calculateNextRepetition(props.task, 'good'),
+      t('Good job!'),
+    );
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -103,10 +118,24 @@ const TaskActions = props => {
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button className={classes.button} color="primary" variant="contained" startIcon={<HeartIcon />} onClick={didGood}>Сделал шаг вперед</Button>
+          <Button
+            className={classes.button}
+            color="primary"
+            variant="contained"
+            startIcon={<HeartIcon />}
+            onClick={didGood}
+          >
+            Сделал шаг вперед
+          </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button className={classes.button} color="primary" variant="contained" startIcon={<SmileEmoticon />} onClick={didGreat}>
+          <Button
+            className={classes.button}
+            color="primary"
+            variant="contained"
+            startIcon={<SmileEmoticon />}
+            onClick={didGreat}
+          >
             Сильно продвинулся
           </Button>
         </Grid>
@@ -128,8 +157,9 @@ const TaskActions = props => {
 
 TaskActions.propTypes = {
   className: PropTypes.string,
+  task: PropTypes.object.isRequired,
   setDone: PropTypes.func.isRequired,
-  postponeTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
 };
 
 export default props => {

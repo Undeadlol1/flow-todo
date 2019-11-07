@@ -159,6 +159,8 @@ TaskPage.propTypes = {
 };
 
 export default (props: Object) => {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const { taskId } = useParams();
@@ -168,8 +170,7 @@ export default (props: Object) => {
     .collection('tasks')
     .doc(taskId);
   const [task, loading] = useDocumentData(taskPointer);
-  const { path } = useRouteMatch();
-  const history = useHistory();
+
   const mergedProps = {
     setDone() {
       setRequested(true);
@@ -177,6 +178,20 @@ export default (props: Object) => {
         .update({ isDone: true, doneAt: Date.now() })
         .then(() => history.push('/'))
         .catch(e => console.error(e));
+    },
+    // TODO merge postponeTask and updateTask
+    updateTask(values, message: ?String) {
+      setRequested(true);
+      return taskPointer
+        .update(values)
+        .then(() => {
+          if (message) enqueueSnackbar(message, { variant: 'success' });
+          history.push('/');
+        })
+        .catch(e => enqueueSnackbar(
+            get(e, 'message') || t('Something went wrong'),
+            { variant: 'error' },
+          ));
     },
     postponeTask(days = 1, message, variant = 'success') {
       setRequested(true);

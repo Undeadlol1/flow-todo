@@ -1,3 +1,4 @@
+// @flow
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays } from 'date-fns/esm';
+import addDays from 'date-fns/addDays';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
@@ -157,7 +158,9 @@ TaskPage.propTypes = {
   setDone: PropTypes.func.isRequired,
 };
 
-export default props => {
+export default (props: Object) => {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const { taskId } = useParams();
@@ -167,8 +170,7 @@ export default props => {
     .collection('tasks')
     .doc(taskId);
   const [task, loading] = useDocumentData(taskPointer);
-  const { path } = useRouteMatch();
-  const history = useHistory();
+
   const mergedProps = {
     setDone() {
       setRequested(true);
@@ -176,6 +178,20 @@ export default props => {
         .update({ isDone: true, doneAt: Date.now() })
         .then(() => history.push('/'))
         .catch(e => console.error(e));
+    },
+    // TODO merge postponeTask and updateTask
+    updateTask(values, message: ?String) {
+      setRequested(true);
+      return taskPointer
+        .update(values)
+        .then(() => {
+          if (message) enqueueSnackbar(message, { variant: 'success' });
+          history.push('/');
+        })
+        .catch(e => enqueueSnackbar(
+            get(e, 'message') || t('Something went wrong'),
+            { variant: 'error' },
+          ));
     },
     postponeTask(days = 1, message, variant = 'success') {
       setRequested(true);

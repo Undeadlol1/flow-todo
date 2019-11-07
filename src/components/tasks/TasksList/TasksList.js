@@ -88,7 +88,7 @@ export default function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, loading, error] = useCollection(
-    db
+    user && db
       .where('userId', '==', user && user.uid)
       .where('isDone', '==', true)
       .where('doneAt', '>', lastSixteenHours),

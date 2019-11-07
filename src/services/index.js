@@ -5,7 +5,7 @@ import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
 
 const logger = debug('utils');
-logger.enable();
+debug.enable('utils');
 
 type Repetition = {
   dueAt: number,

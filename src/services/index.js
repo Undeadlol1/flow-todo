@@ -4,19 +4,19 @@ import addMonths from 'date-fns/addMonths';
 
 type Interval = {
   dueAt: number,
-  intervalIndex: number,
+  repetitionLevel: number,
 };
 
-type Confidence = 0 | 1 | 2;
+type Confidence = 'bad' | 'normal' | 'good';
 
-function calculateSpacedRepetition(
+function calculateNextRepetition(
   previous: Interval,
-  confidence: Confidence = 1,
+  confidence: Confidence = 'normal',
 ): Interval {
   console.log('previous: ', previous);
   console.log('confidence: ', confidence);
   const today = new Date();
-  const steps = [
+  const levels = [
     addDays(today, 1),
     addDays(today, 3),
     addDays(today, 9),
@@ -26,17 +26,20 @@ function calculateSpacedRepetition(
     addMonths(today, 27),
   ];
 
-  let newPosition = (previous && previous.intervalIndex) || -1;
-  if (confidence === 1) newPosition += 1;
-  else if (confidence === 2) newPosition += 2;
-  else newPosition -= 2;
-  if (newPosition < 0) newPosition = 0;
+  let newLevelIndex = previous.repetitionLevel || -1;
 
-  console.log('newPosition: ', newPosition);
+  if (confidence === 'normal') newLevelIndex += 1;
+  else if (confidence === 'good') newLevelIndex += 2;
+  else if (confidence === 'bad') newLevelIndex -= 2;
+
+  if (newLevelIndex <= 0) newLevelIndex = 0;
+  else if (newLevelIndex >= levels.length) newLevelIndex = levels.length - 1;
+
+  console.log('newPosition: ', newLevelIndex);
   return {
-    intervalIndex: newPosition,
-    dueAt: steps[newPosition].getTime(),
+    repetitionLevel: newLevelIndex,
+    dueAt: levels[newLevelIndex].getTime(),
   };
 }
 
-export { calculateSpacedRepetition };
+export { calculateNextRepetition };

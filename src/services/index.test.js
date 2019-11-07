@@ -1,8 +1,8 @@
-import { calculateSpacedRepetition } from './index';
+import { calculateNextRepetition } from './index';
 
 describe('spacedRepetion()', () => {
   it('returns a value', () => {
-    const result = calculateSpacedRepetition();
+    const result = calculateNextRepetition({});
     expect(typeof result).toBe('object');
   });
 });

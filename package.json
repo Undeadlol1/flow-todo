@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
+    "@reach/window-size": "^0.5.3",
     "clsx": "^1.0.4",
     "date-fns": "^2.6.0",
     "debug": "^4.1.1",

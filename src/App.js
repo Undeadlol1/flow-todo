@@ -10,6 +10,7 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { SnackbarProvider } from 'notistack';
+import { useWindowSize } from '@reach/window-size';
 // i18n
 import i18n from 'i18next';
 import languageDetector from 'i18next-browser-languagedetector';
@@ -39,12 +40,14 @@ function App() {
     }),
     [prefersDarkMode],
   );
+  const windowSize = useWindowSize();
+  const isMobile = windowSize.width < theme.breakpoints.values.sm;
 
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <SnackbarProvider>
+        <SnackbarProvider dense={isMobile}>
           <Router />
         </SnackbarProvider>
       </ThemeProvider>

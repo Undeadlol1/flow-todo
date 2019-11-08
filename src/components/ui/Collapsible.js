@@ -34,11 +34,15 @@ function Collapsible(props) {
 
   const [isExpanded, toggleExpanded] = useToggle(props.isOpen);
   const iconClasses = clsx(cx.animate, isExpanded && cx.expandOpen);
-  const handleClick = event => event.stopPropagation() && toggleExpanded();
+
+  function toggleComponent(event) {
+    event.stopPropagation();
+    toggleExpanded();
+  }
 
   return (
     <Card>
-      <CardActions onClick={handleClick}>
+      <CardActions onClick={toggleComponent}>
         <Typography className={cx.collapsibleTitle}>
           {t('A note')}
         </Typography>
@@ -46,7 +50,7 @@ function Collapsible(props) {
           className={iconClasses}
           aria-expanded={isExpanded}
           aria-label="show more"
-          onClick={handleClick}
+          onClick={toggleComponent}
         >
           <ExpandMoreIcon />
         </IconButton>

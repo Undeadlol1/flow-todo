@@ -3,6 +3,7 @@ export default {
     'log in': 'Login',
     'log out': 'Logout',
     'Please login': 'Please login',
+    'Sign in with Google': 'Sign in with Google',
     save: 'save',
     noTasks: 'No tasks',
     createTask: 'Create a task',

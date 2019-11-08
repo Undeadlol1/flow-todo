@@ -7,6 +7,7 @@ import { firestore } from 'firebase/app';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import get from 'lodash/get';
+import Paper from '@material-ui/core/Paper';
 
 const CreateSubtask = props => {
   const [t] = useTranslation();
@@ -37,13 +38,16 @@ const CreateSubtask = props => {
 
   return (
     <form onSubmit={handleSubmit(createSubtask)}>
-      <TextField
-        name="name"
-        inputRef={register}
-        error={Boolean(error)}
-        label={t('Add subtasks')}
-        helperText={get(errors, 'name.message')}
-      />
+      <Paper elevation={6}>
+        <TextField
+          fullWidth
+          name="name"
+          inputRef={register}
+          error={Boolean(error)}
+          label={t('Add subtasks')}
+          helperText={get(errors, 'name.message')}
+        />
+      </Paper>
     </form>
   );
 };

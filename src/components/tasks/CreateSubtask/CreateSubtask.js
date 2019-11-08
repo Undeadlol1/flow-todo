@@ -3,22 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import useForm from 'react-hook-form';
-import { firestore, auth } from 'firebase/app';
-import isUndefined from 'lodash/isUndefined';
-import Button from '@material-ui/core/Button';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { makeStyles } from '@material-ui/core/styles';
-import subtractDays from 'date-fns/subDays';
+import { firestore } from 'firebase/app';
 import { useTranslation } from 'react-i18next';
-import Grow from '@material-ui/core/Grow';
 import * as Yup from 'yup';
 import get from 'lodash/get';
 
 const CreateSubtask = props => {
   const [t] = useTranslation();
   const {
- register, handleSubmit, errors, reset, setError,
-} = useForm(
+    register, handleSubmit, errors, reset, setError,
+  } = useForm(
     {
       validationSchema: Yup.object({
         name: Yup.string()
@@ -39,18 +33,16 @@ const CreateSubtask = props => {
       })
       .then(() => reset({}))
       .catch(e => setError(e && e.message));
-    console.log('props.taskId', props.taskId);
-    console.log('values: ', values);
   }
 
   return (
     <form onSubmit={handleSubmit(createSubtask)}>
       <TextField
         name="name"
-        error={Boolean(error)}
         inputRef={register}
+        error={Boolean(error)}
+        label={t('Add subtasks')}
         helperText={get(errors, 'name.message')}
-        label="Добвить подзадачу"
       />
     </form>
   );

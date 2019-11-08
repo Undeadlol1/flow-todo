@@ -28,14 +28,15 @@ export function RandomTaskButton({ tasks, loading, className }) {
   const docs = get(tasks, 'docs', []);
   const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
   const buttonText = t(randomTaskId ? 'randomTask' : 'noTasks');
+  const isDisabled = loading || tasks.empty || !randomTaskId;
 
   return (
     <Button
       color="primary"
-      component={Link}
       className={className}
+      disabled={isDisabled}
       to={`/tasks/${randomTaskId}`}
-      disabled={loading || tasks.empty}
+      component={isDisabled ? 'div' : Link}
     >
       <Paper elevation={6} className={classes.paper}>
         <If condition={loading}>
@@ -60,20 +61,23 @@ RandomTaskButton.propTypes = {
 const today = Date.now();
 
 export default function RandomTaskButtonContainer(props) {
-  const [user] = useAuthState(auth());
+  const [user, userLoading, userError] = useAuthState(auth());
+  console.assert('userError: ', userError);
+
   const db = firestore().collection('tasks');
-  const [tasks, loading, error] = useCollection(
-    db
+  const [tasks, tasksLoading, tasksError] = useCollection(
+    user && db
       .where('userId', '==', user && user.uid)
       .where('isDone', '==', false)
       .where('dueAt', '<', today),
   );
-  if (error) throw error;
+  console.assert('tasksError: ', tasksError);
+
   return (
     <RandomTaskButton
       {...{
         ...props,
-        loading,
+        loading: userLoading || tasksLoading,
         tasks: tasks || {},
         deleteTask: taskId => db.doc(taskId).delete(),
       }}

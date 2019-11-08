@@ -6458,7 +6458,7 @@ firebase@^7.2.2:
     "@firebase/storage" "0.3.16"
     "@firebase/util" "0.2.31"
 
-firebaseui@^4.1.0:
+firebaseui@^4.1.0, firebaseui@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.2.0.tgz#584c7210fe3536e5603f9e14ba122f541ae63fba"
   integrity sha512-+n8GVms0TlxU+AIdmuWhgQthqKmUpkjhfZBbsZIdWU19Ddkr5cn7hrSlNwC9faKkpCwGEpai6Nv+hYNqNM5JkQ==
@@ -12073,6 +12073,11 @@ react-transition-group@^4.3.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-toggle@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-use-toggle/-/react-use-toggle-0.1.0.tgz#8dce505bde88a0fd48107d5697c57e60982f1c42"
+  integrity sha512-usaykxOfrgJ8mTUTmj2qP8oJe/CmEg1x+o1KlpNbrFNDWDOboKJEIhhytNVwwoqgFyHtw84rhouVtSURDqAjCg==
 
 react@^16.11.0, react@^16.8.3:
   version "16.11.0"

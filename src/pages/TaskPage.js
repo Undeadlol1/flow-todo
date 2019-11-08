@@ -1,3 +1,4 @@
+// @flow
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays } from 'date-fns/esm';
+import addDays from 'date-fns/addDays';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
@@ -27,6 +28,7 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import Paper from '@material-ui/core/Paper';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -52,6 +54,9 @@ const useStyles = makeStyles(theme => ({
   choices: {
     marginTop: '20px',
   },
+  collapsibleTitle: {
+    marginLeft: theme.spacing(1),
+  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -69,9 +74,14 @@ export function TaskPage(props) {
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const [expanded, setExpanded] = useState(false);
+  const [touched, setTouched] = useState(false);
+  // TODO: better variable names
+  const isExpanded = touched ? expanded : Boolean(task.note);
+
   function toggleExpanded(event) {
     event.stopPropagation();
-    setExpanded(!expanded);
+    setTouched(true);
+    setExpanded(!isExpanded);
   }
 
   if (loading) {
@@ -94,24 +104,28 @@ export function TaskPage(props) {
     >
       <Grid item xs={12} sm={8} md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${taskId}`}>
-          <Button variant="outlined">
-            <Zoom in>
-              <Typography className={classes.title} variant="h5">
-                {task.name}
-              </Typography>
-            </Zoom>
-          </Button>
+          <Paper elevation={6}>
+            <Button fullWidth variant="outlined">
+              <Zoom in>
+                <Typography className={classes.title} variant="h5">
+                  {task.name}
+                </Typography>
+              </Zoom>
+            </Button>
+          </Paper>
         </Link>
       </Grid>
       <Grid item xs={12} align="center">
         <Grid item xs={12} sm={8} md={6} lg={5}>
           <Card>
-            <CardActions disableSpacing onClick={toggleExpanded}>
-              <Typography>{t('A note')}</Typography>
+            <CardActions onClick={toggleExpanded}>
+              <Typography className={classes.collapsibleTitle}>
+                {t('A note')}
+              </Typography>
               <IconButton
                 className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
+                  [classes.expandOpen]: isExpanded,
+                })}
                 aria-expanded={expanded}
                 // TODO: add i18n
                 aria-label="show more"
@@ -120,9 +134,12 @@ export function TaskPage(props) {
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
-            <Collapse unmountOnExit in={expanded} timeout="auto">
+            <Collapse unmountOnExit timeout="auto" in={isExpanded}>
               <CardContent>
-                <UpsertNote taskId={taskId} defaultValue={task.note} />
+                <UpsertNote
+                  taskId={taskId}
+                  defaultValue={task.note}
+                />
               </CardContent>
             </Collapse>
           </Card>
@@ -141,7 +158,9 @@ TaskPage.propTypes = {
   setDone: PropTypes.func.isRequired,
 };
 
-export default props => {
+export default (props: Object) => {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const { taskId } = useParams();
@@ -151,8 +170,7 @@ export default props => {
     .collection('tasks')
     .doc(taskId);
   const [task, loading] = useDocumentData(taskPointer);
-  const { path } = useRouteMatch();
-  const history = useHistory();
+
   const mergedProps = {
     setDone() {
       setRequested(true);
@@ -160,6 +178,20 @@ export default props => {
         .update({ isDone: true, doneAt: Date.now() })
         .then(() => history.push('/'))
         .catch(e => console.error(e));
+    },
+    // TODO merge postponeTask and updateTask
+    updateTask(values, message: ?String) {
+      setRequested(true);
+      return taskPointer
+        .update(values)
+        .then(() => {
+          if (message) enqueueSnackbar(message, { variant: 'success' });
+          history.push('/');
+        })
+        .catch(e => enqueueSnackbar(
+            get(e, 'message') || t('Something went wrong'),
+            { variant: 'error' },
+          ));
     },
     postponeTask(days = 1, message, variant = 'success') {
       setRequested(true);

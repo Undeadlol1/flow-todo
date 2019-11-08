@@ -66,14 +66,16 @@ const TroublesChoices = ({ updateTask }) => {
       <Grid container direction="column">
         <Grid item xs align="center">
           <Button component={Link} to={`${pathname}/isHard`}>
-            Тяжело
+            {t('hard')}
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button>Не хочу</Button>
+          <Button>{t('dont want to')}</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button onClick={postPone}>Не могу сейчас</Button>
+          <Button onClick={postPone}>
+            {t('cant right now')}
+          </Button>
         </Grid>
       </Grid>
     </Slide>
@@ -133,7 +135,7 @@ const TaskActions = (props: TaskActionsProps) => {
             startIcon={<HeartIcon />}
             onClick={didGood}
           >
-            Сделал шаг вперед
+            {t('made step forward')}
           </Button>
         </Grid>
         <Grid item xs align="center">
@@ -144,7 +146,7 @@ const TaskActions = (props: TaskActionsProps) => {
             startIcon={<SmileEmoticon />}
             onClick={didGreat}
           >
-            Сильно продвинулся
+            {t('advanced a lot')}
           </Button>
         </Grid>
         <Grid item xs align="center">
@@ -155,7 +157,7 @@ const TaskActions = (props: TaskActionsProps) => {
             startIcon={<DoneIcon />}
             onClick={setDone}
           >
-            Сделал
+            {t('done')}
           </Button>
         </Grid>
       </Grid>

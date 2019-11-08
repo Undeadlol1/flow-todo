@@ -57,12 +57,11 @@ export function TaskPage(props) {
   const classes = useStyles();
   const { loading, taskId, task } = props;
 
-  if (loading) {(
-      <Grid item align="center" className={classes.loadingContainer}>
-        <CircularProgress />
-      </Grid>
+  if (loading) {
+    return (
+      <Grid item component={CircularProgress} align="center" className={classes.loadingContainer} />
     );
-
+  }
 
   return (
     <Grid
@@ -138,9 +137,9 @@ export default (props: Object) => {
           history.push('/');
         })
         .catch(e => enqueueSnackbar(
-            get(e, 'message') || t('Something went wrong'),
-            { variant: 'error' },
-          ));
+          get(e, 'message') || t('Something went wrong'),
+          { variant: 'error' },
+        ));
     },
     postponeTask(days = 1, message, variant = 'success') {
       setRequested(true);
@@ -151,9 +150,9 @@ export default (props: Object) => {
           history.push('/');
         })
         .catch(e => enqueueSnackbar(
-            get(e, 'message') || t('Something went wrong'),
-            { variant: 'error' },
-          ));
+          get(e, 'message') || t('Something went wrong'),
+          { variant: 'error' },
+        ));
     },
     task: task || {},
     loading: loading || isRequested,

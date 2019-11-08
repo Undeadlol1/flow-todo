@@ -1,7 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase/app';
-import * as firebaseui from 'firebaseui';
+// WIP
+// import * as firebaseui from 'firebaseui';
 import { makeStyles } from '@material-ui/core/styles';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +18,7 @@ let textIsAlreadySet = false;
 
 function setButtonText(text) {
   if (!textIsAlreadySet) {
-    console.log('setButtonText()');
+    console.assert('setButtonText() query is runnning');
     const textContainer = invoke(document, 'querySelector', '.firebaseui-idp-text');
     if (textContainer) {
       textContainer.innerHTML = text;
@@ -30,7 +31,6 @@ function setButtonText(text) {
 export default () => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const [uiInstance, setuiInstance] = React.useState();
 
   React.useEffect(() => {
     const textChangingInterval = setInterval(
@@ -41,7 +41,7 @@ export default () => {
       textIsAlreadySet = false;
       clearInterval(textChangingInterval);
      };
-  }, []);
+  }, [t]);
 
   // WIP
   // https://github.com/Undeadlol1/flow-todo/issues/7
@@ -71,7 +71,6 @@ export default () => {
   const authProps = {
     uiConfig,
     firebaseAuth: firebase.auth(),
-    uiCallback: ui => setuiInstance(ui),
   };
 
   return (

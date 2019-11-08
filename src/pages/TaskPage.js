@@ -16,12 +16,16 @@ import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
+import AssigmentIcon from '@material-ui/icons/Assignment';
+
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
 import isString from 'lodash/isString';
 
 import Paper from '@material-ui/core/Paper';
 import Collapsible from 'components/ui/Collapsible';
+import { When, Unless } from 'react-if';
+import filter from 'lodash/filter';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +57,8 @@ const useStyles = makeStyles(theme => ({
 export function TaskPage(props) {
   const classes = useStyles();
   const { loading, taskId, task } = props;
+  const activeSubtasks = filter(task.subtasks, i => !i.isDone);
+  const hasSubtasks = Boolean(activeSubtasks.length);
 
   if (loading) {
     return (
@@ -73,10 +79,13 @@ export function TaskPage(props) {
       <Grid item xs={12} sm={8} md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Paper elevation={6}>
-            <Button fullWidth variant="outlined">
+            <Button fullWidth variant="outlined" startIcon={hasSubtasks && <AssigmentIcon fontSize="large" />}>
               <Zoom in>
                 <Typography className={classes.title} variant="h5">
-                  {task.name}
+                  <When condition={hasSubtasks}>
+                    {get(activeSubtasks, '[0].name')}
+                  </When>
+                  <Unless condition={hasSubtasks}>{task.name}</Unless>
                 </Typography>
               </Zoom>
             </Button>

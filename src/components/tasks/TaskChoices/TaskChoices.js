@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import { calculateNextRepetition } from 'services';
-import addDays from 'date-fns/addDays';
+import addHours from 'date-fns/addHours';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -56,7 +56,7 @@ const TroublesChoices = ({ updateTask }) => {
   const { pathname } = useLocation();
   function postPone() {
     updateTask(
-      { dueAt: addDays(new Date(), 1).getTime() },
+      { dueAt: addHours(new Date(), 16).getTime() },
       t('Posponed until tomorrow'),
       'default',
     );

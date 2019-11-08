@@ -12,6 +12,7 @@ export default {
     'Rework task': 'Rework task',
     'tasks completed today': 'Tasks completed today',
     'Add subtasks': 'Add subtasks',
+    subtasks: 'Subtasks',
     'Posponed until tomorrow': 'Posponed until tomorrow',
     'Good job!': 'Good job!',
     'Something went wrong': 'Something went wrong',

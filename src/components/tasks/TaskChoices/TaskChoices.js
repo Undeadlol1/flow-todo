@@ -23,6 +23,7 @@ import { calculateNextRepetition } from 'services';
 import addDays from 'date-fns/addDays';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import { TasksList } from '../TasksList/TasksList';
+import { SubtasksList } from '../SubtasksList';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -37,22 +38,18 @@ const HardChoices = (props) => {
   const [t] = useTranslation();
   return (
     <Slide in direction="left">
-      <Grid container direction="column">
+      <div>
         <Grid item xs align="center">
           <Button>{t('Rework task')}</Button>
         </Grid>
-        <Grid item xs align="center">
-          <Button>
-            {t('Add subtasks')}
-          </Button>
+        <Grid item xs={12} align="center">
           <CreateSubtask taskId={props.taskId} />
-          {/* TODO: fix "deleteTask" */}
-          {
-            get(props, 'task.subtasks', []).map(({ name }) => <div key={name}>{name}</div>)
-          }
-          {/* <TasksList tasks={props.task.subtasks} deleteTask={() => {}} /> */}
         </Grid>
-      </Grid>
+        <Grid item xs={12} align="center">
+          {/* TODO: fix "deleteTask" */}
+          <SubtasksList tasks={props.task.subtasks} deleteTask={() => {}} />
+        </Grid>
+      </div>
     </Slide>
   );
 };

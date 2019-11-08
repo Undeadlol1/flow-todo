@@ -6,7 +6,6 @@ import { firestore } from 'firebase/app';
 import {
   useParams,
   Link,
-  useRouteMatch,
   useHistory,
 } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -16,7 +15,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import addDays from 'date-fns/addDays';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
@@ -53,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function TaskPage(props) {
-  const [t] = useTranslation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
 
@@ -101,50 +98,28 @@ export function TaskPage(props) {
 TaskPage.propTypes = {
   loading: PropTypes.bool,
   task: PropTypes.object.isRequired,
-  path: PropTypes.string.isRequired,
   taskId: PropTypes.string.isRequired,
-  setDone: PropTypes.func.isRequired,
 };
 
 export default (props: Object) => {
   const history = useHistory();
-  const { path } = useRouteMatch();
+  const [t] = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
+  const [isRequested, setRequested] = useState();
 
   const { taskId } = useParams();
-  const [t] = useTranslation();
-  const [isRequested, setRequested] = React.useState();
   const taskPointer = firestore()
     .collection('tasks')
     .doc(taskId);
-  const [task, loading] = useDocumentData(taskPointer);
+  const [task, taskLoading, taskError] = useDocumentData(taskPointer);
+
+  if (taskError) enqueueSnackbar(t('Something went wrong'), { variant: 'error' });
 
   const mergedProps = {
-    setDone() {
-      setRequested(true);
-      return taskPointer
-        .update({ isDone: true, doneAt: Date.now() })
-        .then(() => history.push('/'))
-        .catch(e => console.error(e));
-    },
-    // TODO merge postponeTask and updateTask
-    updateTask(values, message: ?String) {
+    updateTask(values, message: ?String, variant = 'success') {
       setRequested(true);
       return taskPointer
         .update(values)
-        .then(() => {
-          if (message) enqueueSnackbar(message, { variant: 'success' });
-          history.push('/');
-        })
-        .catch(e => enqueueSnackbar(
-          get(e, 'message') || t('Something went wrong'),
-          { variant: 'error' },
-        ));
-    },
-    postponeTask(days = 1, message, variant = 'success') {
-      setRequested(true);
-      return taskPointer
-        .update({ dueAt: addDays(new Date(), days).getTime() })
         .then(() => {
           if (message) enqueueSnackbar(message, { variant });
           history.push('/');
@@ -155,9 +130,8 @@ export default (props: Object) => {
         ));
     },
     task: task || {},
-    loading: loading || isRequested,
+    loading: taskLoading || isRequested,
     taskId,
-    path,
     ...props,
   };
   return <TaskPage {...mergedProps} />;

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import { calculateNextRepetition } from 'services';
+import addDays from 'date-fns/addDays';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -50,11 +51,15 @@ const HardChoices = () => {
   );
 };
 
-const TroublesChoices = ({ postponeTask }) => {
+const TroublesChoices = ({ updateTask }) => {
   const [t] = useTranslation();
   const { pathname } = useLocation();
   function postPone() {
-    postponeTask(1, t('Posponed until tomorrow'), 'default');
+    updateTask(
+      { dueAt: addDays(new Date(), 1).getTime() },
+      t('Posponed until tomorrow'),
+      'default',
+    );
   }
   return (
     <Slide in direction="left">
@@ -76,13 +81,12 @@ const TroublesChoices = ({ postponeTask }) => {
 };
 
 TroublesChoices.propTypes = {
-  postponeTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
 };
 
 type TaskActionsProps = {
   className: ?string,
   task: Object,
-  setDone: Function,
   updateTask: Function,
 };
 
@@ -98,6 +102,10 @@ const TaskActions = (props: TaskActionsProps) => {
       calculateNextRepetition(props.task, 'good'),
       t('Good job!'),
     );
+  const setDone = () => props.updateTask(
+    { isDone: true, doneAt: Date.now() },
+    t('Good job!'),
+  );
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -145,7 +153,7 @@ const TaskActions = (props: TaskActionsProps) => {
             color="primary"
             variant="contained"
             startIcon={<DoneIcon />}
-            onClick={props.setDone}
+            onClick={setDone}
           >
             Сделал
           </Button>
@@ -158,7 +166,6 @@ const TaskActions = (props: TaskActionsProps) => {
 TaskActions.propTypes = {
   className: PropTypes.string,
   task: PropTypes.object.isRequired,
-  setDone: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
 };
 

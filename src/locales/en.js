@@ -16,6 +16,12 @@ export default {
     'Something went wrong': 'Something went wrong',
     'Add a note': 'Add a note',
     'A note': 'A note',
+    hard: 'It\'s hard',
+    'dont want to': 'Don\'t want to',
+    'cant right now': 'Can\'t right now',
+    'made step forward': 'made step forward',
+    'advanced a lot': 'advanced a lot',
+    done: 'done',
     validation: {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',

@@ -15,6 +15,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { If, Unless } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
+import Fade from '@material-ui/core/Fade';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,8 +51,8 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <Link to="/" className={classes.link}>
+          <Typography in component={Fade} timeout={1500} variant="h6" className={clsx([classes.link, classes.title])}>
+            <Link to="/">
               Flow TODO
             </Link>
           </Typography>

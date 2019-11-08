@@ -20,6 +20,7 @@ import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import get from 'lodash/get';
 import { calculateNextRepetition } from 'services';
+import addDays from 'date-fns/addDays';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import { TasksList } from '../TasksList/TasksList';
 
@@ -56,29 +57,31 @@ const HardChoices = (props) => {
   );
 };
 
-HardChoices.propTypes = {
-  taskId: PropTypes.string.isRequired,
-};
-
-const TroublesChoices = ({ postponeTask }) => {
+const TroublesChoices = ({ updateTask }) => {
   const [t] = useTranslation();
   const { pathname } = useLocation();
   function postPone() {
-    postponeTask(1, t('Posponed until tomorrow'), 'default');
+    updateTask(
+      { dueAt: addDays(new Date(), 1).getTime() },
+      t('Posponed until tomorrow'),
+      'default',
+    );
   }
   return (
     <Slide in direction="left">
       <Grid container direction="column">
         <Grid item xs align="center">
           <Button component={Link} to={`${pathname}/isHard`}>
-            Тяжело
+            {t('hard')}
           </Button>
         </Grid>
         <Grid item xs align="center">
-          <Button>Не хочу</Button>
+          <Button>{t('dont want to')}</Button>
         </Grid>
         <Grid item xs align="center">
-          <Button onClick={postPone}>Не могу сейчас</Button>
+          <Button onClick={postPone}>
+            {t('cant right now')}
+          </Button>
         </Grid>
       </Grid>
     </Slide>
@@ -86,13 +89,12 @@ const TroublesChoices = ({ postponeTask }) => {
 };
 
 TroublesChoices.propTypes = {
-  postponeTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
 };
 
 type TaskActionsProps = {
   className: ?string,
   task: Object,
-  setDone: Function,
   updateTask: Function,
 };
 
@@ -108,6 +110,10 @@ const TaskActions = (props: TaskActionsProps) => {
       calculateNextRepetition(props.task, 'good'),
       t('Good job!'),
     );
+  const setDone = () => props.updateTask(
+    { isDone: true, doneAt: Date.now() },
+    t('Good job!'),
+  );
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -135,7 +141,7 @@ const TaskActions = (props: TaskActionsProps) => {
             startIcon={<HeartIcon />}
             onClick={didGood}
           >
-            Сделал шаг вперед
+            {t('made step forward')}
           </Button>
         </Grid>
         <Grid item xs align="center">
@@ -146,7 +152,7 @@ const TaskActions = (props: TaskActionsProps) => {
             startIcon={<SmileEmoticon />}
             onClick={didGreat}
           >
-            Сильно продвинулся
+            {t('advanced a lot')}
           </Button>
         </Grid>
         <Grid item xs align="center">
@@ -155,9 +161,9 @@ const TaskActions = (props: TaskActionsProps) => {
             color="primary"
             variant="contained"
             startIcon={<DoneIcon />}
-            onClick={props.setDone}
+            onClick={setDone}
           >
-            Сделал
+            {t('done')}
           </Button>
         </Grid>
       </Grid>
@@ -168,7 +174,6 @@ const TaskActions = (props: TaskActionsProps) => {
 TaskActions.propTypes = {
   className: PropTypes.string,
   task: PropTypes.object.isRequired,
-  setDone: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
 };
 

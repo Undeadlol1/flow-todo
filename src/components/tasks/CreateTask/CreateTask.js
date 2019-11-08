@@ -63,7 +63,13 @@ export function CreateTask(props) {
       })
       .then(() => {
         reset({});
-        enqueueSnackbar(t('Successfully saved'));
+        enqueueSnackbar(t('Successfully saved'), {
+          anchorOrigin: {
+            autoHideDuration: 2000,
+            vertical: 'top',
+            horizontal: 'left',
+          },
+        });
         props.callback();
       })
       .catch(e => setError(e && e.message));
@@ -102,7 +108,7 @@ export function CreateTask(props) {
 }
 
 CreateTask.defaultValues = {
-  callback: () => {},
+  callback: () => { },
 };
 
 CreateTask.propTypes = {

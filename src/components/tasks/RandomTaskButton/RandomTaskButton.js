@@ -28,14 +28,15 @@ export function RandomTaskButton({ tasks, loading, className }) {
   const docs = get(tasks, 'docs', []);
   const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
   const buttonText = t(randomTaskId ? 'randomTask' : 'noTasks');
+  const isDisabled = loading || tasks.empty || !randomTaskId;
 
   return (
     <Button
       color="primary"
-      component={Link}
       className={className}
+      disabled={isDisabled}
       to={`/tasks/${randomTaskId}`}
-      disabled={loading || tasks.empty}
+      component={isDisabled ? 'div' : Link}
     >
       <Paper elevation={6} className={classes.paper}>
         <If condition={loading}>

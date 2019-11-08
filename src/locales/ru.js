@@ -10,6 +10,7 @@ export default {
     'Successfully saved': 'Успешно сохранено',
     randomTask: 'Случайная задача',
     'Rework task': 'Переделать задачу',
+    'tasks completed today': 'Выполненные задачи сегодня',
     'Add subtasks': 'Добавьте подзадач',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',

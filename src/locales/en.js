@@ -10,6 +10,7 @@ export default {
     'Successfully saved': 'Successfully saved',
     randomTask: 'Random task',
     'Rework task': 'Rework task',
+    'tasks completed today': 'Tasks completed today',
     'Add subtasks': 'Add subtasks',
     'Posponed until tomorrow': 'Posponed until tomorrow',
     'Good job!': 'Good job!',

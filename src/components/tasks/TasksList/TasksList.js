@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import subtractHours from 'date-fns/subHours';
 import Paper from '@material-ui/core/Paper';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -38,13 +39,14 @@ const useStyles = makeStyles(theme => {
 });
 
 export function TasksList({ loading, tasks, deleteTask }) {
+  const [t] = useTranslation();
   const classes = useStyles();
   if (loading) return null;
   if (!tasks || tasks.empty) return null;
   return (
     <Paper elevation={6} className={classes.paper}>
       <Typography className={classes.title} variant="subtitle1">
-        Выполненные задачи сегодня:
+        {`${t('tasks completed today')}:`}
       </Typography>
       <List className={classes.list}>
         {tasks.docs.map(task => (
@@ -58,7 +60,7 @@ export function TasksList({ loading, tasks, deleteTask }) {
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
-                aria-label="Удалить"
+                aria-label="Delete"
                 onClick={() => deleteTask(task.id)}
               >
                 <DeleteIcon />

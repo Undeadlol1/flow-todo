@@ -20,15 +20,10 @@ import addDays from 'date-fns/addDays';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Collapse from '@material-ui/core/Collapse';
-import clsx from 'clsx';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import isString from 'lodash/isString';
 
 import Paper from '@material-ui/core/Paper';
+import Collapsible from 'components/ui/Collapsible';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -54,43 +49,20 @@ const useStyles = makeStyles(theme => ({
   choices: {
     marginTop: '20px',
   },
-  collapsibleTitle: {
-    marginLeft: theme.spacing(1),
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
+
 }));
 
 export function TaskPage(props) {
   const [t] = useTranslation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
-  const [expanded, setExpanded] = useState(false);
-  const [touched, setTouched] = useState(false);
-  // TODO: better variable names
-  const isExpanded = touched ? expanded : Boolean(task.note);
 
-  function toggleExpanded(event) {
-    event.stopPropagation();
-    setTouched(true);
-    setExpanded(!isExpanded);
-  }
-
-  if (loading) {
-    return (
+  if (loading) {(
       <Grid item align="center" className={classes.loadingContainer}>
         <CircularProgress />
       </Grid>
     );
-  }
+
 
   return (
     <Grid
@@ -117,32 +89,9 @@ export function TaskPage(props) {
       </Grid>
       <Grid item xs={12} align="center">
         <Grid item xs={12} sm={8} md={6} lg={5}>
-          <Card>
-            <CardActions onClick={toggleExpanded}>
-              <Typography className={classes.collapsibleTitle}>
-                {t('A note')}
-              </Typography>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: isExpanded,
-                })}
-                aria-expanded={expanded}
-                // TODO: add i18n
-                aria-label="show more"
-                onClick={toggleExpanded}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse unmountOnExit timeout="auto" in={isExpanded}>
-              <CardContent>
-                <UpsertNote
-                  taskId={taskId}
-                  defaultValue={task.note}
-                />
-              </CardContent>
-            </Collapse>
-          </Card>
+          <Collapsible isOpen={isString(task.note)}>
+            <UpsertNote taskId={taskId} defaultValue={task.note} />
+          </Collapsible>
         </Grid>
       </Grid>
       <TaskChoices className={classes.choices} {...props} />

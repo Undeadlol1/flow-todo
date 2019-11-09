@@ -26,6 +26,8 @@ import filter from 'lodash/filter';
 import Collapsible from '../components/ui/Collapsible';
 import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
+import { updateSubtask } from '../store';
+import { calculateNextRepetition } from '../services';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -110,10 +112,14 @@ TaskPage.propTypes = {
 };
 
 export default (props) => {
-  const history = useHistory();
   const [t] = useTranslation();
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
+  const handleErrors = e => enqueueSnackbar(
+    get(e, 'message') || t('Something went wrong'),
+    { variant: 'error' },
+  );
 
   const { taskId } = useParams();
   const taskPointer = firestore()
@@ -121,7 +127,7 @@ export default (props) => {
     .doc(taskId);
   const [task, taskLoading, taskError] = useDocumentData(taskPointer);
 
-  if (taskError) enqueueSnackbar(t('Something went wrong'), { variant: 'error' });
+  if (taskError) handleErrors(taskError);
 
   const mergedProps = {
     updateTask(values, message, variant = 'success') {
@@ -132,10 +138,18 @@ export default (props) => {
           if (message) enqueueSnackbar(message, { variant });
           history.push('/');
         })
-        .catch(e => enqueueSnackbar(
-          get(e, 'message') || t('Something went wrong'),
-          { variant: 'error' },
-        ));
+        .catch(e => handleErrors(e));
+    },
+    updateSubtask(subtask) {
+      setRequested(true);
+      return updateSubtask(subtask, { isDone: true, doneAt: Date.now() })
+        .then(() => {
+          this.updateTask(
+            calculateNextRepetition(task, 'good'),
+            t('Good job!'),
+          );
+        })
+        .catch(e => handleErrors(e));
     },
     task: task || {},
     loading: taskLoading || isRequested,

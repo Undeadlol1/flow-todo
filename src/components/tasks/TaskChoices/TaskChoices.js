@@ -19,9 +19,12 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import addDays from 'date-fns/addDays';
+import filter from 'lodash/filter';
+import AssigmentIcon from '@material-ui/icons/Assignment';
 import { calculateNextRepetition } from '../../../services';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';
+import { updateSubtask } from '../../../store';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -92,6 +95,8 @@ const TaskActions = (props) => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
+  const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
+  const hasSubtasks = Boolean(activeSubtasks.length);
   const didGood = () => props.updateTask(
       calculateNextRepetition(props.task, 'normal'),
       t('Good job!'),
@@ -100,10 +105,13 @@ const TaskActions = (props) => {
       calculateNextRepetition(props.task, 'good'),
       t('Good job!'),
     );
-  const setDone = () => props.updateTask(
-    { isDone: true, doneAt: Date.now() },
-    t('Good job!'),
-  );
+  // TODO add repeptition and snackbar
+  const setDone = hasSubtasks
+    ? () => props.updateSubtask(activeSubtasks[0])
+    : () => props.updateTask(
+        { isDone: true, doneAt: Date.now() },
+        t('Good job!'),
+      );
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -150,7 +158,12 @@ const TaskActions = (props) => {
             className={classes.doneButton}
             color="primary"
             variant="contained"
-            startIcon={<DoneIcon />}
+            startIcon={hasSubtasks && (
+              <>
+                <AssigmentIcon />
+                <DoneIcon />
+              </>
+            )}
             onClick={setDone}
           >
             {t('done')}
@@ -165,6 +178,7 @@ TaskActions.propTypes = {
   className: PropTypes.string,
   task: PropTypes.object.isRequired,
   updateTask: PropTypes.func.isRequired,
+  updateSubtask: PropTypes.func.isRequired,
 };
 
 export default props => {

@@ -38,12 +38,11 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export function SubtasksList({ loading, tasks, deleteTask }) {
+export function SubtasksList({ loading, values, deleteTask }) {
   const [t] = useTranslation();
   const classes = useStyles();
-  console.log('classes: ', classes);
   if (loading) return null;
-  if (!tasks || tasks.empty) return null;
+  if (!values || values.empty) return null;
   return (
     <Paper elevation={6} className={classes.paper}>
       <Typography className={classes.title} variant="subtitle1">
@@ -52,7 +51,7 @@ export function SubtasksList({ loading, tasks, deleteTask }) {
       {/* TODO: checkboxes */}
       {/* https://material-ui.com/components/lists/#checkbox */}
       <List className={classes.list}>
-        {tasks.map(task => (
+        {values.map(task => (
           <ListItem
             key={task.id}
             className={classes.link}
@@ -74,13 +73,12 @@ export function SubtasksList({ loading, tasks, deleteTask }) {
 }
 
 SubtasksList.defaultProps = {
-  tasks: [],
   loading: false,
 };
 
 SubtasksList.propTypes = {
   loading: PropTypes.bool,
-  tasks: PropTypes.array,
+  values: PropTypes.object,
   deleteTask: PropTypes.func.isRequired,
 };
 

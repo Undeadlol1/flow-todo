@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { firestore, auth } from 'firebase/app';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -11,9 +10,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
-import subtractHours from 'date-fns/subHours';
 import Paper from '@material-ui/core/Paper';
+import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'react-i18next';
+import { deleteSubtask } from '../../store';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -38,11 +38,13 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export function SubtasksList({ loading, documents, deleteTask }) {
+export function SubtasksList({
+ userIsLoading, userError, documents, user, taskId,
+}) {
   const [t] = useTranslation();
   const classes = useStyles();
-  if (loading) return null;
-  if (!documents || documents.empty) return null;
+  const isDisabled = userIsLoading || userError || !user;
+  if (isEmpty(documents)) return null;
   return (
     <Paper elevation={6} className={classes.paper}>
       <Typography className={classes.title} variant="subtitle1">
@@ -61,6 +63,8 @@ export function SubtasksList({ loading, documents, deleteTask }) {
               <IconButton
                 edge="end"
                 aria-label="Delete"
+                disabled={isDisabled}
+                onClick={() => deleteSubtask(taskId, task)}
               >
                 <DeleteIcon />
               </IconButton>
@@ -72,35 +76,29 @@ export function SubtasksList({ loading, documents, deleteTask }) {
   );
 }
 
-SubtasksList.defaultProps = {
-  loading: false,
-};
-
 SubtasksList.propTypes = {
-  loading: PropTypes.bool,
+  user: PropTypes.object,
   documents: PropTypes.array,
-  deleteTask: PropTypes.func.isRequired,
+  userError: PropTypes.oneOfType([
+    PropTypes.bool.isRequired,
+    PropTypes.object.isRequired,
+  ]),
+  userIsLoading: PropTypes.bool,
+  taskId: PropTypes.string.isRequired,
+  deleteSubtask: PropTypes.func.isRequired,
 };
-
-const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default function SubtasksListContainer(props) {
-  const [user] = useAuthState(auth());
-  const db = firestore().collection('tasks');
-  const [tasks, loading, error] = useCollection(
-    user && db
-      .where('userId', '==', user && user.uid)
-      .where('isDone', '==', true)
-      .where('doneAt', '>', lastSixteenHours),
-  );
+  const [user, userError, userIsLoading] = useAuthState(auth());
 
-  if (error) throw error;
+  if (userError) console.error(userError);
 
   const mergeProps = {
     ...props,
-    tasks,
-    loading,
-    deleteTask: taskId => db.doc(taskId).delete(),
+    user,
+    userError,
+    userIsLoading,
+    deleteSubtask,
   };
 
   return <SubtasksList {...mergeProps} />;

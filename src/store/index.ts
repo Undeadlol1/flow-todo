@@ -5,7 +5,7 @@ export function createSubtask(taskId: string, values: {
         name: string,
     }) : Promise<void | Error> {
     return firestore()
-        .doc('tasks/'+taskId)
+        .doc('tasks/'+ taskId)
         .update({
             subtasks: firestore.FieldValue.arrayUnion({
                 id: nanoid(),
@@ -13,6 +13,17 @@ export function createSubtask(taskId: string, values: {
                 createdAt: Date.now(),
                 name: values.name.trim(),
             }),
+        })
+}
+
+
+export function deleteSubtask(taskId: string, subtask: {
+    id: string,
+}): Promise<void | Error> {
+    return firestore()
+        .doc('tasks/' + taskId)
+        .update({
+            subtasks: firestore.FieldValue.arrayRemove(subtask),
         })
 }
 

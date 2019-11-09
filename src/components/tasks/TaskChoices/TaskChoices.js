@@ -19,11 +19,11 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import get from 'lodash/get';
-import { calculateNextRepetition } from 'services';
 import addDays from 'date-fns/addDays';
+import { calculateNextRepetition } from '../../../services';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
-import { TasksList } from '../TasksList/TasksList';
-import { SubtasksList } from '../SubtasksList';
+import TasksList from '../TasksList/TasksList';
+import SubtasksList from '../SubtasksList';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -47,7 +47,7 @@ const HardChoices = (props) => {
         </Grid>
         <Grid item xs={12} align="center">
           {/* TODO: fix "deleteTask" */}
-          <SubtasksList tasks={props.task.subtasks} deleteTask={() => {}} />
+          <SubtasksList documents={props.task.subtasks} deleteTask={() => {}} />
         </Grid>
       </div>
     </Slide>
@@ -89,13 +89,8 @@ TroublesChoices.propTypes = {
   updateTask: PropTypes.func.isRequired,
 };
 
-type TaskActionsProps = {
-  className: ?string,
-  task: Object,
-  updateTask: Function,
-};
 
-const TaskActions = (props: TaskActionsProps) => {
+const TaskActions = (props) => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();

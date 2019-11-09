@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -19,13 +18,13 @@ import { useTranslation } from 'react-i18next';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 
 import get from 'lodash/get';
-import UpsertNote from 'components/tasks/UpsertNote/UpsertNote';
 import isString from 'lodash/isString';
 
 import Paper from '@material-ui/core/Paper';
-import Collapsible from 'components/ui/Collapsible';
 import { When, Unless } from 'react-if';
 import filter from 'lodash/filter';
+import Collapsible from '../components/ui/Collapsible';
+import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
@@ -110,7 +109,7 @@ TaskPage.propTypes = {
   taskId: PropTypes.string.isRequired,
 };
 
-export default (props: Object) => {
+export default (props) => {
   const history = useHistory();
   const [t] = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -125,7 +124,7 @@ export default (props: Object) => {
   if (taskError) enqueueSnackbar(t('Something went wrong'), { variant: 'error' });
 
   const mergedProps = {
-    updateTask(values, message: ?String, variant = 'success') {
+    updateTask(values, message, variant = 'success') {
       setRequested(true);
       return taskPointer
         .update(values)

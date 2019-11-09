@@ -47,7 +47,7 @@ const HardChoices = (props) => {
         </Grid>
         <Grid item xs={12} align="center">
           {/* TODO: fix "deleteTask" */}
-          <SubtasksList documents={props.task.subtasks} deleteTask={() => {}} />
+          <SubtasksList taskId={props.taskId} documents={props.task.subtasks} />
         </Grid>
       </div>
     </Slide>

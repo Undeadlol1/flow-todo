@@ -20,6 +20,7 @@ import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import filter from 'lodash/filter';
 import AssigmentIcon from '@material-ui/icons/Assignment';
+import addHours from 'date-fns/addHours';
 import { calculateNextRepetition } from '../../../services';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';

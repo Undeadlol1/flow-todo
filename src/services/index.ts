@@ -1,4 +1,3 @@
-// @flow
 import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
@@ -7,17 +6,20 @@ import debug from 'debug';
 const logger = debug('utils');
 debug.enable('utils');
 
-type Repetition = {
+interface Task {
+  repetitionLevel: number | undefined
+}
+
+interface Repetition {
   dueAt: number,
   repetitionLevel: number,
-};
-
-type Confidence = 'bad' | 'normal' | 'good';
+}
 
 function calculateNextRepetition(
-  task: Object,
-  confidence: Confidence = 'normal',
+  task: Task,
+  confidence = 'bad' || 'normal' || 'good',
 ): Repetition {
+  if (!confidence) confidence = 'normal'
   logger('task: ', task);
   logger('confidence: ', confidence);
   const today = new Date();

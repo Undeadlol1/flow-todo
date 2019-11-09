@@ -1,13 +1,13 @@
 import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
-import updateWith from 'lodash/updateWith'
-import extend from 'lodash/extend'
+import flow from 'lodash/flow'
+import map from 'lodash/map'
 
 export function createSubtask(taskId: string, values: {
-        name: string,
-    }) : Promise<void | Error> {
+    name: string,
+}): Promise<void | Error> {
     return firestore()
-        .doc('tasks/'+ taskId)
+        .doc('tasks/' + taskId)
         .update({
             subtasks: firestore.FieldValue.arrayUnion({
                 id: nanoid(),
@@ -27,25 +27,22 @@ interface SubtaskType {
     name: string,
 }
 
-export function updateSubtask(subtask: SubtaskType, values: {
-        name: string,
-        doneAt: string,
-        isDone: boolean,
-    },) : Promise<void | Error> {
+export async function updateSubtask(subtask: SubtaskType, values: {
+    name: string,
+    doneAt: string,
+    isDone: boolean,
+}, ): Promise<void | Error> {
     const docRef = firestore().doc('tasks/' + subtask.parentId)
-    return docRef
-        .get()
-        .then((task: any) : Promise <void | Error>  => {
-            const {subtasks} = task.data()
-            const newSubtask: any = extend(subtask, values)
-            const newSubtasks: any[] = subtasks.map((i: SubtaskType) => {
-                if (i.id === subtask.id) {
-                   return Object.assign({}, subtask, values)
-                }
-            })
-            return docRef.update({
-                subtasks: newSubtasks
+    const task: any = await docRef.get()
+    const newSubtasks: any[] = task.data()
+        .subtasks
+        .map((i: SubtaskType) => {
+            return i.id === subtask.id
+                ? Object.assign({}, i, values)
+                : i
         })
+    return docRef.update({
+        subtasks: newSubtasks
     })
 }
 

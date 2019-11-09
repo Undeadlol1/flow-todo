@@ -32,18 +32,19 @@ export function updateSubtask(subtask: SubtaskType, values: {
         doneAt: string,
         isDone: boolean,
     },) : Promise<void | Error> {
-    return firestore()
-        .doc('tasks/'+ subtask.parentId)
+    const docRef = firestore().doc('tasks/' + subtask.parentId)
+    return docRef
         .get()
         .then((task: any) : Promise <void | Error>  => {
-            const {subtasks} = task.docs()
+            const {subtasks} = task.data()
             const newSubtask: any = extend(subtask, values)
-            return task.update({
-                subtasks: <Array<SubtaskType>>updateWith(
-                    subtasks,
-                    '[' + subtasks.findIndex(subtask) + ']',
-                    newSubtask
-            )
+            const newSubtasks: any[] = subtasks.map((i: SubtaskType) => {
+                if (i.id === subtask.id) {
+                   return Object.assign({}, subtask, values)
+                }
+            })
+            return docRef.update({
+                subtasks: newSubtasks
         })
     })
 }

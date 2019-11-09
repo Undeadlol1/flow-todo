@@ -60,7 +60,7 @@ const TroublesChoices = ({ updateTask }) => {
   const { pathname } = useLocation();
   function postPone() {
     updateTask(
-      { dueAt: addDays(new Date(), 1).getTime() },
+      { dueAt: addHours(new Date(), 16).getTime() },
       t('Posponed until tomorrow'),
       'default',
     );

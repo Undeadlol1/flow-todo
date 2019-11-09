@@ -24,7 +24,6 @@ import addHours from 'date-fns/addHours';
 import { calculateNextRepetition } from '../../../services';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';
-import { updateSubtask } from '../../../store';
 
 const useStyles = makeStyles(theme => ({
   button: {

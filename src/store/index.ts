@@ -1,7 +1,5 @@
 import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
-import flow from 'lodash/flow'
-import map from 'lodash/map'
 
 export function createSubtask(taskId: string, values: {
     name: string,

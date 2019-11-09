@@ -18,11 +18,9 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
-import get from 'lodash/get';
 import addDays from 'date-fns/addDays';
 import { calculateNextRepetition } from '../../../services';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
-import TasksList from '../TasksList/TasksList';
 import SubtasksList from '../SubtasksList';
 
 const useStyles = makeStyles(theme => ({

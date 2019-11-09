@@ -18,7 +18,6 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
-import addDays from 'date-fns/addDays';
 import filter from 'lodash/filter';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import { calculateNextRepetition } from '../../../services';

@@ -15,7 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'react-i18next';
-import { deleteSubtask, updateSubtask } from '../../store';
+import { deleteSubtask } from '../../store';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -34,12 +34,10 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export function SubtasksList({
- documents, ...props
-}) {
+export function SubtasksList({ documents, ...props }) {
   const [t] = useTranslation();
   const classes = useStyles();
-  const isDisabled = props.userIsLoading || props.userError || !props.user;
+  const isDisabled =    props.userIsLoading || props.userError || !props.user;
 
   /* TODO: toggleDone must act as "setDone" in TaskChoices */
   // function toggleIsDone(subtask) {
@@ -56,11 +54,8 @@ export function SubtasksList({
     <Paper elevation={6} className={classes.paper}>
       <List className={classes.list}>
         <ListSubheader>{`${t('subtasks')}:`}</ListSubheader>
-        { documents.map(task => (
-          <ListItem
-            key={task.id}
-            className={classes.link}
-          >
+        {documents.map(task => (
+          <ListItem key={task.id} className={classes.link}>
             {/* <ListItemIcon>
               <Checkbox
                 disableRipple

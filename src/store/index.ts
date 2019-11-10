@@ -11,10 +11,27 @@ interface ITask {
     subtasks?: any[],
 }
 
+export function upsertTask(values: { name: string, userId?: string }, taskId?: string): Promise<void | Error> {
+    if (!taskId && !values.userId) return new Promise((resolve, reject) => reject('You forgot to add userId'))
+    return firestore()
+        .collection('tasks')
+        .doc(taskId || nanoid())
+        .set(
+            taskId
+                ? values
+                : {
+                    isDone: false,
+                    dueAt: subtractDays(new Date(), 1).getTime(),
+                }
+        )
+}
+
+// TODO: is this function ever used? Remove it?
 export function createTask(values: { name: string, userId: string }): Promise<firestore.DocumentReference> {
     return firestore()
         .collection('tasks')
         .add({
+            ...values,
             isDone: false,
             dueAt: subtractDays(new Date(), 1).getTime(),
         })

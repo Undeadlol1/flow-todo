@@ -46,8 +46,7 @@ const HardChoices = (props) => {
           <CreateSubtask taskId={props.taskId} />
         </Grid>
         <Grid item xs={12} align="center">
-          {/* TODO: fix "deleteTask" */}
-          <SubtasksList taskId={props.taskId} documents={props.task.subtasks} />
+          <SubtasksList documents={props.task.subtasks} />
         </Grid>
       </div>
     </Slide>
@@ -96,6 +95,11 @@ const TaskActions = (props) => {
   const { pathname } = useLocation();
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
+  const commonButtonProps = {
+    color: 'primary',
+    variant: 'contained',
+    className: classes.button,
+  };
   const didGood = () => props.updateTask(
       calculateNextRepetition(props.task, 'normal'),
       t('Good job!'),
@@ -104,7 +108,6 @@ const TaskActions = (props) => {
       calculateNextRepetition(props.task, 'good'),
       t('Good job!'),
     );
-  // TODO add repeptition and snackbar
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () => props.updateTask(
@@ -120,11 +123,10 @@ const TaskActions = (props) => {
       >
         <Grid item xs align="center">
           <Button
+            {...commonButtonProps}
             color="secondary"
-            variant="contained"
             component={Link}
             startIcon={<ErrorIcon />}
-            className={classes.button}
             to={`${pathname}/isTroublesome`}
           >
             Есть трудности
@@ -132,9 +134,7 @@ const TaskActions = (props) => {
         </Grid>
         <Grid item xs align="center">
           <Button
-            className={classes.button}
-            color="primary"
-            variant="contained"
+            {...commonButtonProps}
             startIcon={<HeartIcon />}
             onClick={didGood}
           >
@@ -143,9 +143,7 @@ const TaskActions = (props) => {
         </Grid>
         <Grid item xs align="center">
           <Button
-            className={classes.button}
-            color="primary"
-            variant="contained"
+            {...commonButtonProps}
             startIcon={<SmileEmoticon />}
             onClick={didGreat}
           >
@@ -154,9 +152,8 @@ const TaskActions = (props) => {
         </Grid>
         <Grid item xs align="center">
           <Button
+            {...commonButtonProps}
             className={classes.doneButton}
-            color="primary"
-            variant="contained"
             startIcon={hasSubtasks && (
               <>
                 <AssigmentIcon />

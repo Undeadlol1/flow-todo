@@ -5,26 +5,40 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import SubtasksList from './SubtasksList';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  form: {
+    marginBottom: theme.spacing(1),
+  },
+  button: {
+    display: 'block',
+    margin: '0 auto',
+  },
+}));
 
 const HardChoices = (props: {
   taskId: string;
   task: { subtasks: any };
 }) => {
   const [t] = useTranslation();
+  const classes = useStyles();
   return (
-    <Slide in direction="left">
-      <div>
-        <Grid item xs={12}>
-          <Button disabled>{t('Rework task')}</Button>
-        </Grid>
-        <Grid item xs={12}>
-          <CreateSubtask taskId={props.taskId} />
-        </Grid>
-        <Grid item xs={12}>
-          <SubtasksList documents={props.task.subtasks} />
-        </Grid>
-      </div>
-    </Slide>
+    <>
+      <Grid item xs={12} sm={8} md={6} lg={5}>
+        <Button className={classes.button} disabled>
+          {t('Rework task')}
+        </Button>
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} />
+      <Grid item xs={12} sm={8} md={6} lg={5}>
+        <CreateSubtask
+          taskId={props.taskId}
+          className={classes.form}
+        />
+        <SubtasksList documents={props.task.subtasks} />
+      </Grid>
+    </>
   );
 };
 

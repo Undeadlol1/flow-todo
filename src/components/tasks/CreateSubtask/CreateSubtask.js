@@ -7,21 +7,33 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import get from 'lodash/get';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import { createSubtask } from '../../../store/index.ts';
 
+const useStyles = makeStyles(theme => ({
+  paper: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+}));
+
 const CreateSubtask = props => {
+  const classes = useStyles();
   const [t] = useTranslation();
   const {
-    register, handleSubmit, errors, reset, setError,
-  } = useForm({
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .min(3, t('validation.atleast3Symbols'))
-        .required(t('validation.required')),
-    }),
-  });
+ register, handleSubmit, errors, reset, setError 
+} = useForm(
+    {
+      validationSchema: Yup.object({
+        name: Yup.string()
+          .min(3, t('validation.atleast3Symbols'))
+          .required(t('validation.required')),
+      }),
+    },
+  );
   const error = get(errors, 'name.message');
-// TODO: Better name
+  // TODO: Better name
   function onSubmit(values) {
     console.log('on submit');
     createSubtask(props.taskId, values)
@@ -30,8 +42,11 @@ const CreateSubtask = props => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Paper elevation={6}>
+    <form
+      className={props.className}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Paper className={classes.paper} elevation={6}>
         <TextField
           fullWidth
           name="name"
@@ -46,6 +61,7 @@ const CreateSubtask = props => {
 };
 
 CreateSubtask.propTypes = {
+  className: PropTypes.string,
   taskId: PropTypes.string.isRequired,
 };
 

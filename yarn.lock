@@ -2093,7 +2093,7 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@types/babel__core@^7.1.0":
+"@types/babel__core@^7.1.0", "@types/babel__core@^7.1.3":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.3.tgz#e441ea7df63cd080dfcd02ab199e6d16a735fc30"
   integrity sha512-8fBo0UR2CcwWxeX7WIIgJ7lXjasFxoYgRnFHUj+hRvKkpiBJbxhdAPTCY6/ZKM0uxANFVzt4yObSLuTiTnazDA==
@@ -2134,15 +2134,45 @@
     "@types/long" "*"
     "@types/node" "*"
 
+"@types/concurrently@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-4.1.0.tgz#b9de7a61310e0c95409ffb13ff2b0f0e55307927"
+  integrity sha512-b6Tboz5Tf80JRTFgFymTB5zmxBbEyYTHwUqvyVbbRrX+uWA8I+7daHDegylRX2uMM6luDAQqqq4lBcYJ8xRnKg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/debug@^4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
   integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
 
+"@types/eslint-plugin-prettier@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/eslint-plugin-prettier/-/eslint-plugin-prettier-2.2.0.tgz#26170ee65ce05d811f3ef6fc2987acd525066c7f"
+  integrity sha512-x/+VXokaYVDxXw6GyDwBhMRkow8HAXlqYKZGpOdMwNcCZvthpEXiDXAQsi2NJOQJqWiqvXK9OI4l67jdyWt3fw==
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
+
+"@types/eslint@^6.1.3":
+  version "6.1.3"
+  resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-6.1.3.tgz#ec2a66e445a48efaa234020eb3b6e8f06afc9c61"
+  integrity sha512-llYf1QNZaDweXtA7uY6JczcwHmFwJL9TpK3E6sY0B18l6ulDT6VWNMAdEjYccFHiDfxLPxffd8QmSDV4QUUspA==
+  dependencies:
+    "@types/estree" "*"
+    "@types/json-schema" "*"
+
+"@types/estree@*":
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+  integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+
+"@types/faker@^4.1.7":
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@types/faker/-/faker-4.1.7.tgz#27e8dff9bc0d11c798e7c4a414c4dbd3755a9a34"
+  integrity sha512-tq8puryvH3X1Stlg6mma27/BI2BOwcQOvg/uU7LH7dAsCnyfVEtUXTbcksMZgOA/BZur8rkn9C0CFEgpbxfTdA==
 
 "@types/history@*":
   version "4.7.3"
@@ -2186,7 +2216,7 @@
   dependencies:
     "@types/jest-diff" "*"
 
-"@types/json-schema@^7.0.3":
+"@types/json-schema@*", "@types/json-schema@^7.0.3":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
@@ -2223,7 +2253,12 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.7.tgz#01e4ea724d9e3bd50d90c11fd5980ba317d8fa11"
   integrity sha512-E6Zn0rffhgd130zbCbAr/JdXfXkoOUFAKNs/rF8qnafSJ8KYaA/j3oz7dcwal+lYjLA7xvdd5J4wdYpCTlP8+w==
 
-"@types/prop-types@*":
+"@types/prettier@1.18.2":
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.18.2.tgz#069e7d132024d436fd1f5771f6932426a695f230"
+  integrity sha512-2JBasa5Qaj81Qsp/dxX2Njy+MdKC767WytHUDsRM7TYEfQvKPxsnGpnCBlBS1i2Aiv1YwCpmKSbQ6O6v8TpiKg==
+
+"@types/prop-types@*", "@types/prop-types@^15.7.3":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
@@ -2241,11 +2276,35 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/reach__window-size@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/reach__window-size/-/reach__window-size-0.1.0.tgz#0792dc7da12a74a4ee6e9dfbf9c59ee48f173818"
+  integrity sha512-ilQah19x8RCzIBKVn4JbeK9qyBun5TIJ6Gxgm5MElHkz9zkWaaZNFKSEGeslw5OSU8esmYU+gQ7/AfpQbvFOjA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.4":
   version "16.9.4"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.4.tgz#0b58df09a60961dcb77f62d4f1832427513420df"
   integrity sha512-fya9xteU/n90tda0s+FtN5Ym4tbgxpq/hb/Af24dvs6uYnYn+fspaxw5USlw0R8apDNwxsqumdRoCoKitckQqw==
   dependencies:
+    "@types/react" "*"
+
+"@types/react-router-dom@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.2.tgz#853f229f1f297513c0be84f7c914a08b778cfdf5"
+  integrity sha512-kRx8hoBflE4Dp7uus+j/0uMHR5uGTAvQtc4A3vOTWKS+epe0leCuxEx7HNT7XGUd1lH53/moWM51MV2YUyhzAg==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.2.tgz#41e5e6aa333a7b9a2bfdac753c04e1ca4b3e0d21"
+  integrity sha512-euC3SiwDg3NcjFdNmFL8uVuAFTpZJm0WMFUw+4eXMUnxa7M9RGFEG0szt0z+/Zgk4G2k9JBFhaEnY64RBiFmuw==
+  dependencies:
+    "@types/history" "*"
     "@types/react" "*"
 
 "@types/react-syntax-highlighter@10.1.0":
@@ -2298,6 +2357,11 @@
   integrity sha512-K8/LfZq2duW33XW/tFwEAfnZlqIfVsoyRB3kfXdPXYhl0nfM8mmh7GS0jg7WrX2Dgq/0Ha/pR1PaR+BvmWwjiQ==
   dependencies:
     "@types/yargs-parser" "*"
+
+"@types/yup@^0.26.24":
+  version "0.26.24"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.24.tgz#c24170b3a5c867b4fabd49fcc42fe45f780cb153"
+  integrity sha512-x0bhHnYjH5mZit4HivUYbTMO4LouOTGwp/LLxSL1mbJYVwNJtHYESH0ed2bwM1lkI2yDmsoCDYJnWEgHeJDACg==
 
 "@typescript-eslint/eslint-plugin@^2.2.0":
   version "2.3.2"

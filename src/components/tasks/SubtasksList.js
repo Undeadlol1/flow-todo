@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
@@ -20,12 +21,6 @@ import { deleteSubtask, updateSubtask } from '../../store';
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
   return {
-    title: {
-      color,
-      display: 'block',
-      textAlign: 'left',
-      margin: '0 10px',
-    },
     list: {
       width: '100%',
     },
@@ -58,10 +53,8 @@ export function SubtasksList({
 
   return (
     <Paper elevation={6} className={classes.paper}>
-      <Typography className={classes.title} variant="subtitle1">
-        {`${t('subtasks')}:`}
-      </Typography>
       <List className={classes.list}>
+        <ListSubheader>{`${t('subtasks')}:`}</ListSubheader>
         { documents.map(task => (
           <ListItem
             key={task.id}

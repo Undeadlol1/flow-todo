@@ -25,55 +25,20 @@ const useStyles = makeStyles({
   },
 });
 
-export function CreateTask(props) {
-  const { enqueueSnackbar } = useSnackbar();
+export function CreateTask({ error, ...props }) {
   const classes = useStyles();
   const [t] = useTranslation();
-  const {
-    register,
-    handleSubmit,
-    formState,
-    errors,
-    reset,
-    setError,
-  } = useForm({
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .min(3, t('validation.atleast3Symbols'))
-        .required(t('validation.required')),
-    }),
-  });
-
-  let error;
-  if (!props.user) error = t('Please login');
-  else error = props.error || get(errors, 'name.message');
 
   let isSubmitDisabled = true;
   if (isUndefined(props.isValid)) {
-    isSubmitDisabled = error || formState.isSubmitting;
-  }
-
-  function createDocumentAndReset({ name }) {
-    return createTask({ name, userId: props.user.id })
-      .then(() => {
-        reset();
-        enqueueSnackbar(t('Successfully saved'), {
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'left',
-            autoHideDuration: 2000,
-          },
-        });
-        invoke(props, 'callback');
-      })
-      .catch(e => setError(e && e.message));
+    isSubmitDisabled = error || props.formState.isSubmitting;
   }
 
   return (
     <Grow in timeout={800}>
       <form
         className={classes.container}
-        onSubmit={handleSubmit(createDocumentAndReset)}
+        onSubmit={props.handleSubmit(props.onSubmit)}
       >
         <TextField
           fullWidth
@@ -82,9 +47,10 @@ export function CreateTask(props) {
           variant="outlined"
           autoComplete="off"
           helperText={error}
-          inputRef={register}
+          inputRef={props.register}
           error={Boolean(error)}
           label={t('createTask')}
+          defaultValue={props.defaultValue}
           className="CreateTask__input"
         />
         <Button
@@ -109,10 +75,49 @@ CreateTask.propTypes = {
   user: PropTypes.object,
   error: PropTypes.string,
   isValid: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  // eslint-disable-next-line react/no-unused-prop-types
   callback: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default function CreateTaskContainer(props) {
+  const [t] = useTranslation();
   const [user] = useAuthState(auth());
-  return <CreateTask user={user} {...props} />;
+  const formProps = useForm({
+    validationSchema: Yup.object({
+    name: Yup.string()
+      .min(3, t('validation.atleast3Symbols'))
+      .required(t('validation.required')),
+    }),
+  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  function createDocumentAndReset({ name }) {
+    return createTask({ name, userId: user.id })
+      .then(() => {
+        formProps.reset();
+        enqueueSnackbar(t('Successfully saved'), {
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+            autoHideDuration: 2000,
+          },
+        });
+        invoke(props, 'callback');
+      })
+      .catch(e => formProps.setError(e && e.message));
+  }
+  const mergedProps = {
+    user,
+    onSubmit: createDocumentAndReset,
+    error: user ? get(formProps, 'errors.name.message') : t('Please login'),
+    ...formProps,
+    ...props,
+  };
+  return (
+    <CreateTask {...mergedProps} />
+);
 }

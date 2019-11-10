@@ -16,14 +16,12 @@ import ErrorIcon from '@material-ui/icons/Error';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
-import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import filter from 'lodash/filter';
 import AssigmentIcon from '@material-ui/icons/Assignment';
-import addHours from 'date-fns/addHours';
 import { calculateNextRepetition } from '../../../services';
 import HardChoices from '../HardChoices';
-
+import TroublesChoices from '../TroubledChoices';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -34,44 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-const TroublesChoices = ({ updateTask }) => {
-  const [t] = useTranslation();
-  const { pathname } = useLocation();
-  function postPone() {
-    updateTask(
-      { dueAt: addHours(new Date(), 16).getTime() },
-      t('Posponed until tomorrow'),
-      'default',
-    );
-  }
-  return (
-    <Slide in direction="left">
-      <Grid container direction="column">
-        <Grid item xs align="center">
-          <Button component={Link} to={`${pathname}/isHard`}>
-            {t('hard')}
-          </Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button>{t('dont want to')}</Button>
-        </Grid>
-        <Grid item xs align="center">
-          <Button onClick={postPone}>
-            {t('cant right now')}
-          </Button>
-        </Grid>
-      </Grid>
-    </Slide>
-  );
-};
-
-TroublesChoices.propTypes = {
-  updateTask: PropTypes.func.isRequired,
-};
-
-
-const TaskActions = (props) => {
+const TaskActions = props => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
@@ -93,9 +54,9 @@ const TaskActions = (props) => {
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () => props.updateTask(
-        { isDone: true, doneAt: Date.now() },
-        t('Good job!'),
-      );
+          { isDone: true, doneAt: Date.now() },
+          t('Good job!'),
+        );
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -136,12 +97,14 @@ const TaskActions = (props) => {
           <Button
             {...commonButtonProps}
             className={classes.doneButton}
-            startIcon={hasSubtasks && (
-              <>
-                <AssigmentIcon />
-                <DoneIcon />
-              </>
-            )}
+            startIcon={
+              hasSubtasks && (
+                <>
+                  <AssigmentIcon />
+                  <DoneIcon />
+                </>
+              )
+            }
             onClick={setDone}
           >
             {t('done')}

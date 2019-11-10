@@ -22,8 +22,8 @@ import filter from 'lodash/filter';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import addHours from 'date-fns/addHours';
 import { calculateNextRepetition } from '../../../services';
-import CreateSubtask from '../CreateSubtask/CreateSubtask';
-import SubtasksList from '../SubtasksList';
+import HardChoices from '../HardChoices';
+
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -34,24 +34,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const HardChoices = (props) => {
-  const [t] = useTranslation();
-  return (
-    <Slide in direction="left">
-      <div>
-        <Grid item xs align="center">
-          <Button>{t('Rework task')}</Button>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <CreateSubtask taskId={props.taskId} />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <SubtasksList documents={props.task.subtasks} />
-        </Grid>
-      </div>
-    </Slide>
-  );
-};
 
 const TroublesChoices = ({ updateTask }) => {
   const [t] = useTranslation();

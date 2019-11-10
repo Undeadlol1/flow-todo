@@ -1,5 +1,24 @@
 import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
+import subtractDays from 'date-fns/subDays';
+
+interface ITask {
+    name: string,
+    isDone: boolean,
+    doneAt?: string,
+    dueAt: string,
+    userId: string,
+    subtasks?: any[],
+}
+
+export function createTask(values: { name: string, userId: string }): Promise<firestore.DocumentReference> {
+    return firestore()
+        .collection('tasks')
+        .add({
+            isDone: false,
+            dueAt: subtractDays(new Date(), 1).getTime(),
+        })
+}
 
 export function createSubtask(taskId: string, values: {
     name: string,

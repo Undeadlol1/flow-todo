@@ -5,8 +5,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Checkbox from '@material-ui/core/Checkbox';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import Checkbox from '@material-ui/core/Checkbox';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -35,18 +35,20 @@ const useStyles = makeStyles(theme => {
 });
 
 export function SubtasksList({
- userIsLoading, userError, documents, user, taskId,
+ documents, ...props
 }) {
   const [t] = useTranslation();
   const classes = useStyles();
-  const isDisabled = userIsLoading || userError || !user;
-  function toggleIsDone(subtask) {
-    updateSubtask(subtask, {
-      isDone: !subtask.isDone,
-      doneAt: subtask.isDone ? null : Date.now(),
-    })
-    .catch(error => console.error(error));
-  }
+  const isDisabled = props.userIsLoading || props.userError || !props.user;
+
+  /* TODO: toggleDone must act as "setDone" in TaskChoices */
+  // function toggleIsDone(subtask) {
+  //   updateSubtask(subtask, {
+  //     isDone: !subtask.isDone,
+  //     doneAt: subtask.isDone ? null : Date.now(),
+  //   })
+  //   .catch(error => console.error(error));
+  // }
 
   if (isEmpty(documents)) return null;
 
@@ -59,7 +61,7 @@ export function SubtasksList({
             key={task.id}
             className={classes.link}
           >
-            <ListItemIcon>
+            {/* <ListItemIcon>
               <Checkbox
                 disableRipple
                 edge="start"
@@ -68,14 +70,14 @@ export function SubtasksList({
                 inputProps={{ 'aria-labelledby': `checkbox-list-label-${task.name}` }}
                 onClick={() => toggleIsDone(task)}
               />
-            </ListItemIcon>
+            </ListItemIcon> */}
             <ListItemText primary={task.name} />
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
                 aria-label="Delete"
                 disabled={isDisabled}
-                onClick={() => deleteSubtask(taskId, task)}
+                onClick={() => props.deleteSubtask(task.parentId, task)}
               >
                 <DeleteIcon />
               </IconButton>
@@ -95,7 +97,6 @@ SubtasksList.propTypes = {
     PropTypes.object.isRequired,
   ]),
   userIsLoading: PropTypes.bool,
-  taskId: PropTypes.string.isRequired,
   deleteSubtask: PropTypes.func.isRequired,
 };
 

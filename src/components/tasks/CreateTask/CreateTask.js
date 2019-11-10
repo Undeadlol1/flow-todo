@@ -13,7 +13,8 @@ import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
 import invoke from 'lodash/invoke';
-import { createTask } from '../../../store/index';
+import { upsertTask } from '../../../store/index';
+
 
 const useStyles = makeStyles({
   container: {
@@ -31,6 +32,7 @@ export function CreateTask({ error, ...props }) {
 
   let isSubmitDisabled = true;
   if (isUndefined(props.isValid)) {
+    // eslint-disable-next-line react/prop-types
     isSubmitDisabled = error || props.formState.isSubmitting;
   }
 
@@ -49,9 +51,9 @@ export function CreateTask({ error, ...props }) {
           helperText={error}
           inputRef={props.register}
           error={Boolean(error)}
-          label={t('createTask')}
-          defaultValue={props.defaultValue}
           className="CreateTask__input"
+          defaultValue={props.defaultValue}
+          label={props.taskId ? t('Rework task') : t('createTask')}
         />
         <Button
           type="submit"
@@ -75,6 +77,7 @@ CreateTask.propTypes = {
   user: PropTypes.object,
   error: PropTypes.string,
   isValid: PropTypes.bool,
+  taskId: PropTypes.string,
   defaultValue: PropTypes.string,
   // eslint-disable-next-line react/no-unused-prop-types
   callback: PropTypes.func,
@@ -83,7 +86,7 @@ CreateTask.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export default function CreateTaskContainer(props) {
+function CreateTaskContainer(props) {
   const [t] = useTranslation();
   const [user] = useAuthState(auth());
   const formProps = useForm({
@@ -96,9 +99,10 @@ export default function CreateTaskContainer(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   function createDocumentAndReset({ name }) {
-    return createTask({ name, userId: user.id })
+    return upsertTask({ name, userId: user.uid }, props.taskId)
       .then(() => {
-        formProps.reset();
+        // TODO add "resetFormOnSuccess" property instead of this
+        !props.taskId && formProps.reset();
         enqueueSnackbar(t('Successfully saved'), {
           anchorOrigin: {
             vertical: 'top',
@@ -108,7 +112,7 @@ export default function CreateTaskContainer(props) {
         });
         invoke(props, 'callback');
       })
-      .catch(e => formProps.setError(e && e.message));
+      .catch(e => formProps.setError('name', 'misMatch', e && e.message));
   }
   const mergedProps = {
     user,
@@ -121,3 +125,10 @@ export default function CreateTaskContainer(props) {
     <CreateTask {...mergedProps} />
 );
 }
+
+CreateTaskContainer.propTypes = {
+  taskId: PropTypes.string,
+  defaultValue: PropTypes.string,
+};
+
+export default CreateTaskContainer;

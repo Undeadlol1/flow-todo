@@ -15,7 +15,7 @@ const HardChoices = (props: {
     <Slide in direction="left">
       <div>
         <Grid item xs={12}>
-          <Button>{t('Rework task')}</Button>
+          <Button disabled>{t('Rework task')}</Button>
         </Grid>
         <Grid item xs={12}>
           <CreateSubtask taskId={props.taskId} />

@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import SubtasksList from './SubtasksList';
 import { makeStyles } from '@material-ui/core/styles';
-import CreateTask from './CreateTask/UpsertTask';
+import CreateTask from './CreateTask/CreateTask';
 
 const useStyles = makeStyles(theme => ({
   form: {

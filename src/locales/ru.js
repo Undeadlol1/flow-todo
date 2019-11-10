@@ -12,7 +12,7 @@ export default {
     'Rework task': 'Переделать задачу',
     'tasks completed today': 'Выполненные задачи сегодня',
     'Add subtasks': 'Добавьте подзадач',
-    subtasks: 'Подзадача',
+    subtasks: 'Подзадачи',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',
     'Something went wrong': 'Что-то пошло не так',

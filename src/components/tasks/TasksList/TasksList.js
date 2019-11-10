@@ -87,21 +87,21 @@ TasksList.propTypes = {
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default function TasksListContainer(props) {
-  const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
-  const [tasks, loading, error] = useCollection(
+  const [user, userLoading, userError] = useAuthState(auth());
+  const [tasks, tasksLoading, tasksError] = useCollection(
     user && db
       .where('userId', '==', user && user.uid)
       .where('isDone', '==', true)
       .where('doneAt', '>', lastSixteenHours),
   );
 
-  if (error) throw error;
+  if (userError || tasksError) console.error(userError || tasksError);
 
   const mergeProps = {
     ...props,
     tasks,
-    loading,
+    loading: userLoading || tasksLoading,
     deleteTask: taskId => db.doc(taskId).delete(),
   };
 

@@ -12,7 +12,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'react-i18next';

@@ -97,14 +97,12 @@ const TaskActions = props => {
           <Button
             {...commonButtonProps}
             className={classes.doneButton}
-            startIcon={
-              hasSubtasks && (
-                <>
-                  <AssigmentIcon />
-                  <DoneIcon />
-                </>
-              )
-            }
+            startIcon={(
+              <>
+                {hasSubtasks && <AssigmentIcon />}
+                <DoneIcon />
+              </>
+            )}
             onClick={setDone}
           >
             {t('done')}

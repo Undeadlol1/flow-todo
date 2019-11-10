@@ -11,7 +11,7 @@ export default {
     randomTask: 'Случайная задача',
     'Rework task': 'Переделать задачу',
     'tasks completed today': 'Выполненные задачи сегодня',
-    'Add subtasks': 'Добавьте подзадач',
+    'Add subtasks': 'Добавьте подзадачи',
     subtasks: 'Подзадачи',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',

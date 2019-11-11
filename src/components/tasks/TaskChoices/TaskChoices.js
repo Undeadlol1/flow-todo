@@ -72,7 +72,7 @@ const TaskActions = props => {
             startIcon={<ErrorIcon />}
             to={`${pathname}/isTroublesome`}
           >
-            Есть трудности
+            {t('there are difficulties')}
           </Button>
         </Grid>
         <Grid item xs align="center">

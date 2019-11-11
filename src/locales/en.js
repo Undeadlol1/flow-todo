@@ -21,6 +21,7 @@ export default {
     hard: 'It\'s hard',
     'dont want to': 'Don\'t want to',
     'cant right now': 'Can\'t right now',
+    'there are difficulties': 'there are difficulties',
     'made step forward': 'made step forward',
     'advanced a lot': 'advanced a lot',
     done: 'done',

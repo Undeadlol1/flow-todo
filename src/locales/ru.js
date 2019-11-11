@@ -18,10 +18,11 @@ export default {
     'Something went wrong': 'Что-то пошло не так',
     'Add a note': 'Добавить заметку',
     'A note': 'Заметка',
+    'there are difficulties': 'Есть трудности',
     hard: 'Тяжело',
     'dont want to': 'Не хочу',
     'cant right now': 'Не могу сейчас',
-        'made step forward': 'Сделал шаг вперед',
+    'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Сделал',
     validation: {

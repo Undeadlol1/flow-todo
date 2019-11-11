@@ -58,7 +58,7 @@ export default function HomePage() {
         onClose={toggleDialog}
       >
         <DialogContent>
-          <CreateTask callback={toggleDialog} />
+          <CreateTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
       <Fab

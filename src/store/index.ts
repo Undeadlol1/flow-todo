@@ -47,6 +47,12 @@ export function createTask(values: {
     });
 }
 
+export function deleteTask(taskId: string): Promise<void | Error> {
+  return firestore()
+    .doc('tasks/' + taskId)
+    .delete();
+}
+
 export function createSubtask(
   taskId: string,
   values: {

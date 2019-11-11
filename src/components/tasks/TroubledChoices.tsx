@@ -22,11 +22,6 @@ const TroublesChoices = ({
   const classes = useStyles();
   const [t] = useTranslation();
   const { pathname } = useLocation();
-  const commonButtonProps = {
-    color: 'primary',
-    variant: 'contained',
-    className: classes.button,
-  };
   function postPone() {
     updateTask(
       { dueAt: addHours(new Date(), 16).getTime() },

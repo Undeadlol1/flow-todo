@@ -15,7 +15,6 @@ import { useSnackbar } from 'notistack';
 import invoke from 'lodash/invoke';
 import { upsertTask } from '../../../store/index';
 
-
 const useStyles = makeStyles({
   container: {
     margin: '10px',
@@ -44,13 +43,13 @@ export function CreateTask({ error, ...props }) {
       >
         <TextField
           fullWidth
-          autoFocus
           name="name"
           variant="outlined"
           autoComplete="off"
           helperText={error}
-          inputRef={props.register}
           error={Boolean(error)}
+          inputRef={props.register}
+          autoFocus={props.autoFocus}
           className="CreateTask__input"
           defaultValue={props.defaultValue}
           label={props.taskId ? t('Rework task') : t('createTask')}
@@ -70,7 +69,7 @@ export function CreateTask({ error, ...props }) {
 }
 
 CreateTask.defaultValues = {
-  callback: () => { },
+  callback: () => {},
 };
 
 CreateTask.propTypes = {
@@ -78,6 +77,7 @@ CreateTask.propTypes = {
   error: PropTypes.string,
   isValid: PropTypes.bool,
   taskId: PropTypes.string,
+  autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,
   // eslint-disable-next-line react/no-unused-prop-types
   callback: PropTypes.func,
@@ -91,9 +91,9 @@ function CreateTaskContainer(props) {
   const [user] = useAuthState(auth());
   const formProps = useForm({
     validationSchema: Yup.object({
-    name: Yup.string()
-      .min(3, t('validation.atleast3Symbols'))
-      .required(t('validation.required')),
+      name: Yup.string()
+        .min(3, t('validation.atleast3Symbols'))
+        .required(t('validation.required')),
     }),
   });
   const { enqueueSnackbar } = useSnackbar();
@@ -102,6 +102,7 @@ function CreateTaskContainer(props) {
     return upsertTask({ name, userId: user.uid }, props.taskId)
       .then(() => {
         // TODO add "resetFormOnSuccess" property instead of this
+        // eslint-disable-next-line no-unused-expressions
         !props.taskId && formProps.reset();
         enqueueSnackbar(t('Successfully saved'), {
           anchorOrigin: {
@@ -112,18 +113,18 @@ function CreateTaskContainer(props) {
         });
         invoke(props, 'callback');
       })
-      .catch(e => formProps.setError('name', 'misMatch', e && e.message));
+      .catch(e => formProps.setError('name', 'misMatch', e && e.message),);
   }
   const mergedProps = {
     user,
     onSubmit: createDocumentAndReset,
-    error: user ? get(formProps, 'errors.name.message') : t('Please login'),
+    error: user
+      ? get(formProps, 'errors.name.message')
+      : t('Please login'),
     ...formProps,
     ...props,
   };
-  return (
-    <CreateTask {...mergedProps} />
-);
+  return <CreateTask {...mergedProps} />;
 }
 
 CreateTaskContainer.propTypes = {

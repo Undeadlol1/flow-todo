@@ -16,8 +16,10 @@ const useStyles = makeStyles(theme => ({
 
 const TroublesChoices = ({
   updateTask,
+  deleteTask,
 }: {
   updateTask: Function;
+  deleteTask: Function;
 }) => {
   const classes = useStyles();
   const [t] = useTranslation();
@@ -48,6 +50,16 @@ const TroublesChoices = ({
             className={classes.button}
             variant="contained"
             color="primary"
+            onClick={(e: React.SyntheticEvent) => deleteTask()}
+          >
+            {t('notImportant')}
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
             disabled
           >
             {t('dont want to')}
@@ -70,6 +82,7 @@ const TroublesChoices = ({
 
 TroublesChoices.propTypes = {
   updateTask: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
 };
 
 export default TroublesChoices;

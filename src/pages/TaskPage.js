@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
-import {
-  useParams,
-  Link,
-  useHistory,
-} from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
@@ -26,7 +22,7 @@ import filter from 'lodash/filter';
 import Collapsible from '../components/ui/Collapsible';
 import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
-import { updateSubtask } from '../store';
+import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 
 const useStyles = makeStyles(theme => ({
@@ -52,7 +48,6 @@ const useStyles = makeStyles(theme => ({
   choices: {
     marginTop: '20px',
   },
-
 }));
 
 export function TaskPage(props) {
@@ -63,7 +58,12 @@ export function TaskPage(props) {
 
   if (loading) {
     return (
-      <Grid item component={CircularProgress} align="center" className={classes.loadingContainer} />
+      <Grid
+        item
+        component={CircularProgress}
+        align="center"
+        className={classes.loadingContainer}
+      />
     );
   }
 
@@ -80,7 +80,13 @@ export function TaskPage(props) {
       <Grid item xs={12} sm={8} md={4} lg={3} align="center">
         <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Paper elevation={6}>
-            <Button fullWidth variant="outlined" startIcon={hasSubtasks && <AssigmentIcon fontSize="large" />}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={
+                hasSubtasks && <AssigmentIcon fontSize="large" />
+              }
+            >
               <Zoom in>
                 <Typography className={classes.title} variant="h5">
                   <When condition={hasSubtasks}>
@@ -111,15 +117,14 @@ TaskPage.propTypes = {
   taskId: PropTypes.string.isRequired,
 };
 
-export default (props) => {
+export default props => {
   const [t] = useTranslation();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
-  const handleErrors = e => enqueueSnackbar(
-    get(e, 'message') || t('Something went wrong'),
-    { variant: 'error' },
-  );
+  const handleErrors = e => enqueueSnackbar(get(e, 'message') || t('Something went wrong'), {
+      variant: 'error',
+    });
 
   const { taskId } = useParams();
   const taskPointer = firestore()
@@ -130,6 +135,17 @@ export default (props) => {
   if (taskError) handleErrors(taskError);
 
   const mergedProps = {
+    deleteTask() {
+      history.push('/');
+      return deleteTask(taskId)
+        .then(() => {
+          enqueueSnackbar(t('successfullyDeleted'));
+        })
+        .catch(e => {
+          handleErrors(e);
+          history.push(`/tasks/${taskId}`);
+        });
+    },
     updateTask(values, message, variant = 'success') {
       setRequested(true);
       return taskPointer
@@ -142,7 +158,10 @@ export default (props) => {
     },
     updateSubtask(subtask) {
       setRequested(true);
-      return updateSubtask(subtask, { isDone: true, doneAt: Date.now() })
+      return updateSubtask(subtask, {
+        isDone: true,
+        doneAt: Date.now(),
+      })
         .then(() => {
           this.updateTask(
             calculateNextRepetition(task, 'good'),

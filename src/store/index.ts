@@ -30,6 +30,7 @@ export function upsertTask(
             isDone: false,
             dueAt: subtractDays(new Date(), 1).getTime(),
           },
+      { merge: true },
     );
 }
 

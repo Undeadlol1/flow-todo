@@ -16,9 +16,7 @@ export function upsertTask(
   taskId?: string,
 ): Promise<void | Error> {
   if (!taskId && !values.userId)
-    return new Promise((resolve, reject) =>
-      reject('You forgot to add userId'),
-    );
+    return Promise.reject('You forgot to add userId');
   return firestore()
     .collection('tasks')
     .doc(taskId || nanoid())

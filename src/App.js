@@ -1,3 +1,4 @@
+import React from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from 'firebase/app';
 import 'firebase/analytics';
@@ -15,12 +16,14 @@ import { useWindowSize } from '@reach/window-size';
 import i18n from 'i18next';
 import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import React from 'react';
-import en from './locales/en';
-import ru from './locales/ru';
+// Other
+import { Provider as ReduxProvider } from 'react-redux';
 
 import Router from './Router';
+import en from './locales/en';
+import ru from './locales/ru';
 import './App.css';
+import store from './store';
 
 initializeFirebase();
 initializeI18n();
@@ -30,14 +33,15 @@ function App() {
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () => createMuiTheme({
-      palette: {
-        primary: { main: '#81D4FA' },
-        secondary: { main: '#00838F', contrastText: '#ffffff' },
-        type: prefersDarkMode ? 'dark' : 'light',
-      },
-      themeName: 'Malibu Blue Lagoon Zebu',
-    }),
+    () =>
+      createMuiTheme({
+        palette: {
+          primary: { main: '#81D4FA' },
+          secondary: { main: '#00838F', contrastText: '#ffffff' },
+          type: prefersDarkMode ? 'dark' : 'light',
+        },
+        themeName: 'Malibu Blue Lagoon Zebu',
+      }),
     [prefersDarkMode],
   );
   const windowSize = useWindowSize();
@@ -45,12 +49,14 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <SnackbarProvider dense={isMobile}>
-          <Router />
-        </SnackbarProvider>
-      </ThemeProvider>
+      <ReduxProvider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <SnackbarProvider dense={isMobile}>
+            <Router />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </ReduxProvider>
     </div>
   );
 }
@@ -71,10 +77,10 @@ function initializeFirebase() {
   const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction) {
     firestore
-    .enablePersistence({
-      synchronizeTabs: true,
-    })
-    .catch(e => console.error(e));
+      .enablePersistence({
+        synchronizeTabs: true,
+      })
+      .catch(e => console.error(e));
     // TODO: test to see if this is needed
     // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access
     // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
@@ -84,8 +90,7 @@ function initializeFirebase() {
     // }());
   } else {
     // Use Firestore emulator for local development
-    firestore
-    .settings({
+    firestore.settings({
       ssl: false,
       host: 'localhost:8080',
     });

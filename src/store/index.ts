@@ -1,6 +1,11 @@
 import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
 import subtractDays from 'date-fns/subDays';
+import {
+  configureStore,
+  getDefaultMiddleware,
+} from '@reduxjs/toolkit';
+import tasksReducer from './tasksReducer';
 
 interface ITask {
   name: string;
@@ -111,3 +116,21 @@ export function deleteSubtask(
       subtasks: firestore.FieldValue.arrayRemove(subtask),
     });
 }
+
+const reducer = {
+  tasks: tasksReducer,
+};
+
+const store = configureStore({
+  reducer,
+  middleware: [...getDefaultMiddleware()],
+  devTools: process.env.NODE_ENV !== 'production',
+  enhancers: [],
+});
+
+export default store;
+// The store has been created with these options:
+// - The slice reducers were automatically passed to combineReducers()
+// - redux-thunk and redux-logger were added as middleware
+// - The Redux DevTools Extension is disabled for production
+// - The middleware, batch, and devtools enhancers were automatically composed together

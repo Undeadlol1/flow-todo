@@ -60,7 +60,6 @@ RandomTaskButton.propTypes = {
 };
 
 export default function RandomTaskButtonContainer(props) {
-  const db = firestore().collection('tasks');
   const { tasks, loading } = useContext(TasksContext);
 
   return (
@@ -69,7 +68,6 @@ export default function RandomTaskButtonContainer(props) {
         ...props,
         loading,
         tasks: tasks || {},
-        deleteTask: taskId => db.doc(taskId).delete(),
       }}
     />
   );

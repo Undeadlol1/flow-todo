@@ -46,10 +46,10 @@ export default function HomePage() {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6} align="center">
+      <Grid item xs={12} sm={8} md={8} lg={6}>
         <RandomTaskButton />
       </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6} align="center">
+      <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />
       </Grid>
       <Dialog

@@ -1,12 +1,32 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
+import { firestore, auth } from 'firebase/app';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import NavBar from './components/ui/NavBar/NavBar';
 import SignInPage from './pages/SignInPage';
 import HomePage from './pages/HomePage';
 import TaskPage from './pages/TaskPage';
+import { TasksContext } from './store/contexts';
+
+const today = Date.now();
 
 export default function Router() {
+  const [user] = useAuthState(auth());
+  const db = firestore().collection('tasks');
+  const [tasks, tasksLoading, tasksError] = useCollection(
+    user
+      && db
+        .where('userId', '==', user.uid)
+        .where('isDone', '==', false)
+        .where('dueAt', '<', today),
+  );
+  const providerValue = {
+    tasks,
+    error: tasksError,
+    loading: tasksLoading,
+  };
   return (
     <BrowserRouter>
       <NavBar />
@@ -19,7 +39,9 @@ export default function Router() {
             <SignInPage />
           </Route>
           <Route path="/">
-            <HomePage />
+            <TasksContext.Provider value={providerValue}>
+              <HomePage />
+            </TasksContext.Provider>
           </Route>
         </Switch>
       </Container>

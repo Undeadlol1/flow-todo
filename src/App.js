@@ -21,7 +21,6 @@ import ru from './locales/ru';
 
 import Router from './Router';
 import './App.css';
-import AppTour from './components/ui/AppTour';
 
 initializeFirebase();
 initializeI18n();
@@ -31,8 +30,7 @@ function App() {
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () =>
-      createMuiTheme({
+    () => createMuiTheme({
         palette: {
           primary: { main: '#81D4FA' },
           secondary: { main: '#00838F', contrastText: '#ffffff' },
@@ -49,7 +47,6 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppTour />
         <SnackbarProvider dense={isMobile}>
           <Router />
         </SnackbarProvider>

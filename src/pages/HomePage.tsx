@@ -11,6 +11,7 @@ import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import AppTour from '../components/ui/AppTour';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -70,6 +71,7 @@ export default function HomePage() {
       >
         <AddIcon />
       </Fab>
+      <AppTour />
     </Grid>
   );
 }

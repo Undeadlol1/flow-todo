@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Joyride, {
-  CallBackProps,
-  STATUS,
-  Step,
-  StoreHelpers,
-} from 'react-joyride';
+import { useHistory } from 'react-router-dom';
+import Joyride, { CallBackProps, Step } from 'react-joyride';
 
-interface Props {}
+interface Props {
+  step?: number;
+}
 
-const AppTour: React.FC<Props> = () => {
+const AppTour: React.FC<Props> = props => {
   const [t] = useTranslation();
-  const steps: any[] = [
+  const history = useHistory();
+  const [step, setStep] = useState(props.step);
+
+  const steps: Step[] = [
     {
       target: '.IntroHandle__createTask',
       content: 'This is my awesome feature!',
@@ -20,26 +21,47 @@ const AppTour: React.FC<Props> = () => {
       target: '.IntroHandle__taskButton',
       content: 'This another awesome feature!',
     },
+    {
+      target: '.IntroHandle__taskButton',
+      content: 'This another awesome feature!',
+    },
   ];
+
+  function tourOnChange({ index, action, lifecycle }: CallBackProps) {
+    if (index === 2) {
+      return history.push(
+        lifecycle === 'complete' ? '/' : '/tasks/introExample',
+      );
+    }
+    if (action === 'next' && lifecycle === 'complete')
+      // @ts-ignore
+      setStep(step + 1);
+  }
+
   const joyrideProps = {
-    callback: (argument: Object) =>
-      console.log('joyride callback', argument),
-    continuous: true,
-    //   getHelpers: this.getHelpers,
+    steps,
+    stepIndex: step,
     run: true,
+    continuous: true,
+    callback: tourOnChange,
     scrollToFirstStep: true,
     showProgress: true,
-    showSkipButton: true,
-    steps: steps,
+    showSkipButton: false,
+    hideBadButton: false,
     locale: {
       back: t('controls.back'),
-      close: t('controls.close'),
       last: t('controls.last'),
       next: t('controls.next'),
       skip: t('controls.skip'),
+      close: t('controls.close'),
     },
+    debug: process.env.NODE_ENV === 'development',
   };
   return <Joyride {...joyrideProps} />;
+};
+
+AppTour.defaultProps = {
+  step: 0,
 };
 
 export default AppTour;

@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import AssigmentIcon from '@material-ui/icons/Assignment';
+import clsx from 'clsx';
 
 import get from 'lodash/get';
 import isString from 'lodash/isString';
@@ -24,6 +25,7 @@ import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
+import AppTour from '../components/ui/AppTour';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -106,7 +108,13 @@ export function TaskPage(props) {
           </Collapsible>
         </Grid>
       </Grid>
-      <TaskChoices className={classes.choices} {...props} />
+      <TaskChoices
+        {...props}
+        className={clsx(['IntroHandle__taskButton', classes.choices])}
+      />
+      <When condition={props.isAppIntroMode}>
+        <AppTour step={2} />
+      </When>
     </Grid>
   );
 }
@@ -115,6 +123,7 @@ TaskPage.propTypes = {
   loading: PropTypes.bool,
   task: PropTypes.object.isRequired,
   taskId: PropTypes.string.isRequired,
+  isAppIntroMode: PropTypes.bool,
 };
 
 export default props => {
@@ -127,12 +136,22 @@ export default props => {
     });
 
   const { taskId } = useParams();
+  const isAppIntroMode = taskId === 'introExample';
   const taskPointer = firestore()
     .collection('tasks')
     .doc(taskId);
-  const [task, taskLoading, taskError] = useDocumentData(taskPointer);
+  // eslint-disable-next-line prefer-const
+  let [task, taskLoading, taskError] = useDocumentData(
+    !isAppIntroMode && taskPointer,
+  );
 
   if (taskError) handleErrors(taskError);
+  if (isAppIntroMode) {
+    task = {
+      // TODO add translation
+      name: 'example', // t(''),
+    };
+  }
 
   const mergedProps = {
     deleteTask() {
@@ -173,6 +192,7 @@ export default props => {
     task: task || {},
     loading: taskLoading || isRequested,
     taskId,
+    isAppIntroMode,
     ...props,
   };
   return <TaskPage {...mergedProps} />;

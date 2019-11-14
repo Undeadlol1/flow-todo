@@ -15,15 +15,16 @@ const AppTour: React.FC<Props> = props => {
   const steps: Step[] = [
     {
       target: '.IntroHandle__createTask',
-      content: 'This is my awesome feature!',
+      content: `Добавьте задачу в копилку`,
     },
     {
       target: '.IntroHandle__taskButton',
-      content: 'This another awesome feature!',
+      content: 'Запустите алгоритм подбора задачи',
     },
     {
       target: '.IntroHandle__taskButton',
-      content: 'This another awesome feature!',
+      content:
+        'Сообщите программе ваш прогресс и следуйте инструкциям',
     },
   ];
 

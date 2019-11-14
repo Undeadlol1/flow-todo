@@ -21,6 +21,7 @@ import ru from './locales/ru';
 
 import Router from './Router';
 import './App.css';
+import AppTour from './components/ui/AppTour';
 
 initializeFirebase();
 initializeI18n();
@@ -30,14 +31,15 @@ function App() {
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () => createMuiTheme({
-      palette: {
-        primary: { main: '#81D4FA' },
-        secondary: { main: '#00838F', contrastText: '#ffffff' },
-        type: prefersDarkMode ? 'dark' : 'light',
-      },
-      themeName: 'Malibu Blue Lagoon Zebu',
-    }),
+    () =>
+      createMuiTheme({
+        palette: {
+          primary: { main: '#81D4FA' },
+          secondary: { main: '#00838F', contrastText: '#ffffff' },
+          type: prefersDarkMode ? 'dark' : 'light',
+        },
+        themeName: 'Malibu Blue Lagoon Zebu',
+      }),
     [prefersDarkMode],
   );
   const windowSize = useWindowSize();
@@ -47,6 +49,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <AppTour />
         <SnackbarProvider dense={isMobile}>
           <Router />
         </SnackbarProvider>
@@ -71,10 +74,10 @@ function initializeFirebase() {
   const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction) {
     firestore
-    .enablePersistence({
-      synchronizeTabs: true,
-    })
-    .catch(e => console.error(e));
+      .enablePersistence({
+        synchronizeTabs: true,
+      })
+      .catch(e => console.error(e));
     // TODO: test to see if this is needed
     // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access
     // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
@@ -84,8 +87,7 @@ function initializeFirebase() {
     // }());
   } else {
     // Use Firestore emulator for local development
-    firestore
-    .settings({
+    firestore.settings({
       ssl: false,
       host: 'localhost:8080',
     });
@@ -97,6 +99,7 @@ function initializeI18n() {
     .use(languageDetector)
     .use(initReactI18next)
     .init({
+      lng: 'ru',
       debug: false,
       fallbackLng: 'en',
       interpolation: {

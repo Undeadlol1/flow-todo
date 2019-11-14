@@ -30,6 +30,13 @@ export default {
     'made step forward': 'made step forward',
     'advanced a lot': 'advanced a lot',
     done: 'done',
+    controls: {
+      back: 'Back',
+      close: 'Close',
+      last: 'Last',
+      next: 'Next',
+      skip: 'Skip',
+    },
     validation: {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',

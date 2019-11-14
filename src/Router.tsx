@@ -16,14 +16,15 @@ export default function Router() {
   const [user] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, tasksLoading, tasksError] = useCollection(
-    user
-      && db
+    user &&
+      db
         .where('userId', '==', user.uid)
         .where('isDone', '==', false)
         .where('dueAt', '<', today),
   );
   const providerValue = {
     tasks,
+    currentTask: {},
     error: tasksError,
     loading: tasksLoading,
   };

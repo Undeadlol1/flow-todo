@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { useTranslation } from 'react-i18next';
+import cx from 'clsx';
 import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
@@ -47,7 +48,7 @@ export default function HomePage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <RandomTaskButton />
+        <RandomTaskButton className={'IntroHandle__taskButton'} />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />
@@ -64,7 +65,7 @@ export default function HomePage() {
       <Fab
         color="primary"
         aria-label={t('createTask')}
-        className={classes.fab}
+        className={cx([classes.fab, 'IntroHandle__createTask'])}
         onClick={toggleDialog}
       >
         <AddIcon />

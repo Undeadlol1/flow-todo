@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Joyride, { CallBackProps, Step } from 'react-joyride';
+import { useGlobal } from '../../store/ui';
 
 interface Props {
   step?: number;
@@ -11,6 +12,7 @@ const AppTour: React.FC<Props> = props => {
   const [t] = useTranslation();
   const history = useHistory();
   const [step, setStep] = useState(props.step);
+  const [store, actions] = useGlobal();
 
   const steps: Step[] = [
     {
@@ -29,10 +31,12 @@ const AppTour: React.FC<Props> = props => {
   ];
 
   function tourOnChange({ index, action, lifecycle }: CallBackProps) {
+    if (index === 2 && lifecycle === 'complete') {
+      actions.toggleAppTour();
+      return history.push('/');
+    }
     if (index === 2) {
-      return history.push(
-        lifecycle === 'complete' ? '/' : '/tasks/introExample',
-      );
+      return history.push('/tasks/introExample');
     }
     if (action === 'next' && lifecycle === 'complete')
       // @ts-ignore
@@ -42,7 +46,7 @@ const AppTour: React.FC<Props> = props => {
   const joyrideProps = {
     steps,
     stepIndex: step,
-    run: true,
+    run: store.isAppTourActive,
     continuous: true,
     callback: tourOnChange,
     scrollToFirstStep: true,

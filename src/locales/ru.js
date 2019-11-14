@@ -31,6 +31,7 @@ export default {
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Сделал',
+    start: 'Начать',
     validation: {
       required: 'Обязательно',
       atleast3Symbols: 'Не менее 3 символов',

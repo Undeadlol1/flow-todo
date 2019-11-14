@@ -21,20 +21,12 @@ const useStyles = makeStyles({
 
 export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const docs = get(tasks, 'docs', []);
   const docsCount = docs.length;
   const randomTaskId = get(docs, `[${[random(docsCount - 1)]}].id`);
-  const buttonText = t(
-    randomTaskId
-      ? `countTasksDueToday${i18n.services.pluralResolver.getSuffix(
-          i18n.language,
-          docsCount,
-        )}`
-      : 'noTasks',
-    { count: docsCount },
-  );
+  const buttonText = t(randomTaskId ? 'start' : 'noTasks');
   const isDisabled = loading || tasks.empty || !randomTaskId;
 
   return (

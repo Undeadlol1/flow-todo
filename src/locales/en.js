@@ -30,6 +30,7 @@ export default {
     'made step forward': 'made step forward',
     'advanced a lot': 'advanced a lot',
     done: 'done',
+    start: 'Start',
     validation: {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',

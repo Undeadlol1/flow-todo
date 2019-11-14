@@ -2290,6 +2290,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-joyride@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-joyride/-/react-joyride-2.0.5.tgz#621fb90418a392ac009ee6b75c3d1850a88ea92b"
+  integrity sha512-N3bd0w3D42gZRpXy/wYsSZ8JvhyuyN0qAFTkg2iNsJ1NueMqfI0TJL+BZhhFkAqNhEETJEpDc8t4bj3DEJyLoQ==
+  dependencies:
+    react-joyride "*"
+
 "@types/react-router-dom@^5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.2.tgz#853f229f1f297513c0be84f7c914a08b778cfdf5"
@@ -12079,7 +12086,7 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
   integrity sha512-BXUMf9sIOPXXZWqr7+c5SeOKJykyVr2u0UDzEf4LNGc6taGkQe1A9DFD07umCIXz45RLr9oAAwZbAJ0Pkknfaw==
 
-react-joyride@^2.1.1:
+react-joyride@*, react-joyride@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.1.1.tgz#f986d3e1856d4ad4c96dd3eb0ad76a867447ad32"
   integrity sha512-efdI5YbrhEvAFYVzeIN4OKdL3zvULedhNtfuYNUFhL7dSS1tP1I53oxnGAW2BRaKJooUR2Clh01Q16Ilr3JCWA==

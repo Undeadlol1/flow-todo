@@ -53,10 +53,9 @@ const AppTour: React.FC<TourProps> = props => {
     scrollToFirstStep: true,
     showProgress: true,
     showSkipButton: false,
-    hideBackButton: false,
+    hideBackButton: true,
     disableCloseOnEsc: true,
     disableOverlayClose: true,
-
     locale: {
       back: t('controls.back'),
       last: t('controls.last'),

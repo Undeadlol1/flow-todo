@@ -37,14 +37,9 @@ const AppTour: React.FC<TourProps> = props => {
 
   function tourOnChange({ index, action, lifecycle }: CallBackProps) {
     if (index === 3) {
-      // actions.toggleAppTour();
-      return history.push('/signin');
+      history.push('/signin');
+      if (lifecycle === 'complete') return actions.toggleAppTour();
     }
-    // if (index === 3 && lifecycle === 'complete') {
-    //         actions.toggleAppTour();
-    //         return history.push('/signin');
-    // }
-
     if (action === 'next' && lifecycle === 'complete')
       // @ts-ignore
       setStep(step + 1);

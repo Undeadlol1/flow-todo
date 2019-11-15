@@ -10,6 +10,10 @@ import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from 'firebase/app';
+import { If, Then, Else } from 'react-if';
+import WelcomeCard from '../components/ui/WelcomeCard';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -35,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
+  const [user] = useAuthState(auth());
   const [isDialogOpen, toggleDialog] = useToggle(false);
   return (
     <Grid
@@ -47,7 +52,14 @@ export default function HomePage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <RandomTaskButton />
+        <If condition={true}>
+          <Then>
+            <RandomTaskButton />
+          </Then>
+          <Else>
+            <WelcomeCard />
+          </Else>
+        </If>
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />

@@ -3,7 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useGlobal } from '../../store/ui';
-import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 interface Props {}
 
 const WelcomeCard: React.FC<Props> = () => {
-  const [t] = useTranslation();
   const classes = useStyles();
   const { toggleAppTour } = useGlobal()[1];
   return (

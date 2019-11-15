@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import Joyride, { CallBackProps, Step } from 'react-joyride';
+import Joyride, { CallBackProps, Step, Props } from 'react-joyride';
 import { useGlobal } from '../../store/ui';
 
-interface Props {
+interface TourProps {
   step?: number;
 }
 
-const AppTour: React.FC<Props> = props => {
+const AppTour: React.FC<TourProps> = props => {
   const [t] = useTranslation();
   const history = useHistory();
   const [step, setStep] = useState(props.step);
@@ -16,6 +16,7 @@ const AppTour: React.FC<Props> = props => {
 
   const steps: Step[] = [
     {
+      disableBeacon: true,
       target: '.IntroHandle__createTask',
       content: `Добавьте задачу в копилку`,
     },
@@ -43,7 +44,7 @@ const AppTour: React.FC<Props> = props => {
       setStep(step + 1);
   }
 
-  const joyrideProps = {
+  const joyrideProps: Props = {
     steps,
     stepIndex: step,
     run: store.isAppTourActive,
@@ -52,7 +53,10 @@ const AppTour: React.FC<Props> = props => {
     scrollToFirstStep: true,
     showProgress: true,
     showSkipButton: false,
-    hideBadButton: false,
+    hideBackButton: false,
+    disableCloseOnEsc: true,
+    disableOverlayClose: true,
+
     locale: {
       back: t('controls.back'),
       last: t('controls.last'),

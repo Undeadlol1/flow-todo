@@ -42,10 +42,11 @@ const useStyles = makeStyles(theme => ({
 export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
-  const [user] = useAuthState(auth());
-  const isLoggedIn = Boolean(user);
-  const [state] = useGlobal();
+
+  const { isAppTourActive } = useGlobal()[0];
+  const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
+
   return (
     <Grid
       container
@@ -57,7 +58,7 @@ export default function HomePage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <If condition={state.isAppTourActive || isLoggedIn}>
+        <If condition={isAppTourActive || isLoggedIn}>
           <Then>
             <RandomTaskButton className={'IntroHandle__taskButton'} />
           </Then>
@@ -78,7 +79,7 @@ export default function HomePage() {
           <CreateTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
-      <When condition={state.isAppTourActive || isLoggedIn}>
+      <When condition={isAppTourActive || isLoggedIn}>
         <Fab
           color="primary"
           aria-label={t('createTask')}

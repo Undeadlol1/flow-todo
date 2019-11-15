@@ -9,12 +9,17 @@ import { useTranslation } from 'react-i18next';
 import invoke from 'lodash/invoke';
 import Paper from '@material-ui/core/Paper';
 import AppTour from '../components/ui/AppTour';
+import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
   },
-});
+  paper: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+}));
 
 let buttonIsTranslated = false;
 
@@ -90,7 +95,13 @@ export default () => {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <Paper className="IntroHandle__signupButtons" elevation={6}>
+        <Paper
+          className={clsx([
+            classes.paper,
+            'IntroHandle__signupButtons',
+          ])}
+          elevation={6}
+        >
           <StyledFirebaseAuth {...authProps} />
         </Paper>
       </Grid>

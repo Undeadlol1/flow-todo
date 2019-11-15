@@ -29,19 +29,28 @@ const AppTour: React.FC<TourProps> = props => {
       content:
         'Сообщите программе ваш прогресс и следуйте инструкциям',
     },
+    {
+      target: '.IntroHandle__signupButtons',
+      content: 'Приступим?',
+    },
   ];
 
   function tourOnChange({ index, action, lifecycle }: CallBackProps) {
-    if (index === 2 && lifecycle === 'complete') {
-      actions.toggleAppTour();
-      return history.push('/');
+    if (index === 3) {
+      // actions.toggleAppTour();
+      return history.push('/signin');
     }
-    if (index === 2) {
-      return history.push('/tasks/introExample');
-    }
+    // if (index === 3 && lifecycle === 'complete') {
+    //         actions.toggleAppTour();
+    //         return history.push('/signin');
+    // }
+
     if (action === 'next' && lifecycle === 'complete')
       // @ts-ignore
       setStep(step + 1);
+    if (index === 2) {
+      return history.push('/tasks/introExample');
+    }
   }
 
   const joyrideProps: Props = {

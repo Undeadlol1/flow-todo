@@ -3,17 +3,56 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useGlobal } from '../../store/ui';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    padding: theme.spacing(3),
+  },
+  image: {
+    margin: '0 auto',
+    display: 'block',
+    paddingBottom: theme.spacing(3),
+  },
+  button: {
+    margin: '0 auto',
+    display: 'block',
+  },
+}));
 
 interface Props {}
 
 const WelcomeCard: React.FC<Props> = () => {
+  const [t] = useTranslation();
+  const classes = useStyles();
   const { toggleAppTour } = useGlobal()[1];
   return (
-    <Paper elevation={6}>
+    <Paper className={classes.container} elevation={6}>
+      <img className={classes.image} src="/images/logo.png" alt="" />
       <Typography paragraph>
-        This is a test text
-        <Button onClick={toggleAppTour}>want to take a ride?</Button>
+        Вы когда-нибудь откладывали что-либо на потом и никогда не
+        возвращались к этому?
       </Typography>
+      <Typography paragraph>
+        Когда-нибудь думали что "неплохо было бы сделать Х" и никогда
+        не делали?
+      </Typography>
+      <Typography paragraph>
+        Когда-нибудь оставляли задачи невыполненными потому что
+        встретились с трудностями?
+      </Typography>
+      <Typography paragraph>
+        Flow TODO - это приложение позволит справиться со всем этим с
+        помощью трех простых шагов.
+      </Typography>
+      <Button
+        className={classes.button}
+        variant="outlined"
+        onClick={toggleAppTour}
+      >
+        хотите узнать как?
+      </Button>
     </Paper>
   );
 };

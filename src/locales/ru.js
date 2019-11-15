@@ -38,6 +38,7 @@ export default {
       next: 'Следующий',
       skip: 'Пропустить',
     },
+    start: 'Начать',
     validation: {
       required: 'Обязательно',
       atleast3Symbols: 'Не менее 3 символов',

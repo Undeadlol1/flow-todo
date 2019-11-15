@@ -37,6 +37,7 @@ export default {
       next: 'Next',
       skip: 'Skip',
     },
+    start: 'Start',
     validation: {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',

@@ -30,7 +30,7 @@ export default {
     'cant right now': 'Не могу сейчас',
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
-    done: 'Сделал',
+    done: 'Закончил',
     controls: {
       back: 'Назад',
       close: 'Закрыть',

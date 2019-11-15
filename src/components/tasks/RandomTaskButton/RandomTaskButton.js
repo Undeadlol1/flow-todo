@@ -12,6 +12,7 @@ import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { TasksContext } from '../../../store/contexts';
+import { useGlobal } from '../../../store/ui';
 
 const useStyles = makeStyles({
   paper: {
@@ -23,9 +24,13 @@ export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
   const [t] = useTranslation();
 
+  const { isAppTourActive } = useGlobal()[0];
+
   const docs = get(tasks, 'docs', []);
   const docsCount = docs.length;
-  const randomTaskId = get(docs, `[${[random(docsCount - 1)]}].id`);
+  const randomTaskId = isAppTourActive
+    ? '/tasks/introExample'
+    : get(docs, `[${[random(docsCount - 1)]}].id`);
   const buttonText = t(randomTaskId ? 'start' : 'noTasks');
   const isDisabled = loading || tasks.empty || !randomTaskId;
 

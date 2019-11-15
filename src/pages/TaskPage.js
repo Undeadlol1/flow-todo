@@ -148,8 +148,7 @@ export default props => {
   if (taskError) handleErrors(taskError);
   if (isAppIntroMode) {
     task = {
-      // TODO add translation
-      name: 'example', // t(''),
+      name: t('exampleTask'),
     };
   }
 

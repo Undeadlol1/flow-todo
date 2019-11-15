@@ -11,6 +11,7 @@ export default {
     successfullyDeleted: 'Successfully deleted',
     begin: 'Begin',
     randomTask: 'Random task',
+    exampleTask: 'Example task',
     countTasksDueToday: '{{count}} task available today',
     countTasksDueToday_plural: '{{count}} tasks available today',
     'Rework task': 'Rework task',

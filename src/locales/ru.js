@@ -11,6 +11,7 @@ export default {
     successfullyDeleted: 'Успешно удалено',
     begin: 'Начать',
     randomTask: 'Случайная задача',
+    exampleTask: 'Пример задачи',
     countTasksDueToday_0: '{{count}} задачa на сегодня',
     countTasksDueToday_1: '{{count}} задачи на сегодня',
     countTasksDueToday_2: '{{count}} задач на сегодня',

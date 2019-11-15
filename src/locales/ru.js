@@ -11,6 +11,7 @@ export default {
     successfullyDeleted: 'Успешно удалено',
     begin: 'Начать',
     randomTask: 'Случайная задача',
+    exampleTask: 'Пример задачи',
     countTasksDueToday_0: '{{count}} задачa на сегодня',
     countTasksDueToday_1: '{{count}} задачи на сегодня',
     countTasksDueToday_2: '{{count}} задач на сегодня',
@@ -30,7 +31,7 @@ export default {
     'cant right now': 'Не могу сейчас',
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
-    done: 'Сделал',
+    done: 'Закончил',
     controls: {
       back: 'Назад',
       close: 'Закрыть',

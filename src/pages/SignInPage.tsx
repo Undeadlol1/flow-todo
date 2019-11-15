@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 let buttonIsTranslated = false;
 
-function translateButton(text) {
+function translateButton(text: string) {
   if (!buttonIsTranslated) {
     console.assert('translateButton() query is runnning');
     const textContainer = invoke(
@@ -40,7 +40,7 @@ export default () => {
 
   React.useEffect(() => {
     const buttonTranslationInterval = setInterval(
-      translateButton.bind(this, t('Sign in with Google')),
+      () => translateButton(t('Sign in with Google')),
       100,
     );
     return function cleanup() {

@@ -29,8 +29,8 @@ const WelcomeCard: React.FC<Props> = () => {
     <Paper className={classes.container} elevation={6}>
       <img className={classes.image} src="/images/logo.png" alt="" />
       <Typography paragraph>
-        Вы когда-нибудь откладывали что-либо на потом и никогда не
-        возвращались к этому?
+        Вы когда-нибудь откладывали задачи на потом и никогда не
+        возвращались к ним?
       </Typography>
       <Typography paragraph>
         Когда-нибудь думали что "неплохо было бы сделать Х" и никогда
@@ -41,8 +41,7 @@ const WelcomeCard: React.FC<Props> = () => {
         встретились с трудностями?
       </Typography>
       <Typography paragraph>
-        Flow TODO - это приложение позволит справиться со всем этим с
-        помощью трех простых шагов.
+        Flow TODO - это приложение которое позволит спрвиться с этими проблемами с помощью трех простых шагов.
       </Typography>
       <Button
         className={classes.button}

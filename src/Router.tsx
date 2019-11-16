@@ -13,7 +13,7 @@ import { TasksContext } from './store/contexts';
 const today = Date.now();
 
 export default function Router() {
-  const [user] = useAuthState(auth());
+  const [user, userLoading, userError] = useAuthState(auth());
   const db = firestore().collection('tasks');
   const [tasks, tasksLoading, tasksError] = useCollection(
     user &&
@@ -25,8 +25,8 @@ export default function Router() {
   const providerValue = {
     tasks,
     currentTask: {},
-    error: tasksError,
-    loading: tasksLoading,
+    error: tasksError || userError,
+    loading: tasksLoading || userLoading,
   };
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -17,6 +17,7 @@ import { auth } from 'firebase/app';
 import { If, Then, Else, When } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { useGlobal } from '../store/ui';
+import { TasksContext } from '../store/contexts';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
 export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
+  const { loading } = useContext(TasksContext);
 
   const { isAppTourActive } = useGlobal()[0];
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
@@ -58,7 +60,7 @@ export default function HomePage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <If condition={isAppTourActive || isLoggedIn}>
+        <If condition={loading || isAppTourActive || isLoggedIn}>
           <Then>
             <RandomTaskButton className={'IntroHandle__taskButton'} />
           </Then>
@@ -79,7 +81,7 @@ export default function HomePage() {
           <CreateTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
-      <When condition={isAppTourActive || isLoggedIn}>
+      <When condition={!loading && (isAppTourActive || isLoggedIn)}>
         <Fab
           color="primary"
           aria-label={t('createTask')}

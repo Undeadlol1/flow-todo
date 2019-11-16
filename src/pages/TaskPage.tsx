@@ -109,7 +109,14 @@ export function TaskPage(props: ITaskPageProps) {
         </Link>
       </Grid>
       <Grid item xs={12}>
-        <Grid item xs={12} sm={8} md={6} lg={5}>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={6}
+          lg={5}
+          style={{ margin: '0 auto' }}
+        >
           <Collapsible isOpen={isString(task.note)}>
             <UpsertNote taskId={taskId} defaultValue={task.note} />
           </Collapsible>

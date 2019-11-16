@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
 import { useParams, Link, useHistory } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
+import { useSnackbar, OptionsObject } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,6 +26,7 @@ import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
+import { ITask, SubtaskType } from '../store/index';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -52,7 +53,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function TaskPage(props) {
+interface ITaskPageProps {
+  task: ITask;
+  taskId: string;
+  loading: boolean;
+  isAppIntroMode: boolean;
+}
+
+export function TaskPage(props: ITaskPageProps) {
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
@@ -63,7 +71,6 @@ export function TaskPage(props) {
       <Grid
         item
         component={CircularProgress}
-        align="center"
         className={classes.loadingContainer}
       />
     );
@@ -79,7 +86,7 @@ export function TaskPage(props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={4} lg={3} align="center">
+      <Grid item xs={12} sm={8} md={4} lg={3}>
         <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Paper elevation={6}>
             <Button
@@ -101,7 +108,7 @@ export function TaskPage(props) {
           </Paper>
         </Link>
       </Grid>
-      <Grid item xs={12} align="center">
+      <Grid item xs={12}>
         <Grid item xs={12} sm={8} md={6} lg={5}>
           <Collapsible isOpen={isString(task.note)}>
             <UpsertNote taskId={taskId} defaultValue={task.note} />
@@ -126,12 +133,13 @@ TaskPage.propTypes = {
   isAppIntroMode: PropTypes.bool,
 };
 
-export default props => {
+export default (props: React.FunctionComponent) => {
   const [t] = useTranslation();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
-  const handleErrors = e => enqueueSnackbar(get(e, 'message') || t('Something went wrong'), {
+  const handleErrors = (e: Error) =>
+    enqueueSnackbar(get(e, 'message') || t('Something went wrong'), {
       variant: 'error',
     });
 
@@ -142,6 +150,7 @@ export default props => {
     .doc(taskId);
   // eslint-disable-next-line prefer-const
   let [task, taskLoading, taskError] = useDocumentData(
+    // @ts-ignore
     !isAppIntroMode && taskPointer,
   );
 
@@ -155,26 +164,28 @@ export default props => {
   const mergedProps = {
     deleteTask() {
       history.push('/');
-      return deleteTask(taskId)
-        .then(() => {
-          enqueueSnackbar(t('successfullyDeleted'));
-        })
-        .catch(e => {
-          handleErrors(e);
-          history.push(`/tasks/${taskId}`);
-        });
+      if (taskId)
+        return deleteTask(taskId)
+          .then(() => {
+            enqueueSnackbar(t('successfullyDeleted'));
+          })
+          .catch(e => {
+            handleErrors(e);
+            history.push(`/tasks/${taskId}`);
+          });
     },
-    updateTask(values, message, variant = 'success') {
+    updateTask(values: object, message: string, variant?: 'success') {
       setRequested(true);
       return taskPointer
         .update(values)
         .then(() => {
+          // @ts-ignore
           if (message) enqueueSnackbar(message, { variant });
           history.push('/');
         })
         .catch(e => handleErrors(e));
     },
-    updateSubtask(subtask) {
+    updateSubtask(subtask: SubtaskType) {
       setRequested(true);
       return updateSubtask(subtask, {
         isDone: true,
@@ -186,7 +197,7 @@ export default props => {
             t('Good job!'),
           );
         })
-        .catch(e => handleErrors(e));
+        .catch((e: Error) => handleErrors(e));
     },
     task: task || {},
     loading: taskLoading || isRequested,
@@ -194,5 +205,7 @@ export default props => {
     isAppIntroMode,
     ...props,
   };
+  // TODO: remoove @ts-ignore
+  // @ts-ignore
   return <TaskPage {...mergedProps} />;
 };

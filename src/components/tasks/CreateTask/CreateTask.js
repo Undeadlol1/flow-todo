@@ -128,6 +128,7 @@ function CreateTaskContainer(props) {
 }
 
 CreateTaskContainer.propTypes = {
+  callback: PropTypes.func,
   taskId: PropTypes.string,
   autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,

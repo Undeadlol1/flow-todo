@@ -33,8 +33,7 @@ function App() {
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () =>
-      createMuiTheme({
+    () => createMuiTheme({
         palette: {
           primary: { main: '#81D4FA' },
           secondary: { main: '#00838F', contrastText: '#ffffff' },
@@ -102,6 +101,7 @@ function initializeI18n() {
     .use(languageDetector)
     .use(initReactI18next)
     .init({
+      lng: 'ru',
       debug: false,
       fallbackLng: 'en',
       interpolation: {

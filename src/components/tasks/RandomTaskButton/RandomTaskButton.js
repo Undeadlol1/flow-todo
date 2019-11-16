@@ -1,8 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { firestore, auth } from 'firebase/app';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -14,6 +11,8 @@ import Zoom from '@material-ui/core/Zoom';
 import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
+import { TasksContext } from '../../../store/contexts';
+import { useGlobal } from '../../../store/ui';
 
 const useStyles = makeStyles({
   paper: {
@@ -25,9 +24,14 @@ export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
   const [t] = useTranslation();
 
+  const { isAppTourActive } = useGlobal()[0];
+
   const docs = get(tasks, 'docs', []);
-  const randomTaskId = get(docs, `[${[random(docs.length - 1)]}].id`);
-  const buttonText = t(randomTaskId ? 'randomTask' : 'noTasks');
+  const docsCount = docs.length;
+  const randomTaskId = isAppTourActive
+    ? '/tasks/introExample'
+    : get(docs, `[${[random(docsCount - 1)]}].id`);
+  const buttonText = t(randomTaskId ? 'start' : 'noTasks');
   const isDisabled = loading || tasks.empty || !randomTaskId;
 
   return (
@@ -40,7 +44,9 @@ export function RandomTaskButton({ tasks, loading, className }) {
     >
       <Paper elevation={6} className={classes.paper}>
         <If condition={loading}>
-          <Then><CircularProgress /></Then>
+          <Then>
+            <CircularProgress />
+          </Then>
           <Else>
             <Zoom in>
               <Typography>{buttonText}</Typography>
@@ -58,28 +64,15 @@ RandomTaskButton.propTypes = {
   tasks: PropTypes.object.isRequired,
 };
 
-const today = Date.now();
-
 export default function RandomTaskButtonContainer(props) {
-  const [user, userLoading, userError] = useAuthState(auth());
-  console.assert('userError: ', userError);
-
-  const db = firestore().collection('tasks');
-  const [tasks, tasksLoading, tasksError] = useCollection(
-    user && db
-      .where('userId', '==', user && user.uid)
-      .where('isDone', '==', false)
-      .where('dueAt', '<', today),
-  );
-  console.assert('tasksError: ', tasksError);
+  const { tasks, loading } = useContext(TasksContext);
 
   return (
     <RandomTaskButton
       {...{
         ...props,
-        loading: userLoading || tasksLoading,
+        loading,
         tasks: tasks || {},
-        deleteTask: taskId => db.doc(taskId).delete(),
       }}
     />
   );

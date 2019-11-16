@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -6,10 +6,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { useTranslation } from 'react-i18next';
+import cx from 'clsx';
 import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import AppTour from '../components/ui/AppTour';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from 'firebase/app';
+import { If, Then, Else, When } from 'react-if';
+import WelcomeCard from '../components/ui/WelcomeCard';
+import { useGlobal } from '../store/ui';
+import { TasksContext } from '../store/contexts';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -35,7 +43,12 @@ const useStyles = makeStyles(theme => ({
 export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
+  const { loading } = useContext(TasksContext);
+
+  const { isAppTourActive } = useGlobal()[0];
+  const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
+
   return (
     <Grid
       container
@@ -46,29 +59,39 @@ export default function HomePage() {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6} align="center">
-        <RandomTaskButton />
+      <Grid item xs={12} sm={8} md={8} lg={6}>
+        <If condition={loading || isAppTourActive || isLoggedIn}>
+          <Then>
+            <RandomTaskButton className={'IntroHandle__taskButton'} />
+          </Then>
+          <Else>
+            <WelcomeCard />
+          </Else>
+        </If>
       </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6} align="center">
+      <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />
       </Grid>
       <Dialog
         open={isDialogOpen}
-        aria-labelledby="form-dialog-title"
         onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
       >
         <DialogContent>
           <CreateTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
-      <Fab
-        color="primary"
-        aria-label={t('createTask')}
-        className={classes.fab}
-        onClick={toggleDialog}
-      >
-        <AddIcon />
-      </Fab>
+      <When condition={!loading && (isAppTourActive || isLoggedIn)}>
+        <Fab
+          color="primary"
+          aria-label={t('createTask')}
+          className={cx([classes.fab, 'IntroHandle__createTask'])}
+          onClick={toggleDialog}
+        >
+          <AddIcon />
+        </Fab>
+      </When>
+      <AppTour />
     </Grid>
   );
 }

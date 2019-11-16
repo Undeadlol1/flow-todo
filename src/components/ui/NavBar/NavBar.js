@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
@@ -51,10 +51,14 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography in component={Fade} timeout={1500} variant="h6" className={clsx([classes.link, classes.title])}>
-            <Link to="/">
-              Flow TODO
-            </Link>
+          <Typography
+            in
+            component={Fade}
+            timeout={1500}
+            variant="h6"
+            className={clsx([classes.link, classes.title])}
+          >
+            <Link to="/">Flow TODO</Link>
           </Typography>
           <LoginOrLogoutButton />
         </Toolbar>
@@ -66,13 +70,26 @@ export default function ButtonAppBar() {
 export const LoginOrLogoutButton = () => {
   const [t] = useTranslation();
   const classes = useStyles();
+  const history = useHistory();
   const [user, loading] = useAuthState(auth());
   const [menuAnchor, setAnchor] = React.useState(null);
   const hasPhoto = Boolean(user && user.photoURL);
-  if (loading) return <CircularProgress className={classes.loading} color="secondary" />;
+  if (loading) {
+    return (
+      <CircularProgress
+        color="secondary"
+        className={classes.loading}
+      />
+    );
+  }
   if (user) {
     const openMenu = event => setAnchor(event.currentTarget);
-    const signOut = () => auth().signOut();
+    const signOut = () => {
+      auth()
+        .signOut()
+        .then(() => history.push('/'))
+        .catch(e => console.error(e));
+    };
     return (
       <>
         <Slide in timeout={500} direction="left">
@@ -81,7 +98,10 @@ export const LoginOrLogoutButton = () => {
             onClick={openMenu}
           >
             <If condition={hasPhoto}>
-              <Avatar className={classes.avatar} src={user.photoURL} />
+              <Avatar
+                className={classes.avatar}
+                src={user.photoURL}
+              />
             </If>
             <Unless condition={hasPhoto}>
               <AccountCircle className={classes.avatar} />

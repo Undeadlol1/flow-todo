@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useTranslation } from 'react-i18next';
 import invoke from 'lodash/invoke';
-import Paper from '@material-ui/core/Paper';
 import AppTour from '../components/ui/AppTour';
 import clsx from 'clsx';
 
@@ -15,7 +14,8 @@ const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
   },
-  paper: {
+  buttonsContainer: {
+    minWidth: '150px',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
@@ -79,10 +79,6 @@ export default () => {
     // NOTE: Will it take no effect because react-firebaseui relies on it?
     // // credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
   };
-  const authProps = {
-    uiConfig,
-    firebaseAuth: firebase.auth(),
-  };
 
   return (
     <Grid
@@ -95,15 +91,17 @@ export default () => {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <Paper
+        <div
           className={clsx([
-            classes.paper,
+            classes.buttonsContainer,
             'IntroHandle__signupButtons',
           ])}
-          elevation={6}
         >
-          <StyledFirebaseAuth {...authProps} />
-        </Paper>
+          <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        </div>
       </Grid>
       <AppTour step={3} />
     </Grid>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
 import { useParams, Link, useHistory } from 'react-router-dom';
-import { useSnackbar, OptionsObject } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';

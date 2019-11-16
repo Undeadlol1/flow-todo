@@ -41,7 +41,8 @@ const WelcomeCard: React.FC<Props> = () => {
         встретились с трудностями?
       </Typography>
       <Typography paragraph>
-        Flow TODO - это приложение которое позволит спрвиться с этими проблемами с помощью трех простых шагов.
+        Flow TODO - это приложение которое позволит справиться с этими
+        проблемами с помощью трех простых шагов.
       </Typography>
       <Button
         className={classes.button}

@@ -133,7 +133,7 @@ TaskPage.propTypes = {
   isAppIntroMode: PropTypes.bool,
 };
 
-export default (props: React.FunctionComponent) => {
+export default () => {
   const [t] = useTranslation();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
@@ -203,7 +203,6 @@ export default (props: React.FunctionComponent) => {
     loading: taskLoading || isRequested,
     taskId,
     isAppIntroMode,
-    ...props,
   };
   // TODO: remoove @ts-ignore
   // @ts-ignore

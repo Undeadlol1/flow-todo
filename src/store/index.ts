@@ -2,12 +2,13 @@ import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
 import subtractDays from 'date-fns/subDays';
 
-interface ITask {
+export interface ITask {
   name: string;
   isDone: boolean;
-  doneAt?: string;
-  dueAt: string;
+  doneAt?: number;
+  dueAt: number;
   userId: string;
+  note?: string;
   subtasks?: any[];
 }
 
@@ -71,19 +72,19 @@ export function createSubtask(
     });
 }
 
-interface SubtaskType {
+export interface SubtaskType {
   id: string;
   isDone: boolean;
   parentId: string;
-  createdAt: string;
+  createdAt: number;
   name: string;
 }
 
 export async function updateSubtask(
   subtask: SubtaskType,
   values: {
-    name: string;
-    doneAt: string;
+    name?: string;
+    doneAt: number;
     isDone: boolean;
   },
 ): Promise<void | Error> {

@@ -23,6 +23,9 @@ const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
   },
+  randomButtonContainer: {
+    margin: '0 auto',
+  },
   fab: {
     position: 'fixed',
     [theme.breakpoints.down('sm')]: {
@@ -59,7 +62,14 @@ export default function HomePage() {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={8}
+        lg={6}
+        className={classes.randomButtonContainer}
+      >
         <If condition={loading || isAppTourActive || isLoggedIn}>
           <Then>
             <RandomTaskButton className={'IntroHandle__taskButton'} />

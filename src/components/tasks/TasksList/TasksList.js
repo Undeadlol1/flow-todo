@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => {
       color,
       textDecoration: 'none',
     },
+    text: {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
     paper: {
       padding: theme.spacing(1),
     },
@@ -51,7 +56,10 @@ export function TasksList({
             className={classes.link}
             to={`/tasks/${task.id}`}
           >
-            <ListItemText primary={task.data().name} />
+            <ListItemText
+              className={classes.text}
+              primary={task.data().name}
+            />
             <When condition={canDelete}>
               <ListItemSecondaryAction>
                 <IconButton

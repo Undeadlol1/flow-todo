@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { TasksContext } from '../../../store/contexts';
 import { useGlobal } from '../../../store/ui';
+import { ITask } from '../../../store/index';
+import { firestore } from 'firebase/app';
 
 const useStyles = makeStyles({
   paper: {
@@ -20,7 +22,21 @@ const useStyles = makeStyles({
   },
 });
 
-export function RandomTaskButton({ tasks, loading, className }) {
+interface Props {
+  tasks?: firestore.QuerySnapshot;
+  // tasks: {
+  //   empty: boolean;
+  //   docs?: ITask[];
+  // };
+  loading: boolean;
+  className?: string;
+}
+
+export function RandomTaskButton({
+  tasks,
+  loading,
+  className,
+}: Props) {
   const classes = useStyles();
   const [t] = useTranslation();
 
@@ -64,7 +80,14 @@ RandomTaskButton.propTypes = {
   tasks: PropTypes.object.isRequired,
 };
 
-export default function RandomTaskButtonContainer(props) {
+interface ContainerProps {
+  className?: string;
+  tasks: firestore.QuerySnapshot;
+}
+
+export default function RandomTaskButtonContainer(
+  props: ContainerProps,
+) {
   const { tasks, loading } = useContext(TasksContext);
 
   return (

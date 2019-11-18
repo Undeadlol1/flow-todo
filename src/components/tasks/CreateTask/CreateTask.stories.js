@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateTask } from './CreateTask';
+import { CreateTask } from './UpsertTask';
 
 export default {
   component: CreateTask,

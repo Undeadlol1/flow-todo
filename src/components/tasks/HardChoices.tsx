@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import SubtasksList from './SubtasksList';
 import { makeStyles } from '@material-ui/core/styles';
-import CreateTask from './CreateTask/CreateTask';
+import UpsertTask from './CreateTask/UpsertTask';
 import Card from '@material-ui/core/Card';
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +21,7 @@ const HardChoices = (props: {
     <>
       <Grid item xs={12} sm={8} md={6} lg={5}>
         <Card elevation={6}>
-          <CreateTask
+          <UpsertTask
             taskId={props.taskId}
             defaultValue={props.task.name}
           />

@@ -10,7 +10,7 @@ import cx from 'clsx';
 import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
-import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
 import AppTour from '../components/ui/AppTour';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
@@ -88,7 +88,7 @@ export default function HomePage() {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <CreateTask autoFocus callback={toggleDialog} />
+          <UpsertTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
       <When condition={!loading && (isAppTourActive || isLoggedIn)}>

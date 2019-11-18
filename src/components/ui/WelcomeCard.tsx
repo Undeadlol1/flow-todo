@@ -2,8 +2,9 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { useGlobal } from '../../store/ui';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { toggleAppTour } from '../../store/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,7 +25,7 @@ interface Props {}
 
 const WelcomeCard: React.FC<Props> = () => {
   const classes = useStyles();
-  const { toggleAppTour } = useGlobal()[1];
+  const dispatch = useDispatch();
   return (
     <Paper className={classes.container} elevation={6}>
       <img className={classes.image} src="/images/logo.png" alt="" />
@@ -47,7 +48,7 @@ const WelcomeCard: React.FC<Props> = () => {
       <Button
         className={classes.button}
         variant="outlined"
-        onClick={toggleAppTour}
+        onClick={() => dispatch(toggleAppTour())}
       >
         хотите узнать как?
       </Button>

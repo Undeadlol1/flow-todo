@@ -16,8 +16,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
 import { If, Then, Else, When } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
-import { useGlobal } from '../store/ui';
 import { TasksContext } from '../store/contexts';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -44,8 +44,8 @@ export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const { loading } = useContext(TasksContext);
+  const { isAppTourActive } = useSelector((state: any) => state.ui);
 
-  const { isAppTourActive } = useGlobal()[0];
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
 

@@ -26,7 +26,7 @@ import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
-import { ITask, SubtaskType } from '../store/index';
+import { Task, Subtask } from '../store/index';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ITaskPageProps {
-  task: ITask;
+  task: Task;
   taskId: string;
   loading: boolean;
   isAppIntroMode: boolean;
@@ -192,7 +192,7 @@ export default () => {
         })
         .catch(e => handleErrors(e));
     },
-    updateSubtask(subtask: SubtaskType) {
+    updateSubtask(subtask: Subtask) {
       setRequested(true);
       return updateSubtask(subtask, {
         isDone: true,

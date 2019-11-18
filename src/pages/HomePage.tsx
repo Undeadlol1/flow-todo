@@ -10,18 +10,21 @@ import cx from 'clsx';
 import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
 import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
-import CreateTask from '../components/tasks/CreateTask/CreateTask';
+import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
 import AppTour from '../components/ui/AppTour';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
 import { If, Then, Else, When } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
-import { useGlobal } from '../store/ui';
 import { TasksContext } from '../store/contexts';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
+  },
+  randomButtonContainer: {
+    margin: '0 auto',
   },
   fab: {
     position: 'fixed',
@@ -44,8 +47,8 @@ export default function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const { loading } = useContext(TasksContext);
+  const { isAppTourActive } = useSelector((state: any) => state.ui);
 
-  const { isAppTourActive } = useGlobal()[0];
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
 
@@ -59,7 +62,14 @@ export default function HomePage() {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={8}
+        lg={6}
+        className={classes.randomButtonContainer}
+      >
         <If condition={loading || isAppTourActive || isLoggedIn}>
           <Then>
             <RandomTaskButton className={'IntroHandle__taskButton'} />
@@ -78,7 +88,7 @@ export default function HomePage() {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <CreateTask autoFocus callback={toggleDialog} />
+          <UpsertTask autoFocus callback={toggleDialog} />
         </DialogContent>
       </Dialog>
       <When condition={!loading && (isAppTourActive || isLoggedIn)}>

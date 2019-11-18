@@ -1,3 +1,4 @@
+import React from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from 'firebase/app';
 import 'firebase/analytics';
@@ -15,12 +16,14 @@ import { useWindowSize } from '@reach/window-size';
 import i18n from 'i18next';
 import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import React from 'react';
-import en from './locales/en';
-import ru from './locales/ru';
+// Other
+import { Provider as ReduxProvider } from 'react-redux';
 
 import Router from './Router';
+import en from './locales/en';
+import ru from './locales/ru';
 import './App.css';
+import store from './store';
 
 initializeFirebase();
 initializeI18n();
@@ -45,12 +48,14 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <SnackbarProvider dense={isMobile}>
-          <Router />
-        </SnackbarProvider>
-      </ThemeProvider>
+      <ReduxProvider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <SnackbarProvider dense={isMobile}>
+            <Router />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </ReduxProvider>
     </div>
   );
 }

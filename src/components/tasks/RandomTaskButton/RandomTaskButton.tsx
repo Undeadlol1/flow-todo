@@ -11,10 +11,10 @@ import Zoom from '@material-ui/core/Zoom';
 import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { TasksContext } from '../../../store/contexts';
-import { useGlobal } from '../../../store/ui';
-import { ITask } from '../../../store/index';
 import { firestore } from 'firebase/app';
+import { useTypedSelector } from '../../../store/index';
 
 const useStyles = makeStyles({
   paper: {
@@ -40,7 +40,7 @@ export function RandomTaskButton({
   const classes = useStyles();
   const [t] = useTranslation();
 
-  const { isAppTourActive } = useGlobal()[0];
+  const { isAppTourActive } = useTypedSelector(s => s.ui);
 
   const docs = get(tasks, 'docs', []);
   const docsCount = docs.length;
@@ -53,7 +53,7 @@ export function RandomTaskButton({
   return (
     <Button
       color="primary"
-      className={className}
+      className={clsx(['RandomTaskButton', className])}
       disabled={isDisabled}
       to={`/tasks/${randomTaskId}`}
       component={isDisabled ? 'div' : Link}
@@ -95,7 +95,7 @@ export default function RandomTaskButtonContainer(
       {...{
         ...props,
         loading,
-        tasks: tasks || {},
+        tasks: tasks,
       }}
     />
   );

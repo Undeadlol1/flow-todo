@@ -1,8 +1,17 @@
 import nanoid from 'nanoid';
 import { firestore } from 'firebase/app';
 import subtractDays from 'date-fns/subDays';
+import {
+  configureStore,
+  getDefaultMiddleware,
+  combineReducers,
+} from '@reduxjs/toolkit';
+import tasksReducer from './tasksReducer';
+import uiSlice from './uiSlice';
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
+import extend from 'lodash/extend';
 
-export interface ITask {
+export type Task = {
   name: string;
   isDone: boolean;
   doneAt?: number;
@@ -10,41 +19,28 @@ export interface ITask {
   userId: string;
   note?: string;
   subtasks?: any[];
-}
+};
 
 export function upsertTask(
   values: { name: string; userId?: string },
   taskId?: string,
 ): Promise<void | Error> {
-  if (!taskId && !values.userId)
+  const isCreate = !taskId;
+  const payload = extend(
+    values,
+    isCreate && {
+      isDone: false,
+      dueAt: subtractDays(new Date(), 1).getTime(),
+    },
+  );
+
+  if (isCreate && !values.userId)
     return Promise.reject('You forgot to add userId');
+
   return firestore()
     .collection('tasks')
     .doc(taskId || nanoid())
-    .set(
-      taskId
-        ? values
-        : {
-            ...values,
-            isDone: false,
-            dueAt: subtractDays(new Date(), 1).getTime(),
-          },
-      { merge: true },
-    );
-}
-
-// TODO: is this function ever used? Remove it?
-export function createTask(values: {
-  name: string;
-  userId: string;
-}): Promise<firestore.DocumentReference> {
-  return firestore()
-    .collection('tasks')
-    .add({
-      ...values,
-      isDone: false,
-      dueAt: subtractDays(new Date(), 1).getTime(),
-    });
+    .set(payload, { merge: true });
 }
 
 export function deleteTask(taskId: string): Promise<void | Error> {
@@ -72,16 +68,16 @@ export function createSubtask(
     });
 }
 
-export interface SubtaskType {
+export type Subtask = {
   id: string;
   isDone: boolean;
   parentId: string;
   createdAt: number;
   name: string;
-}
+};
 
 export async function updateSubtask(
-  subtask: SubtaskType,
+  subtask: Subtask,
   values: {
     name?: string;
     doneAt: number;
@@ -92,7 +88,7 @@ export async function updateSubtask(
   const task: any = await docRef.get();
   const newSubtasks: any[] = task
     .data()
-    .subtasks.map((i: SubtaskType) => {
+    .subtasks.map((i: Subtask) => {
       return i.id === subtask.id ? Object.assign({}, i, values) : i;
     });
   return docRef.update({
@@ -112,3 +108,26 @@ export function deleteSubtask(
       subtasks: firestore.FieldValue.arrayRemove(subtask),
     });
 }
+
+const rootReducer = combineReducers({
+  ui: uiSlice,
+  tasks: tasksReducer,
+});
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [...getDefaultMiddleware()],
+  devTools: process.env.NODE_ENV !== 'production',
+  enhancers: [],
+});
+
+export const useTypedSelector: TypedUseSelectorHook<
+  ReturnType<typeof rootReducer>
+> = useSelector;
+
+export default store;
+// The store has been created with these options:
+// - The slice reducers were automatically passed to combineReducers()
+// - redux-thunk and redux-logger were added as middleware
+// - The Redux DevTools Extension is disabled for production
+// - The middleware, batch, and devtools enhancers were automatically composed together

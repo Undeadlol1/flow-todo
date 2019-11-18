@@ -43,20 +43,6 @@ export function upsertTask(
     .set(payload, { merge: true });
 }
 
-// TODO: is this function ever used? Remove it?
-export function createTask(values: {
-  name: string;
-  userId: string;
-}): Promise<firestore.DocumentReference> {
-  return firestore()
-    .collection('tasks')
-    .add({
-      ...values,
-      isDone: false,
-      dueAt: subtractDays(new Date(), 1).getTime(),
-    });
-}
-
 export function deleteTask(taskId: string): Promise<void | Error> {
   return firestore()
     .doc('tasks/' + taskId)

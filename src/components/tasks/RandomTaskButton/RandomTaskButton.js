@@ -11,6 +11,7 @@ import Zoom from '@material-ui/core/Zoom';
 import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { TasksContext } from '../../../store/contexts';
 import { useTypedSelector } from '../../../store/index';
 
@@ -37,7 +38,7 @@ export function RandomTaskButton({ tasks, loading, className }) {
   return (
     <Button
       color="primary"
-      className={className}
+      className={clsx(['RandomTaskButton', className])}
       disabled={isDisabled}
       to={`/tasks/${randomTaskId}`}
       component={isDisabled ? 'div' : Link}

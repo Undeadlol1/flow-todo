@@ -14,6 +14,7 @@ import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
 import invoke from 'lodash/invoke';
 import { upsertTask } from '../../../store/index';
+import { FormState, Ref } from 'react-hook-form/dist/types';
 
 const useStyles = makeStyles({
   container: {
@@ -25,11 +26,26 @@ const useStyles = makeStyles({
   },
 });
 
-export function CreateTask({ error, ...props }) {
+interface CommonProps {
+  taskId?: string;
+  autoFocus?: boolean;
+  defaultValue?: string;
+}
+
+interface ComponentProps extends CommonProps {
+  error?: Error;
+  register: Ref;
+  isValid?: boolean;
+  formState: FormState;
+  onSubmit: Function;
+  handleSubmit: Function;
+}
+
+export function UpsertTask({ error, ...props }: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
 
-  let isSubmitDisabled = true;
+  let isSubmitDisabled: boolean | Error = true;
   if (isUndefined(props.isValid)) {
     // eslint-disable-next-line react/prop-types
     isSubmitDisabled = error || props.formState.isSubmitting;
@@ -68,11 +84,11 @@ export function CreateTask({ error, ...props }) {
   );
 }
 
-CreateTask.defaultValues = {
+UpsertTask.defaultValues = {
   callback: () => {},
 };
 
-CreateTask.propTypes = {
+UpsertTask.propTypes = {
   user: PropTypes.object,
   error: PropTypes.string,
   isValid: PropTypes.bool,
@@ -86,10 +102,20 @@ CreateTask.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-function CreateTaskContainer(props) {
+type FormData = {
+  name: string;
+};
+
+interface ContainerProps extends CommonProps {
+  callback?: Function;
+  showSnackbarOnSuccess?: boolean;
+}
+
+function UpsertTaskContainer(props: ContainerProps) {
+  const { taskId, showSnackbarOnSuccess = true } = props;
   const [t] = useTranslation();
   const [user] = useAuthState(auth());
-  const formProps = useForm({
+  const formProps = useForm<FormData>({
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
@@ -98,40 +124,53 @@ function CreateTaskContainer(props) {
   });
   const { enqueueSnackbar } = useSnackbar();
 
-  function createDocumentAndReset({ name }) {
-    return upsertTask({ name, userId: user.uid }, props.taskId)
+  function createDocumentAndReset({ name }: { name: string }) {
+    return upsertTask(
+      { name, userId: user && user.uid },
+      props.taskId,
+    )
       .then(() => {
         // TODO add "resetFormOnSuccess" property instead of this
         // eslint-disable-next-line no-unused-expressions
         !props.taskId && formProps.reset();
-        enqueueSnackbar(t('Successfully saved'), {
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'left',
-            autoHideDuration: 2000,
-          },
-        });
+        if (showSnackbarOnSuccess) {
+          enqueueSnackbar(t('Successfully saved'), {
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
+          });
+        }
         invoke(props, 'callback');
       })
-      .catch(e => formProps.setError('name', 'misMatch', e && e.message),);
+      .catch(e =>
+        formProps.setError('name', 'misMatch', e && e.message),
+      );
   }
   const mergedProps = {
     user,
+    taskId,
+    autoFocus: props.autoFocus,
+    defaultValue: props.defaultValue,
     onSubmit: createDocumentAndReset,
     error: user
       ? get(formProps, 'errors.name.message')
       : t('Please login'),
     ...formProps,
-    ...props,
   };
-  return <CreateTask {...mergedProps} />;
+  return <UpsertTask {...mergedProps} />;
 }
 
-CreateTaskContainer.propTypes = {
+UpsertTaskContainer.defaultValues = {
+  showSnackbarOnSuccess: true,
+} as Partial<ContainerProps>;
+
+UpsertTaskContainer.propTypes = {
   callback: PropTypes.func,
   taskId: PropTypes.string,
   autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,
+  showSnackbarOnSuccess: PropTypes.bool,
 };
 
-export default CreateTaskContainer;
+export default UpsertTaskContainer;

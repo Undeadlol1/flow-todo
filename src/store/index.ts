@@ -9,6 +9,7 @@ import {
 import tasksReducer from './tasksReducer';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
+import extend from 'lodash/extend';
 
 export type Task = {
   name: string;
@@ -24,21 +25,22 @@ export function upsertTask(
   values: { name: string; userId?: string },
   taskId?: string,
 ): Promise<void | Error> {
-  if (!taskId && !values.userId)
+  const isCreate = !taskId;
+  const payload = extend(
+    values,
+    isCreate && {
+      isDone: false,
+      dueAt: subtractDays(new Date(), 1).getTime(),
+    },
+  );
+
+  if (isCreate && !values.userId)
     return Promise.reject('You forgot to add userId');
+
   return firestore()
     .collection('tasks')
     .doc(taskId || nanoid())
-    .set(
-      taskId
-        ? values
-        : {
-            ...values,
-            isDone: false,
-            dueAt: subtractDays(new Date(), 1).getTime(),
-          },
-      { merge: true },
-    );
+    .set(payload, { merge: true });
 }
 
 // TODO: is this function ever used? Remove it?

@@ -1,35 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
-interface CommentsState {
-  commentsByIssue: Record<number, Comment[] | undefined>;
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ITask } from './index';
+
+interface TasksState {
+  tasks?: ITask[];
   loading: boolean;
   error: string | null;
 }
 
-const initialState: CommentsState = {
-  commentsByIssue: {},
-  loading: false,
+const initialState: TasksState = {
+  tasks: [],
   error: null,
+  loading: false,
 };
 
-const postsSlice = createSlice({
-  name: 'posts',
-  initialState: [],
+const tasksSlice = createSlice({
+  name: 'tasks',
+  initialState,
   reducers: {
-    getCommentsSuccess(state, action: PayloadAction<CommentLoaded>) {
-      // const { comments, issueId } = action.payload;
-      // state.commentsByIssue[issueId] = comments;
-      // state.loading = false;
-      // state.error = null;
+    getTasksSuccess(
+      state,
+      action: PayloadAction<ITask[] | undefined>,
+    ) {
+      state.tasks = action.payload ? action.payload : [];
+      state.loading = false;
+      state.error = null;
     },
-    createPost(state, action) {},
-    updatePost(state, action) {},
-    deletePost(state, action) {},
   },
 });
 
-export const {
-  createPost,
-  updatePost,
-  deletePost,
-} = postsSlice.actions;
-export default postsSlice.reducer;
+export const { getTasksSuccess } = tasksSlice.actions;
+
+export default tasksSlice.reducer;

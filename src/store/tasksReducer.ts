@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ITask } from './index';
+import { Task } from './index';
 
 interface TasksState {
-  tasks?: ITask[];
+  tasks?: Task[];
   loading: boolean;
   error: string | null;
 }
@@ -19,7 +19,7 @@ const tasksSlice = createSlice({
   reducers: {
     getTasksSuccess(
       state,
-      action: PayloadAction<ITask[] | undefined>,
+      action: PayloadAction<Task[] | undefined>,
     ) {
       state.tasks = action.payload ? action.payload : [];
       state.loading = false;

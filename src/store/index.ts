@@ -10,7 +10,7 @@ import tasksReducer from './tasksReducer';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 
-export interface ITask {
+export type Task = {
   name: string;
   isDone: boolean;
   doneAt?: number;
@@ -18,7 +18,7 @@ export interface ITask {
   userId: string;
   note?: string;
   subtasks?: any[];
-}
+};
 
 export function upsertTask(
   values: { name: string; userId?: string },
@@ -80,16 +80,16 @@ export function createSubtask(
     });
 }
 
-export interface SubtaskType {
+export type Subtask = {
   id: string;
   isDone: boolean;
   parentId: string;
   createdAt: number;
   name: string;
-}
+};
 
 export async function updateSubtask(
-  subtask: SubtaskType,
+  subtask: Subtask,
   values: {
     name?: string;
     doneAt: number;
@@ -100,7 +100,7 @@ export async function updateSubtask(
   const task: any = await docRef.get();
   const newSubtasks: any[] = task
     .data()
-    .subtasks.map((i: SubtaskType) => {
+    .subtasks.map((i: Subtask) => {
       return i.id === subtask.id ? Object.assign({}, i, values) : i;
     });
   return docRef.update({

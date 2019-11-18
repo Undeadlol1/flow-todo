@@ -24,6 +24,7 @@ const HardChoices = (props: {
           <UpsertTask
             taskId={props.taskId}
             defaultValue={props.task.name}
+            resetFormOnSuccess={false}
             showSnackbarOnSuccess={false}
           />
         </Card>

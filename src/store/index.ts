@@ -1,5 +1,6 @@
 import nanoid from 'nanoid';
-import { firestore } from 'firebase/app';
+import { reduxFirestore, firestoreReducer } from 'redux-firestore';
+import firebase, { firestore } from 'firebase/app';
 import subtractDays from 'date-fns/subDays';
 import {
   configureStore,
@@ -10,6 +11,7 @@ import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
+import { initializeFirebase } from '../services/index';
 
 export type Task = {
   name: string;
@@ -109,16 +111,19 @@ export function deleteSubtask(
     });
 }
 
+initializeFirebase();
+
 const rootReducer = combineReducers({
   ui: uiSlice,
   tasks: tasksSlice,
+  firestore: firestoreReducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: [...getDefaultMiddleware()],
   devTools: process.env.NODE_ENV !== 'production',
-  enhancers: [],
+  enhancers: [reduxFirestore(firebase)],
 });
 
 export const useTypedSelector: TypedUseSelectorHook<
@@ -126,8 +131,3 @@ export const useTypedSelector: TypedUseSelectorHook<
 > = useSelector;
 
 export default store;
-// The store has been created with these options:
-// - The slice reducers were automatically passed to combineReducers()
-// - redux-thunk and redux-logger were added as middleware
-// - The Redux DevTools Extension is disabled for production
-// - The middleware, batch, and devtools enhancers were automatically composed together

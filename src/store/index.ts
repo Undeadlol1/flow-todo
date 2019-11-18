@@ -4,8 +4,11 @@ import subtractDays from 'date-fns/subDays';
 import {
   configureStore,
   getDefaultMiddleware,
+  combineReducers,
 } from '@reduxjs/toolkit';
 import tasksReducer from './tasksReducer';
+import uiSlice from './uiSlice';
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 
 export interface ITask {
   name: string;
@@ -118,16 +121,21 @@ export function deleteSubtask(
     });
 }
 
-const reducer = {
+const rootReducer = combineReducers({
+  ui: uiSlice,
   tasks: tasksReducer,
-};
+});
 
 const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: [...getDefaultMiddleware()],
   devTools: process.env.NODE_ENV !== 'production',
   enhancers: [],
 });
+
+export const useTypedSelector: TypedUseSelectorHook<
+  ReturnType<typeof rootReducer>
+> = useSelector;
 
 export default store;
 // The store has been created with these options:

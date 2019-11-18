@@ -112,7 +112,7 @@ interface ContainerProps extends CommonProps {
 }
 
 function UpsertTaskContainer(props: ContainerProps) {
-  const { taskId } = props;
+  const { taskId, showSnackbarOnSuccess = true } = props;
   const [t] = useTranslation();
   const [user] = useAuthState(auth());
   const formProps = useForm<FormData>({
@@ -133,7 +133,7 @@ function UpsertTaskContainer(props: ContainerProps) {
         // TODO add "resetFormOnSuccess" property instead of this
         // eslint-disable-next-line no-unused-expressions
         !props.taskId && formProps.reset();
-        if (props.showSnackbarOnSuccess) {
+        if (showSnackbarOnSuccess) {
           enqueueSnackbar(t('Successfully saved'), {
             anchorOrigin: {
               vertical: 'top',
@@ -163,7 +163,7 @@ function UpsertTaskContainer(props: ContainerProps) {
 
 UpsertTaskContainer.defaultValues = {
   showSnackbarOnSuccess: true,
-};
+} as Partial<ContainerProps>;
 
 UpsertTaskContainer.propTypes = {
   callback: PropTypes.func,

@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { TasksContext } from '../../../store/contexts';
 import { firestore } from 'firebase/app';
+// import * as R from 'ramda';
 import { useTypedSelector } from '../../../store/index';
 
 const useStyles = makeStyles({
@@ -46,7 +47,11 @@ export function RandomTaskButton({
   const docsCount = docs.length;
   const randomTaskId = isAppTourActive
     ? '/tasks/introExample'
-    : get(docs, `[${[random(docsCount - 1)]}].id`);
+    : get(docs, `[${random(docsCount - 1)}].id`);
+  // const activeTaskId = R.compose(
+  //   R.prop('id'),
+  //   R.find(i => i.get('isActive') === true),
+  // )(docs);
   const buttonText = t(randomTaskId ? 'start' : 'noTasks');
   const isDisabled = loading || get(tasks, 'empty') || !randomTaskId;
 

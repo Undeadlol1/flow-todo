@@ -22,7 +22,7 @@ export type Task = {
 };
 
 export function upsertTask(
-  values: { name: string; userId?: string },
+  values: { name?: string; userId?: string; isCurrent?: boolean },
   taskId?: string,
 ): Promise<void | Error> {
   const isCreate = !taskId;

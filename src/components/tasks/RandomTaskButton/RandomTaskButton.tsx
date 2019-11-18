@@ -14,8 +14,11 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { TasksContext } from '../../../store/contexts';
 import { firestore } from 'firebase/app';
-// import * as R from 'ramda';
-import { useTypedSelector } from '../../../store/index';
+import compose from 'ramda/src/compose';
+import prop from 'ramda/src/prop';
+import find from 'ramda/src/find';
+import { useTypedSelector, upsertTask } from '../../../store/index';
+import isEmpty from 'lodash/isEmpty';
 
 const useStyles = makeStyles({
   paper: {
@@ -25,10 +28,6 @@ const useStyles = makeStyles({
 
 interface Props {
   tasks?: firestore.QuerySnapshot;
-  // tasks: {
-  //   empty: boolean;
-  //   docs?: ITask[];
-  // };
   loading: boolean;
   className?: string;
 }
@@ -40,27 +39,34 @@ export function RandomTaskButton({
 }: Props) {
   const classes = useStyles();
   const [t] = useTranslation();
-
   const { isAppTourActive } = useTypedSelector(s => s.ui);
 
   const docs = get(tasks, 'docs', []);
-  const docsCount = docs.length;
-  const randomTaskId = isAppTourActive
-    ? '/tasks/introExample'
-    : get(docs, `[${random(docsCount - 1)}].id`);
-  // const activeTaskId = R.compose(
-  //   R.prop('id'),
-  //   R.find(i => i.get('isActive') === true),
-  // )(docs);
-  const buttonText = t(randomTaskId ? 'start' : 'noTasks');
-  const isDisabled = loading || get(tasks, 'empty') || !randomTaskId;
+  const activeTaskId = compose(
+    // @ts-ignore
+    prop('id'),
+    find((i: firestore.DocumentData) => i.get('isCurrent') === true),
+  )(docs);
+  // TODO: move logic into a service?
+  if (!isEmpty(docs) && !activeTaskId) {
+    const randomTaskId = isAppTourActive
+      ? '/tasks/introExample'
+      : get(docs, `[${random(docs.length - 1)}].id`);
+    upsertTask({ isCurrent: true }, randomTaskId);
+  }
+
+  const buttonText = t(activeTaskId ? 'start' : 'noTasks');
+  const isDisabled = loading || get(tasks, 'empty') || !activeTaskId;
+  const linkPath = `/tasks/${
+    isAppTourActive ? 'introExample' : activeTaskId
+  }`;
 
   return (
     <Button
+      to={linkPath}
       color="primary"
-      className={clsx(['RandomTaskButton', className])}
       disabled={isDisabled}
-      to={`/tasks/${randomTaskId}`}
+      className={clsx(['RandomTaskButton', className])}
       component={isDisabled ? 'div' : Link}
     >
       <Paper elevation={6} className={classes.paper}>

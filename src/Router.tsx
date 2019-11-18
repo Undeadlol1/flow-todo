@@ -23,10 +23,10 @@ export default function Router() {
         .where('dueAt', '<', today),
   );
   const providerValue = {
-    tasks,
     currentTask: {},
     error: tasksError || userError,
     loading: tasksLoading || userLoading,
+    tasks: tasks || ({} as firestore.QuerySnapshot),
   };
   return (
     <BrowserRouter>

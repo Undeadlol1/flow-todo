@@ -6,7 +6,7 @@ type ContextProps = {
   loading: boolean;
 };
 
-export const TasksContext = createContext(<Partial<ContextProps>>{
+export const TasksContext = createContext({
   tasks: {},
   loading: true,
-});
+} as Partial<ContextProps>);

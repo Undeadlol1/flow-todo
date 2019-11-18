@@ -17,7 +17,6 @@
     "@types/react-joyride": "^2.0.5",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.2",
-    "@types/use-global-hook": "^0.1.2",
     "clsx": "^1.0.4",
     "date-fns": "^2.6.0",
     "debug": "^4.1.1",
@@ -45,7 +44,6 @@
     "react-use-toggle": "^0.1.0",
     "redux": "^4.0.4",
     "typescript": "3.6.4",
-    "use-global-hook": "^0.1.12",
     "yup": "^0.27.0"
   },
   "scripts": {

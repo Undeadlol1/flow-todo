@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UiState } from './ui';
+
+export type UiState = {
+  loading: boolean;
+  isAppTourActive: boolean;
+};
 
 const initialState: UiState = {
+  loading: true,
   isAppTourActive: false,
 };
 

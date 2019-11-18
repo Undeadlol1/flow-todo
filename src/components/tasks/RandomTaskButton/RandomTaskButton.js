@@ -12,7 +12,7 @@ import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { TasksContext } from '../../../store/contexts';
-import { useGlobal } from '../../../store/ui';
+import { useTypedSelector } from '../../../store/index';
 
 const useStyles = makeStyles({
   paper: {
@@ -24,7 +24,7 @@ export function RandomTaskButton({ tasks, loading, className }) {
   const classes = useStyles();
   const [t] = useTranslation();
 
-  const { isAppTourActive } = useGlobal()[0];
+  const { isAppTourActive } = useTypedSelector(s => s.ui);
 
   const docs = get(tasks, 'docs', []);
   const docsCount = docs.length;

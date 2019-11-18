@@ -6,7 +6,7 @@ import {
   getDefaultMiddleware,
   combineReducers,
 } from '@reduxjs/toolkit';
-import tasksReducer from './tasksReducer';
+import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
@@ -111,7 +111,7 @@ export function deleteSubtask(
 
 const rootReducer = combineReducers({
   ui: uiSlice,
-  tasks: tasksReducer,
+  tasks: tasksSlice,
 });
 
 const store = configureStore({

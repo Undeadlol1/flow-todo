@@ -48,7 +48,7 @@ export function RandomTaskButton({
     ? '/tasks/introExample'
     : get(docs, `[${[random(docsCount - 1)]}].id`);
   const buttonText = t(randomTaskId ? 'start' : 'noTasks');
-  const isDisabled = loading || tasks.empty || !randomTaskId;
+  const isDisabled = loading || get(tasks, 'empty') || !randomTaskId;
 
   return (
     <Button
@@ -82,7 +82,7 @@ RandomTaskButton.propTypes = {
 
 interface ContainerProps {
   className?: string;
-  tasks: firestore.QuerySnapshot;
+  tasks?: firestore.QuerySnapshot;
 }
 
 export default function RandomTaskButtonContainer(
@@ -94,8 +94,8 @@ export default function RandomTaskButtonContainer(
     <RandomTaskButton
       {...{
         ...props,
-        loading,
         tasks: tasks,
+        loading: Boolean(loading),
       }}
     />
   );

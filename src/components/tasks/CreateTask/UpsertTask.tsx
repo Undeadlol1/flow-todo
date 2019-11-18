@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
-import invoke from 'lodash/invoke';
 import { upsertTask } from '../../../store/index';
 import { FormState, Ref } from 'react-hook-form/dist/types';
 
@@ -109,10 +108,15 @@ type FormData = {
 interface ContainerProps extends CommonProps {
   callback?: Function;
   showSnackbarOnSuccess?: boolean;
+  resetFormOnSuccess?: boolean;
 }
 
 function UpsertTaskContainer(props: ContainerProps) {
-  const { taskId, showSnackbarOnSuccess = true } = props;
+  const {
+    taskId,
+    showSnackbarOnSuccess = true,
+    resetFormOnSuccess = true,
+  } = props;
   const [t] = useTranslation();
   const [user] = useAuthState(auth());
   const formProps = useForm<FormData>({
@@ -130,9 +134,7 @@ function UpsertTaskContainer(props: ContainerProps) {
       props.taskId,
     )
       .then(() => {
-        // TODO add "resetFormOnSuccess" property instead of this
-        // eslint-disable-next-line no-unused-expressions
-        !props.taskId && formProps.reset();
+        if (resetFormOnSuccess) formProps.reset();
         if (showSnackbarOnSuccess) {
           enqueueSnackbar(t('Successfully saved'), {
             anchorOrigin: {
@@ -141,7 +143,7 @@ function UpsertTaskContainer(props: ContainerProps) {
             },
           });
         }
-        invoke(props, 'callback');
+        if (props.callback) props.callback();
       })
       .catch(e =>
         formProps.setError('name', 'misMatch', e && e.message),
@@ -171,6 +173,7 @@ UpsertTaskContainer.propTypes = {
   autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,
   showSnackbarOnSuccess: PropTypes.bool,
+  resetFormOnSuccess: PropTypes.bool,
 };
 
 export default UpsertTaskContainer;

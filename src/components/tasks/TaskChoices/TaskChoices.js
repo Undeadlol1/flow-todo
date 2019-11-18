@@ -44,17 +44,23 @@ const TaskActions = props => {
     className: classes.button,
   };
   const didGood = () => props.updateTask(
-      calculateNextRepetition(props.task, 'normal'),
+      {
+        isCurrent: false,
+        ...calculateNextRepetition(props.task, 'normal'),
+      },
       t('Good job!'),
     );
   const didGreat = () => props.updateTask(
-      calculateNextRepetition(props.task, 'good'),
+      {
+        isCurrent: false,
+        ...calculateNextRepetition(props.task, 'good'),
+      },
       t('Good job!'),
     );
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () => props.updateTask(
-          { isDone: true, doneAt: Date.now() },
+          { isCurrent: false, isDone: true, doneAt: Date.now() },
           t('Good job!'),
         );
   return (

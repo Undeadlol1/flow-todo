@@ -200,7 +200,10 @@ export default () => {
       })
         .then(() => {
           this.updateTask(
-            calculateNextRepetition(task, 'good'),
+            {
+              isCurrent: false,
+              ...calculateNextRepetition(task, 'good'),
+            },
             t('Good job!'),
           );
         })

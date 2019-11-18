@@ -161,11 +161,11 @@ function UpsertTaskContainer(props: ContainerProps) {
   return <UpsertTask {...mergedProps} />;
 }
 
-CreateTaskContainer.defaultValues = {
+UpsertTaskContainer.defaultValues = {
   showSnackbarOnSuccess: true,
 };
 
-CreateTaskContainer.propTypes = {
+UpsertTaskContainer.propTypes = {
   callback: PropTypes.func,
   taskId: PropTypes.string,
   autoFocus: PropTypes.bool,
@@ -173,4 +173,4 @@ CreateTaskContainer.propTypes = {
   showSnackbarOnSuccess: PropTypes.bool,
 };
 
-export default CreateTaskContainer;
+export default UpsertTaskContainer;

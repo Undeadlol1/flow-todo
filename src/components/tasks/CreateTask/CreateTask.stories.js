@@ -1,15 +1,15 @@
 import React from 'react';
-import { CreateTask } from './UpsertTask';
+import { UpsertTask } from './UpsertTask';
 
 export default {
-  component: CreateTask,
-  title: 'CreateTask',
+  component: UpsertTask,
+  title: 'UpsertTask',
 };
 
-export const normal = () => <CreateTask />;
+export const normal = () => <UpsertTask />;
 
-export const invalid = () => <CreateTask isValid={false} />;
+export const invalid = () => <UpsertTask isValid={false} />;
 
-export const withError = () => <CreateTask error="Error occured" />;
+export const withError = () => <UpsertTask error="Error occured" />;
 
 withError.title = 'With error';

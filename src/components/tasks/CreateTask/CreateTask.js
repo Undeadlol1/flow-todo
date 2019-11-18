@@ -104,13 +104,15 @@ function CreateTaskContainer(props) {
         // TODO add "resetFormOnSuccess" property instead of this
         // eslint-disable-next-line no-unused-expressions
         !props.taskId && formProps.reset();
-        enqueueSnackbar(t('Successfully saved'), {
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'left',
-            autoHideDuration: 2000,
-          },
-        });
+        if (props.showSnackbarOnSuccess) {
+          enqueueSnackbar(t('Successfully saved'), {
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+              autoHideDuration: 2000,
+            },
+          });
+        }
         invoke(props, 'callback');
       })
       .catch(e => formProps.setError('name', 'misMatch', e && e.message),);
@@ -127,11 +129,16 @@ function CreateTaskContainer(props) {
   return <CreateTask {...mergedProps} />;
 }
 
+CreateTaskContainer.defaultValues = {
+  showSnackbarOnSuccess: true,
+};
+
 CreateTaskContainer.propTypes = {
   callback: PropTypes.func,
   taskId: PropTypes.string,
   autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,
+  showSnackbarOnSuccess: PropTypes.bool,
 };
 
 export default CreateTaskContainer;

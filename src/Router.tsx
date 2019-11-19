@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import { firestore, auth } from 'firebase/app';
@@ -9,12 +9,38 @@ import SignInPage from './pages/SignInPage';
 import HomePage from './pages/HomePage';
 import TaskPage from './pages/TaskPage';
 import { TasksContext } from './store/contexts';
+import { useDispatch } from 'react-redux';
+import { getTasksSuccess } from './store/tasksSlice';
+import { normalizeQueryResponse } from './services/index';
 
 const today = Date.now();
 
 export default function Router() {
+  const dispatch = useDispatch();
   const [user, userLoading, userError] = useAuthState(auth());
   const db = firestore().collection('tasks');
+
+  useEffect(() => {
+    const unsubscribe = db
+      .where('userId', '==', user && user.uid)
+      .where('isDone', '==', false)
+      .where('dueAt', '<', today)
+      .onSnapshot(
+        tasksSnapshot => {
+          dispatch(
+            getTasksSuccess(
+              // @ts-ignore
+              normalizeQueryResponse(tasksSnapshot),
+            ),
+          );
+        },
+        error => {
+          console.error('tasks snapshot returned error', error);
+        },
+      );
+    return () => unsubscribe();
+  }, [user]);
+
   const [tasks, tasksLoading, tasksError] = useCollection(
     user &&
       db

@@ -13,12 +13,13 @@ import extend from 'lodash/extend';
 
 export type Task = {
   name: string;
-  isDone: boolean;
-  doneAt?: number;
   dueAt: number;
+  doneAt?: number;
   userId: string;
   note?: string;
   subtasks?: any[];
+  isDone: boolean;
+  isCurrent?: boolean;
 };
 
 export function upsertTask(

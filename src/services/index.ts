@@ -2,24 +2,25 @@ import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
+import { firestore } from 'firebase';
 
 const logger = debug('utils');
 debug.enable('utils');
 
 interface Task {
-  repetitionLevel: number | undefined
+  repetitionLevel: number | undefined;
 }
 
 interface Repetition {
-  dueAt: number,
-  repetitionLevel: number,
+  dueAt: number;
+  repetitionLevel: number;
 }
 
-function calculateNextRepetition(
+export function calculateNextRepetition(
   task: Task,
   confidence = 'bad' || 'normal' || 'good',
 ): Repetition {
-  if (!confidence) confidence = 'normal'
+  if (!confidence) confidence = 'normal';
   logger('task: ', task);
   logger('confidence: ', confidence);
   const today = new Date();
@@ -44,7 +45,8 @@ function calculateNextRepetition(
   else if (confidence === 'bad') newLevelIndex -= 2;
 
   if (newLevelIndex < 0) newLevelIndex = 0;
-  else if (newLevelIndex >= levels.length) newLevelIndex = levels.length - 1;
+  else if (newLevelIndex >= levels.length)
+    newLevelIndex = levels.length - 1;
 
   logger('levels: %O', levels);
   logger('newLevelIndex: ', newLevelIndex);
@@ -58,4 +60,12 @@ function calculateNextRepetition(
   };
 }
 
-export { calculateNextRepetition };
+export function normalizeQueryResponse(
+  snapshot: firestore.QuerySnapshot,
+) {
+  if (snapshot.empty) return [];
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data(),
+  }));
+}

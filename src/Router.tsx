@@ -34,7 +34,9 @@ export default function Router() {
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">
-            <TaskPage />
+            <TasksContext.Provider value={providerValue}>
+              <TaskPage />
+            </TasksContext.Provider>
           </Route>
           <Route path="/signIn">
             <SignInPage />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { firestore } from 'firebase/app';
@@ -27,6 +27,8 @@ import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
 import { Task, Subtask } from '../store/index';
+import { TasksContext } from '../store/contexts';
+import invoke from 'lodash/invoke';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -145,6 +147,7 @@ export default () => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
+  // TODO this needs to be a service
   const handleErrors = (e: Error) =>
     enqueueSnackbar(get(e, 'message') || t('Something went wrong'), {
       variant: 'error',
@@ -155,10 +158,20 @@ export default () => {
   const taskPointer = firestore()
     .collection('tasks')
     .doc(taskId);
-  // eslint-disable-next-line prefer-const
+  const { tasks } = useContext(TasksContext);
+  // TODO: this is a mess. Rework this
+  const currentTask = invoke(
+    // @ts-ignore
+    get<Task[]>(tasks, 'docs', []).find((t: Task) =>
+      // @ts-ignore
+      t.get('isCurrent'),
+    ),
+    'data',
+  );
+
   let [task, taskLoading, taskError] = useDocumentData(
     // @ts-ignore
-    !isAppIntroMode && taskPointer,
+    !isAppIntroMode || !currentTask ? taskPointer : undefined,
   );
 
   if (taskError) handleErrors(taskError);

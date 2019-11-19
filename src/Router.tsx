@@ -39,7 +39,7 @@ export default function Router() {
         },
       );
     return () => unsubscribe();
-  }, [user]);
+  }, [user, db, dispatch]);
 
   const [tasks, tasksLoading, tasksError] = useCollection(
     user &&

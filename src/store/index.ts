@@ -12,6 +12,7 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
 
 export type Task = {
+  id?: string;
   name: string;
   dueAt: number;
   doneAt?: number;
@@ -20,6 +21,7 @@ export type Task = {
   subtasks?: any[];
   isDone: boolean;
   isCurrent?: boolean;
+  repetitionLevel?: number;
 };
 
 export function upsertTask(

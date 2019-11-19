@@ -5,7 +5,6 @@ module.exports = {
     'jest/globals': true,
   },
   extends: [
-    'plugin:flowtype/recommended',
     // "plugin:prettier/recommended",
     'airbnb',
     'plugin:import/errors',
@@ -24,13 +23,9 @@ module.exports = {
   plugins: [
     'react',
     'jest',
-    'flowtype',
     // 'prettier',
   ],
   settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: true,
-    },
     'import/resolver': {
       node: {
         moduleDirectory: ['node_modules', 'src/'],

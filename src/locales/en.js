@@ -23,6 +23,7 @@ export default {
     'Something went wrong': 'Something went wrong',
     'Add a note': 'Add a note',
     'A note': 'A note',
+    'Edit the note': 'Обновить заметку',
     hard: "It's hard",
     notImportant: "It's not important",
     'dont want to': "Don't want to",

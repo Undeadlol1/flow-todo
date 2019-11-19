@@ -23,6 +23,7 @@ export default {
     'Good job!': 'Молодец!',
     'Something went wrong': 'Что-то пошло не так',
     'Add a note': 'Добавить заметку',
+    'Edit the note': 'Обновить заметку',
     'A note': 'Заметка',
     'there are difficulties': 'Есть трудности',
     hard: 'Тяжело',

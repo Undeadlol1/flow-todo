@@ -69,7 +69,9 @@ const UpsertNote = props => {
         helperText={error}
         inputRef={register}
         error={Boolean(error)}
-        label={t('Add a note')}
+        label={
+          props.defaultValue ? t('Edit the note') : t('Add a note')
+        }
         defaultValue={props.defaultValue}
         onChange={debounce(createNote, 1500)}
       />

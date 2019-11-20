@@ -123,6 +123,7 @@ function UpsertTaskContainer(props: ContainerProps) {
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
+        .max(100, t('validation.textIsTooLong'))
         .required(t('validation.required')),
     }),
   });

@@ -8,15 +8,12 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Zoom from '@material-ui/core/Zoom';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import AssigmentIcon from '@material-ui/icons/Assignment';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
-import Paper from '@material-ui/core/Paper';
-import { When, Unless } from 'react-if';
+import { When } from 'react-if';
 import filter from 'lodash/filter';
 import Collapsible from '../components/ui/Collapsible';
 import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
@@ -29,6 +26,8 @@ import { TasksContext } from '../store/contexts';
 import invoke from 'lodash/invoke';
 import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
 import random from 'lodash/random';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -39,16 +38,9 @@ const useStyles = makeStyles(theme => ({
     left: 'calc(50% - 15px)',
     top: 'calc(50% - 56px)',
   },
-  title: {
-    marginTop: '20px',
-    marginBottom: '20px',
-  },
   link: {
-    color: theme.palette.text.primary,
     textDecoration: 'none',
-  },
-  doneButton: {
-    marginTop: '30px',
+    color: theme.palette.text.primary,
   },
   choices: {
     marginTop: '20px',
@@ -90,24 +82,20 @@ export function TaskPage(props: ITaskPageProps) {
     >
       <Grid item xs={12} sm={8} md={4} lg={3}>
         <Link className={classes.link} to={`/tasks/${taskId}`}>
-          <Paper elevation={6}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={
-                hasSubtasks && <AssigmentIcon fontSize="large" />
-              }
-            >
-              <Zoom in>
-                <Typography className={classes.title} variant="h5">
-                  <When condition={hasSubtasks}>
-                    {get(activeSubtasks, '[0].name')}
-                  </When>
-                  <Unless condition={hasSubtasks}>{task.name}</Unless>
+          <Zoom in>
+            <Card>
+              <CardContent>
+                <When condition={hasSubtasks}>
+                  <Typography color="textSecondary" gutterBottom>
+                    {task.name}
+                  </Typography>
+                </When>
+                <Typography variant="h5" component="h1">
+                  {get(activeSubtasks, '[0].name') || task.name}
                 </Typography>
-              </Zoom>
-            </Button>
-          </Paper>
+              </CardContent>
+            </Card>
+          </Zoom>
         </Link>
       </Grid>
       <Grid item xs={12}>

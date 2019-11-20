@@ -88,7 +88,7 @@ export default function HomePage() {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <UpsertTask autoFocus callback={toggleDialog} />
+          <UpsertTask autoFocus beforeSubmitHook={toggleDialog} />
         </DialogContent>
       </Dialog>
       <When condition={!loading && (isAppTourActive || isLoggedIn)}>

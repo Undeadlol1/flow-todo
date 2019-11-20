@@ -21,6 +21,7 @@ export default {
     'Posponed until tomorrow': 'Posponed until tomorrow',
     'Good job!': 'Good job!',
     'Something went wrong': 'Something went wrong',
+    'task was note created': 'Task was note created',
     'Add a note': 'Add a note',
     'A note': 'A note',
     'Edit the note': 'Обновить заметку',

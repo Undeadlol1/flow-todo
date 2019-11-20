@@ -21,13 +21,14 @@ import filter from 'lodash/filter';
 import Collapsible from '../components/ui/Collapsible';
 import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
-import { updateSubtask, deleteTask } from '../store';
+import { updateSubtask, deleteTask, upsertTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
 import { Task, Subtask } from '../store/index';
 import { TasksContext } from '../store/contexts';
 import invoke from 'lodash/invoke';
 import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
+import random from 'lodash/random';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -141,6 +142,14 @@ TaskPage.propTypes = {
   isAppIntroMode: PropTypes.bool,
 };
 
+function filterCurrentTask(tasks: Task[]): Task[] {
+  return tasks.filter(t => !t.isCurrent);
+}
+
+function getRandomTaskId(tasks: Task[]): Task[] {
+  return get(tasks, `[${random(tasks.length - 1)}].id`);
+}
+
 export default () => {
   const [t] = useTranslation();
   const history = useHistory();
@@ -167,6 +176,10 @@ export default () => {
       t.get('isCurrent'),
     ),
     'data',
+  );
+  const nextTaskId = getRandomTaskId(
+    // @ts-ignore
+    filterCurrentTask(get<Task[]>(tasks, 'docs', [])),
   );
 
   let [task, taskLoading, taskError] = useDocumentData(
@@ -206,7 +219,7 @@ export default () => {
         .then(() => {
           // @ts-ignore
           if (message) enqueueSnackbar(message, { variant });
-          history.push('/');
+          history.push(`/${nextTaskId || ''}`);
         })
         .catch(e => handleErrors(e));
     },

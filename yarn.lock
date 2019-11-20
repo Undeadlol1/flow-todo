@@ -8248,6 +8248,11 @@ is-lite@^0.4.0, is-lite@^0.4.1:
   resolved "https://registry.yarnpkg.com/is-lite/-/is-lite-0.4.1.tgz#b8e8926a51607ba5346564edde10efc3a64cdb0f"
   integrity sha512-diPJE2qrrPa+C+Yqj15XngeLawX4QukXI2J5f3jJ26ap2sv20WyecdHM72b/lHGuJAHhx2Qn7Nx5IsZDDS0crg==
 
+is-mobile@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-2.1.0.tgz#4c0cab72f3358dd9986007389b30729fae80da0b"
+  integrity sha512-M5OhlZwh+aTlmRUvDg0Wq3uWVNa+w4DyZ2SjbrS+BhSLu9Po+JXHendC305ZEu+Hh7lywb19Zu4kYXu3L1Oo8A==
+
 is-npm@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-npm/-/is-npm-1.0.0.tgz#f2fb63a65e4905b406c86072765a1a4dc793b9f4"

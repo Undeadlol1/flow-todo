@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 import debounce from 'lodash/debounce';
+import isMobile from 'is-mobile';
 
 const useStyles = makeStyles({
   container: {
@@ -46,6 +47,7 @@ const UpsertNote = props => {
       setError('note', 'tooLong', t('validation.textIsTooLong'));
       return;
     }
+
     clearError('note');
     firestore()
       .collection('tasks')
@@ -73,7 +75,7 @@ const UpsertNote = props => {
           props.defaultValue ? t('Edit the note') : t('Add a note')
         }
         defaultValue={props.defaultValue}
-        onChange={debounce(createNote, 1500)}
+        onChange={debounce(createNote, isMobile() ? 3000 : 1500)}
       />
     </form>
   );

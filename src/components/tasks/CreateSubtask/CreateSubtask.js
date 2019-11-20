@@ -49,6 +49,7 @@ const CreateSubtask = props => {
         <TextField
           fullWidth
           name="name"
+          autoComplete="off"
           inputRef={register}
           error={Boolean(error)}
           label={t('Add subtasks')}

@@ -13,10 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import clsx from 'clsx';
-
 import get from 'lodash/get';
 import isString from 'lodash/isString';
-
 import Paper from '@material-ui/core/Paper';
 import { When, Unless } from 'react-if';
 import filter from 'lodash/filter';
@@ -29,6 +27,7 @@ import AppTour from '../components/ui/AppTour';
 import { Task, Subtask } from '../store/index';
 import { TasksContext } from '../store/contexts';
 import invoke from 'lodash/invoke';
+import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -145,6 +144,7 @@ TaskPage.propTypes = {
 export default () => {
   const [t] = useTranslation();
   const history = useHistory();
+  const snackbar = useMaterialSnackbar();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
   // TODO this needs to be a service
@@ -187,7 +187,12 @@ export default () => {
       if (taskId)
         return deleteTask(taskId)
           .then(() => {
-            enqueueSnackbar(t('successfullyDeleted'));
+            snackbar.showMessage(
+              t('successfullyDeleted'),
+              // TODO
+              // 'undo',
+              // () => console.log('undo is called'),
+            );
           })
           .catch(e => {
             handleErrors(e);

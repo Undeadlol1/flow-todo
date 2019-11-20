@@ -21,7 +21,7 @@ import filter from 'lodash/filter';
 import Collapsible from '../components/ui/Collapsible';
 import UpsertNote from '../components/tasks/UpsertNote/UpsertNote';
 import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
-import { updateSubtask, deleteTask, upsertTask } from '../store';
+import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
 import { Task, Subtask } from '../store/index';

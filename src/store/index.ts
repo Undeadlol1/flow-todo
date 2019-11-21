@@ -11,6 +11,8 @@ import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
 
+const { FieldValue } = firestore;
+
 export type Task = {
   id?: string;
   name: string;
@@ -61,7 +63,7 @@ export function createSubtask(
   return firestore()
     .doc('tasks/' + taskId)
     .update({
-      subtasks: firestore.FieldValue.arrayUnion({
+      subtasks: FieldValue.arrayUnion({
         id: nanoid(),
         isDone: false,
         parentId: taskId,
@@ -108,7 +110,7 @@ export function deleteSubtask(
   return firestore()
     .doc('tasks/' + taskId)
     .update({
-      subtasks: firestore.FieldValue.arrayRemove(subtask),
+      subtasks: FieldValue.arrayRemove(subtask),
     });
 }
 
@@ -127,7 +129,10 @@ export function addPoints(
 ): Promise<void> {
   return firestore()
     .doc('profiles/' + userId)
-    .update({ points: firestore.FieldValue.increment(points) });
+    .set(
+      { userId, points: FieldValue.increment(points) },
+      { merge: true },
+    );
 }
 
 const rootReducer = combineReducers({

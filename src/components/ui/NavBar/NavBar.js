@@ -12,7 +12,7 @@ import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { If, Unless } from 'react-if';
+import { If, Then, Else } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
@@ -45,7 +45,73 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ButtonAppBar() {
+export const LoginOrLogoutButton = () => {
+  const [t] = useTranslation();
+  const classes = useStyles();
+  const history = useHistory();
+
+  const [user, loading] = useAuthState(auth());
+  const hasPhoto = Boolean(user && user.photoURL);
+  const [menuAnchor, setAnchor] = React.useState(null);
+
+  if (loading) {
+    return (
+      <CircularProgress
+        color="secondary"
+        className={classes.loading}
+      />
+    );
+  }
+
+  if (user) {
+    const openMenu = event => setAnchor(event.currentTarget);
+    const signOut = () => {
+      auth()
+        .signOut()
+        .then(() => history.push('/'))
+        .catch(e => console.error(e));
+    };
+    return (
+      <>
+        <Slide in timeout={500} direction="left">
+          <Button
+            className={clsx(classes.link, classes.username)}
+            onClick={openMenu}
+          >
+            <If condition={hasPhoto}>
+              <Then>
+                <Avatar
+                  className={classes.avatar}
+                  src={user.photoURL}
+                />
+              </Then>
+              <Else>
+                <AccountCircle className={classes.avatar} />
+              </Else>
+            </If>
+            <Typography>{user.displayName}</Typography>
+          </Button>
+        </Slide>
+        <Menu
+          keepMounted
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={() => setAnchor(null)}
+        >
+          <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
+        </Menu>
+      </>
+    );
+  }
+
+  return (
+    <Link to="/signIn" className={classes.link}>
+      <Button color="inherit">{t('log in')}</Button>
+    </Link>
+  );
+};
+
+export default function NavBar() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -66,63 +132,3 @@ export default function ButtonAppBar() {
     </div>
   );
 }
-
-export const LoginOrLogoutButton = () => {
-  const [t] = useTranslation();
-  const classes = useStyles();
-  const history = useHistory();
-  const [user, loading] = useAuthState(auth());
-  const [menuAnchor, setAnchor] = React.useState(null);
-  const hasPhoto = Boolean(user && user.photoURL);
-  if (loading) {
-    return (
-      <CircularProgress
-        color="secondary"
-        className={classes.loading}
-      />
-    );
-  }
-  if (user) {
-    const openMenu = event => setAnchor(event.currentTarget);
-    const signOut = () => {
-      auth()
-        .signOut()
-        .then(() => history.push('/'))
-        .catch(e => console.error(e));
-    };
-    return (
-      <>
-        <Slide in timeout={500} direction="left">
-          <Button
-            className={`${classes.link} ${classes.username}`}
-            onClick={openMenu}
-          >
-            <If condition={hasPhoto}>
-              <Avatar
-                className={classes.avatar}
-                src={user.photoURL}
-              />
-            </If>
-            <Unless condition={hasPhoto}>
-              <AccountCircle className={classes.avatar} />
-            </Unless>
-            <Typography>{user.displayName}</Typography>
-          </Button>
-        </Slide>
-        <Menu
-          keepMounted
-          anchorEl={menuAnchor}
-          open={Boolean(menuAnchor)}
-          onClose={() => setAnchor(null)}
-        >
-          <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
-        </Menu>
-      </>
-    );
-  }
-  return (
-    <Link to="/signIn" className={classes.link}>
-      <Button color="inherit">{t('log in')}</Button>
-    </Link>
-  );
-};

@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import clsx from 'clsx';
+import Chip from '@material-ui/core/Chip';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,6 +80,12 @@ export const LoginOrLogoutButton = () => {
             className={clsx(classes.link, classes.username)}
             onClick={openMenu}
           >
+            <Chip
+              mr={1}
+              component={Box}
+              label="10002"
+              color="secondary"
+            />
             <If condition={hasPhoto}>
               <Then>
                 <Avatar

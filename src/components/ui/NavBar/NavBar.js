@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link, useHistory } from 'react-router-dom';
-import { auth } from 'firebase/app';
+import { auth, firestore } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -19,6 +19,8 @@ import Fade from '@material-ui/core/Fade';
 import clsx from 'clsx';
 import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
+import get from 'lodash/get';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,11 +54,23 @@ export const LoginOrLogoutButton = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const [user, loading] = useAuthState(auth());
+  const [user, userLoading, userError] = useAuthState(auth());
+
   const hasPhoto = Boolean(user && user.photoURL);
   const [menuAnchor, setAnchor] = React.useState(null);
+  const [profile, profileLoading, profileError] = useDocumentData(
+    firestore()
+      .collection('profiles')
+      .where('userId', '==', user && user.uid),
+  );
+  const profilePoints = get(profile, 'points', 0);
 
-  if (loading) {
+  // TODO: create "handleErrors" service function
+  if (userError || profileError) {
+    console.error(userError || profileError);
+  }
+
+  if (userLoading || profileLoading) {
     return (
       <CircularProgress
         color="secondary"
@@ -80,12 +94,14 @@ export const LoginOrLogoutButton = () => {
             className={clsx(classes.link, classes.username)}
             onClick={openMenu}
           >
-            <Chip
-              mr={1}
-              component={Box}
-              label="10002"
-              color="secondary"
-            />
+            <When condition={Boolean(profilePoints)}>
+              <Chip
+                mr={1}
+                component={Box}
+                color="secondary"
+                label={profilePoints}
+              />
+            </When>
             <If condition={hasPhoto}>
               <Then>
                 <Avatar

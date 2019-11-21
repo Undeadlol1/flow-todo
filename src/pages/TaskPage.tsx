@@ -24,7 +24,7 @@ import TaskChoices from '../components/tasks/TaskChoices/TaskChoices';
 import { updateSubtask, deleteTask } from '../store';
 import { calculateNextRepetition } from '../services';
 import AppTour from '../components/ui/AppTour';
-import { Task, Subtask } from '../store/index';
+import { Task, Subtask, addPoints } from '../store/index';
 import { TasksContext } from '../store/contexts';
 import invoke from 'lodash/invoke';
 import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
@@ -199,16 +199,25 @@ export default () => {
             history.push(`/tasks/${taskId}`);
           });
     },
-    updateTask(values: object, message: string, variant?: 'success') {
+    async updateTask(
+      values: object,
+      message: string,
+      variant?: 'success',
+    ) {
+      console.log('values: ', values);
       setRequested(true);
-      return taskPointer
-        .update(values)
-        .then(() => {
-          // @ts-ignore
-          if (message) enqueueSnackbar(message, { variant });
-          history.push('/');
-        })
-        .catch(e => handleErrors(e));
+      try {
+        await Promise.all([
+          taskPointer.update(values),
+          addPoints(task.userId, 10),
+        ]);
+        // @ts-ignore
+        if (message) enqueueSnackbar(message, { variant });
+        history.push('/');
+      } catch (error) {
+        handleErrors(error);
+        history.push('/tasks/' + taskId);
+      }
     },
     updateSubtask(subtask: Subtask) {
       setRequested(true);

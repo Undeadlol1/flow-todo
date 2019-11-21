@@ -24,6 +24,7 @@ import AppTour from '../components/ui/AppTour';
 import { Task, Subtask } from '../store/index';
 import { TasksContext } from '../store/contexts';
 import invoke from 'lodash/invoke';
+import find from 'lodash/find';
 import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
 import random from 'lodash/random';
 import Card from '@material-ui/core/Card';
@@ -183,22 +184,27 @@ export default () => {
   }
 
   const mergedProps = {
-    deleteTask() {
+    async deleteTask() {
+      async function undoDelete() {
+        const task = find(get(tasks, 'docs'), ['id', taskId]);
+        // @ts-ignore
+        await taskPointer.set(task.data());
+        history.push(`/tasks/${taskId}`);
+      }
+
       history.push('/');
       if (taskId)
-        return deleteTask(taskId)
-          .then(() => {
-            snackbar.showMessage(
-              t('successfullyDeleted'),
-              // TODO
-              // 'undo',
-              // () => console.log('undo is called'),
-            );
-          })
-          .catch(e => {
-            handleErrors(e);
-            history.push(`/tasks/${taskId}`);
-          });
+        try {
+          await deleteTask(taskId);
+          await snackbar.showMessage(
+            t('successfullyDeleted'),
+            t('undo'),
+            undoDelete,
+          );
+        } catch (error) {
+          handleErrors(error);
+          history.push(`/tasks/${taskId}`);
+        }
     },
     updateTask(values: object, message: string, variant?: 'success') {
       setRequested(true);

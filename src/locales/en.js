@@ -33,6 +33,7 @@ export default {
     'made step forward': 'made step forward',
     'advanced a lot': 'advanced a lot',
     done: 'done',
+    undo: 'undo',
     controls: {
       back: 'Back',
       close: 'Close',

@@ -34,6 +34,7 @@ export default {
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Закончил',
+    undo: 'отменить',
     controls: {
       back: 'Назад',
       close: 'Закрыть',

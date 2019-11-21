@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,7 +12,9 @@ import { auth, firestore } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { If, Then, Else, When } from 'react-if';
+import {
+ If, Then, Else, When 
+} from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
@@ -53,17 +55,16 @@ export const LoginOrLogoutButton = () => {
   const [t] = useTranslation();
   const classes = useStyles();
   const history = useHistory();
+  const [menuAnchor, setAnchor] = useState(null);
 
   const [user, userLoading, userError] = useAuthState(auth());
-
-  const hasPhoto = Boolean(user && user.photoURL);
-  const [menuAnchor, setAnchor] = React.useState(null);
   const [profile, profileLoading, profileError] = useDocumentData(
-    firestore()
-      .collection('profiles')
-      .where('userId', '==', user && user.uid),
+    user && firestore().doc(`profiles/${user.uid}`),
   );
-  const profilePoints = get(profile, 'points', 0);
+
+  const points = get(profile, 'points');
+  const hasPoints = Boolean(points);
+  const hasPhoto = Boolean(user && user.photoURL);
 
   // TODO: create "handleErrors" service function
   if (userError || profileError) {
@@ -89,19 +90,23 @@ export const LoginOrLogoutButton = () => {
     };
     return (
       <>
+        <Slide in timeout={500} direction="bottom">
+          <Box>
+            <When condition={hasPoints}>
+              <Chip
+                mr={1}
+                component={Box}
+                color="secondary"
+                label={points}
+              />
+            </When>
+          </Box>
+        </Slide>
         <Slide in timeout={500} direction="left">
           <Button
             className={clsx(classes.link, classes.username)}
             onClick={openMenu}
           >
-            <When condition={Boolean(profilePoints)}>
-              <Chip
-                mr={1}
-                component={Box}
-                color="secondary"
-                label={profilePoints}
-              />
-            </When>
             <If condition={hasPhoto}>
               <Then>
                 <Avatar

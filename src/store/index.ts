@@ -112,6 +112,24 @@ export function deleteSubtask(
     });
 }
 
+export function upsertProfile(values: {
+  userId: string;
+  points: number;
+}): Promise<void> {
+  return firestore()
+    .doc('profiles/' + values.userId)
+    .set(values, { merge: true });
+}
+
+export function addPoints(
+  userId: string,
+  points: number,
+): Promise<void> {
+  return firestore()
+    .doc('profiles/' + userId)
+    .update({ points: firestore.FieldValue.increment(points) });
+}
+
 const rootReducer = combineReducers({
   ui: uiSlice,
   tasks: tasksSlice,

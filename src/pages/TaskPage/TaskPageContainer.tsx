@@ -1,6 +1,6 @@
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useTranslation } from 'react-i18next';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { calculateNextRepetition } from '../../services';
 import { deleteTask, updateSubtask } from '../../store';
 import { TasksContext } from '../../store/contexts';

@@ -19,8 +19,6 @@ const HardChoices = (
   }>,
 ) => {
   const classes = useStyles();
-  // TS: type errors workaround
-  if (!props.task || !props.taskId) return null;
 
   return (
     <>
@@ -28,7 +26,7 @@ const HardChoices = (
         <Card elevation={6}>
           <UpsertTask
             taskId={props.taskId}
-            defaultValue={props.task.name}
+            defaultValue={props.task!.name}
             resetFormOnSuccess={false}
             showSnackbarOnSuccess={false}
           />
@@ -37,10 +35,10 @@ const HardChoices = (
       <Grid item xs={12} sm={12} md={12} lg={12} />
       <Grid item xs={12} sm={8} md={6} lg={5}>
         <CreateSubtask
-          taskId={props.taskId}
           className={classes.form}
+          taskId={props.taskId as string}
         />
-        <SubtasksList documents={props.task.subtasks} />
+        <SubtasksList documents={props.task!.subtasks} />
       </Grid>
     </>
   );

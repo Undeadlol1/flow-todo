@@ -50,10 +50,11 @@ export default () => {
     ),
     'data',
   );
-  const nextTaskId = getRandomTaskId(
-    // @ts-ignore
-    filterCurrentTask(get<Task[]>(tasks, 'docs', [])),
-  );
+  // NOTE: this is work in progress
+  // const nextTaskId = getRandomTaskId(
+  //   // @ts-ignore
+  //   filterCurrentTask(get<Task[]>(tasks, 'docs', [])),
+  // );
 
   let [task, taskLoading, taskError] = useDocumentData(
     // @ts-ignore

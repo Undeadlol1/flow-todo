@@ -12,11 +12,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const HardChoices = (props: {
-  taskId: string;
-  task: { name: string; subtasks: any };
-}) => {
+const HardChoices = (
+  props: Partial<{
+    taskId: string;
+    task: { name: string; subtasks?: any };
+  }>,
+) => {
   const classes = useStyles();
+  // TS: type errors workaround
+  if (!props.task || !props.taskId) return null;
+
   return (
     <>
       <Grid item xs={12} sm={8} md={6} lg={5}>

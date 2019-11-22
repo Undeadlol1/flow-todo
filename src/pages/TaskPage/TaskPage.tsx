@@ -5,19 +5,20 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
-import clsx from 'clsx';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { When } from 'react-if';
-import { Link } from 'react-router-dom';
-import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { Task } from '../../store';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import HardChoices from '../../components/tasks/HardChoices';
+import TroublesChoices from '../../components/tasks/TroubledChoices';
+import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -42,9 +43,13 @@ interface TaskPageProps {
   taskId: string;
   loading: boolean;
   isAppIntroMode: boolean;
+  updateTask: Function;
+  updateSubtask: Function;
+  deleteTask: Function;
 }
 
 export default function TaskPage(props: TaskPageProps) {
+  const path = get(useRouteMatch(), 'path');
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
@@ -70,6 +75,9 @@ export default function TaskPage(props: TaskPageProps) {
       alignContent="center"
       className={classes.pageContainer}
     >
+      <When condition={props.isAppIntroMode}>
+        <AppTour step={2} />
+      </When>
       <Grid item xs={12} sm={8} md={4} lg={3}>
         <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Zoom in>
@@ -102,13 +110,19 @@ export default function TaskPage(props: TaskPageProps) {
           </Collapsible>
         </Grid>
       </Grid>
-      <TaskChoices
-        {...props}
-        className={clsx(['IntroHandle__taskButton', classes.choices])}
-      />
-      <When condition={props.isAppIntroMode}>
-        <AppTour step={2} />
-      </When>
+      <Switch>
+        <Route path={`${path}/isTroublesome/isHard`}>
+          <HardChoices {...props} />
+        </Route>
+        <Route path={`${path}/isTroublesome`}>
+          <TroublesChoices {...props} />
+        </Route>
+        <Route path={path}>
+          {/*
+          // @ts-ignore */}
+          <TaskChoices {...props} />
+        </Route>
+      </Switch>
     </Grid>
   );
 }

@@ -15,13 +15,13 @@ import invoke from 'lodash/invoke';
 import TaskPage from './TaskPage';
 import get from 'lodash/get';
 
-function filterCurrentTask(tasks: Task[]): Task[] {
-  return tasks.filter(t => !t.isCurrent);
-}
+// function filterCurrentTask(tasks: Task[]): Task[] {
+//   return tasks.filter(t => !t.isCurrent);
+// }
 
-function getRandomTaskId(tasks: Task[]): Task[] {
-  return get(tasks, `[${random(tasks.length - 1)}].id`);
-}
+// function getRandomTaskId(tasks: Task[]): Task[] {
+//   return get(tasks, `[${random(tasks.length - 1)}].id`);
+// }
 
 export default () => {
   const [t] = useTranslation();

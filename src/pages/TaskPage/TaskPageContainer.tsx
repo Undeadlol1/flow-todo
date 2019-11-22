@@ -6,7 +6,7 @@ import { deleteTask, updateSubtask } from '../../store';
 import { TasksContext } from '../../store/contexts';
 import { Subtask, Task, addPoints } from '../../store/index';
 import React, { useContext, useState } from 'react';
-import random from 'lodash/random';
+// import random from 'lodash/random';
 import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
 import { useSnackbar } from 'notistack';
 import { firestore } from 'firebase/app';

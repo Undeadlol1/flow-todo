@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const LoginOrLogoutButton = () => {
+export const LoginOrLogoutButton = memo(() => {
   const [t] = useTranslation();
   const classes = useStyles();
   const history = useHistory();
@@ -133,9 +133,9 @@ export const LoginOrLogoutButton = () => {
       <Button color="inherit">{t('log in')}</Button>
     </Link>
   );
-};
+});
 
-export default function NavBar() {
+export default memo(() => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -155,4 +155,4 @@ export default function NavBar() {
       </AppBar>
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function HomePage() {
+export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const { loading } = useContext(TasksContext);
@@ -104,4 +104,4 @@ export default function HomePage() {
       <AppTour />
     </Grid>
   );
-}
+});

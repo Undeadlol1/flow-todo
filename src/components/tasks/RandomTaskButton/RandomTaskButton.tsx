@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, memo } from 'react';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -32,11 +31,11 @@ interface Props {
   className?: string;
 }
 
-export function RandomTaskButton({
+export const RandomTaskButton = ({
   tasks,
   loading,
   className,
-}: Props) {
+}: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
   const { isAppTourActive } = useTypedSelector(s => s.ui);
@@ -83,12 +82,6 @@ export function RandomTaskButton({
       </Paper>
     </Button>
   );
-}
-
-RandomTaskButton.propTypes = {
-  className: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
-  tasks: PropTypes.object.isRequired,
 };
 
 interface ContainerProps {
@@ -96,7 +89,7 @@ interface ContainerProps {
   tasks?: firestore.QuerySnapshot;
 }
 
-export default function RandomTaskButtonContainer(
+export default memo(function RandomTaskButtonContainer(
   props: ContainerProps,
 ) {
   const { tasks, loading } = useContext(TasksContext);
@@ -110,4 +103,4 @@ export default function RandomTaskButtonContainer(
       }}
     />
   );
-}
+});

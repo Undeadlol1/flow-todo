@@ -19,10 +19,10 @@ import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import clsx from 'clsx';
-import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
+import UserPoints from '../../users/UserPoints';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,7 +62,7 @@ export const LoginOrLogoutButton = () => {
     user && firestore().doc(`profiles/${user.uid}`),
   );
 
-  const points = get(profile, 'points');
+  const points = get(profile, 'points', 0);
   const hasPoints = Boolean(points);
   const hasPhoto = Boolean(user && user.photoURL);
 
@@ -91,14 +91,9 @@ export const LoginOrLogoutButton = () => {
     return (
       <>
         <Slide in timeout={500} direction="down">
-          <Box>
+          <Box mr={1}>
             <When condition={hasPoints}>
-              <Chip
-                mr={1}
-                component={Box}
-                color="secondary"
-                label={points}
-              />
+              <UserPoints value={points} />
             </When>
           </Box>
         </Slide>

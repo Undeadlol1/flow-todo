@@ -2332,6 +2332,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-countup@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-countup/-/react-countup-4.0.1.tgz#db718f8a72184684034cbbc4d4f8a98b863d4d66"
+  integrity sha512-b6rQxkkYOA4WXmnW2rUBvExAxZmEPvPGfaXS3UkOSZF2TiCO0kh5EF8jvKQU2jFzeI6Hb6LtXUJhFMk9ir9kVQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.4":
   version "16.9.4"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.4.tgz#0b58df09a60961dcb77f62d4f1832427513420df"
@@ -4771,6 +4778,11 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.2.0, cosmiconfig@^5.2.1:
     is-directory "^0.3.1"
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
+
+countup.js@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-1.9.3.tgz#ce3e50cd7160441e478f07da31895edcc0f1c9dd"
+  integrity sha1-zj5QzXFgRB5HjwfaMYle3MDxyd0=
 
 crc32-stream@^3.0.1:
   version "3.0.1"
@@ -12292,6 +12304,15 @@ react-compound-timer@^1.1.15:
   integrity sha512-a2jqQZgLQt84Qkygk03lSqih7E9AZZwSxyVz4V7hhNOFrtczxWRimEQFqa+rH0J+2AvSrH2uYdgq1D/UrOE/jQ==
   dependencies:
     react "^16.8.6"
+
+react-countup@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-4.2.3.tgz#22581e68861b2b93be0cf0d5c4c6dff349e7b3b0"
+  integrity sha512-4re0CdtymFC0z5YivMnnBg2SC5ugqt4is/Y/RyTRTY/4QePawUhi2+Y23cQPUjXsdm/FpvicD9ZkQ4H+zVBsZg==
+  dependencies:
+    countup.js "^1.9.3"
+    prop-types "^15.7.2"
+    warning "^4.0.3"
 
 react-dev-utils@^9.0.0, react-dev-utils@^9.1.0:
   version "9.1.0"

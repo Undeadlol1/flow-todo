@@ -35,7 +35,7 @@ export default () => {
       variant: 'error',
     });
 
-  const { taskId } = useParams();
+  const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
   const taskPointer = firestore()
     .collection('tasks')
@@ -70,26 +70,26 @@ export default () => {
 
   const mergedProps = {
     async deleteTask() {
-      async function undoDelete() {
+      history.push('/');
+      try {
         const task = find(get(tasks, 'docs'), ['id', taskId]);
-        // @ts-ignore
-        await taskPointer.set(task.data());
+        await Promise.all([
+          deleteTask(taskId),
+          addPoints(task!.get('userId'), 10),
+        ]);
+        snackbar.showMessage(
+          t('successfullyDeleted'),
+          t('undo'),
+          async function restoreTaskAndRedirect() {
+            // @ts-ignore
+            await taskPointer.set(task.data());
+            history.push(`/tasks/${taskId}`);
+          },
+        );
+      } catch (error) {
+        handleErrors(error);
         history.push(`/tasks/${taskId}`);
       }
-
-      history.push('/');
-      if (taskId)
-        try {
-          await deleteTask(taskId);
-          await snackbar.showMessage(
-            t('successfullyDeleted'),
-            t('undo'),
-            undoDelete,
-          );
-        } catch (error) {
-          handleErrors(error);
-          history.push(`/tasks/${taskId}`);
-        }
     },
     async updateTask(
       values: object,

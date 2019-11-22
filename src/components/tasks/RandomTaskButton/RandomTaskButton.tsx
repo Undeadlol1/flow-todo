@@ -48,11 +48,11 @@ export function RandomTaskButton({
     find((i: firestore.DocumentData) => i.get('isCurrent') === true),
   )(docs);
   // TODO: move logic into a service?
-  if (!isEmpty(docs) && !activeTaskId) {
-    const randomTaskId = isAppTourActive
-      ? '/tasks/introExample'
-      : get(docs, `[${random(docs.length - 1)}].id`);
-    upsertTask({ isCurrent: true }, randomTaskId);
+  if (!isEmpty(docs) && !activeTaskId && !isAppTourActive) {
+    upsertTask(
+      { isCurrent: true },
+      get(docs, `[${random(docs.length - 1)}].id`),
+    );
   }
 
   const buttonText = t(activeTaskId ? 'start' : 'noTasks');
@@ -66,8 +66,8 @@ export function RandomTaskButton({
       to={linkPath}
       color="primary"
       disabled={isDisabled}
-      className={clsx(['RandomTaskButton', className])}
       component={isDisabled ? 'div' : Link}
+      className={clsx(['RandomTaskButton', className])}
     >
       <Paper elevation={6} className={classes.paper}>
         <If condition={loading}>

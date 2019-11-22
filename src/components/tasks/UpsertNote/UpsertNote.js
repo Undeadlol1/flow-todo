@@ -43,7 +43,7 @@ const UpsertNote = props => {
     if (typeof note === 'undefined') return;
     if (!note && !props.defaultValue) return;
     if (note === props.defaultValue) return;
-    if (note.length > 2000) {
+    if (note.length > 5000) {
       setError('note', 'tooLong', t('validation.textIsTooLong'));
       return;
     }

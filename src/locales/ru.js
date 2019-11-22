@@ -22,6 +22,7 @@ export default {
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',
     'Something went wrong': 'Что-то пошло не так',
+    'task was note created': 'Задача не была создана',
     'Add a note': 'Добавить заметку',
     'Edit the note': 'Обновить заметку',
     'A note': 'Заметка',
@@ -33,6 +34,7 @@ export default {
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Закончил',
+    undo: 'отменить',
     controls: {
       back: 'Назад',
       close: 'Закрыть',

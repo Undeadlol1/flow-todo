@@ -14,6 +14,7 @@ import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
 import { upsertTask } from '../../../store/index';
 import { FormState, Ref } from 'react-hook-form/dist/types';
+import invoke from 'lodash/invoke';
 
 const useStyles = makeStyles({
   container: {
@@ -107,6 +108,7 @@ type FormData = {
 
 interface ContainerProps extends CommonProps {
   callback?: Function;
+  beforeSubmitHook?: Function;
   showSnackbarOnSuccess?: boolean;
   resetFormOnSuccess?: boolean;
 }
@@ -123,12 +125,14 @@ function UpsertTaskContainer(props: ContainerProps) {
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
+        .max(100, t('validation.textIsTooLong'))
         .required(t('validation.required')),
     }),
   });
   const { enqueueSnackbar } = useSnackbar();
 
   function createDocumentAndReset({ name }: { name: string }) {
+    invoke(props, 'beforeSubmitHook');
     return upsertTask(
       { name, userId: user && user.uid },
       props.taskId,
@@ -143,11 +147,20 @@ function UpsertTaskContainer(props: ContainerProps) {
             },
           });
         }
-        if (props.callback) props.callback();
+        invoke(props, 'callback');
       })
-      .catch(e =>
-        formProps.setError('name', 'misMatch', e && e.message),
-      );
+      .catch(error => {
+        enqueueSnackbar(
+          t('Something went wrong') +
+            '. ' +
+            (props.taskId
+              ? error.message
+              : t('task was note created')),
+          {
+            variant: 'error',
+          },
+        );
+      });
   }
   const mergedProps = {
     user,

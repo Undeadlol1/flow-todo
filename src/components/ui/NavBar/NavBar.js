@@ -90,7 +90,7 @@ export const LoginOrLogoutButton = () => {
     };
     return (
       <>
-        <Slide in timeout={500} direction="bottom">
+        <Slide in timeout={500} direction="down">
           <Box>
             <When condition={hasPoints}>
               <Chip

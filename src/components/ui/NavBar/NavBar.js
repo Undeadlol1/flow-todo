@@ -12,9 +12,7 @@ import { auth, firestore } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {
- If, Then, Else, When 
-} from 'react-if';
+import { If, Then, Else, When } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
@@ -59,7 +57,7 @@ export const LoginOrLogoutButton = memo(() => {
   const [menuAnchor, setAnchor] = useState(null);
 
   const [, userLoading, userError] = useAuthState(auth());
-  const user = useTypedSelector(state => state.user);
+  const user = useTypedSelector(state => state.users.current);
   const [profile, profileLoading, profileError] = useDocumentData(
     user.uid && firestore().doc(`profiles/${user.uid}`),
   );

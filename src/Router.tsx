@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { getTasksSuccess } from './store/tasksSlice';
 import { normalizeQueryResponse } from './services/index';
 import subtractHours from 'date-fns/subHours';
-import { login, logout } from './store/userSlice';
+import { login, logout } from './store/usersSlice';
 import { useTypedSelector } from './store/index';
 
 const today = Date.now();
@@ -23,7 +23,7 @@ export default function Router() {
   const dispatch = useDispatch();
   const db = firestore().collection('tasks');
   const [user, userLoading, userError] = useAuthState(auth());
-  const userId = useTypedSelector(state => state.user.uid);
+  const userId = useTypedSelector(state => state.users.current.uid);
 
   useEffect(() => {
     if (!userLoading) {

@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserInfo } from 'firebase';
 
-const initialState: UserInfo = {
+interface UsersState {
+  current: UserInfo;
+}
+
+const currentUserInitialState = {
   uid: '',
   email: '',
   displayName: '',
@@ -10,15 +14,19 @@ const initialState: UserInfo = {
   providerId: '',
 };
 
+const initialState: UsersState = {
+  current: currentUserInitialState,
+};
+
 const userSlice = createSlice({
-  name: 'user',
+  name: 'users',
   initialState,
   reducers: {
     login(state, action: PayloadAction<UserInfo>) {
-      state = Object.assign(state, action.payload);
+      state.current = action.payload;
     },
     logout(state, payload) {
-      state = initialState;
+      state.current = currentUserInitialState;
     },
     toggleUserLoading(state, payload) {},
   },

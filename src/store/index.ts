@@ -10,6 +10,7 @@ import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
+import userSlice from './userSlice';
 
 const { FieldValue } = firestore;
 
@@ -137,6 +138,7 @@ export function addPoints(
 
 const rootReducer = combineReducers({
   ui: uiSlice,
+  user: userSlice,
   tasks: tasksSlice,
 });
 

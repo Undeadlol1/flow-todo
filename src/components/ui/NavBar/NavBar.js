@@ -23,6 +23,7 @@ import Box from '@material-ui/core/Box';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
 import UserPoints from '../../users/UserPoints';
+import { useTypedSelector } from '../../../store';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,9 +58,10 @@ export const LoginOrLogoutButton = memo(() => {
   const history = useHistory();
   const [menuAnchor, setAnchor] = useState(null);
 
-  const [user, userLoading, userError] = useAuthState(auth());
+  const [, userLoading, userError] = useAuthState(auth());
+  const user = useTypedSelector(state => state.user);
   const [profile, profileLoading, profileError] = useDocumentData(
-    user && firestore().doc(`profiles/${user.uid}`),
+    user.uid && firestore().doc(`profiles/${user.uid}`),
   );
 
   const points = get(profile, 'points', 0);

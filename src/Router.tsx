@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-import { firestore, auth } from 'firebase/app';
+import { firestore, auth, UserInfo } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import NavBar from './components/ui/NavBar/NavBar';
@@ -13,18 +13,28 @@ import { useDispatch } from 'react-redux';
 import { getTasksSuccess } from './store/tasksSlice';
 import { normalizeQueryResponse } from './services/index';
 import subtractHours from 'date-fns/subHours';
+import { login, logout } from './store/userSlice';
+import { useTypedSelector } from './store/index';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default function Router() {
   const dispatch = useDispatch();
-  const [user, userLoading, userError] = useAuthState(auth());
   const db = firestore().collection('tasks');
+  const [user, userLoading, userError] = useAuthState(auth());
+  const userId = useTypedSelector(state => state.user.uid);
+
+  useEffect(() => {
+    if (!userLoading) {
+      if (user) dispatch(login(user.toJSON() as UserInfo));
+      else dispatch(logout(user));
+    }
+  }, [userLoading, user, dispatch]);
 
   useEffect(() => {
     const unsubscribe = db
-      .where('userId', '==', user && user.uid)
+      .where('userId', '==', userId)
       .where('isDone', '==', false)
       .where('dueAt', '<', today)
       .onSnapshot(
@@ -41,7 +51,7 @@ export default function Router() {
         },
       );
     return () => unsubscribe();
-  }, [user, db, dispatch]);
+  }, [userId, db, dispatch]);
 
   const [tasks, tasksLoading, tasksError] = useCollection(
     user &&

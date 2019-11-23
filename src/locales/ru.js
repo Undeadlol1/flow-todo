@@ -21,6 +21,8 @@ export default {
     subtasks: 'Подзадачи',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',
+    'important to step forward':
+      'Самое главное не достичь цели, а сделать шаг вперед',
     'Something went wrong': 'Что-то пошло не так',
     'task was note created': 'Задача не была создана',
     'Add a note': 'Добавить заметку',

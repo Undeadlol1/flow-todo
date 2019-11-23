@@ -12,8 +12,10 @@ import { TasksContext } from './store/contexts';
 import { useDispatch } from 'react-redux';
 import { getTasksSuccess } from './store/tasksSlice';
 import { normalizeQueryResponse } from './services/index';
+import subtractHours from 'date-fns/subHours';
 
 const today = Date.now();
+const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default function Router() {
   const dispatch = useDispatch();
@@ -48,11 +50,25 @@ export default function Router() {
         .where('isDone', '==', false)
         .where('dueAt', '<', today),
   );
+
+  const [
+    tasksDoneToday,
+    tasksDoneTodayLoading,
+    tasksDoneTodayError,
+  ] = useCollection(
+    user &&
+      db
+        .where('userId', '==', user && user.uid)
+        .where('isDone', '==', true)
+        .where('doneAt', '>', lastSixteenHours),
+  );
+
   const providerValue = {
     currentTask: {},
-    error: tasksError || userError,
-    loading: tasksLoading || userLoading,
     tasks: tasks || ({} as firestore.QuerySnapshot),
+    error: tasksError || userError || tasksDoneTodayError,
+    loading: tasksLoading || userLoading || tasksDoneTodayLoading,
+    tasksDoneToday: tasksDoneToday || ({} as firestore.QuerySnapshot),
   };
   return (
     <BrowserRouter>

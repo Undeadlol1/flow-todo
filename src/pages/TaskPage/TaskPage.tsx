@@ -78,7 +78,7 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
-      <Grid item xs={12} sm={8} md={4} lg={3}>
+      <Grid item xs={12} sm={8} md={6} lg={5}>
         <Link className={classes.link} to={`/tasks/${taskId}`}>
           <Zoom in>
             <Card>

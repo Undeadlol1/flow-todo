@@ -95,13 +95,13 @@ export default () => {
       values: object,
       message: string,
       variant?: 'success',
+      pointsToAdd = 10,
     ) {
-      console.log('values: ', values);
       setRequested(true);
       try {
         await Promise.all([
           taskPointer.update(values),
-          addPoints(task.userId, 10),
+          addPoints(task.userId, pointsToAdd),
         ]);
         // @ts-ignore
         if (message) enqueueSnackbar(message, { variant });

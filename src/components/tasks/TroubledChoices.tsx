@@ -29,6 +29,7 @@ const TroublesChoices = ({
       { isCurrent: false, dueAt: addHours(new Date(), 12).getTime() },
       t('Posponed until tomorrow'),
       'default',
+      0,
     );
   }
   return (

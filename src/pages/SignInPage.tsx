@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase/app';
 // WIP
 // import * as firebaseui from 'firebaseui';
 import { makeStyles } from '@material-ui/core/styles';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useTranslation } from 'react-i18next';
-import invoke from 'lodash/invoke';
 import AppTour from '../components/ui/AppTour';
 import clsx from 'clsx';
+import FirebaseUIAuth from 'react-firebaseui-localized';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -21,38 +20,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-let buttonIsTranslated = false;
-
-function translateButton(text: string) {
-  if (!buttonIsTranslated) {
-    console.assert('translateButton() query is runnning');
-    const textContainer = invoke(
-      document,
-      'querySelector',
-      '.firebaseui-idp-text',
-    );
-    if (textContainer) {
-      textContainer.innerHTML = text;
-      textContainer.textContent = text;
-      buttonIsTranslated = true;
-    }
-  }
-}
-
-export default () => {
+export default memo(() => {
   const classes = useStyles();
-  const [t] = useTranslation();
-
-  React.useEffect(() => {
-    const buttonTranslationInterval = setInterval(
-      () => translateButton(t('Sign in with Google')),
-      100,
-    );
-    return function cleanup() {
-      buttonIsTranslated = false;
-      clearInterval(buttonTranslationInterval);
-    };
-  }, [t]);
+  const [, i18n] = useTranslation();
 
   // WIP
   // https://github.com/Undeadlol1/flow-todo/issues/7
@@ -60,6 +30,7 @@ export default () => {
     signInFlow: 'popup',
     signInSuccessUrl: '/',
     signInOptions: [
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       //   {
       //     // Google provider must be enabled in Firebase Console to support one-tap
@@ -97,13 +68,15 @@ export default () => {
             'IntroHandle__signupButtons',
           ])}
         >
-          <StyledFirebaseAuth
-            uiConfig={uiConfig}
-            firebaseAuth={firebase.auth()}
+          <FirebaseUIAuth
+            config={uiConfig}
+            firebase={firebase}
+            lang={i18n.language}
+            auth={firebase.auth()}
           />
         </div>
       </Grid>
       <AppTour step={3} />
     </Grid>
   );
-};
+});

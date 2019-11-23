@@ -6832,7 +6832,7 @@ firebase@^7.2.2:
     "@firebase/storage" "0.3.16"
     "@firebase/util" "0.2.31"
 
-firebaseui@^4.1.0, firebaseui@^4.2.0:
+firebaseui@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.2.0.tgz#584c7210fe3536e5603f9e14ba122f541ae63fba"
   integrity sha512-+n8GVms0TlxU+AIdmuWhgQthqKmUpkjhfZBbsZIdWU19Ddkr5cn7hrSlNwC9faKkpCwGEpai6Nv+hYNqNM5JkQ==
@@ -12446,12 +12446,10 @@ react-firebase-hooks@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-firebase-hooks/-/react-firebase-hooks-2.1.0.tgz#c7228cbfec9e886a2b5de1ec63a74c0095506a96"
   integrity sha512-b5o09O0OnVh5hFOEmEhiYRTqRe67I4mGk9zX+admBI6rwVWOYytrsTwXV5RhSfsAtmcvsbsRxI0VBJ6M45vXBw==
 
-react-firebaseui@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/react-firebaseui/-/react-firebaseui-4.0.0.tgz#6e1892831b2a0ee86d2dcae16c4b724cf299d566"
-  integrity sha512-sQjVIXjahJ6YcjBRKmjW0wQb8wApi8AcFBa14H+TSEZWkRxPgQ1C4370P3FJubGXGEmxkwZfddqDk4/p5xW1uA==
-  dependencies:
-    firebaseui "^4.1.0"
+react-firebaseui-localized@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-firebaseui-localized/-/react-firebaseui-localized-1.0.8.tgz#b1b83cecbaaad1d48ec32c2cb8172b92090e0a21"
+  integrity sha512-FQfdGLFAXUfTtg8W1VfKv2EHBYlGGAY5z5LqacXKmaP5SrIjE7t2lOtta63i0x+lRyJtrlXV38i/hhamJpHrdg==
 
 react-floater@^0.6.5:
   version "0.6.5"

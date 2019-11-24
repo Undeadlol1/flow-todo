@@ -41,6 +41,7 @@ export default {
       last: 'Last',
       next: 'Next',
       skip: 'Skip',
+      yes: 'Yes',
     },
     start: 'Start',
     validation: {

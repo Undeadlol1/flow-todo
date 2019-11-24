@@ -42,6 +42,7 @@ export default {
       last: 'Последний',
       next: 'Следующий',
       skip: 'Пропустить',
+      yes: 'Да',
     },
     start: 'Начать',
     validation: {

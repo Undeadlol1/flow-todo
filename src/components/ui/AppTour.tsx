@@ -64,7 +64,7 @@ const AppTour: React.FC<TourProps> = props => {
     disableOverlayClose: true,
     locale: {
       back: t('controls.back'),
-      last: t('controls.last'),
+      last: t('controls.yes'),
       next: t('controls.next'),
       skip: t('controls.skip'),
       close: t('controls.close'),

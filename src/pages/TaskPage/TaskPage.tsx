@@ -123,7 +123,7 @@ export default function TaskPage(props: TaskPageProps) {
         <Route path={path}>
           {/*
           // @ts-ignore */}
-          <TaskChoices {...props} />
+          <TaskChoices className="IntroHandle__choices" {...props} />
         </Route>
       </Switch>
       <Timer className={fabClassName} />

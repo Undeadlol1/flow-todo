@@ -17,7 +17,7 @@ const steps: Step[] = [
     content: 'Запустите алгоритм подбора задачи',
   },
   {
-    target: '.IntroHandle__taskButton',
+    target: '.IntroHandle__choices',
     content: 'Сообщите программе ваш прогресс и следуйте инструкциям',
   },
   {

@@ -21,15 +21,23 @@ export const useFabStyles = makeStyles(theme => ({
   },
 }));
 
-const Fab = (props: FabProps) => {
+interface Props extends FabProps {
+  isHidden?: any;
+}
+
+const Fab = ({ isHidden, ...props }: Props) => {
   const classes = useFabStyles();
-  return (
-    <MUIFab
-      color="primary"
-      {...props}
-      className={cx([classes.fab, props.className])}
-    />
-  );
+
+  console.log('isHidden: ', isHidden);
+  if (isHidden) return null;
+  else
+    return (
+      <MUIFab
+        color="primary"
+        {...props}
+        className={cx([classes.fab, props.className])}
+      />
+    );
 };
 
 export default memo(Fab);

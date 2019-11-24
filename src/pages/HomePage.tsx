@@ -13,7 +13,7 @@ import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
 import AppTour from '../components/ui/AppTour';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
-import { If, Then, Else, When } from 'react-if';
+import { If, Then, Else } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useSelector } from 'react-redux';
@@ -76,15 +76,14 @@ export default memo(function HomePage() {
           <UpsertTask autoFocus beforeSubmitHook={toggleDialog} />
         </DialogContent>
       </Dialog>
-      <When condition={!loading && (isAppTourActive || isLoggedIn)}>
-        <Fab
-          aria-label={t('createTask')}
-          className={cx(['IntroHandle__createTask'])}
-          onClick={toggleDialog}
-        >
-          <AddIcon />
-        </Fab>
-      </When>
+      <Fab
+        onClick={toggleDialog}
+        aria-label={t('createTask')}
+        className={cx(['IntroHandle__createTask'])}
+        isHidden={loading || (!isLoggedIn && !isAppTourActive)}
+      >
+        <AddIcon />
+      </Fab>
       <AppTour />
     </Grid>
   );

@@ -23,6 +23,14 @@ const HardChoices = (
   return (
     <>
       <Grid item xs={12} sm={8} md={6} lg={5}>
+        <CreateSubtask
+          className={classes.form}
+          taskId={props.taskId as string}
+        />
+        <SubtasksList documents={props.task!.subtasks} />
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} />
+      <Grid item xs={12} sm={8} md={6} lg={5}>
         <Card elevation={6}>
           <UpsertTask
             taskId={props.taskId}
@@ -31,14 +39,6 @@ const HardChoices = (
             showSnackbarOnSuccess={false}
           />
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={12} />
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        <CreateSubtask
-          className={classes.form}
-          taskId={props.taskId as string}
-        />
-        <SubtasksList documents={props.task!.subtasks} />
       </Grid>
     </>
   );

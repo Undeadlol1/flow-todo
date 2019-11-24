@@ -8,12 +8,11 @@ import { useTranslation } from 'react-i18next';
 import cx from 'clsx';
 import useToggle from 'react-use-toggle';
 import TasksList from '../components/tasks/TasksList/TasksList';
-import RandomTaskButton from '../components/tasks/RandomTaskButton/RandomTaskButton';
+import GetRandomTask from '../components/tasks/RandomTaskButton/RandomTaskButton';
 import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
 import AppTour from '../components/ui/AppTour';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
-import { If, Then, Else } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useSelector } from 'react-redux';
@@ -36,6 +35,7 @@ export default memo(function HomePage() {
 
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
+  const isButtonVisible = loading || isAppTourActive || isLoggedIn;
 
   return (
     <Grid
@@ -55,14 +55,10 @@ export default memo(function HomePage() {
         lg={6}
         className={classes.randomButtonContainer}
       >
-        <If condition={loading || isAppTourActive || isLoggedIn}>
-          <Then>
-            <RandomTaskButton className={'IntroHandle__taskButton'} />
-          </Then>
-          <Else>
-            <WelcomeCard />
-          </Else>
-        </If>
+        {isButtonVisible && (
+          <GetRandomTask className={'IntroHandle__taskButton'} />
+        )}
+        {!isButtonVisible && <WelcomeCard />}
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />

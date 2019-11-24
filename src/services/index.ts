@@ -30,12 +30,14 @@ export function calculateNextRepetition(
   const today = new Date();
   const levels = [
     addDays(today, 1),
-    addDays(today, 3),
-    addDays(today, 9),
-    addMonths(today, 1),
+    addDays(today, 2),
+    addDays(today, 4),
+    addDays(today, 7),
+    addDays(today, 14),
+    addDays(today, 28),
+    addMonths(today, 2),
     addMonths(today, 3),
-    addMonths(today, 9),
-    addMonths(today, 27),
+    addMonths(today, 6),
   ];
 
   let newLevelIndex = -1;

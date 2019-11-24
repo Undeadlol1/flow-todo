@@ -1,30 +1,15 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import Joyride, { CallBackProps, Step, Props } from 'react-joyride';
+import Joyride, {
+  CallBackProps,
+  Step as TourStep,
+  Props as JoyrideProps,
+} from 'react-joyride';
 import { useDispatch } from 'react-redux';
 import { toggleAppTour } from '../../store/uiSlice';
 import { useTypedSelector } from '../../store/index';
 
-const steps: Step[] = [
-  {
-    disableBeacon: true,
-    target: '.IntroHandle__createTask',
-    content: `Добавьте задачу в копилку`,
-  },
-  {
-    target: '.IntroHandle__taskButton',
-    content: 'Запустите алгоритм подбора задачи',
-  },
-  {
-    target: '.IntroHandle__choices',
-    content: 'Сообщите программе ваш прогресс и следуйте инструкциям',
-  },
-  {
-    target: '.IntroHandle__signupButtons',
-    content: 'Приступим?',
-  },
-];
 interface TourProps {
   step?: number;
 }
@@ -37,7 +22,28 @@ const AppTour: React.FC<TourProps> = props => {
   const [step, setStep] = useState(props.step);
   const { isAppTourActive } = useTypedSelector(state => state.ui);
 
-  function tourOnChange({ index, action, lifecycle }: CallBackProps) {
+  const steps: TourStep[] = [
+    {
+      disableBeacon: true,
+      target: '.IntroHandle__createTask',
+      content: `Добавьте задачу в копилку`,
+    },
+    {
+      target: '.IntroHandle__taskButton',
+      content: 'Запустите алгоритм подбора задачи',
+    },
+    {
+      target: '.IntroHandle__choices',
+      content:
+        'Сообщите программе ваш прогресс и следуйте инструкциям',
+    },
+    {
+      target: '.IntroHandle__signupButtons',
+      content: 'Приступим?',
+    },
+  ];
+
+  function onStepChange({ index, action, lifecycle }: CallBackProps) {
     if (index === 3) {
       history.push('/signin');
       if (lifecycle === 'complete') return dispatch(toggleAppTour());
@@ -50,12 +56,12 @@ const AppTour: React.FC<TourProps> = props => {
     }
   }
 
-  const joyrideProps: Props = {
+  const config: JoyrideProps = {
     steps,
     stepIndex: step,
     run: isAppTourActive,
+    callback: onStepChange,
     continuous: true,
-    callback: tourOnChange,
     scrollToFirstStep: true,
     showProgress: true,
     showSkipButton: false,
@@ -71,7 +77,7 @@ const AppTour: React.FC<TourProps> = props => {
     },
     debug: false,
   };
-  return <Joyride {...joyrideProps} />;
+  return <Joyride {...config} />;
 };
 
 AppTour.defaultProps = {

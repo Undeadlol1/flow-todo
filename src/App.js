@@ -15,6 +15,7 @@ import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 // Other
 import { Provider as ReduxProvider } from 'react-redux';
+import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 
 import Router from './Router';
 import en from './locales/en';
@@ -47,9 +48,13 @@ function App() {
       <ReduxProvider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <SnackbarProvider dense={isMobile}>
-            <Router />
-          </SnackbarProvider>
+          <MaterialSnackbarProvider
+            SnackbarProps={{ autoHideDuration: 4000 }}
+          >
+            <SnackbarProvider dense={isMobile}>
+              <Router />
+            </SnackbarProvider>
+          </MaterialSnackbarProvider>
         </ThemeProvider>
       </ReduxProvider>
     </div>

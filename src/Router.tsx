@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-import { firestore, auth } from 'firebase/app';
+import { firestore, auth, UserInfo } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import NavBar from './components/ui/NavBar/NavBar';
@@ -9,12 +9,50 @@ import SignInPage from './pages/SignInPage';
 import HomePage from './pages/HomePage';
 import TaskPage from './pages/TaskPage';
 import { TasksContext } from './store/contexts';
+import { useDispatch } from 'react-redux';
+import { getTasksSuccess } from './store/tasksSlice';
+import { normalizeQueryResponse } from './services/index';
+import subtractHours from 'date-fns/subHours';
+import { login, logout } from './store/usersSlice';
+import { useTypedSelector } from './store/index';
 
 const today = Date.now();
+const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
-export default function Router() {
-  const [user, userLoading, userError] = useAuthState(auth());
+export default memo(function Router() {
+  const dispatch = useDispatch();
   const db = firestore().collection('tasks');
+  const [user, userLoading, userError] = useAuthState(auth());
+  const userId = useTypedSelector(state => state.users.current.uid);
+
+  useEffect(() => {
+    if (!userLoading) {
+      if (user) dispatch(login(user.toJSON() as UserInfo));
+      else dispatch(logout(user));
+    }
+  }, [userLoading, user, dispatch]);
+
+  useEffect(() => {
+    const unsubscribe = db
+      .where('userId', '==', userId)
+      .where('isDone', '==', false)
+      .where('dueAt', '<', today)
+      .onSnapshot(
+        tasksSnapshot => {
+          dispatch(
+            getTasksSuccess(
+              // @ts-ignore
+              normalizeQueryResponse(tasksSnapshot),
+            ),
+          );
+        },
+        error => {
+          console.error('tasks snapshot returned error', error);
+        },
+      );
+    return () => unsubscribe();
+  }, [userId, db, dispatch]);
+
   const [tasks, tasksLoading, tasksError] = useCollection(
     user &&
       db
@@ -22,11 +60,25 @@ export default function Router() {
         .where('isDone', '==', false)
         .where('dueAt', '<', today),
   );
+
+  const [
+    tasksDoneToday,
+    tasksDoneTodayLoading,
+    tasksDoneTodayError,
+  ] = useCollection(
+    user &&
+      db
+        .where('userId', '==', user && user.uid)
+        .where('isDone', '==', true)
+        .where('doneAt', '>', lastSixteenHours),
+  );
+
   const providerValue = {
-    tasks,
     currentTask: {},
-    error: tasksError || userError,
-    loading: tasksLoading || userLoading,
+    tasks: tasks || ({} as firestore.QuerySnapshot),
+    error: tasksError || userError || tasksDoneTodayError,
+    loading: tasksLoading || userLoading || tasksDoneTodayLoading,
+    tasksDoneToday: tasksDoneToday || ({} as firestore.QuerySnapshot),
   };
   return (
     <BrowserRouter>
@@ -34,7 +86,9 @@ export default function Router() {
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">
-            <TaskPage />
+            <TasksContext.Provider value={providerValue}>
+              <TaskPage />
+            </TasksContext.Provider>
           </Route>
           <Route path="/signIn">
             <SignInPage />
@@ -48,4 +102,4 @@ export default function Router() {
       </Container>
     </BrowserRouter>
   );
-}
+});

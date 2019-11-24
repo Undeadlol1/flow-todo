@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
@@ -28,6 +27,7 @@ const CreateSubtask = props => {
       validationSchema: Yup.object({
         name: Yup.string()
           .min(3, t('validation.atleast3Symbols'))
+          .max(100, t('validation.textIsTooLong'))
           .required(t('validation.required')),
       }),
     },
@@ -50,6 +50,7 @@ const CreateSubtask = props => {
         <TextField
           fullWidth
           name="name"
+          autoComplete="off"
           inputRef={register}
           error={Boolean(error)}
           label={t('Add subtasks')}

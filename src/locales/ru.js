@@ -3,7 +3,6 @@ export default {
     'log in': 'Войти',
     'log out': 'Выйти',
     'Please login': 'Пожалуйста, войдите',
-    'Sign in with Google': 'Войти с Google',
     save: 'сохранить',
     noTasks: 'Нет задач',
     createTask: 'Создать задачу',
@@ -21,8 +20,12 @@ export default {
     subtasks: 'Подзадачи',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',
+    'important to step forward':
+      'Самое главное не достичь цели, а сделать шаг вперед',
     'Something went wrong': 'Что-то пошло не так',
+    'task was note created': 'Задача не была создана',
     'Add a note': 'Добавить заметку',
+    'Edit the note': 'Обновить заметку',
     'A note': 'Заметка',
     'there are difficulties': 'Есть трудности',
     hard: 'Тяжело',
@@ -32,6 +35,7 @@ export default {
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Закончил',
+    undo: 'отменить',
     controls: {
       back: 'Назад',
       close: 'Закрыть',

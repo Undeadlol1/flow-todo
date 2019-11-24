@@ -12,30 +12,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const HardChoices = (props: {
-  taskId: string;
-  task: { name: string; subtasks: any };
-}) => {
+const HardChoices = (
+  props: Partial<{
+    taskId: string;
+    task: { name: string; subtasks?: any };
+  }>,
+) => {
   const classes = useStyles();
+
   return (
     <>
+      <Grid item xs={12} sm={8} md={6} lg={5}>
+        <CreateSubtask
+          className={classes.form}
+          taskId={props.taskId as string}
+        />
+        <SubtasksList documents={props.task!.subtasks} />
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} />
       <Grid item xs={12} sm={8} md={6} lg={5}>
         <Card elevation={6}>
           <UpsertTask
             taskId={props.taskId}
-            defaultValue={props.task.name}
+            defaultValue={props.task!.name}
             resetFormOnSuccess={false}
             showSnackbarOnSuccess={false}
           />
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={12} />
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        <CreateSubtask
-          taskId={props.taskId}
-          className={classes.form}
-        />
-        <SubtasksList documents={props.task.subtasks} />
       </Grid>
     </>
   );

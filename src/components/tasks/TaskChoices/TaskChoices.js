@@ -1,27 +1,18 @@
-// @flow
-import React from 'react';
-import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import {
-  Switch,
-  Route,
-  Link,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
-import SmileEmoticon from '@material-ui/icons/TagFaces';
-import HeartIcon from '@material-ui/icons/Favorite';
+import { makeStyles } from '@material-ui/core/styles';
+import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
 import ErrorIcon from '@material-ui/icons/Error';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { useTranslation } from 'react-i18next';
-import Fade from '@material-ui/core/Fade';
+import HeartIcon from '@material-ui/icons/Favorite';
+import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
-import AssigmentIcon from '@material-ui/icons/Assignment';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 import { calculateNextRepetition } from '../../../services';
-import HardChoices from '../HardChoices';
-import TroublesChoices from '../TroubledChoices';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -32,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TaskActions = props => {
+const TaskChoices = props => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
@@ -44,17 +35,23 @@ const TaskActions = props => {
     className: classes.button,
   };
   const didGood = () => props.updateTask(
-      calculateNextRepetition(props.task, 'normal'),
-      t('Good job!'),
+      {
+        isCurrent: false,
+        ...calculateNextRepetition(props.task, 'normal'),
+      },
+      t('important to step forward'),
     );
   const didGreat = () => props.updateTask(
-      calculateNextRepetition(props.task, 'good'),
-      t('Good job!'),
+      {
+        isCurrent: false,
+        ...calculateNextRepetition(props.task, 'good'),
+      },
+      t('important to step forward'),
     );
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () => props.updateTask(
-          { isDone: true, doneAt: Date.now() },
+          { isCurrent: false, isDone: true, doneAt: Date.now() },
           t('Good job!'),
         );
   return (
@@ -113,26 +110,11 @@ const TaskActions = props => {
   );
 };
 
-TaskActions.propTypes = {
+TaskChoices.propTypes = {
   className: PropTypes.string,
   task: PropTypes.object.isRequired,
   updateTask: PropTypes.func.isRequired,
   updateSubtask: PropTypes.func.isRequired,
 };
 
-export default props => {
-  const { path } = useRouteMatch();
-  return (
-    <Switch>
-      <Route path={`${path}/isTroublesome/isHard`}>
-        <HardChoices {...props} />
-      </Route>
-      <Route path={`${path}/isTroublesome`}>
-        <TroublesChoices {...props} />
-      </Route>
-      <Route path={path}>
-        <TaskActions {...props} />
-      </Route>
-    </Switch>
-  );
-};
+export default TaskChoices;

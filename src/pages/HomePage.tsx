@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +17,7 @@ import { If, Then, Else, When } from 'react-if';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useSelector } from 'react-redux';
+import Fab from '../components/ui/Fab';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -26,24 +26,9 @@ const useStyles = makeStyles(theme => ({
   randomButtonContainer: {
     margin: '0 auto',
   },
-  fab: {
-    position: 'fixed',
-    [theme.breakpoints.down('sm')]: {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
-    [theme.breakpoints.up('md')]: {
-      bottom: theme.spacing(4),
-      right: theme.spacing(4),
-    },
-    [theme.breakpoints.up('lg')]: {
-      bottom: theme.spacing(6),
-      right: theme.spacing(8),
-    },
-  },
 }));
 
-export default function HomePage() {
+export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const { loading } = useContext(TasksContext);
@@ -88,14 +73,13 @@ export default function HomePage() {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <UpsertTask autoFocus callback={toggleDialog} />
+          <UpsertTask autoFocus beforeSubmitHook={toggleDialog} />
         </DialogContent>
       </Dialog>
       <When condition={!loading && (isAppTourActive || isLoggedIn)}>
         <Fab
-          color="primary"
           aria-label={t('createTask')}
-          className={cx([classes.fab, 'IntroHandle__createTask'])}
+          className={cx(['IntroHandle__createTask'])}
           onClick={toggleDialog}
         >
           <AddIcon />
@@ -104,4 +88,4 @@ export default function HomePage() {
       <AppTour />
     </Grid>
   );
-}
+});

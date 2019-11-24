@@ -6,6 +6,11 @@ import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
+import { firestore } from 'firebase';
+import get from 'lodash/get';
+import i18n from 'i18next';
+import { snackbarActions } from 'material-ui-snackbar-redux';
+import store from '../store';
 
 const logger = debug('utils');
 debug.enable('utils');
@@ -29,12 +34,14 @@ export function calculateNextRepetition(
   const today = new Date();
   const levels = [
     addDays(today, 1),
-    addDays(today, 3),
-    addDays(today, 9),
-    addMonths(today, 1),
+    addDays(today, 2),
+    addDays(today, 4),
+    addDays(today, 7),
+    addDays(today, 14),
+    addDays(today, 28),
+    addMonths(today, 2),
     addMonths(today, 3),
-    addMonths(today, 9),
-    addMonths(today, 27),
+    addMonths(today, 6),
   ];
 
   let newLevelIndex = -1;
@@ -98,4 +105,22 @@ export function initializeFirebase() {
     });
   }
   return firebase;
+export function normalizeQueryResponse(
+  snapshot: firestore.QuerySnapshot,
+) {
+  if (snapshot.empty) return [];
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data(),
+  }));
+}
+
+export function handleErrors(e: Error) {
+  store.dispatch(
+    snackbarActions.show({
+      message:
+        'Error: ' + get(e, 'message') ||
+        i18n.t('Something went wrong'),
+    }),
+  );
 }

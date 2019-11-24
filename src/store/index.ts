@@ -12,19 +12,26 @@ import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
 import { initializeFirebase } from '../services/index';
+import userSlice from './usersSlice';
+import { snackbarReducer } from 'material-ui-snackbar-redux';
+
+const { FieldValue } = firestore;
 
 export type Task = {
+  id?: string;
   name: string;
-  isDone: boolean;
-  doneAt?: number;
   dueAt: number;
+  doneAt?: number;
   userId: string;
   note?: string;
   subtasks?: any[];
+  isDone: boolean;
+  isCurrent?: boolean;
+  repetitionLevel?: number;
 };
 
 export function upsertTask(
-  values: { name: string; userId?: string },
+  values: { name?: string; userId?: string; isCurrent?: boolean },
   taskId?: string,
 ): Promise<void | Error> {
   const isCreate = !taskId;
@@ -60,7 +67,7 @@ export function createSubtask(
   return firestore()
     .doc('tasks/' + taskId)
     .update({
-      subtasks: firestore.FieldValue.arrayUnion({
+      subtasks: FieldValue.arrayUnion({
         id: nanoid(),
         isDone: false,
         parentId: taskId,
@@ -107,16 +114,39 @@ export function deleteSubtask(
   return firestore()
     .doc('tasks/' + taskId)
     .update({
-      subtasks: firestore.FieldValue.arrayRemove(subtask),
+      subtasks: FieldValue.arrayRemove(subtask),
     });
 }
 
 initializeFirebase();
 
+export function upsertProfile(values: {
+  userId: string;
+  points: number;
+}): Promise<void> {
+  return firestore()
+    .doc('profiles/' + values.userId)
+    .set(values, { merge: true });
+}
+
+export function addPoints(
+  userId: string,
+  points: number,
+): Promise<void> {
+  return firestore()
+    .doc('profiles/' + userId)
+    .set(
+      { userId, points: FieldValue.increment(points) },
+      { merge: true },
+    );
+}
+
 const rootReducer = combineReducers({
   ui: uiSlice,
+  users: userSlice,
   tasks: tasksSlice,
   firestore: firestoreReducer,
+  snackbar: snackbarReducer,
 });
 
 const store = configureStore({

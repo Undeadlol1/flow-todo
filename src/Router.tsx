@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import { firestore, auth, UserInfo } from 'firebase/app';
@@ -19,7 +19,7 @@ import { useTypedSelector } from './store/index';
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
-export default function Router() {
+export default memo(function Router() {
   const dispatch = useDispatch();
   const db = firestore().collection('tasks');
   const [user, userLoading, userError] = useAuthState(auth());
@@ -102,4 +102,4 @@ export default function Router() {
       </Container>
     </BrowserRouter>
   );
-}
+});

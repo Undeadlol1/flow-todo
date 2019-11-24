@@ -1,19 +1,23 @@
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
-import { calculateNextRepetition } from '../../services';
+import {
+  calculateNextRepetition,
+  handleErrors,
+} from '../../services';
 import { deleteTask, updateSubtask } from '../../store';
 import { TasksContext } from '../../store/contexts';
 import { Subtask, Task, addPoints } from '../../store/index';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, memo } from 'react';
 // import random from 'lodash/random';
-import { useSnackbar as useMaterialSnackbar } from 'material-ui-snackbar-provider';
 import { useSnackbar } from 'notistack';
 import { firestore } from 'firebase/app';
 import find from 'lodash/find';
 import invoke from 'lodash/invoke';
 import TaskPage from './TaskPage';
 import get from 'lodash/get';
+import { useDispatch } from 'react-redux';
+import { snackbarActions } from 'material-ui-snackbar-redux';
 
 // function filterCurrentTask(tasks: Task[]): Task[] {
 //   return tasks.filter(t => !t.isCurrent);
@@ -23,17 +27,13 @@ import get from 'lodash/get';
 //   return get(tasks, `[${random(tasks.length - 1)}].id`);
 // }
 
-export default () => {
+export default memo(() => {
   const [t] = useTranslation();
   const history = useHistory();
-  const snackbar = useMaterialSnackbar();
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
   // TODO this needs to be a service
-  const handleErrors = (e: Error) =>
-    enqueueSnackbar(get(e, 'message') || t('Something went wrong'), {
-      variant: 'error',
-    });
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
@@ -62,6 +62,7 @@ export default () => {
   );
 
   if (taskError) handleErrors(taskError);
+
   if (isAppIntroMode) {
     task = {
       name: t('exampleTask'),
@@ -77,14 +78,16 @@ export default () => {
           deleteTask(taskId),
           addPoints(task!.get('userId'), 10),
         ]);
-        snackbar.showMessage(
-          t('successfullyDeleted'),
-          t('undo'),
-          async function restoreTaskAndRedirect() {
-            // @ts-ignore
-            await taskPointer.set(task.data());
-            history.push(`/tasks/${taskId}`);
-          },
+        dispatch(
+          snackbarActions.showMessage(
+            t('successfullyDeleted'),
+            t('undo'),
+            async function restoreTaskAndRedirect() {
+              // @ts-ignore
+              await taskPointer.set(task.data());
+              history.push(`/tasks/${taskId}`);
+            },
+          ),
         );
       } catch (error) {
         handleErrors(error);
@@ -136,4 +139,4 @@ export default () => {
   // TODO: remoove @ts-ignore
   // @ts-ignore
   return <TaskPage {...mergedProps} />;
-};
+});

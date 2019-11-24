@@ -18,7 +18,7 @@ import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 // Other
 import { Provider as ReduxProvider } from 'react-redux';
-import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-provider';
+import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 
 import Router from './Router';
 import en from './locales/en';
@@ -34,8 +34,7 @@ function App() {
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () =>
-      createMuiTheme({
+    () => createMuiTheme({
         palette: {
           primary: { main: '#81D4FA' },
           secondary: { main: '#00838F', contrastText: '#ffffff' },

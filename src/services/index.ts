@@ -3,6 +3,10 @@ import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
 import { firestore } from 'firebase';
+import get from 'lodash/get';
+import i18n from 'i18next';
+import { snackbarActions } from 'material-ui-snackbar-redux';
+import store from '../store';
 
 const logger = debug('utils');
 debug.enable('utils');
@@ -68,4 +72,14 @@ export function normalizeQueryResponse(
     id: document.id,
     ...document.data(),
   }));
+}
+
+export function handleErrors(e: Error) {
+  store.dispatch(
+    snackbarActions.show({
+      message:
+        'Error: ' + get(e, 'message') ||
+        i18n.t('Something went wrong'),
+    }),
+  );
 }

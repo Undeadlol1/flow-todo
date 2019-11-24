@@ -82,6 +82,8 @@ export const LoginOrLogoutButton = memo(() => {
     );
   }
 
+  // if (user.isAno)
+
   if (user.uid) {
     const openMenu = event => setAnchor(event.currentTarget);
     const signOut = () => {

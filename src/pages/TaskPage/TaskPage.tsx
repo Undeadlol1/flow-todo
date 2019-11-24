@@ -19,6 +19,8 @@ import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
+import Timer from '../../components/ui/Timer';
+import { useFabStyles } from '../../components/ui/Fab';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -51,6 +53,7 @@ interface TaskPageProps {
 export default function TaskPage(props: TaskPageProps) {
   const path = get(useRouteMatch(), 'path');
   const classes = useStyles();
+  const { fab: fabClassName } = useFabStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
@@ -123,6 +126,7 @@ export default function TaskPage(props: TaskPageProps) {
           <TaskChoices {...props} />
         </Route>
       </Switch>
+      <Timer className={fabClassName} />
     </Grid>
   );
 }

@@ -11,6 +11,7 @@ import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
 import userSlice from './usersSlice';
+import { snackbarReducer } from 'material-ui-snackbar-redux';
 
 const { FieldValue } = firestore;
 
@@ -140,6 +141,7 @@ const rootReducer = combineReducers({
   ui: uiSlice,
   users: userSlice,
   tasks: tasksSlice,
+  snackbar: snackbarReducer,
 });
 
 const store = configureStore({

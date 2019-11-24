@@ -12,6 +12,7 @@ const currentUserInitialState = {
   photoURL: '',
   phoneNumber: '',
   providerId: '',
+  isAnonymous: false,
 };
 
 const initialState: UsersState = {

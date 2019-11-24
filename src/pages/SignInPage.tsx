@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import AppTour from '../components/ui/AppTour';
 import clsx from 'clsx';
 import FirebaseUIAuth from 'react-firebaseui-localized';
+import * as firebaseui from 'firebaseui';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -32,6 +33,8 @@ export default memo(() => {
     signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      // NOTE: This will result in isAnonymous == false
+      firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
       //   {
       //     // Google provider must be enabled in Firebase Console to support one-tap
       //     // sign-up.

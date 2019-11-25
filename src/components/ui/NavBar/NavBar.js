@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -22,6 +22,7 @@ import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
+import { useWindowSize } from '@reach/window-size';
 import UserPoints from '../../users/UserPoints';
 import { useTypedSelector } from '../../../store';
 
@@ -56,6 +57,8 @@ export const LoginOrLogoutButton = memo(() => {
   const [t] = useTranslation();
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
+  const windowSize = useWindowSize();
   const [menuAnchor, setAnchor] = useState(null);
 
   const [, userLoading, userError] = useAuthState(auth());
@@ -67,6 +70,7 @@ export const LoginOrLogoutButton = memo(() => {
   const points = get(profile, 'points', 0);
   const hasPoints = Boolean(points);
   const hasPhoto = Boolean(user && user.photoURL);
+  const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
   // TODO: create "handleErrors" service function
   if (userError || profileError) {
@@ -117,7 +121,11 @@ export const LoginOrLogoutButton = memo(() => {
                 <AccountCircle className={classes.avatar} />
               </Else>
             </If>
-            <Typography>{user.displayName || user.email}</Typography>
+            <When condition={isScreenWide}>
+              <Typography>
+                {user.displayName || user.email}
+              </Typography>
+            </When>
           </Button>
         </Slide>
         <Menu

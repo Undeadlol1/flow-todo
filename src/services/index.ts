@@ -9,7 +9,6 @@ import { snackbarActions } from 'material-ui-snackbar-redux';
 import store from '../store';
 
 const logger = debug('utils');
-debug.enable('utils');
 
 interface Task {
   repetitionLevel: number | undefined;

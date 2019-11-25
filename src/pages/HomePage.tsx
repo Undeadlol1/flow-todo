@@ -15,8 +15,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from 'firebase/app';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
-import { useSelector } from 'react-redux';
 import Fab from '../components/ui/Fab';
+import { useTypedSelector } from '../store/index';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -31,7 +31,7 @@ export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const { loading } = useContext(TasksContext);
-  const { isAppTourActive } = useSelector((state: any) => state.ui);
+  const { isAppTourActive } = useTypedSelector(state => state.ui);
 
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);

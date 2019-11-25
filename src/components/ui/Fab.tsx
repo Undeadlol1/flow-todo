@@ -28,7 +28,6 @@ interface Props extends FabProps {
 const Fab = ({ isHidden, ...props }: Props) => {
   const classes = useFabStyles();
 
-  console.log('isHidden: ', isHidden);
   if (isHidden) return null;
   else
     return (

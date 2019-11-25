@@ -15,6 +15,7 @@ import { normalizeQueryResponse } from './services/index';
 import subtractHours from 'date-fns/subHours';
 import { login, logout } from './store/usersSlice';
 import { useTypedSelector } from './store/index';
+import { useFirestoreConnect } from 'react-redux-firebase';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -24,6 +25,32 @@ export default memo(function Router() {
   const db = firestore().collection('tasks');
   const [user, userLoading, userError] = useAuthState(auth());
   const userId = useTypedSelector(state => state.users.current.uid);
+  const activeTasksRef =
+    userId &&
+    db
+      .where('userId', '==', userId)
+      .where('isDone', '==', false)
+      .where('dueAt', '<', today);
+
+  // useFirebaseConnect([`tasks`], [userId]);
+  useFirestoreConnect(
+    [
+      {
+        collection: 'tasks',
+        where: [
+          ['userId', '==', userId],
+          ['isDone', '==', false],
+          ['dueAt', '<', today],
+        ],
+      },
+    ],
+    // [userId],
+  );
+  const todos = useTypedSelector(
+    state => state.firestore.ordered.tasks,
+    // state => state.firestore.ordered.tasks,
+  );
+  console.log('todos: ', todos);
 
   useEffect(() => {
     if (!userLoading) {

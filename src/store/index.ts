@@ -1,5 +1,6 @@
 import nanoid from 'nanoid';
-import { firestore } from 'firebase/app';
+import { reduxFirestore, firestoreReducer } from 'redux-firestore';
+import firebase, { firestore } from 'firebase/app';
 import subtractDays from 'date-fns/subDays';
 import {
   configureStore,
@@ -10,8 +11,10 @@ import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import extend from 'lodash/extend';
+import { initializeFirebase } from '../services/index';
 import userSlice from './usersSlice';
 import { snackbarReducer } from 'material-ui-snackbar-redux';
+import { firebaseReducer, actionTypes } from 'react-redux-firebase';
 
 const { FieldValue } = firestore;
 
@@ -116,6 +119,8 @@ export function deleteSubtask(
     });
 }
 
+initializeFirebase();
+
 export function upsertProfile(values: {
   userId: string;
   points: number;
@@ -142,13 +147,23 @@ const rootReducer = combineReducers({
   users: userSlice,
   tasks: tasksSlice,
   snackbar: snackbarReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [...getDefaultMiddleware()],
+  middleware: [
+    ...getDefaultMiddleware({
+      // Firebase.auth onlogin error fix.
+      // https://github.com/prescottprue/react-redux-firebase/issues/761
+      serializableCheck: {
+        ignoredActions: [actionTypes.LOGIN],
+      },
+    }),
+  ],
   devTools: process.env.NODE_ENV !== 'production',
-  enhancers: [],
+  enhancers: [reduxFirestore(firebase)],
 });
 
 export const useTypedSelector: TypedUseSelectorHook<
@@ -156,8 +171,3 @@ export const useTypedSelector: TypedUseSelectorHook<
 > = useSelector;
 
 export default store;
-// The store has been created with these options:
-// - The slice reducers were automatically passed to combineReducers()
-// - redux-thunk and redux-logger were added as middleware
-// - The Redux DevTools Extension is disabled for production
-// - The middleware, batch, and devtools enhancers were automatically composed together

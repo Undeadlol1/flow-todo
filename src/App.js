@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
 import { useWindowSize } from '@reach/window-size';
 // i18n
 import i18n from 'i18next';
@@ -16,12 +16,15 @@ import { initReactI18next } from 'react-i18next';
 // Other
 import { Provider as ReduxProvider } from 'react-redux';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
+import firebase from 'firebase/app';
+import ReactReduxFirebaseProvider from 'react-redux-firebase/es/ReactReduxFirebaseProvider';
+import createFirestoreInstance from 'redux-firestore/es/createFirestoreInstance';
+import store from './store';
 
 import Router from './Router';
 import en from './locales/en';
 import ru from './locales/ru';
 import './App.css';
-import store from './store';
 
 initializeI18n();
 
@@ -40,22 +43,33 @@ function App() {
       }),
     [prefersDarkMode],
   );
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < theme.breakpoints.values.sm;
+  const isMobile =    useWindowSize().width < theme.breakpoints.values.sm;
+
+  const reduxFirebaseProps = {
+    firebase,
+    config: {
+      userProfile: 'profiles',
+      useFirestoreForProfile: true,
+    },
+    dispatch: store.dispatch,
+    createFirestoreInstance,
+  };
 
   return (
     <div className="App">
       <ReduxProvider store={store}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <MaterialSnackbarProvider
-            SnackbarProps={{ autoHideDuration: 4000 }}
-          >
-            <SnackbarProvider dense={isMobile}>
-              <Router />
-            </SnackbarProvider>
-          </MaterialSnackbarProvider>
-        </ThemeProvider>
+        <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <MaterialSnackbarProvider
+              SnackbarProps={{ autoHideDuration: 4000 }}
+            >
+              <NotistackSnackbarProver dense={isMobile}>
+                <Router />
+              </NotistackSnackbarProver>
+            </MaterialSnackbarProvider>
+          </ThemeProvider>
+        </ReactReduxFirebaseProvider>
       </ReduxProvider>
     </div>
   );

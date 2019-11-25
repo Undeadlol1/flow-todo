@@ -75,7 +75,7 @@ const UpsertNote = props => {
           props.defaultValue ? t('Edit the note') : t('Add a note')
         }
         defaultValue={props.defaultValue}
-        onChange={debounce(createNote, isMobile() ? 3000 : 1500)}
+        onChange={debounce(createNote, isMobile() ? 3000 : 2000)}
       />
     </form>
   );

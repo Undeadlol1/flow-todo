@@ -105,6 +105,8 @@ export function initializeFirebase() {
     });
   }
   return firebase;
+}
+
 export function normalizeQueryResponse(
   snapshot: firestore.QuerySnapshot,
 ) {

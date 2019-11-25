@@ -12592,6 +12592,15 @@ react-proptype-conditional-require@^1.0.4:
   resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
   integrity sha1-acLVdB5t9eCPIw82u8KUTuEiJVU=
 
+react-redux-firebase@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-3.0.5.tgz#94db123b80e0a4de1854f87e75bf15f36d516214"
+  integrity sha512-QEmzPTPFtxHoAvy8UJ1o76OrUv/a2hD04iVslnpecZSYcasjWjxpS2gu9HpbHGs/qjB92gF3BvrrDc8aDRkGeQ==
+  dependencies:
+    hoist-non-react-statics "^3.3.0"
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
+
 react-redux@^7.1.3:
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.3.tgz#717a3d7bbe3a1b2d535c94885ce04cdc5a33fc79"

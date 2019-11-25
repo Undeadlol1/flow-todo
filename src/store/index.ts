@@ -14,6 +14,7 @@ import extend from 'lodash/extend';
 import { initializeFirebase } from '../services/index';
 import userSlice from './usersSlice';
 import { snackbarReducer } from 'material-ui-snackbar-redux';
+import { firebaseReducer, actionTypes } from 'react-redux-firebase';
 
 const { FieldValue } = firestore;
 
@@ -145,13 +146,22 @@ const rootReducer = combineReducers({
   ui: uiSlice,
   users: userSlice,
   tasks: tasksSlice,
-  firestore: firestoreReducer,
   snackbar: snackbarReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [...getDefaultMiddleware()],
+  middleware: [
+    ...getDefaultMiddleware({
+      // Firebase.auth onlogin error fix.
+      // https://github.com/prescottprue/react-redux-firebase/issues/761
+      serializableCheck: {
+        ignoredActions: [actionTypes.LOGIN],
+      },
+    }),
+  ],
   devTools: process.env.NODE_ENV !== 'production',
   enhancers: [reduxFirestore(firebase)],
 });

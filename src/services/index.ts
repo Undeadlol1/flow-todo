@@ -118,7 +118,8 @@ export function normalizeQueryResponse(
 }
 
 export function handleErrors(e: Error | undefined) {
-  if (e)
+  if (e) {
+    console.error('handleErrors', e);
     store.dispatch(
       snackbarActions.show({
         message:
@@ -126,4 +127,13 @@ export function handleErrors(e: Error | undefined) {
           i18n.t('Something went wrong'),
       }),
     );
+  }
+}
+
+export function showSnackbar(message: string) {
+  store.dispatch(
+    snackbarActions.show({
+      message,
+    }),
+  );
 }

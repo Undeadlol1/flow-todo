@@ -25,6 +25,7 @@ import get from 'lodash/get';
 import { useWindowSize } from '@reach/window-size';
 import UserPoints from '../../users/UserPoints';
 import { useTypedSelector } from '../../../store';
+import { handleErrors } from '../../../services/index';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,7 +63,8 @@ export const LoginOrLogoutButton = memo(() => {
   const [menuAnchor, setAnchor] = useState(null);
 
   const [, userLoading, userError] = useAuthState(auth());
-  const user = useTypedSelector(state => state.users.current);
+  // @ts-ignore
+  const user = useTypedSelector(state => state.firebase.auth);
   const [profile, profileLoading, profileError] = useDocumentData(
     user.uid && firestore().doc(`profiles/${user.uid}`),
   );
@@ -72,10 +74,19 @@ export const LoginOrLogoutButton = memo(() => {
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
-  // TODO: create "handleErrors" service function
-  if (userError || profileError) {
-    console.error(userError || profileError);
+  function handleButtonClick(event) {
+    if (user.isAnonymous) history.push('/signin');
+    else setAnchor(event.currentTarget);
   }
+
+  function signOut() {
+    return auth()
+      .signOut()
+      .then(() => history.push('/'))
+      .catch(e => console.error(e));
+  }
+
+  handleErrors(userError || profileError);
 
   if (userLoading || profileLoading) {
     return (
@@ -86,64 +97,45 @@ export const LoginOrLogoutButton = memo(() => {
     );
   }
 
-  // if (user.isAno)
-
-  if (user.uid) {
-    const openMenu = event => setAnchor(event.currentTarget);
-    const signOut = () => {
-      auth()
-        .signOut()
-        .then(() => history.push('/'))
-        .catch(e => console.error(e));
-    };
-    return (
-      <>
-        <Slide in timeout={500} direction="down">
-          <Box mr={1}>
-            <When condition={hasPoints}>
-              <UserPoints value={points} />
-            </When>
-          </Box>
-        </Slide>
-        <Slide in timeout={500} direction="left">
-          <Button
-            className={clsx(classes.link, classes.username)}
-            onClick={openMenu}
-          >
-            <If condition={hasPhoto}>
-              <Then>
-                <Avatar
-                  className={classes.avatar}
-                  src={user.photoURL}
-                />
-              </Then>
-              <Else>
-                <AccountCircle className={classes.avatar} />
-              </Else>
-            </If>
-            <When condition={isScreenWide}>
-              <Typography>
-                {user.displayName || user.email}
-              </Typography>
-            </When>
-          </Button>
-        </Slide>
-        <Menu
-          keepMounted
-          anchorEl={menuAnchor}
-          open={Boolean(menuAnchor)}
-          onClose={() => setAnchor(null)}
-        >
-          <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
-        </Menu>
-      </>
-    );
-  }
-
   return (
-    <Link to="/signIn" className={classes.link}>
-      <Button color="inherit">{t('log in')}</Button>
-    </Link>
+    <>
+      <Slide in timeout={500} direction="down">
+        <Box mr={1}>
+          <When condition={hasPoints}>
+            <UserPoints value={points} />
+          </When>
+        </Box>
+      </Slide>
+      <Slide in timeout={500} direction="left">
+        <Button
+          className={clsx(classes.link, classes.username)}
+          onClick={handleButtonClick}
+        >
+          <If condition={hasPhoto}>
+            <Then>
+              <Avatar
+                className={classes.avatar}
+                src={user.photoURL}
+              />
+            </Then>
+            <Else>
+              <AccountCircle className={classes.avatar} />
+            </Else>
+          </If>
+          <When condition={isScreenWide}>
+            <Typography>{user.displayName || user.email}</Typography>
+          </When>
+        </Button>
+      </Slide>
+      <Menu
+        keepMounted
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={() => setAnchor(null)}
+      >
+        <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
+      </Menu>
+    </>
   );
 });
 

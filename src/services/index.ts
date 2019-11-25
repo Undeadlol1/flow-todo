@@ -117,12 +117,13 @@ export function normalizeQueryResponse(
   }));
 }
 
-export function handleErrors(e: Error) {
-  store.dispatch(
-    snackbarActions.show({
-      message:
-        'Error: ' + get(e, 'message') ||
-        i18n.t('Something went wrong'),
-    }),
-  );
+export function handleErrors(e: Error | undefined) {
+  if (e)
+    store.dispatch(
+      snackbarActions.show({
+        message:
+          'Error: ' + get(e, 'message') ||
+          i18n.t('Something went wrong'),
+      }),
+    );
 }

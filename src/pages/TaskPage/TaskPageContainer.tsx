@@ -97,7 +97,7 @@ export default memo(() => {
     async updateTask(
       values: object,
       message: string,
-      variant?: 'success',
+      variant = 'success',
       pointsToAdd = 10,
     ) {
       setRequested(true);

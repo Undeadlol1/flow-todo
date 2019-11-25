@@ -35,17 +35,17 @@ function App() {
   );
   const theme = React.useMemo(
     () => createMuiTheme({
-        palette: {
-          primary: { main: '#81D4FA' },
-          secondary: { main: '#00838F', contrastText: '#ffffff' },
-          type: prefersDarkMode ? 'dark' : 'light',
-        },
-        themeName: 'Malibu Blue Lagoon Zebu',
-      }),
+      palette: {
+        primary: { main: '#81D4FA' },
+        secondary: { main: '#00838F', contrastText: '#ffffff' },
+        type: prefersDarkMode ? 'dark' : 'light',
+      },
+      themeName: 'Malibu Blue Lagoon Zebu',
+    }),
     [prefersDarkMode],
   );
   const windowSize = useWindowSize();
-  const isMobile = windowSize.width < theme.breakpoints.values.sm;
+  const isScreenNarrow = windowSize.width < theme.breakpoints.values.sm;
 
   return (
     <div className="App">
@@ -55,7 +55,7 @@ function App() {
           <MaterialSnackbarProvider
             SnackbarProps={{ autoHideDuration: 4000 }}
           >
-            <SnackbarProvider dense={isMobile}>
+            <SnackbarProvider dense={isScreenNarrow}>
               <Router />
             </SnackbarProvider>
           </MaterialSnackbarProvider>

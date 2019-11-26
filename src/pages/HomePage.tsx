@@ -21,7 +21,6 @@ import { useTypedSelector } from '../store/index';
 import { isEmpty } from 'react-redux-firebase';
 
 const log = debug('HomePage');
-debug.enable('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',

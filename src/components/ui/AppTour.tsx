@@ -37,16 +37,14 @@ const AppTour: React.FC<TourProps> = props => {
       content:
         'Сообщите программе ваш прогресс и следуйте инструкциям',
     },
-    {
-      target: '.IntroHandle__signupButtons',
-      content: 'Приступим?',
-    },
   ];
 
   function onStepChange({ index, action, lifecycle }: CallBackProps) {
-    if (index === 3) {
-      history.push('/signin');
-      if (lifecycle === 'complete') return dispatch(toggleAppTour());
+    if (index === 2) {
+      if (lifecycle === 'complete') {
+        history.push('/');
+        return dispatch(toggleAppTour());
+      }
     }
     if (action === 'next' && lifecycle === 'complete')
       // @ts-ignore
@@ -70,7 +68,7 @@ const AppTour: React.FC<TourProps> = props => {
     disableOverlayClose: true,
     locale: {
       back: t('controls.back'),
-      last: t('controls.yes'),
+      last: t('controls.close'),
       next: t('controls.next'),
       skip: t('controls.skip'),
       close: t('controls.close'),

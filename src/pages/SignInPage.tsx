@@ -1,4 +1,4 @@
-import React, { memo, Profiler } from 'react';
+import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import firebase, { auth, User, firestore } from 'firebase/app';
 // WIP
@@ -6,7 +6,6 @@ import firebase, { auth, User, firestore } from 'firebase/app';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import AppTour from '../components/ui/AppTour';
-import clsx from 'clsx';
 import FirebaseUIAuth from 'react-firebaseui-localized';
 import { handleErrors, showSnackbar } from '../services/index';
 import { addPoints } from '../store/index';
@@ -141,12 +140,7 @@ export default memo(() => {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <div
-          className={clsx([
-            classes.buttonsContainer,
-            'IntroHandle__signupButtons',
-          ])}
-        >
+        <div className={classes.buttonsContainer}>
           <FirebaseUIAuth
             config={uiConfig}
             firebase={firebase}

@@ -50,5 +50,7 @@ export default {
       atleast3Symbols: 'Не менее 3 символов',
       textIsTooLong: 'Текст слишком длинный',
     },
+    'seems like anonymous upgrading failed':
+      'Похоже что не получилось обновить анонимный аккаунт. Извините',
   },
 };

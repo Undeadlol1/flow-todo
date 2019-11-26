@@ -49,5 +49,7 @@ export default {
       atleast3Symbols: 'Atleast 3 symbols',
       textIsTooLong: 'Text is too long',
     },
+    'seems like anonymous upgrading failed':
+      'Seems like upgrding account from anonymous failed. Sorry',
   },
 };

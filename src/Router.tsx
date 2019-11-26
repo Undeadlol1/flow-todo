@@ -16,6 +16,7 @@ import subtractHours from 'date-fns/subHours';
 import { login, logout } from './store/usersSlice';
 import { useTypedSelector } from './store/index';
 import { useFirestoreConnect } from 'react-redux-firebase';
+import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -128,6 +129,7 @@ export default memo(function Router() {
   return (
     <BrowserRouter>
       <NavBar />
+      <ExpirienceProgressBar />
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">

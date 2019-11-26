@@ -136,3 +136,7 @@ export function showSnackbar(message: string) {
     }),
   );
 }
+
+export function calculateUserLevel(points: number): number {
+  return (points * 3) / 100;
+}

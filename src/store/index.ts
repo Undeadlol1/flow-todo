@@ -15,7 +15,9 @@ import { initializeFirebase } from '../services/index';
 import userSlice from './usersSlice';
 import { snackbarReducer } from 'material-ui-snackbar-redux';
 import { firebaseReducer, actionTypes } from 'react-redux-firebase';
+import debug from 'debug';
 
+const log = debug('store');
 const { FieldValue } = firestore;
 
 export type Task = {
@@ -134,6 +136,8 @@ export function addPoints(
   userId: string,
   points: number,
 ): Promise<void> {
+  log('addPoints.userId', userId);
+  log('addPoints.points', points);
   return firestore()
     .doc('profiles/' + userId)
     .set(

@@ -18,6 +18,7 @@ import Fab from '../components/ui/Fab';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useTypedSelector } from '../store/index';
+import { isEmpty } from 'react-redux-firebase';
 
 const log = debug('HomePage');
 debug.enable('HomePage');

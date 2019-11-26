@@ -23,34 +23,45 @@ const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 export default memo(function Router() {
   const dispatch = useDispatch();
   const db = firestore().collection('tasks');
+  // @ts-ignore
+  const userAuth = useTypedSelector(state => state.firebase.auth);
+
   const [user, userLoading, userError] = useAuthState(auth());
   const userId = useTypedSelector(state => state.users.current.uid);
-  const activeTasksRef =
-    userId &&
-    db
-      .where('userId', '==', userId)
-      .where('isDone', '==', false)
-      .where('dueAt', '<', today);
 
+  if (userAuth.isEmpty && userAuth.isLoaded) {
+    auth()
+      .signInAnonymously()
+      .then(() => {
+        console.info('anonymous login was successful');
+      })
+      .catch(function(error) {
+        console.error('anonymous signin error: ', error);
+      });
+  }
   // useFirebaseConnect([`tasks`], [userId]);
-  useFirestoreConnect(
-    [
-      {
-        collection: 'tasks',
-        where: [
-          ['userId', '==', userId],
-          ['isDone', '==', false],
-          ['dueAt', '<', today],
-        ],
-      },
-    ],
-    // [userId],
-  );
-  const todos = useTypedSelector(
-    state => state.firestore.ordered.tasks,
-    // state => state.firestore.ordered.tasks,
-  );
-  console.log('todos: ', todos);
+  useFirestoreConnect([
+    {
+      collection: 'tasks',
+      where: [
+        ['userId', '==', userId],
+        ['isDone', '==', false],
+        ['dueAt', '<', today],
+      ],
+      storeAs: 'activeTasks',
+    },
+  ]);
+  useFirestoreConnect([
+    {
+      collection: 'tasks',
+      where: [
+        ['userId', '==', userId],
+        ['isDone', '==', true],
+        ['doneAt', '>', lastSixteenHours],
+      ],
+      storeAs: 'tasksDoneToday',
+    },
+  ]);
 
   useEffect(() => {
     if (!userLoading) {

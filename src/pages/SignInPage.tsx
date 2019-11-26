@@ -76,9 +76,9 @@ export default memo(() => {
             userId: nonAnonymousUser.uid,
           });
         }
+        await batch.commit();
       }
 
-      await batch.commit();
       await anonymousUser.delete();
       /*
         NOTE: currently there is no way to delete anonymous users tasks and

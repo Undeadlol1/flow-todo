@@ -62,6 +62,13 @@ export default memo(function Router() {
       storeAs: 'tasksDoneToday',
     },
   ]);
+  useFirestoreConnect([
+    {
+      collection: 'tasks',
+      where: [['userId', '==', userId]],
+      storeAs: 'createdAtleastOneTask',
+    },
+  ]);
 
   useEffect(() => {
     if (!userLoading) {

@@ -1,23 +1,26 @@
-import React, { useContext, memo } from 'react';
-import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
-import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { useTranslation } from 'react-i18next';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import cx from 'clsx';
-import useToggle from 'react-use-toggle';
-import TasksList from '../components/tasks/TasksList/TasksList';
-import GetRandomTask from '../components/tasks/RandomTaskButton/RandomTaskButton';
-import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
-import AppTour from '../components/ui/AppTour';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import debug from 'debug';
 import { auth } from 'firebase/app';
+import React, { memo, useContext } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useTranslation } from 'react-i18next';
+import useToggle from 'react-use-toggle';
+import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
+import GetRandomTask from '../components/tasks/RandomTaskButton/RandomTaskButton';
+import TasksList from '../components/tasks/TasksList/TasksList';
+import AppTour from '../components/ui/AppTour';
+import Fab from '../components/ui/Fab';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
-import Fab from '../components/ui/Fab';
 import { useTypedSelector } from '../store/index';
 
+const log = debug('HomePage');
+debug.enable('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
@@ -30,12 +33,19 @@ const useStyles = makeStyles(theme => ({
 export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
-  const { loading } = useContext(TasksContext);
+  const { loading: isLoading } = useContext(TasksContext);
   const { isAppTourActive } = useTypedSelector(state => state.ui);
+  // @ts-ignore
+  const { createdAtleastOneTask } = useTypedSelector(
+    // @ts-ignore
+    state => state.firestore.ordered,
+  );
 
+  log('createdAtleastOneTask: ', createdAtleastOneTask);
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
-  const isButtonVisible = loading || isAppTourActive || isLoggedIn;
+  const isButtonVisible =
+    isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
 
   return (
     <Grid
@@ -76,7 +86,7 @@ export default memo(function HomePage() {
         onClick={toggleDialog}
         aria-label={t('createTask')}
         className={cx(['IntroHandle__createTask'])}
-        isHidden={loading || (!isLoggedIn && !isAppTourActive)}
+        isHidden={isLoading || (!isLoggedIn && !isAppTourActive)}
       >
         <AddIcon />
       </Fab>

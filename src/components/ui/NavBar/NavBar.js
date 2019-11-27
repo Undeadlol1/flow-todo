@@ -17,15 +17,17 @@ import {
 } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
+import Badge from '@material-ui/core/Badge';
 import Fade from '@material-ui/core/Fade';
 import clsx from 'clsx';
-import Box from '@material-ui/core/Box';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
 import { useWindowSize } from '@reach/window-size';
-import UserPoints from '../../users/UserPoints';
 import { useTypedSelector } from '../../../store';
-import { handleErrors } from '../../../services/index';
+import {
+  handleErrors,
+  calculateUserLevel,
+} from '../../../services/index';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -70,7 +72,6 @@ export const LoginOrLogoutButton = memo(() => {
   );
 
   const points = get(profile, 'points', 0);
-  const hasPoints = Boolean(points);
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
@@ -99,13 +100,6 @@ export const LoginOrLogoutButton = memo(() => {
 
   return (
     <>
-      <Slide in timeout={500} direction="down">
-        <Box mr={1}>
-          <When condition={hasPoints}>
-            <UserPoints value={points} />
-          </When>
-        </Box>
-      </Slide>
       <Slide in timeout={500} direction="left">
         <Button
           className={clsx(classes.link, classes.username)}
@@ -113,10 +107,16 @@ export const LoginOrLogoutButton = memo(() => {
         >
           <If condition={hasPhoto}>
             <Then>
-              <Avatar
-                className={classes.avatar}
-                src={user.photoURL}
-              />
+              <Badge
+                overlap="circle"
+                color="secondary"
+                badgeContent={Math.trunc(calculateUserLevel(points))}
+              >
+                <Avatar
+                  className={classes.avatar}
+                  src={user.photoURL}
+                />
+              </Badge>
             </Then>
             <Else>
               <AccountCircle className={classes.avatar} />

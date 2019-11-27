@@ -23,6 +23,8 @@ import { isEmpty } from 'react-redux-firebase';
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
+    marginTop: 0,
+    marginBottom: 0,
     minHeight: 'calc(100vh - 64px)',
   },
   randomButtonContainer: {

@@ -72,7 +72,6 @@ export const LoginOrLogoutButton = memo(() => {
   );
 
   const points = get(profile, 'points', 0);
-  const hasPoints = Boolean(points);
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 

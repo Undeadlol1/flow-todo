@@ -45,6 +45,8 @@ const TaskChoices = props => {
         ...calculateNextRepetition(props.task, 'normal'),
       },
       t('important to step forward'),
+      undefined,
+      10,
     );
   const didGreat = () => props.updateTask(
       {
@@ -52,6 +54,8 @@ const TaskChoices = props => {
         ...calculateNextRepetition(props.task, 'good'),
       },
       t('important to step forward'),
+      undefined,
+      30,
     );
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])

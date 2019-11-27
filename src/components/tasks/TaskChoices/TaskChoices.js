@@ -58,10 +58,11 @@ const TaskChoices = props => {
     <Fade in timeout={1200}>
       <Grid
         container
-        direction="column"
+        direction="row"
+        alignContent="space-around"
         classes={{ root: props.className }}
       >
-        <Grid item xs align="center">
+        <Grid item xs={12} md={4} align="center">
           <Button
             {...commonButtonProps}
             color="secondary"
@@ -72,7 +73,7 @@ const TaskChoices = props => {
             {t('there are difficulties')}
           </Button>
         </Grid>
-        <Grid item xs align="center">
+        <Grid item xs={12} md={4} align="center">
           <Button
             {...commonButtonProps}
             startIcon={<HeartIcon />}
@@ -81,7 +82,7 @@ const TaskChoices = props => {
             {t('made step forward')}
           </Button>
         </Grid>
-        <Grid item xs align="center">
+        <Grid item xs={12} md={4} align="center">
           <Button
             {...commonButtonProps}
             startIcon={<SmileEmoticon />}
@@ -90,20 +91,27 @@ const TaskChoices = props => {
             {t('advanced a lot')}
           </Button>
         </Grid>
-        <Grid item xs align="center">
-          <Button
-            {...commonButtonProps}
-            className={classes.doneButton}
-            startIcon={(
-              <>
-                {hasSubtasks && <AssigmentIcon />}
-                <DoneIcon />
-              </>
-            )}
-            onClick={setDone}
-          >
-            {t('done')}
-          </Button>
+        <Grid
+          container
+          direction="column"
+          classes={{ root: props.className }}
+        >
+          <Grid item xs align="center">
+            <Button
+              {...commonButtonProps}
+              fullWidth={false}
+              className={classes.doneButton}
+              startIcon={(
+                <>
+                  {hasSubtasks && <AssigmentIcon />}
+                  <DoneIcon />
+                </>
+              )}
+              onClick={setDone}
+            >
+              {t('done')}
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </Fade>

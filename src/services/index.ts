@@ -137,6 +137,34 @@ export function showSnackbar(message: string) {
   );
 }
 
-export function calculateUserLevel(points: number): number {
-  return (points * 3) / 100;
+export function calculateUserLevel(userPoints: number): number {
+  let pointsCalcuated = 0;
+  let functionCalledCount = 0;
+  while (pointsCalcuated <= userPoints) {
+    pointsCalcuated += calculatePointsToNextLevel(
+      functionCalledCount,
+    );
+    functionCalledCount++;
+  }
+  return functionCalledCount - 1;
+}
+
+export function calculateTotalPointsToReachALevel(
+  desiredLevel: number,
+): number {
+  let level = 0;
+  let pointsCalcuated = 0;
+  while (level <= desiredLevel) {
+    pointsCalcuated += calculatePointsToNextLevel(level);
+    level++;
+  }
+  return pointsCalcuated - calculatePointsToNextLevel(level - 1);
+}
+
+export function calculatePointsToNextLevel(level: number) {
+  // "Disgea" formua is used
+  // http://howtomakeanrpg.com/a/how-to-make-an-rpg-levels.html
+  const baseXP = 10;
+  const exponent = 1.1;
+  return baseXP * ((level ^ exponent) | 1);
 }

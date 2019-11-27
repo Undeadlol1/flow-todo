@@ -8,12 +8,15 @@ import { firestore } from 'firebase/app';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
 import {
+  calculatePointsToNextLevel,
+  calculateTotalPointsToReachALevel,
+} from '../../../services/index';
+import {
   handleErrors,
   calculateUserLevel,
 } from '../../../services/index';
 
 const log = debug('ExpirienceProgressBar');
-debug.enable('ExpirienceProgressBar');
 const useStyles = makeStyles(theme => ({
   progress: {
     height: 10,
@@ -29,13 +32,28 @@ export const ExpirienceProgressBar: React.FC<{
   const [profile, profileLoading, profileError] = useDocumentData(
     uid && firestore().doc(`profiles/${uid}`),
   );
+  const userPoints = get(profile, 'points', 0);
+  const level = calculateUserLevel(userPoints);
 
-  const points = get(profile, 'points', 0);
-  const level = calculateUserLevel(points);
-  const progressPercent = Number((level % 1).toFixed(2).substring(2));
+  const pointsToReachPreviousLevel = calculateTotalPointsToReachALevel(
+    level,
+  );
+  const pointsToReachNextLevel = calculateTotalPointsToReachALevel(
+    level + 1,
+  );
+  const differenceBetweenLevels =
+    pointsToReachNextLevel - pointsToReachPreviousLevel;
+  const userProgressInPoints =
+    userPoints - pointsToReachPreviousLevel;
+  const progressPercent =
+    (userProgressInPoints * 100) / differenceBetweenLevels;
 
-  log('profile: ', profile);
   log('level', level);
+  log('userPoints', userPoints);
+  log(
+    'points to next level',
+    pointsToReachPreviousLevel + calculatePointsToNextLevel(level),
+  );
   log('progressPercent: ', progressPercent);
 
   if (!profile || profileLoading) return null;
@@ -45,8 +63,8 @@ export const ExpirienceProgressBar: React.FC<{
     <LinearProgress
       color="secondary"
       variant="determinate"
-      value={progressPercent}
       className={cx([classes.progress, props.className])}
+      value={progressPercent === 100 ? 0 : progressPercent}
     />
   );
 });

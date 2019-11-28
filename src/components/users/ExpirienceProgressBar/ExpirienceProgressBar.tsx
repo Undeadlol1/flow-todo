@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
   progress: {
     height: 10,
   },
+  hidden: {
+    opacity: 0,
+  },
 }));
 
 export const ExpirienceProgressBar: React.FC<{
@@ -56,17 +59,26 @@ export const ExpirienceProgressBar: React.FC<{
   );
   log('progressPercent: ', progressPercent);
 
-  if (!profile || profileLoading) return null;
   if (profileError) handleErrors(profileError);
-
-  return (
-    <LinearProgress
-      color="secondary"
-      variant="determinate"
-      className={cx([classes.progress, props.className])}
-      value={progressPercent === 100 ? 0 : progressPercent}
-    />
-  );
+  if (profileLoading)
+    return (
+      <LinearProgress
+        color="secondary"
+        className={cx([classes.progress, props.className])}
+      />
+    );
+  else
+    return (
+      <LinearProgress
+        color="secondary"
+        variant="determinate"
+        className={cx(!profile && classes.hidden, [
+          classes.progress,
+          props.className,
+        ])}
+        value={progressPercent === 100 ? 0 : progressPercent}
+      />
+    );
 });
 
 export default ExpirienceProgressBar;

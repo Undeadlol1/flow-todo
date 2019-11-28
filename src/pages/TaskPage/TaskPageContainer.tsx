@@ -1,5 +1,6 @@
 import { firestore } from 'firebase/app';
 import get from 'lodash/get';
+import once from 'lodash/once';
 import random from 'lodash/random';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import { useSnackbar } from 'notistack';
@@ -46,7 +47,10 @@ export default memo(() => {
     activeTasks.filter((t: any) => !t.isCurrent),
   );
 
-  if (get(requested, 'activeTasks') && currentTask!.id !== taskId) {
+  if (
+    get(requested, 'activeTasks') &&
+    get(currentTask, 'id') !== taskId
+  ) {
     // TODO: load task data
     // return;
   }
@@ -56,7 +60,7 @@ export default memo(() => {
     !isAppIntroMode || !currentTask ? taskPointer : undefined,
   );
 
-  if (taskError) handleErrors(taskError);
+  if (taskError) once(() => handleErrors(taskError));
 
   if (isAppIntroMode) {
     task = {

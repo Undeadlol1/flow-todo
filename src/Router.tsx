@@ -40,7 +40,6 @@ export default memo(function Router() {
         console.error('anonymous signin error: ', error);
       });
   }
-  // useFirebaseConnect([`tasks`], [userId]);
   useFirestoreConnect([
     {
       collection: 'tasks',
@@ -68,6 +67,7 @@ export default memo(function Router() {
       collection: 'tasks',
       where: [['userId', '==', userId]],
       storeAs: 'createdAtleastOneTask',
+      limit: 1,
     },
   ]);
 

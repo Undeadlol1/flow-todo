@@ -20,9 +20,7 @@ const useStyles = makeStyles(theme => ({
 const CreateSubtask = props => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const {
- register, handleSubmit, errors, reset, setError 
-} = useForm(
+  const { register, handleSubmit, errors, reset, setError } = useForm(
     {
       validationSchema: Yup.object({
         name: Yup.string()
@@ -46,7 +44,7 @@ const CreateSubtask = props => {
       className={props.className}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Paper className={classes.paper} elevation={6}>
+      <Paper className={classes.paper}>
         <TextField
           fullWidth
           name="name"

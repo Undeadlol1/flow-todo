@@ -18,14 +18,11 @@ import TaskPage from './TaskPage';
 import get from 'lodash/get';
 import { useDispatch } from 'react-redux';
 import { snackbarActions } from 'material-ui-snackbar-redux';
+import random from 'lodash/random';
 
-// function filterCurrentTask(tasks: Task[]): Task[] {
-//   return tasks.filter(t => !t.isCurrent);
-// }
-
-// function getRandomTaskId(tasks: Task[]): Task[] {
-//   return get(tasks, `[${random(tasks.length - 1)}].id`);
-// }
+function getRandomTaskId(tasks: Task[]): string {
+  return get(tasks, `[${random(tasks.length - 1)}].id`);
+}
 
 export default memo(() => {
   const [t] = useTranslation();
@@ -41,6 +38,7 @@ export default memo(() => {
     .collection('tasks')
     .doc(taskId);
   const { tasks } = useContext(TasksContext);
+
   // TODO: this is a mess. Rework this
   const currentTask = invoke(
     // @ts-ignore
@@ -50,11 +48,10 @@ export default memo(() => {
     ),
     'data',
   );
-  // NOTE: this is work in progress
-  // const nextTaskId = getRandomTaskId(
-  //   // @ts-ignore
-  //   filterCurrentTask(get<Task[]>(tasks, 'docs', [])),
-  // );
+  const nextTaskId = getRandomTaskId(
+    // @ts-ignore
+    get(tasks, 'docs', []).filter((t: any) => !t.isCurrent),
+  );
 
   let [task, taskLoading, taskError] = useDocumentData(
     // @ts-ignore
@@ -105,13 +102,18 @@ export default memo(() => {
         await Promise.all([
           taskPointer.update(values),
           addPoints(task.userId, pointsToAdd),
+          firestore()
+            .doc('tasks/' + nextTaskId)
+            .update({ isCurrent: true }),
         ]);
         // @ts-ignore
         if (message) enqueueSnackbar(message, { variant });
-        history.push('/');
+        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         handleErrors(error);
         history.push('/tasks/' + taskId);
+      } finally {
+        setRequested(false);
       }
     },
     updateSubtask(subtask: Subtask) {

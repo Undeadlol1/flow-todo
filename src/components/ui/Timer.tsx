@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Timer from 'react-compound-timer';
-import Fab from '@material-ui/core/Fab';
 import { useAudio, useTimeoutFn } from 'react-use';
+import Fab from './Fab';
 
 interface Props {
   className?: string;

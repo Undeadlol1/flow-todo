@@ -12,9 +12,7 @@ import { auth, firestore } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {
- If, Then, Else, When 
-} from 'react-if';
+import { If, Then, Else, When } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Badge from '@material-ui/core/Badge';
@@ -32,6 +30,9 @@ import {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    // Prevent "Slide" component animation to
+    // cause scrollbars to appear
+    overflow: 'hidden',
   },
   title: {
     flexGrow: 1,

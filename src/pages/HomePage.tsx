@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,
-    minHeight: 'calc(100vh - 64px)',
+    minHeight: 'calc(100vh - 74px)',
   },
   randomButtonContainer: {
     margin: '0 auto',

@@ -5,6 +5,8 @@ import SubtasksList from './SubtasksList';
 import { makeStyles } from '@material-ui/core/styles';
 import UpsertTask from './CreateTask/UpsertTask';
 import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
+import { CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -23,21 +25,35 @@ const HardChoices = (
   return (
     <>
       <Grid item xs={12} sm={8} md={6} lg={5}>
-        <CreateSubtask
-          className={classes.form}
-          taskId={props.taskId as string}
-        />
-        <SubtasksList documents={props.task!.subtasks} />
+        <Card>
+          <CardContent>
+            <Typography paragraph>
+              Любая задача, даже самая малая, может быть разбита на
+              подзадачи.
+            </Typography>
+            <Typography paragraph>
+              Что самое простое ты можешь сделать чтобы сдвинуться с
+              места?
+            </Typography>
+            <CreateSubtask
+              className={classes.form}
+              taskId={props.taskId as string}
+            />
+            <SubtasksList documents={props.task!.subtasks} />
+          </CardContent>
+        </Card>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} />
       <Grid item xs={12} sm={8} md={6} lg={5}>
-        <Card elevation={6}>
-          <UpsertTask
-            taskId={props.taskId}
-            defaultValue={props.task!.name}
-            resetFormOnSuccess={false}
-            showSnackbarOnSuccess={false}
-          />
+        <Card>
+          <CardContent>
+            <UpsertTask
+              taskId={props.taskId}
+              defaultValue={props.task!.name}
+              resetFormOnSuccess={false}
+              showSnackbarOnSuccess={false}
+            />
+          </CardContent>
         </Card>
       </Grid>
     </>

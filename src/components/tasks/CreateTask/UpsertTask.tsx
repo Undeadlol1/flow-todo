@@ -17,9 +17,7 @@ import { FormState, Ref } from 'react-hook-form/dist/types';
 import invoke from 'lodash/invoke';
 
 const useStyles = makeStyles({
-  container: {
-    margin: '10px',
-  },
+  container: {},
   button: {
     marginTop: '20px',
     width: '100%',

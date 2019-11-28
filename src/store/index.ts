@@ -1,7 +1,6 @@
 import nanoid from 'nanoid';
 import { reduxFirestore, firestoreReducer } from 'redux-firestore';
 import firebase, { firestore } from 'firebase/app';
-import subtractDays from 'date-fns/subDays';
 import {
   configureStore,
   getDefaultMiddleware,
@@ -16,6 +15,7 @@ import userSlice from './usersSlice';
 import { snackbarReducer } from 'material-ui-snackbar-redux';
 import { firebaseReducer, actionTypes } from 'react-redux-firebase';
 import debug from 'debug';
+import addDays from 'date-fns/addDays';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -42,7 +42,7 @@ export function upsertTask(
     values,
     isCreate && {
       isDone: false,
-      dueAt: subtractDays(new Date(), 1).getTime(),
+      dueAt: addDays(new Date(), 1).getTime(),
     },
   );
 

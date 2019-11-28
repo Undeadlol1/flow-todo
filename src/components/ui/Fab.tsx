@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIFab, { FabProps } from '@material-ui/core/Fab';
 import cx from 'clsx';
+import Zoom from '@material-ui/core/Zoom';
 
 export const useFabStyles = makeStyles(theme => ({
   fab: {
@@ -31,11 +32,13 @@ const Fab = ({ isHidden, ...props }: Props) => {
   if (isHidden) return null;
   else
     return (
-      <MUIFab
-        color="primary"
-        {...props}
-        className={cx([classes.fab, props.className])}
-      />
+      <Zoom in>
+        <MUIFab
+          color="primary"
+          {...props}
+          className={cx([classes.fab, props.className])}
+        />
+      </Zoom>
     );
 };
 

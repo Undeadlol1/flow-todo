@@ -110,6 +110,9 @@ export default memo(() => {
         if (message) enqueueSnackbar(message, { variant });
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
+        if (error.message.includes('Null value error.')) {
+          history.push('/');
+        }
         handleErrors(error);
         history.push('/tasks/' + taskId);
       } finally {

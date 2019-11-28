@@ -11,6 +11,8 @@ import get from 'lodash/get';
 import i18n from 'i18next';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import store from '../store';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const logger = debug('utils');
 
@@ -167,4 +169,10 @@ export function calculatePointsToNextLevel(level: number) {
   const baseXP = 10;
   const exponent = 1.1;
   return baseXP * ((level ^ exponent) | 1);
+}
+
+export function useScreenIsNarrow(): boolean {
+  const theme = useTheme();
+  const isScreenNarrow = useMediaQuery(theme.breakpoints.down('xs'));
+  return isScreenNarrow;
 }

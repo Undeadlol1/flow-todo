@@ -1,19 +1,21 @@
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
 import ErrorIcon from '@material-ui/icons/Error';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { calculateNextRepetition } from '../../../services';
+import {
+  calculateNextRepetition,
+  useScreenIsNarrow,
+} from '../../../services';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -29,10 +31,9 @@ const TaskChoices = props => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
-  const theme = useTheme();
-  const isScreenNarrow = useMediaQuery(theme.breakpoints.down('xs'));
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
+  const isScreenNarrow = useScreenIsNarrow();
   const commonButtonProps = {
     color: 'primary',
     variant: 'contained',

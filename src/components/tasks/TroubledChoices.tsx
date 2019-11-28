@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import addHours from 'date-fns/addHours';
 import Slide from '@material-ui/core/Slide';
 import { Link, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { useScreenIsNarrow } from '../../services/index';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -24,6 +26,13 @@ const TroublesChoices = ({
   const classes = useStyles();
   const [t] = useTranslation();
   const { pathname } = useLocation();
+  const isScreenNarrow = useScreenIsNarrow();
+  const commonButtonProps: ButtonProps = {
+    color: 'primary',
+    variant: 'contained',
+    className: classes.button,
+    fullWidth: isScreenNarrow,
+  };
   function postPone() {
     updateTask(
       { isCurrent: false, dueAt: addHours(new Date(), 12).getTime() },
@@ -34,49 +43,37 @@ const TroublesChoices = ({
   }
   return (
     <Slide in direction="left">
-      <div style={{ textAlign: 'center' }}>
+      <Grid component={Box} container textAlign="center">
         <Grid item xs={12}>
+          {/*
+          // @ts-ignore */}
           <Button
+            {...commonButtonProps}
             component={Link}
             to={`${pathname}/isHard`}
-            color="primary"
-            variant="contained"
-            className={classes.button}
           >
             {t('hard')}
           </Button>
         </Grid>
         <Grid item xs={12}>
           <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
+            {...commonButtonProps}
             onClick={(e: React.SyntheticEvent) => deleteTask()}
           >
             {t('notImportant')}
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            disabled
-          >
+          <Button {...commonButtonProps} disabled>
             {t('dont want to')}
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button
-            color="primary"
-            variant="contained"
-            className={classes.button}
-            onClick={postPone}
-          >
+          <Button {...commonButtonProps} onClick={postPone}>
             {t('cant right now')}
           </Button>
         </Grid>
-      </div>
+      </Grid>
     </Slide>
   );
 };

@@ -54,7 +54,9 @@ export const RandomTaskButton = ({
     );
   }
 
-  const buttonText = t(activeTaskId ? 'start' : 'noTasks');
+  const buttonText = t(
+    activeTaskId || isAppTourActive ? 'start' : 'noTasks',
+  );
   const isDisabled = loading || get(tasks, 'empty') || !activeTaskId;
   const linkPath = `/tasks/${
     isAppTourActive ? 'introExample' : activeTaskId

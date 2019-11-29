@@ -101,8 +101,8 @@ export default memo(() => {
       variant = 'success',
       pointsToAdd = 10,
     ) {
-      setRequested(true);
       try {
+        setRequested(true);
         await Promise.all([
           taskPointer.update(values),
           addPoints(task.userId, pointsToAdd),
@@ -124,22 +124,25 @@ export default memo(() => {
         setRequested(false);
       }
     },
-    updateSubtask(subtask: Subtask) {
+    async updateSubtask(subtask: Subtask) {
       setRequested(true);
-      return updateSubtask(subtask, {
-        isDone: true,
-        doneAt: Date.now(),
-      })
-        .then(() => {
+      try {
+        await Promise.all([
+          updateSubtask(subtask, {
+            isDone: true,
+            doneAt: Date.now(),
+          }),
           this.updateTask(
             {
               isCurrent: false,
               ...calculateNextRepetition(task, 'good'),
             },
             t('Good job!'),
-          );
-        })
-        .catch((e: Error) => handleErrors(e));
+          ),
+        ]);
+      } catch (e) {
+        return handleErrors(e);
+      }
     },
     task: task || {},
     loading: taskLoading || isRequested,

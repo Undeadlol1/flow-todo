@@ -84,23 +84,32 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        <Link className={classes.link} to={`/tasks/${taskId}`}>
-          <Zoom in>
-            <Card>
-              <CardContent>
-                <When condition={hasSubtasks}>
-                  <Typography color="textSecondary" gutterBottom>
-                    {task.name}
+      <Grid item xs={12}>
+        <Grid
+          style={{ margin: '0 auto' }}
+          item
+          xs={12}
+          sm={8}
+          md={6}
+          lg={5}
+        >
+          <Link className={classes.link} to={`/tasks/${taskId}`}>
+            <Zoom in>
+              <Card>
+                <CardContent>
+                  <When condition={hasSubtasks}>
+                    <Typography color="textSecondary" gutterBottom>
+                      {task.name}
+                    </Typography>
+                  </When>
+                  <Typography variant="h5" component="h1">
+                    {get(activeSubtasks, '[0].name') || task.name}
                   </Typography>
-                </When>
-                <Typography variant="h5" component="h1">
-                  {get(activeSubtasks, '[0].name') || task.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Zoom>
-        </Link>
+                </CardContent>
+              </Card>
+            </Zoom>
+          </Link>
+        </Grid>
       </Grid>
       <Grid item xs={12}>
         <Grid
@@ -116,19 +125,24 @@ export default function TaskPage(props: TaskPageProps) {
           </Collapsible>
         </Grid>
       </Grid>
-      <Switch>
-        <Route path={`${path}/isTroublesome/isHard`}>
-          <HardChoices {...props} />
-        </Route>
-        <Route path={`${path}/isTroublesome`}>
-          <TroublesChoices {...props} />
-        </Route>
-        <Route path={path}>
-          {/*
+      <Grid item xs={12}>
+        <Switch>
+          <Route path={`${path}/isTroublesome/isHard`}>
+            <HardChoices {...props} />
+          </Route>
+          <Route path={`${path}/isTroublesome`}>
+            <TroublesChoices {...props} />
+          </Route>
+          <Route path={path}>
+            {/*
           // @ts-ignore */}
-          <TaskChoices className="IntroHandle__choices" {...props} />
-        </Route>
-      </Switch>
+            <TaskChoices
+              className="IntroHandle__choices"
+              {...props}
+            />
+          </Route>
+        </Switch>
+      </Grid>
       <Timer className={fabClassName} />
     </Grid>
   );

@@ -21,7 +21,6 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import TaskPage from './TaskPage';
-import { showSnackbar } from '../../services/index';
 
 function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);

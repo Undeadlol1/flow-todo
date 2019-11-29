@@ -17,9 +17,6 @@ const uiSlice = createSlice({
     toggleAppTour(state) {
       state.isAppTourActive = !state.isAppTourActive;
     },
-    showSnackbar() {
-
-    }
   },
 });
 

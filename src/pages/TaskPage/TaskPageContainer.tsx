@@ -84,7 +84,8 @@ export default memo(() => {
             async handleAction() {
               await Promise.all([
                 // @ts-ignore
-                await taskPointer.set(task),
+                taskPointer.set(task),
+                addPoints(task.userId, -10),
               ]);
               history.push(`/tasks/${taskId}`);
             },

@@ -21,6 +21,7 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import TaskPage from './TaskPage';
+import { showSnackbar } from '../../services/index';
 
 function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -77,15 +78,17 @@ export default memo(() => {
           addPoints(task.userId, 10),
         ]);
         dispatch(
-          snackbarActions.showMessage(
-            t('successfullyDeleted'),
-            t('undo'),
-            async function restoreTaskAndRedirect() {
-              // @ts-ignore
-              await taskPointer.set(task.data());
+          snackbarActions.show({
+            message: t('successfullyDeleted'),
+            action: t('undo'),
+            async handleAction() {
+              await Promise.all([
+                // @ts-ignore
+                await taskPointer.set(task),
+              ]);
               history.push(`/tasks/${taskId}`);
             },
-          ),
+          }),
         );
       } catch (error) {
         handleErrors(error);

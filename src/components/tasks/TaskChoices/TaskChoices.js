@@ -19,8 +19,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   button: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    margin: `${theme.spacing(1)}px auto`,
   },
   doneButton: {
     marginTop: '30px',
@@ -72,7 +71,7 @@ const TaskChoices = props => {
         alignContent="space-around"
         classes={{ root: props.className }}
       >
-        <Grid item xs={12} md={4} align="center">
+        <Grid item xs={12} md={4} style={{ margin: '0 auto' }}>
           <Button
             {...commonButtonProps}
             color="secondary"

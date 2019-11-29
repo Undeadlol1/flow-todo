@@ -103,10 +103,10 @@ export default memo(() => {
         await Promise.all([
           taskPointer.update(values),
           addPoints(task.userId, pointsToAdd),
-          firestore()
-            .doc('tasks/' + nextTaskId)
-            .update({ isCurrent: true }),
         ]);
+        await firestore()
+          .doc('tasks/' + nextTaskId)
+          .update({ isCurrent: true });
         // @ts-ignore
         if (message) enqueueSnackbar(message, { variant });
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');

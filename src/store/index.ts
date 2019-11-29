@@ -16,6 +16,7 @@ import { snackbarReducer } from 'material-ui-snackbar-redux';
 import { firebaseReducer, actionTypes } from 'react-redux-firebase';
 import debug from 'debug';
 import addDays from 'date-fns/addDays';
+import subDays from 'date-fns/subDays';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -42,7 +43,10 @@ export function upsertTask(
     values,
     isCreate && {
       isDone: false,
-      dueAt: addDays(new Date(), 1).getTime(),
+      dueAt:
+        process.env.NODE_ENV === 'production'
+          ? addDays(new Date(), 1).getTime()
+          : subDays(new Date(), 1).getTime(),
     },
   );
 

@@ -1,22 +1,21 @@
-import nanoid from 'nanoid';
-import { reduxFirestore, firestoreReducer } from 'redux-firestore';
-import firebase, { firestore } from 'firebase/app';
 import {
+  combineReducers,
   configureStore,
   getDefaultMiddleware,
-  combineReducers,
 } from '@reduxjs/toolkit';
+import subDays from 'date-fns/subDays';
+import debug from 'debug';
+import firebase, { firestore } from 'firebase/app';
+import extend from 'lodash/extend';
+import { snackbarReducer } from 'material-ui-snackbar-redux';
+import nanoid from 'nanoid';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
+import { actionTypes, firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer, reduxFirestore } from 'redux-firestore';
+import { initializeFirebase } from '../services/index';
 import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
-import extend from 'lodash/extend';
-import { initializeFirebase } from '../services/index';
 import userSlice from './usersSlice';
-import { snackbarReducer } from 'material-ui-snackbar-redux';
-import { firebaseReducer, actionTypes } from 'react-redux-firebase';
-import debug from 'debug';
-import addDays from 'date-fns/addDays';
-import subDays from 'date-fns/subDays';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -43,10 +42,7 @@ export function upsertTask(
     values,
     isCreate && {
       isDone: false,
-      dueAt:
-        process.env.NODE_ENV === 'production'
-          ? addDays(new Date(), 1).getTime()
-          : subDays(new Date(), 1).getTime(),
+      dueAt: subDays(new Date(), 1).getTime(),
     },
   );
 

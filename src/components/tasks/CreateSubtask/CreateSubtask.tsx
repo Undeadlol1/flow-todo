@@ -7,18 +7,21 @@ import * as Yup from 'yup';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { createSubtask } from '../../../store/index.ts';
+import { createSubtask } from '../../../store/index';
 
 const useStyles = makeStyles(theme => ({
   container: {},
 }));
 
-const CreateSubtask = props => {
+interface Props {
+  className?: string;
+  taskId: string;
+}
+
+const CreateSubtask = (props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const {
- register, handleSubmit, errors, reset, setError 
-} = useForm(
+  const { register, handleSubmit, errors, reset, setError } = useForm(
     {
       validationSchema: Yup.object({
         name: Yup.string()
@@ -29,16 +32,16 @@ const CreateSubtask = props => {
     },
   );
   const error = get(errors, 'name.message');
-  function onSubmit(values) {
-    return handleSubmit(() => createSubtask(props.taskId, values)
-        .then(() => reset({}))
-        .catch(e => setError(e && e.message)),);
+  function onSubmit(values: any) {
+    return createSubtask(props.taskId, values)
+      .then(() => reset({}))
+      .catch(e => setError('name', 'mismatch', get(e, 'message', e)));
   }
 
   return (
     <form
       className={clsx([classes.container, props.className])}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <TextField
         fullWidth

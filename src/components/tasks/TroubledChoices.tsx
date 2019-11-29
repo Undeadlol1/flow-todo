@@ -8,7 +8,6 @@ import { Link, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useScreenIsNarrow } from '../../services/index';
-import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -43,14 +42,15 @@ const TroublesChoices = ({
   }
   return (
     <Slide in direction="left">
-      <Grid component={Box} container textAlign="center">
-        <Grid item xs={12}>
+      <Grid container direction="row" alignContent="space-around">
+        <Grid item xs={12} style={{ margin: '0 auto' }}>
           {/*
           // @ts-ignore */}
           <Button
             {...commonButtonProps}
             component={Link}
             to={`${pathname}/isHard`}
+            color="secondary"
           >
             {t('hard')}
           </Button>

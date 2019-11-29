@@ -71,13 +71,7 @@ const TaskChoices = props => {
         alignContent="space-around"
         classes={{ root: props.className }}
       >
-        <Grid
-          item
-          xs={12}
-          md={4}
-          align="center"
-          style={{ margin: '0 auto' }}
-        >
+        <Grid item xs={12} md={4} style={{ margin: '0 auto' }}>
           <Button
             {...commonButtonProps}
             color="secondary"

@@ -5,22 +5,20 @@ import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import get from 'lodash/get';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { createSubtask } from '../../../store/index.ts';
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
+  container: {},
 }));
 
 const CreateSubtask = props => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const { register, handleSubmit, errors, reset, setError } = useForm(
+  const {
+ register, handleSubmit, errors, reset, setError 
+} = useForm(
     {
       validationSchema: Yup.object({
         name: Yup.string()
@@ -31,30 +29,27 @@ const CreateSubtask = props => {
     },
   );
   const error = get(errors, 'name.message');
-  // TODO: Better name
   function onSubmit(values) {
-    console.log('on submit');
-    createSubtask(props.taskId, values)
-      .then(() => reset({}))
-      .catch(e => setError(e && e.message));
+    return handleSubmit(() => createSubtask(props.taskId, values)
+        .then(() => reset({}))
+        .catch(e => setError(e && e.message)),);
   }
 
   return (
     <form
-      className={props.className}
-      onSubmit={handleSubmit(onSubmit)}
+      className={clsx([classes.container, props.className])}
+      onSubmit={onSubmit}
     >
-      <Paper className={classes.paper}>
-        <TextField
-          fullWidth
-          name="name"
-          autoComplete="off"
-          inputRef={register}
-          error={Boolean(error)}
-          label={t('Add subtasks')}
-          helperText={get(errors, 'name.message')}
-        />
-      </Paper>
+      <TextField
+        fullWidth
+        name="name"
+        variant="outlined"
+        autoComplete="off"
+        inputRef={register}
+        error={Boolean(error)}
+        label={t('Add subtasks')}
+        helperText={get(errors, 'name.message')}
+      />
     </form>
   );
 };

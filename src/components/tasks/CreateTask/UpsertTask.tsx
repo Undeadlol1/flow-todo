@@ -3,18 +3,18 @@ import * as Yup from 'yup';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import useForm from 'react-hook-form';
-import { auth } from 'firebase/app';
 import isUndefined from 'lodash/isUndefined';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
-import { upsertTask } from '../../../store/index';
+import { upsertTask, addPoints } from '../../../store/index';
 import { FormState, Ref } from 'react-hook-form/dist/types';
 import invoke from 'lodash/invoke';
+import { useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 const useStyles = makeStyles({
   container: {},
@@ -87,7 +87,6 @@ UpsertTask.defaultValues = {
 };
 
 UpsertTask.propTypes = {
-  user: PropTypes.object,
   error: PropTypes.string,
   isValid: PropTypes.bool,
   taskId: PropTypes.string,
@@ -114,12 +113,22 @@ interface ContainerProps extends CommonProps {
 function UpsertTaskContainer(props: ContainerProps) {
   const {
     taskId,
+    callback,
     showSnackbarOnSuccess = true,
     resetFormOnSuccess = true,
   } = props;
   const [t] = useTranslation();
-  const [user] = useAuthState(auth());
-  const formProps = useForm<FormData>({
+  const { enqueueSnackbar } = useSnackbar();
+
+  const userId: string = useSelector(s =>
+    get(s, 'firebase.auth.uid'),
+  );
+  const activeTasks = useSelector(s =>
+    get(s, 'firestore.ordered.activeTasks'),
+  );
+  const shouldAddBonusPoints = isEmpty(activeTasks);
+
+  const form = useForm<FormData>({
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
@@ -127,49 +136,42 @@ function UpsertTaskContainer(props: ContainerProps) {
         .required(t('validation.required')),
     }),
   });
-  const { enqueueSnackbar } = useSnackbar();
 
-  function createDocumentAndReset({ name }: { name: string }) {
+  async function createDocumentAndReset({ name }: { name: string }) {
     invoke(props, 'beforeSubmitHook');
-    return upsertTask(
-      { name, userId: user && user.uid },
-      props.taskId,
-    )
-      .then(() => {
-        if (resetFormOnSuccess) formProps.reset();
-        if (showSnackbarOnSuccess) {
-          enqueueSnackbar(t('Successfully saved'), {
-            anchorOrigin: {
-              vertical: 'top',
-              horizontal: 'left',
-            },
-          });
-        }
-        invoke(props, 'callback');
-      })
-      .catch(error => {
-        enqueueSnackbar(
-          t('Something went wrong') +
-            '. ' +
-            (props.taskId
-              ? error.message
-              : t('task was note created')),
-          {
-            variant: 'error',
+    try {
+      await upsertTask({ name, userId }, props.taskId);
+      if (shouldAddBonusPoints) await addPoints(userId, 10);
+      if (resetFormOnSuccess) form.reset();
+      if (showSnackbarOnSuccess) {
+        enqueueSnackbar(t('Successfully saved'), {
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
           },
-        );
-      });
+        });
+      }
+      if (callback) callback();
+    } catch (error) {
+      enqueueSnackbar(
+        t('Something went wrong') +
+          '. ' +
+          (props.taskId ? error.message : t('task was note created')),
+        {
+          variant: 'error',
+        },
+      );
+    }
   }
   const mergedProps = {
-    user,
     taskId,
     autoFocus: props.autoFocus,
     defaultValue: props.defaultValue,
     onSubmit: createDocumentAndReset,
-    error: user
-      ? get(formProps, 'errors.name.message')
+    error: userId
+      ? get(form, 'errors.name.message')
       : t('Please login'),
-    ...formProps,
+    ...form,
   };
   return <UpsertTask {...mergedProps} />;
 }

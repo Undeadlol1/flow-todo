@@ -19,6 +19,7 @@ import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useTypedSelector } from '../store/index';
 import { isEmpty } from 'react-redux-firebase';
+import get from 'lodash/get';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -41,6 +42,9 @@ export default memo(function HomePage() {
   const { createdAtleastOneTask } = useTypedSelector(
     // @ts-ignore
     state => state.firestore.ordered,
+  );
+  const activeTasks = useTypedSelector(s =>
+    get(s, 'firestore.ordered.activeTasks'),
   );
 
   log('createdAtleastOneTask: ', createdAtleastOneTask);
@@ -90,7 +94,7 @@ export default memo(function HomePage() {
         className={cx(['IntroHandle__createTask'])}
         isHidden={isLoading || (!isLoggedIn && !isAppTourActive)}
       >
-        <AddIcon />
+        {isEmpty(activeTasks) ? '+10' : <AddIcon />}
       </Fab>
       <AppTour />
     </Grid>

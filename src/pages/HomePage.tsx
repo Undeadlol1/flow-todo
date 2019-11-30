@@ -5,9 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import cx from 'clsx';
 import debug from 'debug';
-import { auth } from 'firebase/app';
-import React, { memo, useContext } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
+import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use-toggle';
 import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
@@ -16,10 +17,7 @@ import TasksList from '../components/tasks/TasksList/TasksList';
 import AppTour from '../components/ui/AppTour';
 import Fab from '../components/ui/Fab';
 import WelcomeCard from '../components/ui/WelcomeCard';
-import { TasksContext } from '../store/contexts';
 import { useTypedSelector } from '../store/index';
-import isEmpty from 'lodash/isEmpty';
-import get from 'lodash/get';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -36,24 +34,19 @@ const useStyles = makeStyles(theme => ({
 export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
-  const { loading: isLoading } = useContext(TasksContext);
+  const [isDialogOpen, toggleDialog] = useToggle(false);
+
   const { isAppTourActive } = useTypedSelector(state => state.ui);
-  // @ts-ignore
-  const { createdAtleastOneTask } = useTypedSelector(
-    // @ts-ignore
-    state => state.firestore.ordered,
+  const { createdAtleastOneTask, activeTasks } = useTypedSelector(
+    s => s.firestore.ordered,
   );
-  const activeTasks = useTypedSelector(s =>
-    get(s, 'firestore.ordered.activeTasks'),
-  );
+  const auth: any = useTypedSelector(s => get(s, 'firebase.auth'));
 
   const hasActiveTasks = !isEmpty(activeTasks);
-  const isLoggedIn = Boolean(useAuthState(auth())[0]);
-  const [isDialogOpen, toggleDialog] = useToggle(false);
+  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
   const isButtonVisible =
     isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
 
-  log('isLoggedIn: ', isLoggedIn);
   log('isDialogOpen: ', isDialogOpen);
   log('isButtonVisible: ', isButtonVisible);
   log('hasActiveTasks: ', hasActiveTasks);
@@ -97,7 +90,7 @@ export default memo(function HomePage() {
         onClick={toggleDialog}
         aria-label={t('createTask')}
         className={cx(['IntroHandle__createTask'])}
-        isHidden={isLoading || (!isLoggedIn && !isAppTourActive)}
+        isHidden={isLoading || (auth.isEmpty && !isAppTourActive)}
       >
         {hasActiveTasks ? <AddIcon /> : '+10'}
       </Fab>

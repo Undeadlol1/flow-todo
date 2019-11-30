@@ -19,6 +19,7 @@ import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackb
 import firebase from 'firebase/app';
 import ReactReduxFirebaseProvider from 'react-redux-firebase/es/ReactReduxFirebaseProvider';
 import createFirestoreInstance from 'redux-firestore/es/createFirestoreInstance';
+import { ruRU, enUS } from '@material-ui/core/locale/';
 import store from './store';
 
 import Router from './Router';
@@ -26,22 +27,30 @@ import en from './locales/en';
 import ru from './locales/ru';
 import './App.css';
 
+const MUILocales = { ruRU, enUS };
+
 initializeI18n();
 
 function App() {
+  const { language } = i18n;
   const prefersDarkMode = useMediaQuery(
     '(prefers-color-scheme: dark)',
   );
   const theme = React.useMemo(
-    () => createMuiTheme({
-      palette: {
-        primary: { main: '#81D4FA' },
-        secondary: { main: '#00838F', contrastText: '#ffffff' },
-        type: prefersDarkMode ? 'dark' : 'light',
-      },
-      themeName: 'Malibu Blue Lagoon Zebu',
-    }),
-    [prefersDarkMode],
+    () => createMuiTheme(
+        {
+          palette: {
+            primary: { main: '#81D4FA' },
+            secondary: { main: '#00838F', contrastText: '#ffffff' },
+            type: prefersDarkMode ? 'dark' : 'light',
+          },
+          themeName: 'Malibu Blue Lagoon Zebu',
+        },
+        MUILocales[
+          Object.keys(MUILocales).find(key => key.startsWith(language),)
+        ],
+      ),
+    [language, prefersDarkMode],
   );
   const isMobile =    useWindowSize().width < theme.breakpoints.values.sm;
 

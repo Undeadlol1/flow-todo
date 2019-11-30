@@ -51,5 +51,7 @@ export default {
     },
     'seems like anonymous upgrading failed':
       'Seems like upgrding account from anonymous failed. Sorry',
+    youAreCloserToYourGoal:
+      'You are now closer to your goal. Good job! Points rewarded: {{points}}',
   },
 };

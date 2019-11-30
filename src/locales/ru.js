@@ -52,5 +52,7 @@ export default {
     },
     'seems like anonymous upgrading failed':
       'Похоже что не получилось обновить анонимный аккаунт. Извините',
+    youAreCloserToYourGoal:
+      'Ты стал ближе к своей цели. Молодец! Очков получено: {{points}}',
   },
 };

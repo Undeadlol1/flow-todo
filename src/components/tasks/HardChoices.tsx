@@ -7,6 +7,12 @@ import UpsertTask from './CreateTask/UpsertTask';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import { CardContent } from '@material-ui/core';
+import { addPoints, Task } from '../../store/index';
+import { UserInfo } from 'firebase';
+import get from 'lodash/get';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { showSnackbar } from '../../services/index';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -16,11 +22,22 @@ const useStyles = makeStyles(theme => ({
 
 const HardChoices = (
   props: Partial<{
+    task: Task;
     taskId: string;
-    task: { name: string; subtasks?: any };
   }>,
 ) => {
+  const [t] = useTranslation();
   const classes = useStyles();
+  const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
+  const addPointsOnSuccess = () => {
+    const points = 10;
+    addPoints(auth.uid, points);
+    showSnackbar(
+      t('youAreCloserToYourGoal', {
+        points,
+      }),
+    );
+  };
 
   return (
     <>
@@ -36,6 +53,7 @@ const HardChoices = (
               места?
             </Typography>
             <CreateSubtask
+              callback={addPointsOnSuccess}
               className={classes.form}
               taskId={props.taskId as string}
             />
@@ -52,6 +70,7 @@ const HardChoices = (
               defaultValue={props.task!.name}
               resetFormOnSuccess={false}
               showSnackbarOnSuccess={false}
+              callback={addPointsOnSuccess}
             />
           </CardContent>
         </Card>

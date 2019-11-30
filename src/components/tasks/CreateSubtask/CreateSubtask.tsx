@@ -8,6 +8,7 @@ import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { createSubtask } from '../../../store/index';
+import invoke from 'lodash/invoke';
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -16,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 interface Props {
   className?: string;
   taskId: string;
+  callback?: Function;
 }
 
 const CreateSubtask = (props: Props) => {
@@ -34,7 +36,10 @@ const CreateSubtask = (props: Props) => {
   const error = get(errors, 'name.message');
   function onSubmit(values: any) {
     return createSubtask(props.taskId, values)
-      .then(() => reset({}))
+      .then(() => {
+        reset({});
+        invoke(props, 'callback');
+      })
       .catch(e => setError('name', 'mismatch', get(e, 'message', e)));
   }
 

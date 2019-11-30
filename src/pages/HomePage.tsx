@@ -20,6 +20,7 @@ import WelcomeCard from '../components/ui/WelcomeCard';
 import { useTypedSelector } from '../store/index';
 
 const log = debug('HomePage');
+debug.enable('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
@@ -42,14 +43,15 @@ export default memo(function HomePage() {
   const { createdAtleastOneTask, activeTasks } = useTypedSelector(
     s => s.firestore.ordered,
   );
+  log('activeTasks: ', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   const hasActiveTasks = !isEmpty(activeTasks);
   const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
   const isButtonVisible =
     isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
-  log('hasActiveTasks: ', hasActiveTasks);
   log('isButtonVisible: ', isButtonVisible);
+  log('isLoading: ', isLoading);
 
   return (
     <Grid
@@ -92,7 +94,11 @@ export default memo(function HomePage() {
         className={cx(['IntroHandle__createTask'])}
         isHidden={isLoading || (auth.isEmpty && !isAppTourActive)}
       >
-        {hasActiveTasks ? <AddIcon /> : '+10'}
+        {createdAtleastOneTask && isEmpty(activeTasks) ? (
+          '+10'
+        ) : (
+          <AddIcon />
+        )}
       </Fab>
       <AppTour />
     </Grid>

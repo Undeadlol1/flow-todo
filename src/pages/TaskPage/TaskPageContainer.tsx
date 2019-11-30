@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import once from 'lodash/once';
 import random from 'lodash/random';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { useSnackbar } from 'notistack';
+import { useSnackbar, OptionsObject } from 'notistack';
 import React, { memo, useState } from 'react';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useTranslation } from 'react-i18next';
@@ -95,12 +95,17 @@ export default memo(() => {
         history.push(`/tasks/${taskId}`);
       }
     },
-    async updateTask(
-      values: object,
-      message: string,
-      variant = 'success',
+    async updateTask({
+      values,
+      snackbarMessage,
       pointsToAdd = 10,
-    ) {
+      snackbarVariant = 'success',
+    }: {
+      values: any;
+      pointsToAdd?: number;
+      snackbarMessage: string;
+      snackbarVariant?: OptionsObject['variant'];
+    }) {
       try {
         setRequested(true);
         await Promise.all([
@@ -112,7 +117,10 @@ export default memo(() => {
             .doc('tasks/' + nextTaskId)
             .update({ isCurrent: true });
         // @ts-ignore
-        if (message) enqueueSnackbar(message, { variant });
+        if (snackbarMessage)
+          enqueueSnackbar(snackbarMessage, {
+            variant: snackbarVariant,
+          });
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         if (error.message.includes('Null value error.')) {
@@ -132,13 +140,13 @@ export default memo(() => {
             isDone: true,
             doneAt: Date.now(),
           }),
-          this.updateTask(
-            {
+          this.updateTask({
+            values: {
               isCurrent: false,
               ...calculateNextRepetition(task, 'good'),
             },
-            t('Good job!'),
-          ),
+            snackbarMessage: t('Good job!'),
+          }),
         ]);
       } catch (e) {
         return handleErrors(e);
@@ -149,7 +157,5 @@ export default memo(() => {
     taskId,
     isAppIntroMode,
   };
-  // TODO: remoove @ts-ignore
-  // @ts-ignore
   return <TaskPage {...mergedProps} />;
 });

@@ -20,6 +20,12 @@ import userSlice from './usersSlice';
 const log = debug('store');
 const { FieldValue } = firestore;
 
+export type TaskHistory = {
+  createdAt: number;
+  // TODO enum
+  actionType: string;
+};
+
 export type Task = {
   id?: string;
   name: string;
@@ -31,6 +37,7 @@ export type Task = {
   isDone: boolean;
   isCurrent?: boolean;
   repetitionLevel?: number;
+  history?: TaskHistory[];
 };
 
 export function upsertTask(

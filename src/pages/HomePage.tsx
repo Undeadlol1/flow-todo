@@ -18,7 +18,7 @@ import Fab from '../components/ui/Fab';
 import WelcomeCard from '../components/ui/WelcomeCard';
 import { TasksContext } from '../store/contexts';
 import { useTypedSelector } from '../store/index';
-import { isEmpty } from 'react-redux-firebase';
+import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 const log = debug('HomePage');
@@ -47,12 +47,17 @@ export default memo(function HomePage() {
     get(s, 'firestore.ordered.activeTasks'),
   );
 
-  log('createdAtleastOneTask: ', createdAtleastOneTask);
+  const hasActiveTasks = !isEmpty(activeTasks);
   const isLoggedIn = Boolean(useAuthState(auth())[0]);
   const [isDialogOpen, toggleDialog] = useToggle(false);
   const isButtonVisible =
     isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
 
+  log('isLoggedIn: ', isLoggedIn);
+  log('isDialogOpen: ', isDialogOpen);
+  log('isButtonVisible: ', isButtonVisible);
+  log('hasActiveTasks: ', hasActiveTasks);
+  log('createdAtleastOneTask: ', createdAtleastOneTask);
   return (
     <Grid
       container
@@ -94,7 +99,7 @@ export default memo(function HomePage() {
         className={cx(['IntroHandle__createTask'])}
         isHidden={isLoading || (!isLoggedIn && !isAppTourActive)}
       >
-        {isEmpty(activeTasks) ? '+10' : <AddIcon />}
+        {hasActiveTasks ? <AddIcon /> : '+10'}
       </Fab>
       <AppTour />
     </Grid>

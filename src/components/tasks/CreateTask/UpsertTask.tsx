@@ -153,6 +153,7 @@ function UpsertTaskContainer(props: ContainerProps) {
       }
       if (callback) callback();
     } catch (error) {
+      console.error(error);
       enqueueSnackbar(
         t('Something went wrong') +
           '. ' +

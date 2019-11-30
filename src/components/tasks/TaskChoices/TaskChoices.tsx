@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { Task } from '../../../store/index';
 import {
   calculateNextRepetition,
   useScreenIsNarrow,
@@ -26,20 +27,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TaskChoices = props => {
+interface Props {
+  task: Task;
+  className?: string;
+  updateTask: Function;
+  updateSubtask: Function;
+}
+
+const TaskChoices = (props: Props) => {
   const [t] = useTranslation();
   const classes = useStyles();
   const { pathname } = useLocation();
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
   const isScreenNarrow = useScreenIsNarrow();
-  const commonButtonProps = {
+  const commonButtonProps: ButtonProps = {
     color: 'primary',
     variant: 'contained',
     className: classes.button,
     fullWidth: isScreenNarrow,
   };
-  const didGood = () => props.updateTask(
+  const didGood = () =>
+    props.updateTask(
       {
         isCurrent: false,
         ...calculateNextRepetition(props.task, 'normal'),
@@ -48,7 +57,8 @@ const TaskChoices = props => {
       undefined,
       10,
     );
-  const didGreat = () => props.updateTask(
+  const didGreat = () =>
+    props.updateTask(
       {
         isCurrent: false,
         ...calculateNextRepetition(props.task, 'good'),
@@ -59,7 +69,8 @@ const TaskChoices = props => {
     );
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
-    : () => props.updateTask(
+    : () =>
+        props.updateTask(
           { isCurrent: false, isDone: true, doneAt: Date.now() },
           t('Good job!'),
         );
@@ -72,6 +83,8 @@ const TaskChoices = props => {
         classes={{ root: props.className }}
       >
         <Grid item xs={12} md={4} style={{ margin: '0 auto' }}>
+          {/*
+          // @ts-ignore */}
           <Button
             {...commonButtonProps}
             color="secondary"
@@ -82,7 +95,7 @@ const TaskChoices = props => {
             {t('there are difficulties')}
           </Button>
         </Grid>
-        <Grid item xs={12} md={4} align="center">
+        <Grid item xs={12} md={4}>
           <Button
             {...commonButtonProps}
             startIcon={<HeartIcon />}
@@ -91,7 +104,7 @@ const TaskChoices = props => {
             {t('made step forward')}
           </Button>
         </Grid>
-        <Grid item xs={12} md={4} align="center">
+        <Grid item xs={12} md={4}>
           <Button
             {...commonButtonProps}
             startIcon={<SmileEmoticon />}
@@ -105,16 +118,16 @@ const TaskChoices = props => {
           direction="column"
           classes={{ root: props.className }}
         >
-          <Grid item xs align="center">
+          <Grid item xs>
             <Button
               {...commonButtonProps}
               className={classes.doneButton}
-              startIcon={(
+              startIcon={
                 <>
                   {hasSubtasks && <AssigmentIcon />}
                   <DoneIcon />
                 </>
-              )}
+              }
               onClick={setDone}
             >
               {t('done')}

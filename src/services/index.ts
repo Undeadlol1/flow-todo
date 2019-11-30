@@ -10,15 +10,11 @@ import { firestore } from 'firebase';
 import get from 'lodash/get';
 import i18n from 'i18next';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import store from '../store';
+import store, { Task } from '../store';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const logger = debug('utils');
-
-interface Task {
-  repetitionLevel: number | undefined;
-}
 
 interface Repetition {
   dueAt: number;

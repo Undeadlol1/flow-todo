@@ -35,22 +35,22 @@ export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const [isDialogOpen, toggleDialog] = useToggle(false);
+  log('isDialogOpen: ', isDialogOpen);
 
   const { isAppTourActive } = useTypedSelector(state => state.ui);
+  const auth: any = useTypedSelector(s => get(s, 'firebase.auth'));
   const { createdAtleastOneTask, activeTasks } = useTypedSelector(
     s => s.firestore.ordered,
   );
-  const auth: any = useTypedSelector(s => get(s, 'firebase.auth'));
+  log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   const hasActiveTasks = !isEmpty(activeTasks);
   const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
   const isButtonVisible =
     isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
-
-  log('isDialogOpen: ', isDialogOpen);
-  log('isButtonVisible: ', isButtonVisible);
   log('hasActiveTasks: ', hasActiveTasks);
-  log('createdAtleastOneTask: ', createdAtleastOneTask);
+  log('isButtonVisible: ', isButtonVisible);
+
   return (
     <Grid
       container

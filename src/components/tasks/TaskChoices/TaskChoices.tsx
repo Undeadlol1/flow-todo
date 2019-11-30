@@ -14,6 +14,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   calculateNextRepetition,
   useScreenIsNarrow,
+  Confidence,
 } from '../../../services';
 import {
   distanceBetweenDates,
@@ -53,10 +54,10 @@ const TaskChoices = (props: Props) => {
     className: classes.button,
     fullWidth: isScreenNarrow,
   };
-  function stepForward(confidence: string, pointsToAdd?: number) {
+  function stepForward(confidence: Confidence, pointsToAdd?: number) {
     const nextRepetition = calculateNextRepetition(
       props.task,
-      'normal',
+      confidence,
     );
     props.updateTask({
       values: {

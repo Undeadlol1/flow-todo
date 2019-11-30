@@ -24,11 +24,12 @@ interface Repetition {
   repetitionLevel: number;
 }
 
+export type Confidence = 'bad' | 'normal' | 'good';
+
 export function calculateNextRepetition(
   task: Task,
-  confidence: 'bad' | 'normal' | 'good',
+  confidence: Confidence = 'normal',
 ): Repetition {
-  if (!confidence) confidence = 'normal';
   logger('task: ', task);
   logger('confidence: ', confidence);
   const today = new Date();

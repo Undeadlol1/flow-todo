@@ -46,7 +46,6 @@ export default memo(function HomePage() {
   log('activeTasks: ', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
-  const hasActiveTasks = !isEmpty(activeTasks);
   const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
   const isButtonVisible =
     isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);

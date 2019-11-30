@@ -13,6 +13,9 @@ import { snackbarActions } from 'material-ui-snackbar-redux';
 import store, { Task } from '../store';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import formatRelative from 'date-fns/formatRelative';
+import en from 'date-fns/locale/en-US';
+import ru from 'date-fns/locale/ru';
 
 const logger = debug('utils');
 
@@ -171,4 +174,26 @@ export function useScreenIsNarrow(): boolean {
   const theme = useTheme();
   const isScreenNarrow = useMediaQuery(theme.breakpoints.down('xs'));
   return isScreenNarrow;
+}
+
+const dateLocales = { en, ru };
+
+export function formatRelativeDate(
+  dateToFormat: Date | number,
+  dateToCompareWith: Date | number,
+) {
+  return formatRelative(dateToFormat, dateToCompareWith, {
+    // @ts-ignore
+    locale: dateLocales[i18n.language],
+  });
+}
+
+export function distanceBetweenDates(
+  dateToFormat: Date | number,
+  dateToCompareWith: Date | number,
+) {
+  return formatDistance(dateToFormat, dateToCompareWith, {
+    // @ts-ignore
+    locale: dateLocales[i18n.language],
+  });
 }

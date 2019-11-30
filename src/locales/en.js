@@ -53,5 +53,7 @@ export default {
       'Seems like upgrding account from anonymous failed. Sorry',
     youAreCloserToYourGoal:
       'You are now closer to your goal. Good job! Points rewarded: {{points}}',
+    'you will see task again in':
+      'You will see your task again in {{date}}.',
   },
 };

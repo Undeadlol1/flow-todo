@@ -11,11 +11,15 @@ import filter from 'lodash/filter';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Task } from '../../../store/index';
 import {
   calculateNextRepetition,
   useScreenIsNarrow,
 } from '../../../services';
+import {
+  distanceBetweenDates,
+  showSnackbar,
+} from '../../../services/index';
+import { Task } from '../../../store/index';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -49,23 +53,31 @@ const TaskChoices = (props: Props) => {
     className: classes.button,
     fullWidth: isScreenNarrow,
   };
-  const didGood = () =>
+  function stepForward(confidence: string, pointsToAdd?: number) {
+    const nextRepetition = calculateNextRepetition(
+      props.task,
+      'normal',
+    );
     props.updateTask({
       values: {
         isCurrent: false,
-        ...calculateNextRepetition(props.task, 'normal'),
+        ...nextRepetition,
       },
       snackbarMessage: t('important to step forward'),
     });
-  const didGreat = () =>
-    props.updateTask({
-      valus: {
-        isCurrent: false,
-        ...calculateNextRepetition(props.task, 'good'),
-      },
-      message: t('important to step forward'),
-      pointsToAdd: 30,
-    });
+    setTimeout(
+      () =>
+        showSnackbar(
+          t('you will see task again in', {
+            date: distanceBetweenDates(
+              nextRepetition.dueAt,
+              new Date(),
+            ),
+          }),
+        ),
+      4000,
+    );
+  }
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () =>
@@ -103,7 +115,7 @@ const TaskChoices = (props: Props) => {
           <Button
             {...commonButtonProps}
             startIcon={<HeartIcon />}
-            onClick={didGood}
+            onClick={() => stepForward('normal')}
           >
             {t('made step forward')}
           </Button>
@@ -112,7 +124,7 @@ const TaskChoices = (props: Props) => {
           <Button
             {...commonButtonProps}
             startIcon={<SmileEmoticon />}
-            onClick={didGreat}
+            onClick={() => stepForward('good', 30)}
           >
             {t('advanced a lot')}
           </Button>

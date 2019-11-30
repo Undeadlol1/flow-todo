@@ -26,7 +26,7 @@ interface Repetition {
 
 export function calculateNextRepetition(
   task: Task,
-  confidence = 'bad' || 'normal' || 'good',
+  confidence: 'bad' | 'normal' | 'good',
 ): Repetition {
   if (!confidence) confidence = 'normal';
   logger('task: ', task);

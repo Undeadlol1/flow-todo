@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 import addHours from 'date-fns/addHours';
@@ -33,12 +32,14 @@ const TroublesChoices = ({
     fullWidth: isScreenNarrow,
   };
   function postPone() {
-    updateTask(
-      { isCurrent: false, dueAt: addHours(new Date(), 12).getTime() },
-      t('Posponed until tomorrow'),
-      'default',
-      0,
-    );
+    updateTask({
+      values: {
+        isCurrent: false,
+        dueAt: addHours(new Date(), 12).getTime(),
+      },
+      snackbarMessage: t('Posponed until tomorrow'),
+      snackbarVariant: 'default',
+    });
   }
   return (
     <Slide in direction="left">
@@ -76,11 +77,6 @@ const TroublesChoices = ({
       </Grid>
     </Slide>
   );
-};
-
-TroublesChoices.propTypes = {
-  updateTask: PropTypes.func.isRequired,
-  deleteTask: PropTypes.func.isRequired,
 };
 
 export default TroublesChoices;

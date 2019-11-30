@@ -8,7 +8,6 @@ import ErrorIcon from '@material-ui/icons/Error';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -48,32 +47,33 @@ const TaskChoices = (props: Props) => {
     fullWidth: isScreenNarrow,
   };
   const didGood = () =>
-    props.updateTask(
-      {
+    props.updateTask({
+      values: {
         isCurrent: false,
         ...calculateNextRepetition(props.task, 'normal'),
       },
-      t('important to step forward'),
-      undefined,
-      10,
-    );
+      snackbarMessage: t('important to step forward'),
+    });
   const didGreat = () =>
-    props.updateTask(
-      {
+    props.updateTask({
+      valus: {
         isCurrent: false,
         ...calculateNextRepetition(props.task, 'good'),
       },
-      t('important to step forward'),
-      undefined,
-      30,
-    );
+      message: t('important to step forward'),
+      pointsToAdd: 30,
+    });
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () =>
-        props.updateTask(
-          { isCurrent: false, isDone: true, doneAt: Date.now() },
-          t('Good job!'),
-        );
+        props.updateTask({
+          values: {
+            isCurrent: false,
+            isDone: true,
+            doneAt: Date.now(),
+          },
+          snackbarMessage: t('Good job!'),
+        });
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -137,13 +137,6 @@ const TaskChoices = (props: Props) => {
       </Grid>
     </Fade>
   );
-};
-
-TaskChoices.propTypes = {
-  className: PropTypes.string,
-  task: PropTypes.object.isRequired,
-  updateTask: PropTypes.func.isRequired,
-  updateSubtask: PropTypes.func.isRequired,
 };
 
 export default TaskChoices;

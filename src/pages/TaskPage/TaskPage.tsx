@@ -8,7 +8,6 @@ import Zoom from '@material-ui/core/Zoom';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { When } from 'react-if';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
@@ -136,8 +135,6 @@ export default function TaskPage(props: TaskPageProps) {
             <TroublesChoices {...props} />
           </Route>
           <Route path={path}>
-            {/*
-          // @ts-ignore */}
             <TaskChoices
               className="IntroHandle__choices"
               {...props}
@@ -149,10 +146,3 @@ export default function TaskPage(props: TaskPageProps) {
     </Grid>
   );
 }
-
-TaskPage.propTypes = {
-  loading: PropTypes.bool,
-  task: PropTypes.object.isRequired,
-  taskId: PropTypes.string.isRequired,
-  isAppIntroMode: PropTypes.bool,
-};

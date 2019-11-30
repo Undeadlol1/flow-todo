@@ -18,6 +18,9 @@ import {
 } from '../../../services';
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    textAlign: 'center',
+  },
   button: {
     margin: `${theme.spacing(1)}px auto`,
   },
@@ -80,6 +83,7 @@ const TaskChoices = (props: Props) => {
         container
         direction="row"
         alignContent="space-around"
+        className={classes.container}
         classes={{ root: props.className }}
       >
         <Grid item xs={12} md={4} style={{ margin: '0 auto' }}>

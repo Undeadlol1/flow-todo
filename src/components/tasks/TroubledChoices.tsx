@@ -9,6 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useScreenIsNarrow } from '../../services/index';
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    textAlign: 'center',
+  },
   button: {
     margin: theme.spacing(1),
   },
@@ -43,7 +46,12 @@ const TroublesChoices = ({
   }
   return (
     <Slide in direction="left">
-      <Grid container direction="row" alignContent="space-around">
+      <Grid
+        container
+        direction="row"
+        alignContent="space-around"
+        className={classes.container}
+      >
         <Grid item xs={12} style={{ margin: '0 auto' }}>
           {/*
           // @ts-ignore */}

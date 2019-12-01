@@ -20,7 +20,6 @@ import WelcomeCard from '../components/ui/WelcomeCard';
 import { useTypedSelector } from '../store/index';
 
 const log = debug('HomePage');
-debug.enable('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,

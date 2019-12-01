@@ -93,7 +93,7 @@ export default memo(function HomePage() {
         className={cx(['IntroHandle__createTask'])}
         isHidden={isLoading || (auth.isEmpty && !isAppTourActive)}
       >
-        {createdAtleastOneTask && isEmpty(activeTasks) ? (
+        {!isEmpty(createdAtleastOneTask) && isEmpty(activeTasks) ? (
           '+10'
         ) : (
           <AddIcon />

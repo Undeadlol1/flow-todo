@@ -21,6 +21,7 @@ import {
   showSnackbar,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
+import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -37,8 +38,8 @@ const useStyles = makeStyles(theme => ({
 interface Props {
   task: Task;
   className?: string;
-  updateTask: Function;
   updateSubtask: Function;
+  updateTask: (options: updateTaskParams) => Promise<void>;
 }
 
 const TaskChoices = (props: Props) => {

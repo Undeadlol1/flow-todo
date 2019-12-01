@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useScreenIsNarrow } from '../../services/index';
+import { updateTaskParams } from '../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,8 +22,8 @@ const TroublesChoices = ({
   updateTask,
   deleteTask,
 }: {
-  updateTask: Function;
   deleteTask: Function;
+  updateTask: (options: updateTaskParams) => Promise<void>;
 }) => {
   const classes = useStyles();
   const [t] = useTranslation();

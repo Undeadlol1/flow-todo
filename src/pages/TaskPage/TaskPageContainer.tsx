@@ -26,6 +26,13 @@ function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
 }
 
+export interface updateTaskParams {
+  values: any;
+  pointsToAdd?: number;
+  snackbarMessage: string;
+  snackbarVariant?: OptionsObject['variant'];
+}
+
 export default memo(() => {
   const [t] = useTranslation();
   const history = useHistory();
@@ -100,12 +107,7 @@ export default memo(() => {
       snackbarMessage,
       pointsToAdd = 10,
       snackbarVariant = 'success',
-    }: {
-      values: any;
-      pointsToAdd?: number;
-      snackbarMessage: string;
-      snackbarVariant?: OptionsObject['variant'];
-    }) {
+    }: updateTaskParams) {
       try {
         setRequested(true);
         await Promise.all([

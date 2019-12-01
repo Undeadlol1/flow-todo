@@ -7,7 +7,10 @@ import { Link, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useScreenIsNarrow } from '../../services/index';
-import { updateTaskParams } from '../../pages/TaskPage/TaskPageContainer';
+import {
+  updateTaskParams,
+  deleteTaskArguments,
+} from '../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -22,7 +25,7 @@ const TroublesChoices = ({
   updateTask,
   deleteTask,
 }: {
-  deleteTask: Function;
+  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }) => {
   const classes = useStyles();
@@ -50,6 +53,15 @@ const TroublesChoices = ({
       pointsToAdd: 0,
     });
   }
+  function destroy() {
+    const pointsToAdd = 10;
+    deleteTask({
+      pointsToAdd,
+      snackbarMessage: t('getRidOfUnimportant', {
+        points: pointsToAdd,
+      }),
+    });
+  }
   return (
     <Slide in direction="left">
       <Grid
@@ -71,10 +83,7 @@ const TroublesChoices = ({
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button
-            {...commonButtonProps}
-            onClick={(e: React.SyntheticEvent) => deleteTask()}
-          >
+          <Button {...commonButtonProps} onClick={destroy}>
             {t('notImportant')}
           </Button>
         </Grid>

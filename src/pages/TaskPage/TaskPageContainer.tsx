@@ -35,6 +35,11 @@ export interface updateTaskParams {
   history: TaskHistory;
 }
 
+export interface deleteTaskArguments {
+  pointsToAdd?: number;
+  snackbarMessage?: string;
+}
+
 export default memo(() => {
   const [t] = useTranslation();
   const history = useHistory();
@@ -78,7 +83,7 @@ export default memo(() => {
   }
 
   const mergedProps = {
-    async deleteTask() {
+    async deleteTask(options: deleteTaskArguments = {}) {
       history.push('/');
       try {
         await Promise.all([
@@ -87,13 +92,14 @@ export default memo(() => {
         ]);
         dispatch(
           snackbarActions.show({
-            message: t('successfullyDeleted'),
+            message:
+              options.snackbarMessage || t('successfullyDeleted'),
             action: t('undo'),
             async handleAction() {
               await Promise.all([
                 // @ts-ignore
                 taskPointer.set(task),
-                addPoints(task.userId, -10),
+                addPoints(task.userId, options.pointsToAdd || -10),
               ]);
               history.push(`/tasks/${taskId}`);
             },

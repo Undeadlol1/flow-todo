@@ -20,7 +20,10 @@ import TroublesChoices from '../../components/tasks/TroubledChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import Timer from '../../components/ui/Timer';
 import { useFabStyles } from '../../components/ui/Fab';
-import { updateTaskParams } from './TaskPageContainer';
+import {
+  updateTaskParams,
+  deleteTaskArguments,
+} from './TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -49,7 +52,7 @@ interface TaskPageProps {
   loading: boolean;
   isAppIntroMode: boolean;
   updateSubtask: Function;
-  deleteTask: Function;
+  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
 

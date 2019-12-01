@@ -42,6 +42,7 @@ const TroublesChoices = ({
       },
       snackbarMessage: t('Posponed until tomorrow'),
       snackbarVariant: 'default',
+      pointsToAdd: 0,
     });
   }
   return (

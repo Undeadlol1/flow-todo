@@ -22,8 +22,13 @@ const { FieldValue } = firestore;
 
 export type TaskHistory = {
   createdAt: number;
-  // TODO enum
-  actionType: string;
+  actionType:
+    | 'postpone'
+    | 'updateName'
+    | 'updateSubtask'
+    | 'stepForward'
+    | 'leapForward'
+    | 'setDone';
 };
 
 export type Task = {

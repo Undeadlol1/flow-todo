@@ -40,7 +40,7 @@ const HardChoices = (
   };
 
   return (
-    <>
+    <Grid item container xs justify="center" spacing={2}>
       <Grid item xs={12} sm={8} md={6} lg={5}>
         <Card>
           <CardContent>
@@ -61,10 +61,15 @@ const HardChoices = (
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={12} />
       <Grid item xs={12} sm={8} md={6} lg={5}>
         <Card>
           <CardContent>
+            <Typography paragraph>
+              Иногда переформулировать задачу - самое верное решение.
+            </Typography>
+            <Typography paragraph>
+              Как сформулировать задачу чтобы проще было ее выполнить?
+            </Typography>
             <UpsertTask
               taskId={props.taskId}
               defaultValue={props.task!.name}
@@ -75,7 +80,7 @@ const HardChoices = (
           </CardContent>
         </Card>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

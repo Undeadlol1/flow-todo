@@ -190,4 +190,4 @@ UpsertTaskContainer.propTypes = {
   resetFormOnSuccess: PropTypes.bool,
 };
 
-export default UpsertTaskContainer;
+export default React.memo(UpsertTaskContainer);

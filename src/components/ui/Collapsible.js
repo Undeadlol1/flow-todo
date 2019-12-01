@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  actions: {
+    justifyContent: 'space-between',
+  },
 }));
 
 function Collapsible(props) {
@@ -42,7 +45,10 @@ function Collapsible(props) {
 
   return (
     <Card>
-      <CardActions onClick={toggleComponent}>
+      <CardActions
+        classes={{ root: cx.actions }}
+        onClick={toggleComponent}
+      >
         <Typography className={cx.collapsibleTitle}>
           {t('A note')}
         </Typography>
@@ -56,9 +62,7 @@ function Collapsible(props) {
         </IconButton>
       </CardActions>
       <Collapse unmountOnExit timeout="auto" in={isExpanded}>
-        <CardContent>
-          {props.children}
-        </CardContent>
+        <CardContent>{props.children}</CardContent>
       </Collapse>
     </Card>
   );

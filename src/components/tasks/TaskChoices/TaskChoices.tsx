@@ -83,6 +83,7 @@ const TaskChoices = (props: Props) => {
     ? () => props.updateSubtask(activeSubtasks[0])
     : () =>
         props.updateTask({
+          pointsToAdd: 20,
           values: {
             isCurrent: false,
             isDone: true,

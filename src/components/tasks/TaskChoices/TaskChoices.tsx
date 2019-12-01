@@ -90,16 +90,21 @@ const TaskChoices = (props: Props) => {
 
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
-    : () =>
+    : () => {
+        const pointsToAdd =
+          20 * (get(props, 'task.repetitionLevel') || 1);
         props.updateTask({
-          pointsToAdd: 20 * (get(props, 'task.repetitionLevel') || 1),
+          pointsToAdd,
           values: {
             isCurrent: false,
             isDone: true,
             doneAt: Date.now(),
           },
-          snackbarMessage: t('Good job!'),
+          snackbarMessage: t('goodJobPointsRecieved', {
+            points: pointsToAdd,
+          }),
         });
+      };
   return (
     <Fade in timeout={1200}>
       <Grid

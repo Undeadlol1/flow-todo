@@ -19,6 +19,7 @@ export default {
     subtasks: 'Subtasks',
     'Posponed until tomorrow': 'Posponed until tomorrow',
     'Good job!': 'Good job!',
+    goodJobPointsRecieved: 'Good job! Points received: {{points}}',
     'important to step forward':
       'The most important thing is not to reach your goal but to step further',
     'Something went wrong': 'Something went wrong',

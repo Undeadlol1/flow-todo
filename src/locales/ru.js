@@ -20,6 +20,7 @@ export default {
     subtasks: 'Подзадачи',
     'Posponed until tomorrow': 'Отложено до завтра',
     'Good job!': 'Молодец!',
+    goodJobPointsRecieved: 'Молодец! Очков получено: {{points}}',
     'important to step forward':
       'Самое главное не достичь цели, а сделать шаг вперед',
     'Something went wrong': 'Что-то пошло не так',

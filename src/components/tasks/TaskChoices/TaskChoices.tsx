@@ -21,6 +21,7 @@ import {
   showSnackbar,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
+import get from 'lodash/get';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -83,7 +84,7 @@ const TaskChoices = (props: Props) => {
     ? () => props.updateSubtask(activeSubtasks[0])
     : () =>
         props.updateTask({
-          pointsToAdd: 20,
+          pointsToAdd: 20 * (get(props, 'task.repetitionLevel') || 1),
           values: {
             isCurrent: false,
             isDone: true,

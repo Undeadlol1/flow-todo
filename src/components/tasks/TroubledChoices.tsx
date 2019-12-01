@@ -41,6 +41,10 @@ const TroublesChoices = ({
         isCurrent: false,
         dueAt: addHours(new Date(), 12).getTime(),
       },
+      history: {
+        createdAt: Date.now(),
+        actionType: 'postpone',
+      },
       snackbarMessage: t('Posponed until tomorrow'),
       snackbarVariant: 'default',
     });

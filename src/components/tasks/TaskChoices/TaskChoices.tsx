@@ -73,6 +73,12 @@ const TaskChoices = (props: Props) => {
         isCurrent: false,
         ...nextRepetition,
       },
+      history: {
+        createdAt: Date.now(),
+        // @ts-ignore
+        actionType:
+          confidence === 'normal' ? 'stepForwardA' : 'leapForward',
+      },
       snackbarMessage: t('important to step forward'),
     });
     setTimeout(
@@ -100,6 +106,10 @@ const TaskChoices = (props: Props) => {
             isCurrent: false,
             isDone: true,
             doneAt: Date.now(),
+          },
+          history: {
+            createdAt: Date.now(),
+            actionType: 'setDone',
           },
           snackbarMessage: t('goodJobPointsRecieved', {
             points: pointsToAdd,

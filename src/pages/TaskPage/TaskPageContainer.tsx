@@ -21,6 +21,7 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import TaskPage from './TaskPage';
+import { TaskHistory } from '../../store/index';
 
 function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -31,6 +32,7 @@ export interface updateTaskParams {
   pointsToAdd?: number;
   snackbarMessage: string;
   snackbarVariant?: OptionsObject['variant'];
+  history: TaskHistory;
 }
 
 export default memo(() => {
@@ -107,11 +109,15 @@ export default memo(() => {
       snackbarMessage,
       pointsToAdd = 10,
       snackbarVariant = 'success',
+      history: historyToAdd,
     }: updateTaskParams) {
       try {
         setRequested(true);
         await Promise.all([
-          taskPointer.update(values),
+          taskPointer.update({
+            ...values,
+            history: [...get(task, 'history', []), historyToAdd],
+          }),
           addPoints(task.userId, pointsToAdd),
         ]);
         if (nextTaskId)
@@ -146,6 +152,10 @@ export default memo(() => {
             values: {
               isCurrent: false,
               ...calculateNextRepetition(task, 'good'),
+            },
+            history: {
+              createdAt: Date.now(),
+              actionType: 'updateSubtask',
             },
             snackbarMessage: t('Good job!'),
           }),

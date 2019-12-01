@@ -8,12 +8,12 @@ import ErrorIcon from '@material-ui/icons/Error';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
+import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import {
   calculateNextRepetition,
-  useScreenIsNarrow,
   Confidence,
 } from '../../../services';
 import {
@@ -21,7 +21,6 @@ import {
   showSnackbar,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
-import get from 'lodash/get';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,13 +47,21 @@ const TaskChoices = (props: Props) => {
   const { pathname } = useLocation();
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
-  const isScreenNarrow = useScreenIsNarrow();
   const commonButtonProps: ButtonProps = {
     color: 'primary',
     variant: 'contained',
     className: classes.button,
-    fullWidth: isScreenNarrow,
+    fullWidth: true,
   };
+  const commonGridProps: any = {
+    item: true,
+    xs: 12,
+    sm: 8,
+    md: 6,
+    lg: 4,
+    style: { margin: '0 auto' },
+  };
+
   function stepForward(confidence: Confidence, pointsToAdd?: number) {
     const nextRepetition = calculateNextRepetition(
       props.task,
@@ -80,6 +87,7 @@ const TaskChoices = (props: Props) => {
       4000,
     );
   }
+
   const setDone = hasSubtasks
     ? () => props.updateSubtask(activeSubtasks[0])
     : () =>
@@ -101,7 +109,7 @@ const TaskChoices = (props: Props) => {
         className={classes.container}
         classes={{ root: props.className }}
       >
-        <Grid item xs={12} md={4} style={{ margin: '0 auto' }}>
+        <Grid {...commonGridProps}>
           {/*
           // @ts-ignore */}
           <Button
@@ -114,7 +122,7 @@ const TaskChoices = (props: Props) => {
             {t('there are difficulties')}
           </Button>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid {...commonGridProps}>
           <Button
             {...commonButtonProps}
             startIcon={<HeartIcon />}
@@ -123,7 +131,7 @@ const TaskChoices = (props: Props) => {
             {t('made step forward')}
           </Button>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid {...commonGridProps}>
           <Button
             {...commonButtonProps}
             startIcon={<SmileEmoticon />}
@@ -137,7 +145,7 @@ const TaskChoices = (props: Props) => {
           direction="column"
           classes={{ root: props.className }}
         >
-          <Grid item xs>
+          <Grid {...commonGridProps}>
             <Button
               {...commonButtonProps}
               className={classes.doneButton}

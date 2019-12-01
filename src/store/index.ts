@@ -22,7 +22,13 @@ const { FieldValue } = firestore;
 
 export type TaskHistory = {
   createdAt: number;
-  actionType: 'postpone' | 'updateName' | 'stepForward' | 'setDone';
+  actionType:
+    | 'postpone'
+    | 'updateName'
+    | 'updateSubtask'
+    | 'stepForward'
+    | 'leapForward'
+    | 'setDone';
 };
 
 export type Task = {

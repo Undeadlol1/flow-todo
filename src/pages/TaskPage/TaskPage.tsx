@@ -1,33 +1,31 @@
+import { Box } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
+import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
+import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
 import React from 'react';
 import { When } from 'react-if';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import HardChoices from '../../components/tasks/HardChoices';
+import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
+import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { Task } from '../../store';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import HardChoices from '../../components/tasks/HardChoices';
-import TroublesChoices from '../../components/tasks/TroubledChoices';
-import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
-import Timer from '../../components/ui/Timer';
-import { useFabStyles } from '../../components/ui/Fab';
 import {
-  updateTaskParams,
   deleteTaskArguments,
+  updateTaskParams,
 } from './TaskPageContainer';
-import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import Fab from '@material-ui/core/Fab';
-import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -64,7 +62,6 @@ export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
   const { path, url } = route;
   const classes = useStyles();
-  const { fab: fabClassName } = useFabStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
@@ -182,7 +179,6 @@ export default function TaskPage(props: TaskPageProps) {
           </Route>
         </Switch>
       </Grid>
-      <Timer className={fabClassName} />
     </Grid>
   );
 }

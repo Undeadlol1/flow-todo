@@ -28,9 +28,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: `${theme.spacing(1)}px auto`,
   },
-  doneButton: {
-    marginTop: '30px',
-  },
 }));
 
 interface Props {
@@ -140,26 +137,19 @@ const TaskChoices = (props: Props) => {
             {t('advanced a lot')}
           </Button>
         </Grid>
-        <Grid
-          container
-          direction="column"
-          classes={{ root: props.className }}
-        >
-          <Grid {...commonGridProps}>
-            <Button
-              {...commonButtonProps}
-              className={classes.doneButton}
-              startIcon={
-                <>
-                  {hasSubtasks && <AssigmentIcon />}
-                  <DoneIcon />
-                </>
-              }
-              onClick={setDone}
-            >
-              {t('done')}
-            </Button>
-          </Grid>
+        <Grid {...commonGridProps}>
+          <Button
+            {...commonButtonProps}
+            startIcon={
+              <>
+                {hasSubtasks && <AssigmentIcon />}
+                <DoneIcon />
+              </>
+            }
+            onClick={setDone}
+          >
+            {t('done')}
+          </Button>
         </Grid>
       </Grid>
     </Fade>

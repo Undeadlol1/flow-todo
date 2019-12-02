@@ -35,6 +35,8 @@ export default {
     'made step forward': 'made step forward',
     'advanced a lot': 'advanced a lot',
     done: 'done',
+    'done task': 'done task',
+    'done subtask': 'done subtask',
     undo: 'undo',
     controls: {
       back: 'Back',

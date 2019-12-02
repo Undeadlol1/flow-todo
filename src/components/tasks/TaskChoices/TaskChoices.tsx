@@ -20,6 +20,7 @@ import {
   showSnackbar,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
+import { When } from 'react-if';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -85,28 +86,30 @@ const TaskChoices = (props: Props) => {
       4000,
     );
   }
+  function doneTask() {
+    const pointsToAdd =
+      20 * (get(props, 'task.repetitionLevel') || 1);
+    props.updateTask({
+      pointsToAdd,
+      values: {
+        isCurrent: false,
+        isDone: true,
+        doneAt: Date.now(),
+      },
+      history: {
+        createdAt: Date.now(),
+        actionType: 'setDone',
+      },
+      snackbarMessage: t('goodJobPointsRecieved', {
+        points: pointsToAdd,
+      }),
+    });
+  }
 
-  const setDone = hasSubtasks
-    ? () => props.updateSubtask(activeSubtasks[0])
-    : () => {
-        const pointsToAdd =
-          20 * (get(props, 'task.repetitionLevel') || 1);
-        props.updateTask({
-          pointsToAdd,
-          values: {
-            isCurrent: false,
-            isDone: true,
-            doneAt: Date.now(),
-          },
-          history: {
-            createdAt: Date.now(),
-            actionType: 'setDone',
-          },
-          snackbarMessage: t('goodJobPointsRecieved', {
-            points: pointsToAdd,
-          }),
-        });
-      };
+  function doneSubtask() {
+    props.updateSubtask(activeSubtasks[0]);
+  }
+
   return (
     <Fade in timeout={1200}>
       <Grid
@@ -139,18 +142,24 @@ const TaskChoices = (props: Props) => {
             {t('advanced a lot')}
           </Button>
         </Grid>
+        <When condition={hasSubtasks}>
+          <Grid {...commonGridProps}>
+            <Button
+              {...commonButtonProps}
+              startIcon={<AssigmentIcon />}
+              onClick={doneSubtask}
+            >
+              {t('done subtask')}
+            </Button>
+          </Grid>
+        </When>
         <Grid {...commonGridProps}>
           <Button
             {...commonButtonProps}
-            startIcon={
-              <>
-                {hasSubtasks && <AssigmentIcon />}
-                <DoneIcon />
-              </>
-            }
-            onClick={setDone}
+            startIcon={<DoneIcon />}
+            onClick={doneTask}
           >
-            {t('done')}
+            {t(hasSubtasks ? 'done task' : 'done')}
           </Button>
         </Grid>
       </Grid>

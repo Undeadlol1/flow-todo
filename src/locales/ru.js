@@ -36,6 +36,8 @@ export default {
     'made step forward': 'Сделал шаг вперед',
     'advanced a lot': 'Сильно продвинулся',
     done: 'Закончил',
+    'done task': 'Сделал задачу',
+    'done subtask': 'Сделал подзадачу',
     undo: 'отменить',
     controls: {
       back: 'Назад',

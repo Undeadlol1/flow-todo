@@ -24,6 +24,10 @@ import {
   updateTaskParams,
   deleteTaskArguments,
 } from './TaskPageContainer';
+import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
+import Fab from '@material-ui/core/Fab';
+import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -57,7 +61,8 @@ interface TaskPageProps {
 }
 
 export default function TaskPage(props: TaskPageProps) {
-  const path = get(useRouteMatch(), 'path');
+  const route = useRouteMatch() || {};
+  const { path, url } = route;
   const classes = useStyles();
   const { fab: fabClassName } = useFabStyles();
   const { loading, taskId, task } = props;
@@ -130,7 +135,7 @@ export default function TaskPage(props: TaskPageProps) {
           </Grid>
         </Zoom>
       </Grid>
-      <Grid item xs={12}>
+      <Grid container justify="center" item xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome/isHard`}>
             <HardChoices {...props} />
@@ -138,11 +143,42 @@ export default function TaskPage(props: TaskPageProps) {
           <Route path={`${path}/isTroublesome`}>
             <TroublesChoices {...props} />
           </Route>
-          <Route path={path}>
+          <Route path={path + '/isGood'}>
             <TaskChoices
               className="IntroHandle__choices"
               {...props}
             />
+          </Route>
+          <Route path={path}>
+            <Grid
+              container
+              item
+              xs={12}
+              sm={8}
+              md={6}
+              lg={5}
+              component={Box}
+              textAlign="center"
+            >
+              <Grid item xs>
+                <Fab
+                  component={Link}
+                  to={url + '/isGood'}
+                  color="primary"
+                >
+                  <SatisfiedIcon fontSize="large" />
+                </Fab>
+              </Grid>
+              <Grid item xs>
+                <Fab
+                  component={Link}
+                  color="secondary"
+                  to={url + '/isTroublesome'}
+                >
+                  <DissatisfiedIcon fontSize="large" />
+                </Fab>
+              </Grid>
+            </Grid>
           </Route>
         </Switch>
       </Grid>

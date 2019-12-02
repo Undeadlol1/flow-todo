@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import useForm from 'react-hook-form';
 import isUndefined from 'lodash/isUndefined';
 import Button from '@material-ui/core/Button';
@@ -86,19 +85,6 @@ UpsertTask.defaultValues = {
   callback: () => {},
 };
 
-UpsertTask.propTypes = {
-  error: PropTypes.string,
-  isValid: PropTypes.bool,
-  taskId: PropTypes.string,
-  autoFocus: PropTypes.bool,
-  defaultValue: PropTypes.string,
-  // eslint-disable-next-line react/no-unused-prop-types
-  callback: PropTypes.func,
-  onSubmit: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-};
-
 type FormData = {
   name: string;
 };
@@ -180,14 +166,5 @@ function UpsertTaskContainer(props: ContainerProps) {
 UpsertTaskContainer.defaultValues = {
   showSnackbarOnSuccess: true,
 } as Partial<ContainerProps>;
-
-UpsertTaskContainer.propTypes = {
-  callback: PropTypes.func,
-  taskId: PropTypes.string,
-  autoFocus: PropTypes.bool,
-  defaultValue: PropTypes.string,
-  showSnackbarOnSuccess: PropTypes.bool,
-  resetFormOnSuccess: PropTypes.bool,
-};
 
 export default React.memo(UpsertTaskContainer);

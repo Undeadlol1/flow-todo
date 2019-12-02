@@ -23,6 +23,8 @@ import clsx from 'clsx';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
 import { useWindowSize } from '@reach/window-size';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 import { useTypedSelector } from '../../../store';
 import {
   handleErrors,
@@ -150,6 +152,9 @@ export default memo(() => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
           <Typography
             in
             component={Fade}

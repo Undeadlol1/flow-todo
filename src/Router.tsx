@@ -17,6 +17,7 @@ import { login, logout } from './store/usersSlice';
 import { useTypedSelector } from './store/index';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
+import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -128,6 +129,7 @@ export default memo(function Router() {
   };
   return (
     <BrowserRouter>
+      <DevelopmentOnlyMenu />
       <NavBar />
       <ExpirienceProgressBar />
       <Container>

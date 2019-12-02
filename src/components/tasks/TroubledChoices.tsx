@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useScreenIsNarrow } from '../../services/index';
+import { Box } from '@material-ui/core';
 import {
   updateTaskParams,
   deleteTaskArguments,
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   button: {
-    margin: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -31,12 +32,11 @@ const TroublesChoices = ({
   const classes = useStyles();
   const [t] = useTranslation();
   const { pathname } = useLocation();
-  const isScreenNarrow = useScreenIsNarrow();
   const commonButtonProps: ButtonProps = {
+    fullWidth: true,
     color: 'primary',
     variant: 'contained',
     className: classes.button,
-    fullWidth: isScreenNarrow,
   };
   function postPone() {
     updateTask({
@@ -63,42 +63,50 @@ const TroublesChoices = ({
     });
   }
   return (
-    <Slide in direction="left">
-      <Grid
-        container
-        direction="row"
-        alignContent="space-around"
-        className={classes.container}
-      >
-        <Grid item xs={12} style={{ margin: '0 auto' }}>
-          {/*
+    <Grid
+      item
+      container
+      xs={12}
+      sm={8}
+      md={6}
+      lg={5}
+      direction="row"
+      justify="center"
+      alignContent="space-around"
+      className={classes.container}
+    >
+      <Slide in direction="left">
+        <Box textAlign="center" width="100%">
+          <Grid item xs={12}>
+            {/*
           // @ts-ignore */}
-          <Button
-            {...commonButtonProps}
-            component={Link}
-            to={`${pathname}/isHard`}
-            color="secondary"
-          >
-            {t('hard')}
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Button {...commonButtonProps} onClick={destroy}>
-            {t('notImportant')}
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Button {...commonButtonProps} disabled>
-            {t('dont want to')}
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Button {...commonButtonProps} onClick={postPone}>
-            {t('cant right now')}
-          </Button>
-        </Grid>
-      </Grid>
-    </Slide>
+            <Button
+              {...commonButtonProps}
+              component={Link}
+              to={`${pathname}/isHard`}
+              color="secondary"
+            >
+              {t('hard')}
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button {...commonButtonProps} onClick={destroy}>
+              {t('notImportant')}
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button {...commonButtonProps} disabled>
+              {t('dont want to')}
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button {...commonButtonProps} onClick={postPone}>
+              {t('cant right now')}
+            </Button>
+          </Grid>
+        </Box>
+      </Slide>
+    </Grid>
   );
 };
 

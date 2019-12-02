@@ -5,6 +5,11 @@ import Box from '@material-ui/core/Box';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import BuildIcon from '@material-ui/icons/Build';
+import { upsertTask } from '../../store/index';
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
+import { UserInfo } from 'firebase';
+import { loremIpsum } from 'lorem-ipsum';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,12 +22,23 @@ const useStyles = makeStyles(theme => ({
 const DevelopmentOnlyMenu: React.FC<{}> = () => {
   const cx = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
 
   function toggleMenu(event: MouseEvent<HTMLButtonElement>) {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   }
 
-  if (process.env.NODE_ENV != 'development') return null;
+  function createRandomTask() {
+    upsertTask({
+      userId: auth.uid,
+      name: loremIpsum({
+        count: 4,
+        units: 'words',
+      }),
+    });
+  }
+
+  if (process.env.NODE_ENV !== 'development') return null;
   else
     return (
       <Box>
@@ -35,10 +51,12 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
         >
-          <MenuItem>This is a test</MenuItem>
+          <MenuItem onClick={createRandomTask}>
+            Add random task
+          </MenuItem>
         </Menu>
       </Box>
     );
 };
 
-export default DevelopmentOnlyMenu;
+export default React.memo(DevelopmentOnlyMenu);

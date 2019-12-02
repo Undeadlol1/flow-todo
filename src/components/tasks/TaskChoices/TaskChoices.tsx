@@ -4,14 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
-import ErrorIcon from '@material-ui/icons/Error';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 import {
   calculateNextRepetition,
   Confidence,
@@ -21,7 +20,6 @@ import {
   showSnackbar,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
-import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -45,7 +43,6 @@ interface Props {
 const TaskChoices = (props: Props) => {
   const [t] = useTranslation();
   const classes = useStyles();
-  const { pathname } = useLocation();
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
@@ -125,19 +122,6 @@ const TaskChoices = (props: Props) => {
         className={classes.container}
         classes={{ root: props.className }}
       >
-        <Grid {...commonGridProps}>
-          {/*
-          // @ts-ignore */}
-          <Button
-            {...commonButtonProps}
-            color="secondary"
-            component={Link}
-            startIcon={<ErrorIcon />}
-            to={`${pathname}/isTroublesome`}
-          >
-            {t('there are difficulties')}
-          </Button>
-        </Grid>
         <Grid {...commonGridProps}>
           <Button
             {...commonButtonProps}

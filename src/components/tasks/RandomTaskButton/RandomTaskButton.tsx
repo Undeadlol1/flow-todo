@@ -23,6 +23,10 @@ const useStyles = makeStyles({
   paper: {
     padding: '100px',
   },
+  buttonRoot: {
+    padding: 0,
+    textAlign: 'center',
+  },
 });
 
 interface Props {
@@ -68,6 +72,7 @@ export const RandomTaskButton = ({
       color="primary"
       disabled={isDisabled}
       component={isDisabled ? 'div' : Link}
+      classes={{ root: classes.buttonRoot }}
       className={clsx(['RandomTaskButton', className])}
     >
       <Paper elevation={6} className={classes.paper}>

@@ -51,9 +51,6 @@ const TaskChoices = (props: Props) => {
   const commonGridProps: any = {
     item: true,
     xs: 12,
-    sm: 8,
-    md: 6,
-    lg: 4,
     style: { margin: '0 auto' },
   };
 
@@ -114,6 +111,11 @@ const TaskChoices = (props: Props) => {
     <Fade in timeout={1200}>
       <Grid
         container
+        item
+        xs={12}
+        sm={8}
+        md={6}
+        lg={5}
         direction="row"
         alignContent="space-around"
         className={classes.container}

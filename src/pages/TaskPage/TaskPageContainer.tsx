@@ -23,7 +23,7 @@ import {
 import TaskPage from './TaskPage';
 import { TaskHistory } from '../../store/index';
 
-function getRandomTaskId(tasks: Task[]): string {
+export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
 }
 
@@ -105,6 +105,7 @@ export default memo(() => {
             },
           }),
         );
+        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         handleErrors(error);
         history.push(`/tasks/${taskId}`);
@@ -114,8 +115,8 @@ export default memo(() => {
       values,
       snackbarMessage,
       pointsToAdd = 10,
-      snackbarVariant = 'success',
       history: historyToAdd,
+      snackbarVariant = 'success',
     }: updateTaskParams) {
       try {
         setRequested(true);

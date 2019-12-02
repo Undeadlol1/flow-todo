@@ -20,6 +20,7 @@ import WelcomeCard from '../components/ui/WelcomeCard';
 import { useTypedSelector } from '../store/index';
 
 const log = debug('HomePage');
+debug.enable('HomePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
@@ -35,21 +36,22 @@ export default memo(function HomePage() {
   const classes = useStyles();
   const [t] = useTranslation();
   const [isDialogOpen, toggleDialog] = useToggle(false);
-  log('isDialogOpen: ', isDialogOpen);
 
-  const { isAppTourActive } = useTypedSelector(state => state.ui);
   const auth: any = useTypedSelector(s => get(s, 'firebase.auth'));
   const { createdAtleastOneTask, activeTasks } = useTypedSelector(
     s => s.firestore.ordered,
   );
+  const { isAppTourActive } = useTypedSelector(state => state.ui);
+  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
+  log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
-  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
-  const isButtonVisible =
-    isLoading || isAppTourActive || !isEmpty(createdAtleastOneTask);
-  log('isButtonVisible: ', isButtonVisible);
-  log('isLoading: ', isLoading);
+  function renderButtonOrWelcomeCard() {
+    if (isLoading || createdAtleastOneTask)
+      return <GetRandomTask className={'IntroHandle__taskButton'} />;
+    else return <WelcomeCard />;
+  }
 
   return (
     <Grid
@@ -69,10 +71,7 @@ export default memo(function HomePage() {
         lg={6}
         className={classes.randomButtonContainer}
       >
-        {isButtonVisible && (
-          <GetRandomTask className={'IntroHandle__taskButton'} />
-        )}
-        {!isButtonVisible && <WelcomeCard />}
+        {renderButtonOrWelcomeCard()}
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList />

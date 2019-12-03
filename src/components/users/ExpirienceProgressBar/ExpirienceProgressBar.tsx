@@ -15,6 +15,7 @@ import {
   handleErrors,
   calculateUserLevel,
 } from '../../../services/index';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles(theme => ({
@@ -69,15 +70,20 @@ export const ExpirienceProgressBar: React.FC<{
     );
   else
     return (
-      <LinearProgress
-        color="secondary"
-        variant="determinate"
-        className={cx(!profile && classes.hidden, [
-          classes.progress,
-          props.className,
-        ])}
-        value={progressPercent === 100 ? 0 : progressPercent}
-      />
+      <Tooltip
+        arrow
+        title={userPoints + '/' + pointsToReachNextLevel}
+      >
+        <LinearProgress
+          color="secondary"
+          variant="determinate"
+          className={cx(!profile && classes.hidden, [
+            classes.progress,
+            props.className,
+          ])}
+          value={progressPercent === 100 ? 0 : progressPercent}
+        />
+      </Tooltip>
     );
 });
 

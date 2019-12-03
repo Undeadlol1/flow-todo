@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomePage /> render 1`] = `
+<div
+  className="MuiGrid-root makeStyles-pageContainer-1 MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column MuiGrid-align-content-xs-center MuiGrid-justify-xs-center"
+>
+  <div
+    className="MuiGrid-root makeStyles-randomButtonContainer-2 MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-8 MuiGrid-grid-md-8 MuiGrid-grid-lg-6"
+  >
+    <div
+      aria-disabled={true}
+      className="MuiButtonBase-root MuiButton-root makeStyles-buttonRoot-107 MuiButton-text RandomTaskButton IntroHandle__taskButton MuiButton-textPrimary Mui-disabled Mui-disabled"
+      onBlur={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={-1}
+      to="/tasks/undefined"
+    >
+      <span
+        className="MuiButton-label"
+      >
+        <div
+          className="MuiPaper-root MuiPaper-elevation6 makeStyles-paper-106 MuiPaper-rounded"
+        >
+          <div
+            className="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+            role="progressbar"
+            style={
+              Object {
+                "height": 40,
+                "width": 40,
+              }
+            }
+          >
+            <svg
+              className="MuiCircularProgress-svg"
+              viewBox="22 22 44 44"
+            >
+              <circle
+                className="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                cx={44}
+                cy={44}
+                fill="none"
+                r={20.2}
+                strokeWidth={3.6}
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-8 MuiGrid-grid-md-8 MuiGrid-grid-lg-6"
+  />
+  <div
+    className="react-joyride"
+  />
+</div>
+`;

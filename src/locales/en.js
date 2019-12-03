@@ -60,5 +60,6 @@ export default {
       'You will see your task again in {{date}}.',
     getRidOfUnimportant:
       "Don't be afraid to get rid of unimportant tasks. Points recieved: {{points}}",
+    feedback: 'Feedback',
   },
 };

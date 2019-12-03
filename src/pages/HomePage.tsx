@@ -47,7 +47,7 @@ export default memo(function HomePage() {
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderButtonOrWelcomeCard() {
-    if (isLoading || createdAtleastOneTask)
+    if (isLoading || !isEmpty(createdAtleastOneTask))
       return <GetRandomTask className={'IntroHandle__taskButton'} />;
     else return <WelcomeCard />;
   }

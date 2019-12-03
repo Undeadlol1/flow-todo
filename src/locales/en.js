@@ -57,7 +57,7 @@ export default {
     youAreCloserToYourGoal:
       'You are now closer to your goal. Good job! Points rewarded: {{points}}',
     'you will see task again in':
-      'You will see your task again in {{date}}.',
+      'You will see this task again in {{date}}.',
     getRidOfUnimportant:
       "Don't be afraid to get rid of unimportant tasks. Points recieved: {{points}}",
   },

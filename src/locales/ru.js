@@ -58,7 +58,7 @@ export default {
     youAreCloserToYourGoal:
       'Ты стал ближе к своей цели. Молодец! Очков получено: {{points}}',
     'you will see task again in':
-      'Ты увидишь свою задачу снова через {{date}}.',
+      'Ты увидишь эту задачу снова через {{date}}.',
     getRidOfUnimportant:
       'Не бойся избавляться от неважного. Очков получено: {{points}}',
     feedback: 'Обратная связь'

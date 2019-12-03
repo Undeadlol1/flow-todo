@@ -14,7 +14,13 @@ import get from 'lodash/get';
 import isString from 'lodash/isString';
 import React from 'react';
 import { When } from 'react-if';
-import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Switch,
+  useRouteMatch,
+  useLocation,
+} from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
@@ -61,6 +67,7 @@ interface TaskPageProps {
 export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
   const { path, url } = route;
+  const { pathname } = useLocation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
@@ -116,22 +123,31 @@ export default function TaskPage(props: TaskPageProps) {
           </Link>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Zoom in>
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={6}
-            lg={5}
-            style={{ margin: '0 auto' }}
-          >
-            <Collapsible isOpen={isString(task.note)}>
-              <UpsertNote taskId={taskId} defaultValue={task.note} />
-            </Collapsible>
-          </Grid>
-        </Zoom>
-      </Grid>
+      {/* NOTE: WIP */}
+      {/* TODO: refactoring */}
+      <When
+        condition={Boolean(task.note) || pathname.includes('isHard')}
+      >
+        <Grid item xs={12}>
+          <Zoom in>
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              md={6}
+              lg={5}
+              style={{ margin: '0 auto' }}
+            >
+              <Collapsible isOpen={isString(task.note)}>
+                <UpsertNote
+                  taskId={taskId}
+                  defaultValue={task.note}
+                />
+              </Collapsible>
+            </Grid>
+          </Zoom>
+        </Grid>
+      </When>
       <Grid container justify="center" item xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome/isHard`}>

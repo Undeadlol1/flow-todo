@@ -16,6 +16,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
 import ru from 'date-fns/locale/ru';
+import PrettyError from 'pretty-error';
 
 const logger = debug('utils');
 
@@ -120,7 +121,8 @@ export function normalizeQueryResponse(
 
 export function handleErrors(e: Error | undefined) {
   if (e) {
-    console.error('handleErrors', e);
+    var pe = new PrettyError();
+    console.log(pe.render(e));
     store.dispatch(
       snackbarActions.show({
         message:

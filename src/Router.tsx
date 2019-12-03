@@ -19,6 +19,7 @@ import { useFirestoreConnect } from 'react-redux-firebase';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import Sidebar from './components/ui/Sidebar';
+import RewardsPage from './pages/RewardsPage';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -140,6 +141,9 @@ export default memo(function Router() {
             <TasksContext.Provider value={providerValue}>
               <TaskPage />
             </TasksContext.Provider>
+          </Route>
+          <Route path="/rewards">
+            <RewardsPage />
           </Route>
           <Route path="/signIn">
             <SignInPage />

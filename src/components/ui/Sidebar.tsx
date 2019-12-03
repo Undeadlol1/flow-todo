@@ -8,6 +8,7 @@ import { useTypedSelector } from '../../store/index';
 import debug from 'debug';
 import { useDispatch } from 'react-redux';
 import { toggleSidebar } from '../../store/uiSlice';
+import { Link } from 'react-router-dom';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -28,9 +29,10 @@ const Sidebar: React.FC<{}> = () => {
     >
       <List className={cx.list}>
         <ListItem button>
-          {/* This is a test */}
-          {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
           <ListItemText primary="This is a test" />
+        </ListItem>
+        <ListItem button component={Link} to="/rewards">
+          <ListItemText primary="Rewards pagefgf" />
         </ListItem>
       </List>
     </Drawer>

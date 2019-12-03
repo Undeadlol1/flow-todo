@@ -84,7 +84,7 @@ export default memo(() => {
 
   const mergedProps = {
     async deleteTask(options: deleteTaskArguments = {}) {
-      history.push('/');
+      setRequested(true);
       try {
         await Promise.all([
           deleteTask(taskId),
@@ -109,6 +109,8 @@ export default memo(() => {
       } catch (error) {
         handleErrors(error);
         history.push(`/tasks/${taskId}`);
+      } finally {
+        setRequested(false);
       }
     },
     async updateTask({

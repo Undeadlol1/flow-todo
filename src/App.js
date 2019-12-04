@@ -84,7 +84,7 @@ function App() {
   );
 }
 
-function initializeI18n() {
+export function initializeI18n() {
   return i18n
     .use(languageDetector)
     .use(initReactI18next)

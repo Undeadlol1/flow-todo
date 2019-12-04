@@ -11,13 +11,12 @@ import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use-toggle';
-import UpsertTask from '../../components/tasks/CreateTask/UpsertTask';
-import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
-import TasksList from '../../components/tasks/TasksList/TasksList';
-import AppTour from '../../components/ui/AppTour';
-import Fab from '../../components/ui/Fab';
-import WelcomeCard from '../../components/ui/WelcomeCard';
-import { useTypedSelector } from '../../store/index';
+import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
+import GetRandomTask from '../components/tasks/RandomTaskButton/RandomTaskButton';
+import AppTour from '../components/ui/AppTour';
+import Fab from '../components/ui/Fab';
+import WelcomeCard from '../components/ui/WelcomeCard';
+import { useTypedSelector } from '../store/index';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -71,9 +70,6 @@ export default memo(function HomePage() {
         className={classes.randomButtonContainer}
       >
         {renderButtonOrWelcomeCard()}
-      </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6}>
-        <TasksList />
       </Grid>
       <Dialog
         open={isDialogOpen}

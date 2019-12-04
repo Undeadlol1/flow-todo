@@ -44,6 +44,7 @@
     "material-ui-snackbar-redux": "^0.2.0",
     "nanoid": "^2.1.6",
     "notistack": "^0.9.5",
+    "pretty-error": "^2.1.1",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
     "react": "^16.11.0",

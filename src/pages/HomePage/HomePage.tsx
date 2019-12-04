@@ -5,18 +5,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import cx from 'clsx';
 import debug from 'debug';
-import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use-toggle';
-import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
-import GetRandomTask from '../components/tasks/RandomTaskButton/RandomTaskButton';
-import AppTour from '../components/ui/AppTour';
-import Fab from '../components/ui/Fab';
-import WelcomeCard from '../components/ui/WelcomeCard';
-import { useTypedSelector } from '../store/index';
+import UpsertTask from '../../components/tasks/CreateTask/UpsertTask';
+import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
+import AppTour from '../../components/ui/AppTour';
+import Fab from '../../components/ui/Fab';
+import WelcomeCard from '../../components/ui/WelcomeCard';
+import { useTypedSelector, Task } from '../../store/index';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -30,17 +29,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default memo(function HomePage() {
+interface Props {
+  activeTasks?: Task[];
+  isLoading?: boolean;
+  isAppTourActive?: boolean;
+  createdAtleastOneTask?: Task[];
+}
+
+export const HomePage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const [t] = useTranslation();
   const [isDialogOpen, toggleDialog] = useToggle(false);
 
-  const auth: any = useTypedSelector(s => get(s, 'firebase.auth'));
-  const { createdAtleastOneTask, activeTasks } = useTypedSelector(
-    s => s.firestore.ordered,
-  );
-  const { isAppTourActive } = useTypedSelector(state => state.ui);
-  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
+  const {
+    isLoading,
+    activeTasks,
+    isAppTourActive,
+    createdAtleastOneTask,
+  } = props;
   log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
@@ -84,7 +90,7 @@ export default memo(function HomePage() {
         onClick={toggleDialog}
         aria-label={t('createTask')}
         className={cx(['IntroHandle__createTask'])}
-        isHidden={isLoading || (auth.isEmpty && !isAppTourActive)}
+        isHidden={isLoading || !isAppTourActive}
       >
         {!isEmpty(createdAtleastOneTask) && isEmpty(activeTasks) ? (
           '+10'
@@ -94,5 +100,23 @@ export default memo(function HomePage() {
       </Fab>
       <AppTour />
     </Grid>
+  );
+});
+
+export default memo(function HomePageContainer(props) {
+  const { createdAtleastOneTask, activeTasks } = useTypedSelector(
+    s => s.firestore.ordered,
+  );
+  const { isAppTourActive } = useTypedSelector(state => state.ui);
+  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
+  return (
+    <HomePage
+      {...{
+        isLoading,
+        activeTasks,
+        isAppTourActive,
+        createdAtleastOneTask,
+      }}
+    />
   );
 });

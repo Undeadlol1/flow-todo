@@ -85,6 +85,7 @@ export function initializeFirebase() {
     measurementId: 'G-DLFD2VSSK1',
   });
   if (process.env.NODE_ENV === 'production') {
+    firebase.analytics();
     firebase.performance();
     firebase
       .firestore()

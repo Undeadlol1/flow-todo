@@ -1,30 +1,20 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import { Provider } from 'react-redux';
-
-import store from '../../store';
-import HomePage from './HomePage';
-import { BrowserRouter } from 'react-router-dom';
-import WelcomeCard from './../../components/ui/WelcomeCard';
 import { shallow } from 'enzyme';
+import React from 'react';
+import RandomTaskButton from '../../components/tasks/RandomTaskButton/RandomTaskButton';
+import { Task } from '../../store';
+import WelcomeCard from './../../components/ui/WelcomeCard';
+import { HomePage } from './HomePage';
 
 describe('<HomePage />', () => {
-  const defaultProps = {};
-  const component = (
-    <Provider store={store}>
-      <BrowserRouter>
-        <HomePage {...defaultProps} />
-      </BrowserRouter>
-    </Provider>
-  );
-
-  test('render', () => {
-    const wrapper = renderer.create(component);
-    expect(wrapper).toMatchSnapshot();
+  test('displays WelcomeCard if user never created any tasks', () => {
+    const wrapper = shallow(<HomePage />);
+    expect(wrapper.find(WelcomeCard)).toHaveLength(1);
   });
 
-  test('contains WelcomeCard', () => {
-    const wrapper = shallow(component);
-    console.log('debug', wrapper.debug());
+  test('displays RandomTaskButton if user created atleast one task', () => {
+    const wrapper = shallow(
+      <HomePage createdAtleastOneTask={[{} as Task]} />,
+    );
+    expect(wrapper.find(RandomTaskButton)).toHaveLength(1);
   });
 });

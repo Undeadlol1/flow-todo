@@ -2,6 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/performance';
 import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
@@ -83,11 +84,10 @@ export function initializeFirebase() {
     appId: '1:772125171665:web:3fffadc4031335de290af0',
     measurementId: 'G-DLFD2VSSK1',
   });
-
-  const firestore = firebase.firestore();
-  const isProduction = process.env.NODE_ENV === 'production';
-  if (isProduction) {
-    firestore
+  if (process.env.NODE_ENV === 'production') {
+    firebase.performance();
+    firebase
+      .firestore()
       .enablePersistence({
         synchronizeTabs: true,
       })
@@ -101,7 +101,7 @@ export function initializeFirebase() {
     // }());
   } else {
     // Use Firestore emulator for local development
-    firestore.settings({
+    firebase.firestore().settings({
       ssl: false,
       host: 'localhost:8080',
     });

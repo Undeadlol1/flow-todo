@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, CardHeader } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -28,6 +28,7 @@ import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { Task } from '../../store';
+import { useTranslation } from 'react-i18next';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -66,6 +67,7 @@ interface TaskPageProps {
 
 export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
+  const { t } = useTranslation();
   const { path, url } = route;
   const { pathname } = useLocation();
   const classes = useStyles();
@@ -163,34 +165,34 @@ export default function TaskPage(props: TaskPageProps) {
             />
           </Route>
           <Route path={path}>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              lg={5}
-              component={Box}
-              textAlign="center"
-            >
-              <Grid item xs>
-                <Fab
-                  component={Link}
-                  to={url + '/isGood'}
-                  color="primary"
-                >
-                  <SatisfiedIcon fontSize="large" />
-                </Fab>
-              </Grid>
-              <Grid item xs>
-                <Fab
-                  component={Link}
-                  color="secondary"
-                  to={url + '/isTroublesome'}
-                >
-                  <DissatisfiedIcon fontSize="large" />
-                </Fab>
-              </Grid>
+            <Grid container item xs={12} sm={8} md={6} lg={5}>
+              <Box width="100%" textAlign="center">
+                <Card>
+                  <CardHeader subheader={t('what do you feel')} />
+                  <CardContent>
+                    <Grid item container xs={12}>
+                      <Grid item xs>
+                        <Fab
+                          component={Link}
+                          to={url + '/isGood'}
+                          color="primary"
+                        >
+                          <SatisfiedIcon fontSize="large" />
+                        </Fab>
+                      </Grid>
+                      <Grid item xs>
+                        <Fab
+                          component={Link}
+                          color="secondary"
+                          to={url + '/isTroublesome'}
+                        >
+                          <DissatisfiedIcon fontSize="large" />
+                        </Fab>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           </Route>
         </Switch>

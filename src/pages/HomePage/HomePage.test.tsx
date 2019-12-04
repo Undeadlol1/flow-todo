@@ -17,4 +17,18 @@ describe('<HomePage />', () => {
     );
     expect(wrapper.find(RandomTaskButton)).toHaveLength(1);
   });
+
+  describe('"add task" button', () => {
+    test('is hidden during loading', () => {
+      const wrapper = shallow(<HomePage isLoading={true} />);
+      const Fab = wrapper.find('.IntroHandle__createTask');
+      expect(Fab.prop('isHidden')).toBeTruthy();
+    });
+
+    test('is visible after loading', () => {
+      const wrapper = shallow(<HomePage isLoading={false} />);
+      const Fab = wrapper.find('.IntroHandle__createTask');
+      expect(Fab.prop('isHidden')).toBeFalsy();
+    });
+  });
 });

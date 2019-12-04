@@ -49,6 +49,7 @@ export const HomePage = memo(function HomePage(props: Props) {
   } = props;
   log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
+  log('isAppTourActive: ', isAppTourActive);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderButtonOrWelcomeCard() {
@@ -90,7 +91,7 @@ export const HomePage = memo(function HomePage(props: Props) {
         onClick={toggleDialog}
         aria-label={t('createTask')}
         className={cx(['IntroHandle__createTask'])}
-        isHidden={isLoading || !isAppTourActive}
+        isHidden={isLoading}
       >
         {!isEmpty(createdAtleastOneTask) && isEmpty(activeTasks) ? (
           '+10'

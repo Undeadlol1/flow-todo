@@ -29,6 +29,7 @@ import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { Task } from '../../store';
 import { useTranslation } from 'react-i18next';
+import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -98,6 +99,7 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
+      <CreateTaskFab />
       <Grid item xs={12}>
         <Grid
           style={{ margin: '0 auto' }}

@@ -83,7 +83,8 @@ export default memo(function HomePageContainer(props) {
     s => s.firestore.ordered,
   );
   const { isAppTourActive } = useTypedSelector(state => state.ui);
-  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
+  const isLoading =
+    isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   return (
     <HomePage
       {...{

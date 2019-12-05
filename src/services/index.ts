@@ -18,6 +18,8 @@ import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
 import ru from 'date-fns/locale/ru';
 import PrettyError from 'pretty-error';
+import { useTranslation } from 'react-i18next';
+import engnlishStrings from '../locales/en';
 
 const logger = debug('utils');
 
@@ -200,4 +202,12 @@ export function distanceBetweenDates(
     // @ts-ignore
     locale: dateLocales[i18n.language],
   });
+}
+
+export function useTypedTranslate() {
+  const { t } = useTranslation();
+  return (
+    key: keyof typeof engnlishStrings.translation,
+    ...rest: any
+  ) => t(key, ...rest);
 }

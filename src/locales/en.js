@@ -26,7 +26,7 @@ export default {
     'task was note created': 'Task was note created',
     'Add a note': 'Add a note',
     'A note': 'A note',
-    'Edit the note': 'Обновить заметку',
+    'Edit the note': 'Edit note',
     hard: "It's hard",
     notImportant: "It's not important",
     'dont want to': "Don't want to",

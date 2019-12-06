@@ -6,6 +6,7 @@ import Zoom from '@material-ui/core/Zoom';
 
 export const useFabStyles = makeStyles(theme => ({
   fab: {
+    zIndex: 10000,
     position: 'fixed',
     [theme.breakpoints.down('sm')]: {
       bottom: theme.spacing(2),

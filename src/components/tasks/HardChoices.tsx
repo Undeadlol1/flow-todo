@@ -1,18 +1,19 @@
-import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import CreateSubtask from './CreateSubtask/CreateSubtask';
-import SubtasksList from './SubtasksList';
 import { makeStyles } from '@material-ui/core/styles';
-import UpsertTask from './CreateTask/UpsertTask';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import { CardContent } from '@material-ui/core';
-import { addPoints, Task } from '../../store/index';
 import { UserInfo } from 'firebase';
 import get from 'lodash/get';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { showSnackbar } from '../../services/index';
+import {
+  showSnackbar,
+  useTypedTranslate,
+} from '../../services/index';
+import { addPoints, Task } from '../../store/index';
+import Collapsible from './../ui/Collapsible';
+import CreateSubtask from './CreateSubtask/CreateSubtask';
+import UpsertTask from './CreateTask/UpsertTask';
+import SubtasksList from './SubtasksList';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -26,7 +27,7 @@ const HardChoices = (
     taskId: string;
   }>,
 ) => {
-  const [t] = useTranslation();
+  const t = useTypedTranslate();
   const classes = useStyles();
   const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
   const addPointsOnSuccess = () => {
@@ -40,10 +41,18 @@ const HardChoices = (
   };
 
   return (
-    <Grid item container xs justify="center" spacing={2}>
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        <Card>
-          <CardContent>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={8}
+      md={6}
+      lg={5}
+      justify="center"
+    >
+      <Grid item xs={12}>
+        <Collapsible title={t('Add subtasks')}>
+          <>
             <Typography paragraph>
               Любая задача, даже самая малая, может быть разбита на
               подзадачи.
@@ -58,16 +67,16 @@ const HardChoices = (
               taskId={props.taskId as string}
             />
             <SubtasksList documents={props.task!.subtasks} />
-          </CardContent>
-        </Card>
+          </>
+        </Collapsible>
       </Grid>
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        <Card>
-          <CardContent>
-            <Typography paragraph>
+      <Grid item xs={12}>
+        <Collapsible title={t('Rework task')}>
+          <>
+            <Typography display="block" paragraph>
               Иногда переформулировать задачу - самое верное решение.
             </Typography>
-            <Typography paragraph>
+            <Typography display="block" paragraph>
               Как сформулировать задачу чтобы проще было ее выполнить?
             </Typography>
             <UpsertTask
@@ -77,8 +86,8 @@ const HardChoices = (
               showSnackbarOnSuccess={false}
               callback={addPointsOnSuccess}
             />
-          </CardContent>
-        </Card>
+          </>
+        </Collapsible>
       </Grid>
     </Grid>
   );

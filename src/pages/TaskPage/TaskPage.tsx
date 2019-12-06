@@ -184,8 +184,8 @@ export default function TaskPage(props: TaskPageProps) {
                         <Grid item xs>
                           <Fab
                             component={Link}
+                            color="secondary"
                             to={url + '/isGood'}
-                            color="primary"
                           >
                             <SatisfiedIcon fontSize="large" />
                           </Fab>
@@ -193,7 +193,7 @@ export default function TaskPage(props: TaskPageProps) {
                         <Grid item xs>
                           <Fab
                             component={Link}
-                            color="secondary"
+                            color="primary"
                             to={url + '/isTroublesome'}
                           >
                             <DissatisfiedIcon fontSize="large" />

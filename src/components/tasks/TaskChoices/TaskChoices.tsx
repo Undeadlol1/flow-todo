@@ -8,6 +8,7 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
+import last from 'lodash/last';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
@@ -107,7 +108,7 @@ const TaskChoices = (props: Props) => {
   }
 
   function doneSubtask() {
-    props.updateSubtask(activeSubtasks[0]);
+    props.updateSubtask(last(activeSubtasks));
   }
 
   return (

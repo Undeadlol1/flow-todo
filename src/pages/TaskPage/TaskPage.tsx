@@ -10,17 +10,22 @@ import Zoom from '@material-ui/core/Zoom';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import filter from 'lodash/filter';
-import get from 'lodash/get';
 import isString from 'lodash/isString';
+import compose from 'ramda/es/compose';
+import defaultTo from 'ramda/es/defaultTo';
+import last from 'ramda/es/last';
+import prop from 'ramda/es/prop';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import {
   Link,
   Route,
   Switch,
-  useRouteMatch,
   useLocation,
+  useRouteMatch,
 } from 'react-router-dom';
+import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
@@ -28,8 +33,6 @@ import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { Task } from '../../store';
-import { useTranslation } from 'react-i18next';
-import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -119,7 +122,11 @@ export default function TaskPage(props: TaskPageProps) {
                     </Typography>
                   </When>
                   <Typography variant="h5" component="h1">
-                    {get(activeSubtasks, '[0].name') || task.name}
+                    {compose(
+                      defaultTo(task.name),
+                      prop('name'),
+                      last,
+                    )(activeSubtasks)}
                   </Typography>
                 </CardContent>
               </Card>

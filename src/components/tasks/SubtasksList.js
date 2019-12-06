@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'react-i18next';
+import reverse from 'lodash/reverse';
 import { deleteSubtask } from '../../store';
 
 const useStyles = makeStyles(theme => {
@@ -54,7 +55,7 @@ export function SubtasksList({ documents, ...props }) {
     <Paper elevation={6} className={classes.paper}>
       <List className={classes.list}>
         <ListSubheader>{`${t('subtasks')}:`}</ListSubheader>
-        {documents.map(task => (
+        {reverse(documents).map(task => (
           <ListItem key={task.id} className={classes.link}>
             {/* <ListItemIcon>
               <Checkbox

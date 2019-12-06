@@ -1,21 +1,14 @@
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import cx from 'clsx';
 import debug from 'debug';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import useToggle from 'react-use-toggle';
-import UpsertTask from '../../components/tasks/CreateTask/UpsertTask';
+import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
 import AppTour from '../../components/ui/AppTour';
-import Fab from '../../components/ui/Fab';
 import WelcomeCard from '../../components/ui/WelcomeCard';
-import { useTypedSelector, Task } from '../../store/index';
+import { Task, useTypedSelector } from '../../store/index';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -38,8 +31,6 @@ interface Props {
 
 export const HomePage = memo(function HomePage(props: Props) {
   const classes = useStyles();
-  const [t] = useTranslation();
-  const [isDialogOpen, toggleDialog] = useToggle(false);
 
   const {
     isLoading,
@@ -78,27 +69,10 @@ export const HomePage = memo(function HomePage(props: Props) {
       >
         {renderButtonOrWelcomeCard()}
       </Grid>
-      <Dialog
-        open={isDialogOpen}
-        onClose={toggleDialog}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogContent>
-          <UpsertTask autoFocus beforeSubmitHook={toggleDialog} />
-        </DialogContent>
-      </Dialog>
-      <Fab
-        onClick={toggleDialog}
-        aria-label={t('createTask')}
-        className={cx(['IntroHandle__createTask'])}
+      <CreateTaskFab
         isHidden={isLoading}
-      >
-        {!isEmpty(createdAtleastOneTask) && isEmpty(activeTasks) ? (
-          '+10'
-        ) : (
-          <AddIcon />
-        )}
-      </Fab>
+        className="IntroHandle__createTask"
+      />
       <AppTour />
     </Grid>
   );
@@ -109,7 +83,8 @@ export default memo(function HomePageContainer(props) {
     s => s.firestore.ordered,
   );
   const { isAppTourActive } = useTypedSelector(state => state.ui);
-  const isLoading = isUndefined(createdAtleastOneTask || activeTasks);
+  const isLoading =
+    isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   return (
     <HomePage
       {...{

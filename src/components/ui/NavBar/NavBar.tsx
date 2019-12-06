@@ -108,23 +108,26 @@ export const LoginOrLogoutButton = memo(() => {
           className={clsx(classes.link, classes.username)}
           onClick={handleUsernameClick}
         >
-          <If condition={hasPhoto}>
-            <Then>
-              <Badge
-                overlap="circle"
-                color="secondary"
-                badgeContent={Math.trunc(calculateUserLevel(points))}
-              >
+          <Badge
+            overlap="circle"
+            color="secondary"
+            badgeContent={Math.trunc(calculateUserLevel(points))}
+          >
+            <If condition={hasPhoto}>
+              <Then>
                 <Avatar
                   className={classes.avatar}
                   src={user.photoURL}
                 />
-              </Badge>
-            </Then>
-            <Else>
-              <AccountCircle className={classes.avatar} />
-            </Else>
-          </If>
+              </Then>
+              <Else>
+                <AccountCircle
+                  fontSize="large"
+                  className={classes.avatar}
+                />
+              </Else>
+            </If>
+          </Badge>
           <When condition={isScreenWide}>
             <Typography>{user.displayName || user.email}</Typography>
           </When>

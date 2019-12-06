@@ -8,6 +8,7 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
+import last from 'lodash/last';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
@@ -44,10 +45,10 @@ const TaskChoices = (props: Props) => {
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
+    fullWidth: true,
     color: 'primary',
     variant: 'contained',
     className: classes.button,
-    fullWidth: true,
   };
   const commonGridProps: any = {
     item: true,
@@ -71,6 +72,7 @@ const TaskChoices = (props: Props) => {
         actionType:
           confidence === 'normal' ? 'stepForwardA' : 'leapForward',
       },
+      pointsToAdd: confidence === 'normal' ? 10 : 20,
       snackbarMessage: t('important to step forward'),
     });
     setTimeout(
@@ -107,7 +109,7 @@ const TaskChoices = (props: Props) => {
   }
 
   function doneSubtask() {
-    props.updateSubtask(activeSubtasks[0]);
+    props.updateSubtask(last(activeSubtasks));
   }
 
   return (

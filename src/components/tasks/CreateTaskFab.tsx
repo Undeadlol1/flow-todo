@@ -27,7 +27,11 @@ export const CreateTaskFab: React.FC<Props> = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <UpsertTask autoFocus beforeSubmitHook={toggleDialog} />
+          <UpsertTask
+            autoFocus
+            pointsToAdd={10}
+            beforeSubmitHook={toggleDialog}
+          />
         </DialogContent>
       </Dialog>
       <Fab

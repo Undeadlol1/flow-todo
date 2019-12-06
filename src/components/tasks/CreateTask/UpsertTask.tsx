@@ -14,6 +14,7 @@ import { FormState, Ref } from 'react-hook-form/dist/types';
 import invoke from 'lodash/invoke';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { useTypedTranslate } from '../../../services/index';
 
 const useStyles = makeStyles({
   container: {},
@@ -44,7 +45,6 @@ export function UpsertTask({ error, ...props }: ComponentProps) {
 
   let isSubmitDisabled: boolean | Error = true;
   if (isUndefined(props.isValid)) {
-    // eslint-disable-next-line react/prop-types
     isSubmitDisabled = error || props.formState.isSubmitting;
   }
 
@@ -81,10 +81,6 @@ export function UpsertTask({ error, ...props }: ComponentProps) {
   );
 }
 
-UpsertTask.defaultValues = {
-  callback: () => {},
-};
-
 type FormData = {
   name: string;
 };
@@ -94,16 +90,19 @@ interface ContainerProps extends CommonProps {
   beforeSubmitHook?: Function;
   showSnackbarOnSuccess?: boolean;
   resetFormOnSuccess?: boolean;
+  pointsToAdd?: number;
 }
 
 function UpsertTaskContainer(props: ContainerProps) {
   const {
     taskId,
     callback,
+    pointsToAdd,
     showSnackbarOnSuccess = true,
     resetFormOnSuccess = true,
   } = props;
   const [t] = useTranslation();
+  const translate = useTypedTranslate();
   const { enqueueSnackbar } = useSnackbar();
 
   const userId: string = useSelector(s =>
@@ -112,7 +111,7 @@ function UpsertTaskContainer(props: ContainerProps) {
   const activeTasks = useSelector(s =>
     get(s, 'firestore.ordered.activeTasks'),
   );
-  const shouldAddBonusPoints = isEmpty(activeTasks);
+  const shouldAddBonusPoints = pointsToAdd || isEmpty(activeTasks);
 
   const form = useForm<FormData>({
     validationSchema: Yup.object({
@@ -127,15 +126,23 @@ function UpsertTaskContainer(props: ContainerProps) {
     invoke(props, 'beforeSubmitHook');
     try {
       await upsertTask({ name, userId }, props.taskId);
-      if (shouldAddBonusPoints) await addPoints(userId, 10);
+      if (shouldAddBonusPoints)
+        await addPoints(userId, pointsToAdd || 10);
       if (resetFormOnSuccess) form.reset();
       if (showSnackbarOnSuccess) {
-        enqueueSnackbar(t('Successfully saved'), {
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'left',
+        enqueueSnackbar(
+          pointsToAdd
+            ? translate('Successfully saved') +
+                '. ' +
+                translate('points added', { points: pointsToAdd })
+            : translate('Successfully saved'),
+          {
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
           },
-        });
+        );
       }
       if (callback) callback();
     } catch (error) {

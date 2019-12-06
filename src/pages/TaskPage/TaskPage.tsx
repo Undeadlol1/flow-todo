@@ -168,33 +168,35 @@ export default function TaskPage(props: TaskPageProps) {
           </Route>
           <Route path={path}>
             <Grid container item xs={12} sm={8} md={6} lg={5}>
-              <Box width="100%" textAlign="center">
-                <Card>
-                  <CardHeader subheader={t('what do you feel')} />
-                  <CardContent>
-                    <Grid item container xs={12}>
-                      <Grid item xs>
-                        <Fab
-                          component={Link}
-                          to={url + '/isGood'}
-                          color="primary"
-                        >
-                          <SatisfiedIcon fontSize="large" />
-                        </Fab>
+              <Zoom in>
+                <Box width="100%" textAlign="center">
+                  <Card>
+                    <CardHeader subheader={t('what do you feel')} />
+                    <CardContent>
+                      <Grid item container xs={12}>
+                        <Grid item xs>
+                          <Fab
+                            component={Link}
+                            to={url + '/isGood'}
+                            color="primary"
+                          >
+                            <SatisfiedIcon fontSize="large" />
+                          </Fab>
+                        </Grid>
+                        <Grid item xs>
+                          <Fab
+                            component={Link}
+                            color="secondary"
+                            to={url + '/isTroublesome'}
+                          >
+                            <DissatisfiedIcon fontSize="large" />
+                          </Fab>
+                        </Grid>
                       </Grid>
-                      <Grid item xs>
-                        <Fab
-                          component={Link}
-                          color="secondary"
-                          to={url + '/isTroublesome'}
-                        >
-                          <DissatisfiedIcon fontSize="large" />
-                        </Fab>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Zoom>
             </Grid>
           </Route>
         </Switch>

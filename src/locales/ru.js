@@ -14,7 +14,7 @@ export default {
     countTasksDueToday_0: '{{count}} задачa на сегодня',
     countTasksDueToday_1: '{{count}} задачи на сегодня',
     countTasksDueToday_2: '{{count}} задач на сегодня',
-    'Rework task': 'Переделать задачу',
+    'Rework task': 'Переделайте задачу',
     'tasks completed today': 'Выполненные задачи сегодня',
     'Add subtasks': 'Добавьте подзадачи',
     subtasks: 'Подзадачи',

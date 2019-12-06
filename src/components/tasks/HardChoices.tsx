@@ -14,6 +14,7 @@ import Collapsible from './../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
+import TagsForm from './TagsForm';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -87,6 +88,14 @@ const HardChoices = (
               callback={addPointsOnSuccess}
             />
           </>
+        </Collapsible>
+      </Grid>
+      <Grid item xs={12}>
+        <Collapsible title={t('add a tag')}>
+          <TagsForm
+            tags={get(props, 'task.tags')}
+            taskId={props.taskId as string}
+          />
         </Collapsible>
       </Grid>
     </Grid>

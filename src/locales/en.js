@@ -63,5 +63,6 @@ export default {
     'what do you feel': 'What do you feel about this task?',
     tags: 'Tags',
     'points added': 'Points added: {{points}}',
+    'add a tag': 'Add a tag',
   },
 };

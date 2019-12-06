@@ -62,7 +62,8 @@ export default {
     getRidOfUnimportant:
       'Не бойся избавляться от неважного. Очков получено: {{points}}',
     'what do you feel': 'Что ты чувствуешь по отношению к задаче?',
-    tags: 'Ярлыки',
     'points added': 'Добавлено очков: {{points}}',
+    tags: 'Ярлыки',
+    'add a tag': 'Добавьте ярлык',
   },
 };

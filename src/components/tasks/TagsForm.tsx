@@ -12,7 +12,9 @@ export const TagsForm: React.FC<Props> = props => {
   const t = useTypedTranslate();
   return (
     <ChipInput
+      fullWidth
       label={t('tags')}
+      variant="outlined"
       defaultValue={props.tags}
       onChange={tags => changeTags(props.taskId, tags)}
     />

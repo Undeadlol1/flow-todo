@@ -45,10 +45,10 @@ const TaskChoices = (props: Props) => {
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
+    fullWidth: true,
     color: 'primary',
     variant: 'contained',
     className: classes.button,
-    fullWidth: true,
   };
   const commonGridProps: any = {
     item: true,
@@ -72,6 +72,7 @@ const TaskChoices = (props: Props) => {
         actionType:
           confidence === 'normal' ? 'stepForwardA' : 'leapForward',
       },
+      pointsToAdd: confidence === 'normal' ? 10 : 20,
       snackbarMessage: t('important to step forward'),
     });
     setTimeout(

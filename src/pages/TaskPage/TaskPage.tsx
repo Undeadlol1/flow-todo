@@ -16,7 +16,6 @@ import defaultTo from 'ramda/es/defaultTo';
 import last from 'ramda/es/last';
 import prop from 'ramda/es/prop';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import {
   Link,
@@ -32,6 +31,7 @@ import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
+import { useTypedTranslate } from '../../services/index';
 import { Task } from '../../store';
 import {
   deleteTaskArguments,
@@ -71,7 +71,7 @@ interface TaskPageProps {
 
 export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
-  const { t } = useTranslation();
+  const t = useTypedTranslate();
   const { path, url } = route;
   const { pathname } = useLocation();
   const classes = useStyles();
@@ -149,7 +149,10 @@ export default function TaskPage(props: TaskPageProps) {
               lg={5}
               style={{ margin: '0 auto' }}
             >
-              <Collapsible isOpen={isString(task.note)}>
+              <Collapsible
+                isOpen={isString(task.note)}
+                title={t(task.note ? 'A note' : 'Add a note')}
+              >
                 <UpsertNote
                   taskId={taskId}
                   defaultValue={task.note}

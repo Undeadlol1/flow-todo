@@ -43,6 +43,11 @@ const WelcomeCard: React.FC<Props> = () => {
       </Typography>
       <Typography paragraph>
         Flow TODO - это приложение которое позволит справиться с этими
+        проблемами.
+      </Typography>
+      {/* WIP */}
+      {/* <Typography paragraph>
+        Flow TODO - это приложение которое позволит справиться с этими
         проблемами с помощью трех простых шагов.
       </Typography>
       <Button
@@ -51,7 +56,7 @@ const WelcomeCard: React.FC<Props> = () => {
         onClick={() => dispatch(toggleAppTour())}
       >
         хотите узнать как?
-      </Button>
+      </Button> */}
     </Paper>
   );
 };

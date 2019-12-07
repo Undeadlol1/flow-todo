@@ -63,5 +63,6 @@ export default {
     feedback: 'Feedback',
     'what do you feel': 'What do you feel about this task?',
     'points added': 'Points added: {{points}}',
+    rewards: 'Rewards',
   },
 };

@@ -36,7 +36,7 @@ const Sidebar: React.FC<{}> = () => {
     >
       <List className={cx.list}>
         <ListItem button component={Link} to="/rewards">
-          <ListItemText primary="Rewards pagefgf" />
+          <ListItemText primary={t('rewards')} />
         </ListItem>
         <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
           <ListItem button>

@@ -180,7 +180,7 @@ export default function TaskPage(props: TaskPageProps) {
             <Grid container item xs={12} sm={8} md={6} lg={5}>
               <Zoom in>
                 <Box width="100%" textAlign="center">
-                  <Card>
+                  <Card className="animated pulse infinite">
                     <CardHeader subheader={t('what do you feel')} />
                     <CardContent>
                       <Grid item container xs={12}>

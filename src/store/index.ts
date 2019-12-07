@@ -14,6 +14,7 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer, reduxFirestore } from 'redux-firestore';
 import { initializeFirebase } from '../services/index';
 import tasksSlice from './tasksSlice';
+import rewardsSlice from './rewardsSlice';
 import uiSlice from './uiSlice';
 import userSlice from './usersSlice';
 
@@ -162,6 +163,7 @@ const rootReducer = combineReducers({
   ui: uiSlice,
   users: userSlice,
   tasks: tasksSlice,
+  rewards: rewardsSlice,
   snackbar: snackbarReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,

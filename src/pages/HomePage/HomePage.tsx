@@ -41,10 +41,15 @@ export const HomePage = memo(function HomePage(props: Props) {
   log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
   log('isAppTourActive: ', isAppTourActive);
+  console.log('isAppTourActive: ', isAppTourActive);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderButtonOrWelcomeCard() {
-    if (isLoading || !isEmpty(createdAtleastOneTask))
+    if (
+      isLoading ||
+      isAppTourActive ||
+      !isEmpty(createdAtleastOneTask)
+    )
       return <GetRandomTask className={'IntroHandle__taskButton'} />;
     else return <WelcomeCard />;
   }

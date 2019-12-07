@@ -25,7 +25,6 @@ interface Props {}
 
 const WelcomeCard: React.FC<Props> = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   return (
     <Paper className={classes.container} elevation={6}>
       <img className={classes.image} src="/images/logo.png" alt="" />

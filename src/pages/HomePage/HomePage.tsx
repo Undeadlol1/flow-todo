@@ -41,7 +41,6 @@ export const HomePage = memo(function HomePage(props: Props) {
   log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
   log('isAppTourActive: ', isAppTourActive);
-  console.log('isAppTourActive: ', isAppTourActive);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderButtonOrWelcomeCard() {

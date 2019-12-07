@@ -6,7 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import NavBar from './components/ui/NavBar/NavBar';
 import SignInPage from './pages/SignInPage';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage/HomePage';
 import TaskPage from './pages/TaskPage';
 import { TasksContext } from './store/contexts';
 import { useDispatch } from 'react-redux';

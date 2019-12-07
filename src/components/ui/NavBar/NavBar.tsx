@@ -12,9 +12,7 @@ import { auth, firestore } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {
- If, Then, Else, When 
-} from 'react-if';
+import { If, Then, Else, When } from 'react-if';
 import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
 import Badge from '@material-ui/core/Badge';
@@ -71,7 +69,7 @@ export const LoginOrLogoutButton = memo(() => {
   const history = useHistory();
   const theme = useTheme();
   const windowSize = useWindowSize();
-  const [menuAnchor, setAnchor] = useState(null);
+  const [menuAnchor, setAnchor] = useState();
 
   const [, userLoading, userError] = useAuthState(auth());
   // @ts-ignore
@@ -84,7 +82,7 @@ export const LoginOrLogoutButton = memo(() => {
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
-  function handleButtonClick(event) {
+  function handleUsernameClick(event: React.MouseEvent<HTMLElement>) {
     if (user.isAnonymous) history.push('/signin');
     else setAnchor(event.currentTarget);
   }
@@ -96,7 +94,7 @@ export const LoginOrLogoutButton = memo(() => {
       .catch(e => console.error(e));
   }
 
-  handleErrors(userError || profileError);
+  handleErrors((userError || profileError) as Error);
 
   if (userLoading || profileLoading) {
     return (
@@ -112,25 +110,28 @@ export const LoginOrLogoutButton = memo(() => {
       <Slide in timeout={500} direction="left">
         <Button
           className={clsx(classes.link, classes.username)}
-          onClick={handleButtonClick}
+          onClick={handleUsernameClick}
         >
-          <If condition={hasPhoto}>
-            <Then>
-              <Badge
-                overlap="circle"
-                color="secondary"
-                badgeContent={Math.trunc(calculateUserLevel(points))}
-              >
+          <Badge
+            overlap="circle"
+            color="secondary"
+            badgeContent={Math.trunc(calculateUserLevel(points))}
+          >
+            <If condition={hasPhoto}>
+              <Then>
                 <Avatar
                   className={classes.avatar}
                   src={user.photoURL}
                 />
-              </Badge>
-            </Then>
-            <Else>
-              <AccountCircle className={classes.avatar} />
-            </Else>
-          </If>
+              </Then>
+              <Else>
+                <AccountCircle
+                  fontSize="large"
+                  className={classes.avatar}
+                />
+              </Else>
+            </If>
+          </Badge>
           <When condition={isScreenWide}>
             <Typography>{user.displayName || user.email}</Typography>
           </When>
@@ -163,15 +164,16 @@ export default memo(() => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            in
-            component={Fade}
-            timeout={1500}
-            variant="h6"
-            className={clsx([classes.link, classes.title])}
-          >
-            <Link to="/">Flow TODO</Link>
-          </Typography>
+          <Fade in timeout={1500}>
+            <Typography
+              variant="h6"
+              className={clsx([classes.title])}
+            >
+              <Link className={classes.link} to="/">
+                Flow TODO
+              </Link>
+            </Typography>
+          </Fade>
           <LoginOrLogoutButton />
         </Toolbar>
       </AppBar>

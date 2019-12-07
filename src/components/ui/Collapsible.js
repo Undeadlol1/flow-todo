@@ -50,7 +50,7 @@ function Collapsible(props) {
         onClick={toggleComponent}
       >
         <Typography className={cx.collapsibleTitle}>
-          {t('A note')}
+          {props.title || t('A note')}
         </Typography>
         <IconButton
           className={iconClasses}
@@ -70,6 +70,7 @@ function Collapsible(props) {
 
 Collapsible.propTypes = {
   isOpen: PropTypes.bool,
+  title: PropTypes.string,
   children: PropTypes.element.isRequired,
 };
 

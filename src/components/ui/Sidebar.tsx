@@ -9,16 +9,23 @@ import debug from 'debug';
 import { useDispatch } from 'react-redux';
 import { toggleSidebar } from '../../store/uiSlice';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import MailTo from 'react-mailto.js';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
   list: {
     width: '250px',
   },
+  mailto: {
+    color: 'inherit',
+    textDecoration: 'none',
+  },
 });
 
 const Sidebar: React.FC<{}> = () => {
   const cx = useStyles();
+  const [t] = useTranslation();
   const dispatch = useDispatch();
   const { isSidebarOpen } = useTypedSelector(s => s.ui);
   log('isSidebarOpen: ', isSidebarOpen);
@@ -28,12 +35,14 @@ const Sidebar: React.FC<{}> = () => {
       onClose={() => dispatch(toggleSidebar())}
     >
       <List className={cx.list}>
-        <ListItem button>
-          <ListItemText primary="This is a test" />
-        </ListItem>
         <ListItem button component={Link} to="/rewards">
           <ListItemText primary="Rewards pagefgf" />
         </ListItem>
+        <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
+          <ListItem button>
+            <ListItemText primary={t('feedback')} />
+          </ListItem>
+        </MailTo>
       </List>
     </Drawer>
   );

@@ -2468,6 +2468,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-test-renderer@^16.9.1":
+  version "16.9.1"
+  resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-16.9.1.tgz#9d432c46c515ebe50c45fa92c6fb5acdc22e39c4"
+  integrity sha512-nCXQokZN1jp+QkoDNmDZwoWpKY8HDczqevIDO4Uv9/s9rbGPbSpy8Uaxa5ixHKkcm/Wt0Y9C3wCxZivh4Al+rQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-textarea-autosize@^4.3.3":
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.5.tgz#6c4d2753fa1864c98c0b2b517f67bb1f6e4c46de"
@@ -12752,6 +12759,13 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-mailto.js@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-mailto.js/-/react-mailto.js-2.1.0.tgz#94aa65c3282b0150afbb72f2ecddd6c6dfc4b611"
+  integrity sha512-jc4clWKOnsSuGks+7U9/UeGaSUWhKkQXw00q5Oyaayx8oD+m/0p8qb/1G7XmGHbCsnEYNV/d0CTp3+X+vVSJcA==
+  dependencies:
+    window-or-global "^1.0.1"
+
 react-popper-tooltip@^2.8.3:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-2.10.1.tgz#e10875f31916297c694d64a677d6f8fa0a48b4d1"
@@ -12909,7 +12923,7 @@ react-syntax-highlighter@^8.0.1:
     prismjs "^1.8.4"
     refractor "^2.4.1"
 
-react-test-renderer@^16.0.0-0:
+react-test-renderer@^16.0.0-0, react-test-renderer@^16.12.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.12.0.tgz#11417ffda579306d4e841a794d32140f3da1b43f"
   integrity sha512-Vj/teSqt2oayaWxkbhQ6gKis+t5JrknXfPVo+aIJ8QwYAqMPH77uptOdrlphyxl8eQI/rtkOYg86i/UWkpFu0w==
@@ -15662,6 +15676,11 @@ widest-line@^2.0.0:
   integrity sha512-Ba5m9/Fa4Xt9eb2ELXt77JxVDV8w7qQrH0zS/TWSJdLyAwQjWoOzpzj5lwVftDz6n/EOu3tNACS84v509qwnJA==
   dependencies:
     string-width "^2.1.1"
+
+window-or-global@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/window-or-global/-/window-or-global-1.0.1.tgz#dbe45ba2a291aabc56d62cf66c45b7fa322946de"
+  integrity sha1-2+RboqKRqrxW1iz2bEW3+jIpRt4=
 
 window-size@^0.1.4:
   version "0.1.4"

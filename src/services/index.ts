@@ -2,6 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/performance';
 import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
@@ -16,6 +17,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
 import ru from 'date-fns/locale/ru';
+import PrettyError from 'pretty-error';
+import { useTranslation } from 'react-i18next';
+import engnlishStrings from '../locales/en';
 
 const logger = debug('utils');
 
@@ -82,11 +86,11 @@ export function initializeFirebase() {
     appId: '1:772125171665:web:3fffadc4031335de290af0',
     measurementId: 'G-DLFD2VSSK1',
   });
-
-  const firestore = firebase.firestore();
-  const isProduction = process.env.NODE_ENV === 'production';
-  if (isProduction) {
-    firestore
+  if (process.env.NODE_ENV === 'production') {
+    firebase.analytics();
+    firebase.performance();
+    firebase
+      .firestore()
       .enablePersistence({
         synchronizeTabs: true,
       })
@@ -100,7 +104,7 @@ export function initializeFirebase() {
     // }());
   } else {
     // Use Firestore emulator for local development
-    firestore.settings({
+    firebase.firestore().settings({
       ssl: false,
       host: 'localhost:8080',
     });
@@ -120,7 +124,8 @@ export function normalizeQueryResponse(
 
 export function handleErrors(e: Error | undefined) {
   if (e) {
-    console.error('handleErrors', e);
+    var pe = new PrettyError();
+    console.log(pe.render(e));
     store.dispatch(
       snackbarActions.show({
         message:
@@ -197,4 +202,12 @@ export function distanceBetweenDates(
     // @ts-ignore
     locale: dateLocales[i18n.language],
   });
+}
+
+export function useTypedTranslate() {
+  const { t } = useTranslation();
+  return (
+    key: keyof typeof engnlishStrings.translation,
+    ...rest: any
+  ) => t(key, ...rest);
 }

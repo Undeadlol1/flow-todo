@@ -26,7 +26,7 @@ export default {
     'task was note created': 'Task was note created',
     'Add a note': 'Add a note',
     'A note': 'A note',
-    'Edit the note': 'Обновить заметку',
+    'Edit the note': 'Edit note',
     hard: "It's hard",
     notImportant: "It's not important",
     'dont want to': "Don't want to",
@@ -57,8 +57,11 @@ export default {
     youAreCloserToYourGoal:
       'You are now closer to your goal. Good job! Points rewarded: {{points}}',
     'you will see task again in':
-      'You will see your task again in {{date}}.',
+      'You will see this task again in {{date}}.',
     getRidOfUnimportant:
       "Don't be afraid to get rid of unimportant tasks. Points recieved: {{points}}",
+    feedback: 'Feedback',
+    'what do you feel': 'What do you feel about this task?',
+    'points added': 'Points added: {{points}}',
   },
 };

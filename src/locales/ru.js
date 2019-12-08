@@ -25,7 +25,7 @@ export default {
       'Самое главное не достичь цели, а сделать шаг вперед',
     'Something went wrong': 'Что-то пошло не так',
     'task was note created': 'Задача не была создана',
-    'Add a note': 'Добавить заметку',
+    'Add a note': 'Добавьтe заметку',
     'Edit the note': 'Обновить заметку',
     'A note': 'Заметка',
     'there are difficulties': 'Есть трудности',

@@ -17,13 +17,7 @@ import last from 'ramda/es/last';
 import prop from 'ramda/es/prop';
 import React from 'react';
 import { When } from 'react-if';
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
@@ -73,7 +67,6 @@ export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
   const t = useTypedTranslate();
   const { path, url } = route;
-  const { pathname } = useLocation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);

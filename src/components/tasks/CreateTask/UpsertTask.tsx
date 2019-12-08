@@ -138,8 +138,8 @@ function UpsertTaskContainer(props: ContainerProps) {
             : translate('Successfully saved'),
           {
             anchorOrigin: {
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: 'bottom',
+              horizontal: 'center',
             },
           },
         );

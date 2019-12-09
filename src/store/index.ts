@@ -47,7 +47,12 @@ export type Task = {
 };
 
 export function upsertTask(
-  values: { name?: string; userId?: string; isCurrent?: boolean },
+  values: {
+    name?: string;
+    userId?: string;
+    isCurrent?: boolean;
+    tags?: string[];
+  },
   taskId?: string,
 ): Promise<void | Error> {
   const isCreate = !taskId;

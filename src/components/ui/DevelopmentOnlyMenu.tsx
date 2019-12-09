@@ -27,7 +27,6 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   function toggleMenu(event: MouseEvent<HTMLButtonElement>) {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   }
-
   function createRandomTask() {
     upsertTask({
       userId: auth.uid,
@@ -35,6 +34,10 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
         count: 4,
         units: 'words',
       }),
+      tags: loremIpsum({
+        count: 3,
+        units: 'word',
+      }).split(' '),
     });
   }
 

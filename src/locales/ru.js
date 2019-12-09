@@ -64,5 +64,7 @@ export default {
     feedback: 'Обратная связь',
     'what do you feel': 'Что ты чувствуешь по отношению к задаче?',
     'points added': 'Добавлено очков: {{points}}',
+    tags: 'Ярлыки',
+    'add a tag': 'Добавьте ярлык',
   },
 };

@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
 import { useSnackbar } from 'notistack';
 import { upsertTask, addPoints } from '../../../store/index';
-import { FormState, Ref } from 'react-hook-form/dist/types';
 import invoke from 'lodash/invoke';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -32,27 +31,38 @@ interface CommonProps {
 
 interface ComponentProps extends CommonProps {
   error?: Error;
-  register: Ref;
   isValid?: boolean;
-  formState: FormState;
+  userId?: string;
   onSubmit: Function;
-  handleSubmit: Function;
 }
 
-export function UpsertTask({ error, ...props }: ComponentProps) {
+export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
+  const form = useForm<FormData>({
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(3, t('validation.atleast3Symbols'))
+        .max(100, t('validation.textIsTooLong'))
+        .required(t('validation.required')),
+    }),
+  });
+  const error = props.userId
+    ? get(form, 'errors.name.message')
+    : t('Please login');
 
   let isSubmitDisabled: boolean | Error = true;
   if (isUndefined(props.isValid)) {
-    isSubmitDisabled = error || props.formState.isSubmitting;
+    isSubmitDisabled = error || form.formState.isSubmitting;
   }
 
   return (
     <Grow in timeout={800}>
       <form
         className={classes.container}
-        onSubmit={props.handleSubmit(props.onSubmit)}
+        onSubmit={form.handleSubmit((values: any) =>
+          props.onSubmit(values, form.reset),
+        )}
       >
         <TextField
           fullWidth
@@ -61,7 +71,7 @@ export function UpsertTask({ error, ...props }: ComponentProps) {
           autoComplete="off"
           helperText={error}
           error={Boolean(error)}
-          inputRef={props.register}
+          inputRef={form.register}
           autoFocus={props.autoFocus}
           className="CreateTask__input"
           defaultValue={props.defaultValue}
@@ -113,22 +123,16 @@ function UpsertTaskContainer(props: ContainerProps) {
   );
   const shouldAddBonusPoints = pointsToAdd || isEmpty(activeTasks);
 
-  const form = useForm<FormData>({
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .min(3, t('validation.atleast3Symbols'))
-        .max(100, t('validation.textIsTooLong'))
-        .required(t('validation.required')),
-    }),
-  });
-
-  async function createDocumentAndReset({ name }: { name: string }) {
+  async function createDocumentAndReset(
+    { name }: { name: string },
+    reset: Function,
+  ) {
     invoke(props, 'beforeSubmitHook');
     try {
       await upsertTask({ name, userId }, props.taskId);
       if (shouldAddBonusPoints)
         await addPoints(userId, pointsToAdd || 10);
-      if (resetFormOnSuccess) form.reset();
+      if (resetFormOnSuccess) reset();
       if (showSnackbarOnSuccess) {
         enqueueSnackbar(
           pointsToAdd
@@ -159,13 +163,10 @@ function UpsertTaskContainer(props: ContainerProps) {
   }
   const mergedProps = {
     taskId,
+    userId,
     autoFocus: props.autoFocus,
     defaultValue: props.defaultValue,
     onSubmit: createDocumentAndReset,
-    error: userId
-      ? get(form, 'errors.name.message')
-      : t('Please login'),
-    ...form,
   };
   return <UpsertTask {...mergedProps} />;
 }

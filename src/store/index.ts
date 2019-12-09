@@ -12,7 +12,7 @@ import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer, reduxFirestore } from 'redux-firestore';
-import { initializeFirebase } from '../services/index';
+import { initializeFirebase, handleErrors } from '../services/index';
 import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import userSlice from './usersSlice';
@@ -51,10 +51,16 @@ export type Task = {
   repetitionLevel?: number;
   subtasks?: Subtask[];
   history?: TaskHistory[];
+  tags?: string[];
 };
 
 export function upsertTask(
-  values: { name?: string; userId?: string; isCurrent?: boolean },
+  values: {
+    name?: string;
+    userId?: string;
+    isCurrent?: boolean;
+    tags?: string[];
+  },
   taskId?: string,
 ): Promise<void | Error> {
   const isCreate = !taskId;
@@ -131,6 +137,15 @@ export function deleteSubtask(
     .update({
       subtasks: FieldValue.arrayRemove(subtask),
     });
+}
+
+export function changeTags(taskId: string, tags: string[]) {
+  return firestore()
+    .doc('tasks/' + taskId)
+    .update({
+      tags,
+    })
+    .catch(handleErrors);
 }
 
 initializeFirebase();

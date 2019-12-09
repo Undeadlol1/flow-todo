@@ -15,6 +15,10 @@ import { handleErrors } from '../../services/index';
 
 const useStyles = makeStyles(theme => ({
   container: {},
+  input: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 interface Props {
@@ -74,6 +78,7 @@ const CreateSubtask = (props: Props) => {
         fullWidth
         name="name"
         variant="outlined"
+        className={cx.input}
         inputRef={register}
         error={Boolean(error)}
         label={t('Add subtasks')}
@@ -87,6 +92,7 @@ const CreateSubtask = (props: Props) => {
         variant="outlined"
         autoComplete="off"
         inputRef={register}
+        className={cx.input}
         error={Boolean(error)}
         label={t('Add subtasks')}
         helperText={get(errors, 'name.points')}

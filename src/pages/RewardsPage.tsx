@@ -6,6 +6,7 @@ import { useTypedSelector } from '../store/index';
 import get from 'lodash/get';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { Reward } from '../store/rewardsSlice';
+import Box from '@material-ui/core/Box';
 
 interface Props {}
 
@@ -25,14 +26,18 @@ const RewardsPage: React.FC<Props> = () => {
   ]);
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <CreateReward />
+    <Box>
+      <Grid container justify="center" spacing={2}>
+        <Grid item xs={12} sm={8} md={8} lg={6}>
+          <CreateReward />
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <RewardsList values={rewards} />
+      <Grid container>
+        <Grid container item xs={12} sm={8} md={8} lg={6}>
+          <RewardsList values={rewards} />
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

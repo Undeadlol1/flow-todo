@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
 import TextField from '@material-ui/core/TextField';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -62,9 +61,4 @@ const CreateSubtask = (props: Props) => {
   );
 };
 
-CreateSubtask.propTypes = {
-  className: PropTypes.string,
-  taskId: PropTypes.string.isRequired,
-};
-
-export default CreateSubtask;
+export default memo(CreateSubtask);

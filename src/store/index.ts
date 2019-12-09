@@ -20,6 +20,14 @@ import userSlice from './usersSlice';
 const log = debug('store');
 const { FieldValue } = firestore;
 
+export type Subtask = {
+  id: string;
+  isDone: boolean;
+  parentId: string;
+  createdAt: number;
+  name: string;
+};
+
 export type TaskHistory = {
   createdAt: number;
   actionType:
@@ -38,10 +46,10 @@ export type Task = {
   doneAt?: number;
   userId: string;
   note?: string;
-  subtasks?: any[];
   isDone: boolean;
   isCurrent?: boolean;
   repetitionLevel?: number;
+  subtasks?: Subtask[];
   history?: TaskHistory[];
 };
 
@@ -91,14 +99,6 @@ export function createSubtask(
       }),
     });
 }
-
-export type Subtask = {
-  id: string;
-  isDone: boolean;
-  parentId: string;
-  createdAt: number;
-  name: string;
-};
 
 export async function updateSubtask(
   subtask: Subtask,

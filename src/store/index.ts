@@ -12,7 +12,7 @@ import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer, reduxFirestore } from 'redux-firestore';
-import { initializeFirebase } from '../services/index';
+import { initializeFirebase, handleErrors } from '../services/index';
 import tasksSlice from './tasksSlice';
 import rewardsSlice from './rewardsSlice';
 import uiSlice from './uiSlice';
@@ -20,6 +20,14 @@ import userSlice from './usersSlice';
 
 const log = debug('store');
 const { FieldValue } = firestore;
+
+export type Subtask = {
+  id: string;
+  isDone: boolean;
+  parentId: string;
+  createdAt: number;
+  name: string;
+};
 
 export type TaskHistory = {
   createdAt: number;
@@ -39,15 +47,21 @@ export type Task = {
   doneAt?: number;
   userId: string;
   note?: string;
-  subtasks?: any[];
   isDone: boolean;
   isCurrent?: boolean;
   repetitionLevel?: number;
+  subtasks?: Subtask[];
   history?: TaskHistory[];
+  tags?: string[];
 };
 
 export function upsertTask(
-  values: { name?: string; userId?: string; isCurrent?: boolean },
+  values: {
+    name?: string;
+    userId?: string;
+    isCurrent?: boolean;
+    tags?: string[];
+  },
   taskId?: string,
 ): Promise<void | Error> {
   const isCreate = !taskId;
@@ -93,14 +107,6 @@ export function createSubtask(
     });
 }
 
-export type Subtask = {
-  id: string;
-  isDone: boolean;
-  parentId: string;
-  createdAt: number;
-  name: string;
-};
-
 export async function updateSubtask(
   subtask: Subtask,
   values: {
@@ -132,6 +138,15 @@ export function deleteSubtask(
     .update({
       subtasks: FieldValue.arrayRemove(subtask),
     });
+}
+
+export function changeTags(taskId: string, tags: string[]) {
+  return firestore()
+    .doc('tasks/' + taskId)
+    .update({
+      tags,
+    })
+    .catch(handleErrors);
 }
 
 initializeFirebase();

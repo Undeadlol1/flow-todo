@@ -14,6 +14,9 @@ import Collapsible from './../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
+import TagsForm from './TagsForm';
+import isString from 'lodash/isString';
+import UpsertNote from './UpsertNote/UpsertNote';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -29,6 +32,8 @@ const HardChoices = (
 ) => {
   const t = useTypedTranslate();
   const classes = useStyles();
+  const { task, taskId } = props;
+  const taskNote = get(task, 'note');
   const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
   const addPointsOnSuccess = () => {
     const points = 10;
@@ -51,6 +56,36 @@ const HardChoices = (
       justify="center"
     >
       <Grid item xs={12}>
+        <Collapsible title={t('Rework task')}>
+          <>
+            <Typography display="block" paragraph>
+              Иногда переформулировать задачу - самое верное решение.
+            </Typography>
+            <Typography display="block" paragraph>
+              Как сформулировать задачу чтобы проще было ее выполнить?
+            </Typography>
+            <UpsertTask
+              taskId={props.taskId}
+              defaultValue={props.task!.name}
+              resetFormOnSuccess={false}
+              showSnackbarOnSuccess={false}
+              callback={addPointsOnSuccess}
+            />
+          </>
+        </Collapsible>
+      </Grid>
+      <Grid item xs={12}>
+        <Collapsible
+          isOpen={isString(taskNote)}
+          title={t(taskNote ? 'A note' : 'Add a note')}
+        >
+          <UpsertNote
+            taskId={taskId as string}
+            defaultValue={taskNote}
+          />
+        </Collapsible>
+      </Grid>
+      <Grid item xs={12}>
         <Collapsible title={t('Add subtasks')}>
           <>
             <Typography paragraph>
@@ -71,22 +106,11 @@ const HardChoices = (
         </Collapsible>
       </Grid>
       <Grid item xs={12}>
-        <Collapsible title={t('Rework task')}>
-          <>
-            <Typography display="block" paragraph>
-              Иногда переформулировать задачу - самое верное решение.
-            </Typography>
-            <Typography display="block" paragraph>
-              Как сформулировать задачу чтобы проще было ее выполнить?
-            </Typography>
-            <UpsertTask
-              taskId={props.taskId}
-              defaultValue={props.task!.name}
-              resetFormOnSuccess={false}
-              showSnackbarOnSuccess={false}
-              callback={addPointsOnSuccess}
-            />
-          </>
+        <Collapsible title={t('add a tag')}>
+          <TagsForm
+            tags={get(props, 'task.tags')}
+            taskId={props.taskId as string}
+          />
         </Collapsible>
       </Grid>
     </Grid>

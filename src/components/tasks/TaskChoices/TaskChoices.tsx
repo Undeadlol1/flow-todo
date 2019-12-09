@@ -89,8 +89,10 @@ const TaskChoices = (props: Props) => {
     );
   }
   function doneTask() {
+    const rewardPerSubtask = 10;
+    const repetitionLevel = get(props, 'task.repetitionLevel') || 1;
     const pointsToAdd =
-      20 * (get(props, 'task.repetitionLevel') || 1);
+      20 * repetitionLevel + activeSubtasks.length * rewardPerSubtask;
     props.updateTask({
       pointsToAdd,
       values: {

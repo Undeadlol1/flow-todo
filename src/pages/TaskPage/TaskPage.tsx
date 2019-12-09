@@ -17,13 +17,7 @@ import last from 'ramda/es/last';
 import prop from 'ramda/es/prop';
 import React from 'react';
 import { When } from 'react-if';
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
@@ -73,7 +67,6 @@ export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
   const t = useTypedTranslate();
   const { path, url } = route;
-  const { pathname } = useLocation();
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
@@ -134,34 +127,6 @@ export default function TaskPage(props: TaskPageProps) {
           </Link>
         </Grid>
       </Grid>
-      {/* NOTE: WIP */}
-      {/* TODO: refactoring */}
-      <When
-        condition={Boolean(task.note) || pathname.includes('isHard')}
-      >
-        <Grid item xs={12}>
-          <Zoom in>
-            <Grid
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              lg={5}
-              style={{ margin: '0 auto' }}
-            >
-              <Collapsible
-                isOpen={isString(task.note)}
-                title={t(task.note ? 'A note' : 'Add a note')}
-              >
-                <UpsertNote
-                  taskId={taskId}
-                  defaultValue={task.note}
-                />
-              </Collapsible>
-            </Grid>
-          </Zoom>
-        </Grid>
-      </When>
       <Grid container justify="center" item xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome/isHard`}>
@@ -178,9 +143,33 @@ export default function TaskPage(props: TaskPageProps) {
           </Route>
           <Route path={path}>
             <Grid container item xs={12} sm={8} md={6} lg={5}>
+              <When condition={Boolean(task.note)}>
+                <Grid item xs={12}>
+                  <Zoom in>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={8}
+                      md={6}
+                      lg={5}
+                      style={{ margin: '0 auto' }}
+                    >
+                      <Collapsible
+                        isOpen={isString(task.note)}
+                        title={t(task.note ? 'A note' : 'Add a note')}
+                      >
+                        <UpsertNote
+                          taskId={taskId}
+                          defaultValue={task.note}
+                        />
+                      </Collapsible>
+                    </Grid>
+                  </Zoom>
+                </Grid>
+              </When>
               <Zoom in>
-                <Box width="100%" textAlign="center">
-                  <Card>
+                <Box width="100%" textAlign="center" mt={4}>
+                  <Card className="animated pulse infinite">
                     <CardHeader subheader={t('what do you feel')} />
                     <CardContent>
                       <Grid item container xs={12}>

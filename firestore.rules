@@ -12,5 +12,9 @@ service cloud.firestore {
       allow read, update, delete: if isAuthenticated() && request.auth.uid == userId;
       allow create: if isAuthenticated();
     }
+    match /rewards/{reward} {
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated();
+    }
   }
 }

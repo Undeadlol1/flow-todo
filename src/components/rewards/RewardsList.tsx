@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
-import { useTypedSelector } from '../../store/index';
 import isUndefined from 'lodash/isUndefined';
+import React, { memo } from 'react';
 import { Reward } from '../../store/rewardsSlice';
 
-const RewardsList: React.FC<{}> = () => {
-  const rewards = useTypedSelector(
-    s => s.firestore.ordered.rewards as Reward[],
-  );
-  console.log('rewards: ', rewards);
+interface Props {
+  values?: Reward[];
+}
+
+const RewardsList: React.FC<Props> = ({ values: rewards }) => {
   if (isUndefined(rewards)) return null;
   else
     return (

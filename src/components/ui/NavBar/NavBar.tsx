@@ -21,7 +21,11 @@ import clsx from 'clsx';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
 import { useWindowSize } from '@reach/window-size';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../store';
+import { toggleSidebar } from '../../../store/uiSlice';
 import {
   handleErrors,
   calculateUserLevel,
@@ -147,16 +151,25 @@ export const LoginOrLogoutButton = memo(() => {
 
 export default memo(() => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => dispatch(toggleSidebar())}
+          >
+            <MenuIcon />
+          </IconButton>
           <Fade in timeout={1500}>
             <Typography
               variant="h6"
               className={clsx([classes.title])}
             >
-              <Link to="/" className={classes.link}>
+              <Link className={classes.link} to="/">
                 Flow TODO
               </Link>
             </Typography>

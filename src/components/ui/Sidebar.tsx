@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useTypedSelector } from '../../store/index';
 import debug from 'debug';
@@ -22,6 +22,13 @@ const useStyles = makeStyles({
   },
 });
 
+const StyledListText = withStyles({
+  root: {
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+})(ListItemText);
+
 const Sidebar: React.FC<{}> = () => {
   const cx = useStyles();
   const [t] = useTranslation();
@@ -36,7 +43,7 @@ const Sidebar: React.FC<{}> = () => {
       <List className={cx.list}>
         <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
           <ListItem button>
-            <ListItemText primary={t('feedback')} />
+            <StyledListText primary={t('feedback')} />
           </ListItem>
         </MailTo>
       </List>

@@ -49,21 +49,20 @@ const HardChoices = (
   return (
     <Grid item container {...TaskPageGridWidth} justify="center">
       <Grid item xs={12}>
-        <Collapsible title={t('Rework task')}>
+        <Collapsible title={t('Add subtasks')}>
           <>
-            <Typography display="block" paragraph>
-              {t('reformulating is a good idea')}
+            <Typography paragraph>
+              {t('any task can be split')}
             </Typography>
-            <Typography display="block" paragraph>
-              {t('how to formulate a task?')}
+            <Typography paragraph>
+              {t('simplest thing to do?')}
             </Typography>
-            <UpsertTask
-              taskId={props.taskId}
-              defaultValue={props.task!.name}
-              resetFormOnSuccess={false}
-              showSnackbarOnSuccess={false}
+            <CreateSubtask
               callback={addPointsOnSuccess}
+              className={classes.form}
+              taskId={props.taskId as string}
             />
+            <SubtasksList documents={props.task!.subtasks} />
           </>
         </Collapsible>
       </Grid>
@@ -79,20 +78,21 @@ const HardChoices = (
         </Collapsible>
       </Grid>
       <Grid item xs={12}>
-        <Collapsible title={t('Add subtasks')}>
+        <Collapsible title={t('Rework task')}>
           <>
-            <Typography paragraph>
-              {t('any task can be split')}
+            <Typography display="block" paragraph>
+              {t('reformulating is a good idea')}
             </Typography>
-            <Typography paragraph>
-              {t('simplest thing to do?')}
+            <Typography display="block" paragraph>
+              {t('how to formulate a task?')}
             </Typography>
-            <CreateSubtask
+            <UpsertTask
+              taskId={props.taskId}
+              defaultValue={props.task!.name}
+              resetFormOnSuccess={false}
+              showSnackbarOnSuccess={false}
               callback={addPointsOnSuccess}
-              className={classes.form}
-              taskId={props.taskId as string}
             />
-            <SubtasksList documents={props.task!.subtasks} />
           </>
         </Collapsible>
       </Grid>

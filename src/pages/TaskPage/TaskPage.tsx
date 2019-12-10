@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
+import Grid, { GridProps } from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
@@ -53,6 +53,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export const TaskPageGridWidth: GridProps = {
+  xs: 12,
+  sm: 8,
+  md: 6,
+  lg: 5,
+};
+
 interface TaskPageProps {
   task: Task;
   taskId: string;
@@ -100,10 +107,7 @@ export default function TaskPage(props: TaskPageProps) {
         <Grid
           style={{ margin: '0 auto' }}
           item
-          xs={12}
-          sm={8}
-          md={6}
-          lg={5}
+          {...TaskPageGridWidth}
         >
           <Link className={classes.link} to={`/tasks/${taskId}`}>
             <Zoom in>
@@ -142,7 +146,7 @@ export default function TaskPage(props: TaskPageProps) {
             />
           </Route>
           <Route path={path}>
-            <Grid container item xs={12} sm={8} md={6} lg={5}>
+            <Grid container item {...TaskPageGridWidth}>
               <When condition={Boolean(task.note)}>
                 <Grid item xs={12}>
                   <Zoom in>

@@ -17,6 +17,7 @@ import SubtasksList from './SubtasksList';
 import TagsForm from './TagsForm';
 import isString from 'lodash/isString';
 import UpsertNote from './UpsertNote/UpsertNote';
+import { TaskPageGridWidth } from '../../pages/TaskPage';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -46,15 +47,7 @@ const HardChoices = (
   };
 
   return (
-    <Grid
-      item
-      container
-      xs={12}
-      sm={8}
-      md={6}
-      lg={5}
-      justify="center"
-    >
+    <Grid item container {...TaskPageGridWidth} justify="center">
       <Grid item xs={12}>
         <Collapsible title={t('Rework task')}>
           <>

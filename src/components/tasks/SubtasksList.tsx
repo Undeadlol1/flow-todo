@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { auth } from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,7 +15,8 @@ import Paper from '@material-ui/core/Paper';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'react-i18next';
 import reverse from 'lodash/reverse';
-import { deleteSubtask } from '../../store';
+import { deleteSubtask, Subtask } from '../../store';
+import { handleErrors } from '../../services/index';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -35,10 +35,17 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export function SubtasksList({ documents, ...props }) {
+interface Props {
+  documents?: Subtask[];
+}
+
+export default function SubtasksList({ documents, ...props }: Props) {
   const [t] = useTranslation();
   const classes = useStyles();
-  const isDisabled =    props.userIsLoading || props.userError || !props.user;
+  const [user, userIsLoading, userError] = useAuthState(auth());
+  const isDisabled = !!(userIsLoading || userError || !user);
+
+  handleErrors(userError);
 
   /* TODO: toggleDone must act as "setDone" in TaskChoices */
   // function toggleIsDone(subtask) {
@@ -49,7 +56,7 @@ export function SubtasksList({ documents, ...props }) {
   //   .catch(error => console.error(error));
   // }
 
-  if (isEmpty(documents)) return null;
+  if (!documents || isEmpty(documents)) return null;
 
   return (
     <Paper elevation={6} className={classes.paper}>
@@ -73,7 +80,7 @@ export function SubtasksList({ documents, ...props }) {
                 edge="end"
                 aria-label="Delete"
                 disabled={isDisabled}
-                onClick={() => props.deleteSubtask(task.parentId, task)}
+                onClick={() => deleteSubtask(task.parentId, task)}
               >
                 <DeleteIcon />
               </IconButton>
@@ -83,31 +90,4 @@ export function SubtasksList({ documents, ...props }) {
       </List>
     </Paper>
   );
-}
-
-SubtasksList.propTypes = {
-  user: PropTypes.object,
-  documents: PropTypes.array,
-  userError: PropTypes.oneOfType([
-    PropTypes.bool.isRequired,
-    PropTypes.object.isRequired,
-  ]),
-  userIsLoading: PropTypes.bool,
-  deleteSubtask: PropTypes.func.isRequired,
-};
-
-export default function SubtasksListContainer(props) {
-  const [user, userError, userIsLoading] = useAuthState(auth());
-
-  if (userError) console.error(userError);
-
-  const mergeProps = {
-    ...props,
-    user,
-    userError,
-    userIsLoading,
-    deleteSubtask,
-  };
-
-  return <SubtasksList {...mergeProps} />;
 }

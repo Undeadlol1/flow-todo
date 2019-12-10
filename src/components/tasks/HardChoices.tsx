@@ -52,10 +52,10 @@ const HardChoices = (
         <Collapsible title={t('Rework task')}>
           <>
             <Typography display="block" paragraph>
-              Иногда переформулировать задачу - самое верное решение.
+              {t('reformulating is a good idea')}
             </Typography>
             <Typography display="block" paragraph>
-              Как сформулировать задачу чтобы проще было ее выполнить?
+              {t('how to formulate a task?')}
             </Typography>
             <UpsertTask
               taskId={props.taskId}
@@ -82,12 +82,10 @@ const HardChoices = (
         <Collapsible title={t('Add subtasks')}>
           <>
             <Typography paragraph>
-              Любая задача, даже самая малая, может быть разбита на
-              подзадачи.
+              {t('any task can be split')}
             </Typography>
             <Typography paragraph>
-              Что самое простое ты можешь сделать чтобы сдвинуться с
-              места?
+              {t('simplest thing to do?')}
             </Typography>
             <CreateSubtask
               callback={addPointsOnSuccess}
@@ -98,12 +96,20 @@ const HardChoices = (
           </>
         </Collapsible>
       </Grid>
+      {/* TODO add i18n */}
       <Grid item xs={12}>
-        <Collapsible title={t('add a tag')}>
-          <TagsForm
-            tags={get(props, 'task.tags')}
-            taskId={props.taskId as string}
-          />
+        {/* <Collapsible title={t('add a tag')}> */}
+        <Collapsible isOpen title={t('add a tag')}>
+          <>
+            <Typography paragraph>
+              {t('add tags to categorize')}
+            </Typography>
+            <Typography paragraph>{t('tagsExample')}</Typography>
+            <TagsForm
+              tags={get(props, 'task.tags')}
+              taskId={props.taskId as string}
+            />
+          </>
         </Collapsible>
       </Grid>
     </Grid>

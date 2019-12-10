@@ -65,5 +65,16 @@ export default {
     tags: 'Tags',
     'points added': 'Points added: {{points}}',
     'add a tag': 'Add a tag',
+    'reformulating is a good idea':
+      'Sometimes reformulating a task is the best choice.',
+    'how to formulate a task?':
+      'How to formulate a task so it will be simplier to accomplish it?',
+    'any task can be split':
+      'Any task, even the smaller one, can be split into subtasks',
+    'simplest thing to do?':
+      'What is the simplest thing you can do to take a step forward?',
+    'add tags to categorize': 'To categorize tasks add tags',
+    tagsExample:
+      'For example: "at home", "at work", "reading", "sport"',
   },
 };

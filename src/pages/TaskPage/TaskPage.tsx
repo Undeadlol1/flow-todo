@@ -146,24 +146,15 @@ export default function TaskPage(props: TaskPageProps) {
               <When condition={Boolean(task.note)}>
                 <Grid item xs={12}>
                   <Zoom in>
-                    <Grid
-                      item
-                      xs={12}
-                      sm={8}
-                      md={6}
-                      lg={5}
-                      style={{ margin: '0 auto' }}
+                    <Collapsible
+                      isOpen={isString(task.note)}
+                      title={t(task.note ? 'A note' : 'Add a note')}
                     >
-                      <Collapsible
-                        isOpen={isString(task.note)}
-                        title={t(task.note ? 'A note' : 'Add a note')}
-                      >
-                        <UpsertNote
-                          taskId={taskId}
-                          defaultValue={task.note}
-                        />
-                      </Collapsible>
-                    </Grid>
+                      <UpsertNote
+                        taskId={taskId}
+                        defaultValue={task.note}
+                      />
+                    </Collapsible>
                   </Zoom>
                 </Grid>
               </When>

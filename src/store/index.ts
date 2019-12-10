@@ -26,7 +26,6 @@ export type Subtask = {
   parentId: string;
   createdAt: number;
   name: string;
-  order?: number;
 };
 
 export type TaskHistory = {

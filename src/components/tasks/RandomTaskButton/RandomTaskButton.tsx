@@ -1,23 +1,24 @@
-import React, { useContext, memo } from 'react';
-import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import get from 'lodash/get';
-import random from 'lodash/random';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import Zoom from '@material-ui/core/Zoom';
-import { If, Then, Else } from 'react-if';
 import Typography from '@material-ui/core/Typography';
-import { useTranslation } from 'react-i18next';
+import Zoom from '@material-ui/core/Zoom';
 import clsx from 'clsx';
-import { TasksContext } from '../../../store/contexts';
 import { firestore } from 'firebase/app';
-import compose from 'ramda/src/compose';
-import prop from 'ramda/src/prop';
-import find from 'ramda/src/find';
-import { useTypedSelector, upsertTask } from '../../../store/index';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
+import random from 'lodash/random';
+import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Else, If, Then } from 'react-if';
+import { Link } from 'react-router-dom';
+import {
+  Task,
+  upsertTask,
+  useTypedSelector,
+} from '../../../store/index';
 
 const useStyles = makeStyles({
   paper: {
@@ -30,26 +31,23 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  tasks?: firestore.QuerySnapshot;
+  tasks?: Task[];
   loading: boolean;
   className?: string;
+  isAppTourActive: boolean;
 }
 
 export const RandomTaskButton = ({
   tasks,
   loading,
   className,
+  isAppTourActive,
 }: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const { isAppTourActive } = useTypedSelector(s => s.ui);
 
-  const docs = get(tasks, 'docs', []);
-  const activeTaskId = compose(
-    // @ts-ignore
-    prop('id'),
-    find((i: firestore.DocumentData) => i.get('isCurrent') === true),
-  )(docs);
+  const docs = tasks || [];
+  const activeTaskId = get(docs.find(i => i.isCurrent), 'id');
   // TODO: move logic into a service?
   if (!isEmpty(docs) && !activeTaskId && !isAppTourActive) {
     upsertTask(
@@ -99,14 +97,18 @@ interface ContainerProps {
 export default memo(function RandomTaskButtonContainer(
   props: ContainerProps,
 ) {
-  const { tasks, loading } = useContext(TasksContext);
+  const tasks = useTypedSelector(
+    s => s.firestore.ordered.activeTasks,
+  );
+  const { isAppTourActive } = useTypedSelector(s => s.ui);
 
   return (
     <RandomTaskButton
       {...{
         ...props,
         tasks: tasks,
-        loading: Boolean(loading),
+        loading: isUndefined(tasks),
+        isAppTourActive,
       }}
     />
   );

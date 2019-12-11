@@ -96,10 +96,8 @@ const HardChoices = (
           </>
         </Collapsible>
       </Grid>
-      {/* TODO add i18n */}
       <Grid item xs={12}>
-        {/* <Collapsible title={t('add a tag')}> */}
-        <Collapsible isOpen title={t('add a tag')}>
+        <Collapsible title={t('add a tag')}>
           <>
             <Typography paragraph>
               {t('add tags to categorize')}

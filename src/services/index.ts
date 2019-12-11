@@ -122,7 +122,9 @@ export function normalizeQueryResponse(
   }));
 }
 
-export function handleErrors(e: Error | undefined) {
+export function handleErrors(
+  e: Error | undefined | firebase.auth.Error,
+) {
   if (e) {
     var pe = new PrettyError();
     console.log(pe.render(e));

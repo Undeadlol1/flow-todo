@@ -22,6 +22,7 @@ import {
 } from '../../../services/index';
 import { Task } from '../../../store/index';
 import { When } from 'react-if';
+import { TaskPageGridWidth } from '../../../pages/TaskPage';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -119,10 +120,7 @@ const TaskChoices = (props: Props) => {
       <Grid
         container
         item
-        xs={12}
-        sm={8}
-        md={6}
-        lg={5}
+        {...TaskPageGridWidth}
         direction="row"
         alignContent="space-around"
         className={classes.container}

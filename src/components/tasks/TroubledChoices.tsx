@@ -11,6 +11,7 @@ import {
   updateTaskParams,
   deleteTaskArguments,
 } from '../../pages/TaskPage/TaskPageContainer';
+import { TaskPageGridWidth } from '../../pages/TaskPage';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -65,14 +66,11 @@ const TroublesChoices = ({
     <Grid
       item
       container
-      xs={12}
-      sm={8}
-      md={6}
-      lg={5}
       direction="row"
       justify="center"
       alignContent="space-around"
       className={classes.container}
+      {...TaskPageGridWidth}
     >
       <Slide in direction="left">
         <Box textAlign="center" width="100%">

@@ -7,24 +7,19 @@ import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import { useSnackbar } from 'notistack';
-import debounce from 'lodash/debounce';
-import isMobile from 'is-mobile';
+import Button from '@material-ui/core/Button';
+import { Box } from '@material-ui/core';
+import { showSnackbar } from '../../../services';
 
 const useStyles = makeStyles({
   container: {
     textAlign: 'left',
-  },
-  button: {
-    width: '100%',
-    marginTop: '20px',
   },
 });
 
 const UpsertNote = props => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
   const [user] = useAuthState(auth());
   const {
     register,
@@ -32,6 +27,7 @@ const UpsertNote = props => {
     setError,
     getValues,
     clearError,
+    handleSubmit,
   } = useForm();
 
   let error;
@@ -56,17 +52,20 @@ const UpsertNote = props => {
         noteUpdatedAt: Date.now(),
         note: note && note.trim(),
       })
-      .then(() => enqueueSnackbar(t('Successfully saved')))
+      .then(() => showSnackbar(t('Successfully saved')))
       .catch(e => setError(e && e.message));
   }
 
   return (
-    <form className={classes.container}>
+    <form
+      className={classes.container}
+      onSubmit={handleSubmit(createNote)}
+    >
       <TextField
         multiline
         fullWidth
-        variant="outlined"
         name="note"
+        variant="outlined"
         autoComplete="off"
         helperText={error}
         inputRef={register}
@@ -75,8 +74,17 @@ const UpsertNote = props => {
           props.defaultValue ? t('Edit the note') : t('Add a note')
         }
         defaultValue={props.defaultValue}
-        onChange={debounce(createNote, isMobile() ? 3000 : 2000)}
       />
+      <Box textAlign="center" mt={2}>
+        <Button
+          fullWidth
+          type="submit"
+          color="secondary"
+          variant="contained"
+        >
+          {t('save')}
+        </Button>
+      </Box>
     </form>
   );
 };

@@ -91,7 +91,7 @@ export const LoginOrLogoutButton = memo(() => {
     return auth()
       .signOut()
       .then(() => history.push('/'))
-      .catch(e => console.error(e));
+      .catch(handleErrors);
   }
 
   handleErrors((userError || profileError) as Error);
@@ -115,7 +115,8 @@ export const LoginOrLogoutButton = memo(() => {
           <Badge
             overlap="circle"
             color="secondary"
-            badgeContent={Math.trunc(calculateUserLevel(points))}
+            // NOTE: "+1" is a quick fix
+            badgeContent={Math.trunc(calculateUserLevel(points)) + 1}
           >
             <If condition={hasPhoto}>
               <Then>

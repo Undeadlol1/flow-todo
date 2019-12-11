@@ -16,6 +16,7 @@ import {
   calculateUserLevel,
 } from '../../services/index';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
+import random from 'lodash/random';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +39,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     auth.uid && firestore().doc(`profiles/${auth.uid}`),
   );
 
-  function createRandomTask() {
+  function createTask() {
     upsertTask({
       userId: auth.uid,
       name: loremIpsum({
@@ -64,6 +65,16 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
       .update({ points: 0 });
   }
 
+  function createAReward() {
+    firestore()
+      .collection('rewards')
+      .add({
+        userId: auth.uid,
+        name: loremIpsum({ count: random(1, 5), units: 'words' }),
+        points: random(0, 100),
+      });
+  }
+
   if (process.env.NODE_ENV !== 'development') return null;
   else
     return (
@@ -79,9 +90,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
         >
           <MenuItem onClick={resetPoints}>Reset points</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
-          <MenuItem onClick={createRandomTask}>
-            Add random task
-          </MenuItem>
+          <MenuItem onClick={createAReward}>Add a reward</MenuItem>
+          <MenuItem onClick={createTask}>Add a task</MenuItem>
         </Menu>
       </Box>
     );

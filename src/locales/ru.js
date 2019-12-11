@@ -64,7 +64,6 @@ export default {
     feedback: 'Обратная связь',
     'what do you feel': 'Что ты чувствуешь по отношению к задаче?',
     'points added': 'Добавлено очков: {{points}}',
-    rewards: 'Награды',
     tags: 'Ярлыки',
     'add a tag': 'Добавьте ярлык',
     'reformulating is a good idea':
@@ -78,5 +77,7 @@ export default {
     'add tags to categorize':
       'Для того чтобы задачи можно было категорезировать добавьте ярлыки.',
     tagsExample: 'Например: "дома", "на работе", "чтение", "спорт"',
+    rewards: 'Награды',
+    'add a reward': 'Добавить вознаграждение',
   },
 };

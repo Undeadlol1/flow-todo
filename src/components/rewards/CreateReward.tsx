@@ -11,7 +11,10 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { firestore } from 'firebase/app';
 import { useTypedSelector } from '../../store/index';
-import { handleErrors } from '../../services/index';
+import {
+  handleErrors,
+  useTypedTranslate,
+} from '../../services/index';
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -26,9 +29,9 @@ interface Props {
   callback?: Function;
 }
 
-const CreateSubtask = (props: Props) => {
+const CreateReward = (props: Props) => {
   const cx = useStyles();
-  const [t] = useTranslation();
+  const t = useTypedTranslate();
   const userId: string = useTypedSelector(s =>
     get(s, 'firebase.auth.uid'),
   );
@@ -81,7 +84,7 @@ const CreateSubtask = (props: Props) => {
         className={cx.input}
         inputRef={register}
         error={Boolean(error)}
-        label={t('Add subtasks')}
+        label={t('add a reward')}
         helperText={get(errors, 'name.message')}
       />
       {/* // TODO i18n */}
@@ -111,4 +114,4 @@ const CreateSubtask = (props: Props) => {
   );
 };
 
-export default memo(CreateSubtask);
+export default memo(CreateReward);

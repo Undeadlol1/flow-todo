@@ -64,7 +64,6 @@ export default {
     'what do you feel': 'What do you feel about this task?',
     tags: 'Tags',
     'points added': 'Points added: {{points}}',
-    rewards: 'Rewards',
     'add a tag': 'Add a tag',
     'reformulating is a good idea':
       'Sometimes reformulating a task is the best choice.',
@@ -77,5 +76,7 @@ export default {
     'add tags to categorize': 'To categorize tasks add tags',
     tagsExample:
       'For example: "at home", "at work", "reading", "sport"',
+    rewards: 'Rewards',
+    'add a reward': 'Add a reward',
   },
 };

@@ -7,34 +7,45 @@ import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import nanoid from 'nanoid';
 import isNull from 'lodash/isNull';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  card: {
+    width: '100%',
+    margin: theme.spacing(2, 0),
+  },
+}));
 
 interface Props {
   values?: Reward[];
 }
 
 const RewardsList: React.FC<Props> = ({ values: rewards }) => {
+  const cx = useStyles();
   if (isNull(rewards)) return null;
   if (isUndefined(rewards))
     return (
       <Box width="100%">
         {Array.from({ length: 4 }, () => (
-          <Box my={2} key={nanoid()}>
-            <Skeleton width="100%" height="200px" variant="rect" />
-          </Box>
+          <Skeleton
+            key={nanoid()}
+            component={Box}
+            height="100px"
+            variant="rect"
+            className={cx.card}
+          />
         ))}
       </Box>
     );
   else
     return (
-      <div>
+      <Box width="100%">
         {rewards.map(r => (
-          <Box key={r.id} my={2}>
-            <Card key={r.id}>
-              <CardHeader title={r.name} subheader={r.points} />
-            </Card>
-          </Box>
+          <Card key={r.id} className={cx.card}>
+            <CardHeader title={r.name} subheader={r.points} />
+          </Card>
         ))}
-      </div>
+      </Box>
     );
 };
 

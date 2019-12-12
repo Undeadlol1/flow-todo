@@ -8,7 +8,6 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
-import last from 'lodash/last';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
@@ -23,6 +22,7 @@ import {
 import { Task } from '../../../store/index';
 import { When } from 'react-if';
 import { TaskPageGridWidth } from '../../../pages/TaskPage';
+import head from 'ramda/es/head';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -112,7 +112,7 @@ const TaskChoices = (props: Props) => {
   }
 
   function doneSubtask() {
-    props.updateSubtask(last(activeSubtasks));
+    props.updateSubtask(head(activeSubtasks));
   }
 
   return (

@@ -13,7 +13,6 @@ import filter from 'lodash/filter';
 import isString from 'lodash/isString';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
-import last from 'ramda/es/last';
 import prop from 'ramda/es/prop';
 import React from 'react';
 import { When } from 'react-if';
@@ -31,6 +30,7 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
+import head from 'ramda/es/head';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -105,8 +105,8 @@ export default function TaskPage(props: TaskPageProps) {
       <CreateTaskFab />
       <Grid item xs={12}>
         <Grid
-          style={{ margin: '0 auto' }}
           item
+          style={{ margin: '0 auto' }}
           {...TaskPageGridWidth}
         >
           <Link className={classes.link} to={`/tasks/${taskId}`}>
@@ -122,7 +122,7 @@ export default function TaskPage(props: TaskPageProps) {
                     {compose(
                       defaultTo(task.name),
                       prop('name'),
-                      last,
+                      head,
                     )(activeSubtasks)}
                   </Typography>
                 </CardContent>

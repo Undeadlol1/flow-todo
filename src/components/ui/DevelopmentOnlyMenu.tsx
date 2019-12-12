@@ -17,6 +17,10 @@ import {
 } from '../../services/index';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import random from 'lodash/random';
+import {
+  willUserLevelUp,
+  showLevelUpAnimation,
+} from '../../services/index';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,6 +79,13 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
       });
   }
 
+  function addUserPoints() {
+    const pointToAdd = 50;
+    addPoints(auth.uid, pointToAdd);
+    if (willUserLevelUp(profile.points, pointToAdd))
+      showLevelUpAnimation();
+  }
+
   if (process.env.NODE_ENV !== 'development') return null;
   else
     return (
@@ -88,6 +99,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
         >
+          <MenuItem onClick={addUserPoints}>Add 50 points</MenuItem>
           <MenuItem onClick={resetPoints}>Reset points</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
           <MenuItem onClick={createAReward}>Add a reward</MenuItem>

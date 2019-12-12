@@ -7,7 +7,6 @@ import uniq from 'lodash/uniq';
 import Button from '@material-ui/core/Button';
 
 const log = debug('TagsList');
-debug.enable('TagsList');
 
 export const TagsList: React.FC<{}> = () => {
   const { activeTasks }: { activeTasks: Task[] } = useTypedSelector(

@@ -74,6 +74,7 @@ export const LoginOrLogoutButton = memo(() => {
   const [, userLoading, userError] = useAuthState(auth());
   // @ts-ignore
   const user = useTypedSelector(state => state.firebase.auth);
+  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
   const [profile, profileLoading, profileError] = useDocumentData(
     user.uid && firestore().doc(`profiles/${user.uid}`),
   );
@@ -109,7 +110,11 @@ export const LoginOrLogoutButton = memo(() => {
     <>
       <Slide in timeout={500} direction="left">
         <Button
-          className={clsx(classes.link, classes.username)}
+          className={clsx(
+            classes.link,
+            classes.username,
+            isLevelUpAnimationActive && 'animated pulse infinite',
+          )}
           onClick={handleUsernameClick}
         >
           <Badge

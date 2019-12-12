@@ -74,9 +74,9 @@ export const HomePage = memo(function HomePage(props: Props) {
       >
         {renderButtonOrWelcomeCard()}
       </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      {/* <Grid item xs={12} sm={8} md={8} lg={6}>
         <TagsList />
-      </Grid>
+      </Grid> */}
       <CreateTaskFab
         isHidden={isLoading}
         className="IntroHandle__createTask"

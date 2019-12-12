@@ -15,6 +15,7 @@ import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -31,7 +32,8 @@ interface Props {
 
 const CreateReward = (props: Props) => {
   const cx = useStyles();
-  const t = useTypedTranslate();
+  const { t } = useTranslation();
+  const tt = useTypedTranslate();
   const userId: string = useTypedSelector(s =>
     get(s, 'firebase.auth.uid'),
   );
@@ -76,7 +78,9 @@ const CreateReward = (props: Props) => {
       className={clsx([cx.container, props.className])}
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* // TODO i18n */}
+      <Typography variant="subtitle2">
+        {tt('add a reward')}
+      </Typography>
       <TextField
         fullWidth
         name="name"
@@ -84,10 +88,9 @@ const CreateReward = (props: Props) => {
         className={cx.input}
         inputRef={register}
         error={Boolean(error)}
-        label={t('add a reward')}
+        label={tt('reward name')}
         helperText={get(errors, 'name.message')}
       />
-      {/* // TODO i18n */}
       <TextField
         fullWidth
         type="number"
@@ -97,7 +100,7 @@ const CreateReward = (props: Props) => {
         inputRef={register}
         className={cx.input}
         error={Boolean(error)}
-        label={t('Add subtasks')}
+        label={tt('reward points')}
         helperText={get(errors, 'name.points')}
       />
       <Box textAlign="center">

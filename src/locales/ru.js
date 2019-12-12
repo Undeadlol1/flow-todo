@@ -79,5 +79,7 @@ export default {
     tagsExample: 'Например: "дома", "на работе", "чтение", "спорт"',
     rewards: 'Награды',
     'add a reward': 'Добавить вознаграждение',
+    'reward name': 'Название',
+    'reward points': 'Oчки',
   },
 };

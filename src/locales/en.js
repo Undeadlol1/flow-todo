@@ -78,5 +78,7 @@ export default {
       'For example: "at home", "at work", "reading", "sport"',
     rewards: 'Rewards',
     'add a reward': 'Add a reward',
+    'reward name': 'Name',
+    'reward points': 'Points',
   },
 };

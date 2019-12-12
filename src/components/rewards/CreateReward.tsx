@@ -15,7 +15,9 @@ import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
-import { Typography } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -74,46 +76,47 @@ const CreateReward = (props: Props) => {
   }
 
   return (
-    <form
-      className={clsx([cx.container, props.className])}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Typography variant="subtitle2">
-        {tt('add a reward')}
-      </Typography>
-      <TextField
-        fullWidth
-        name="name"
-        variant="outlined"
-        className={cx.input}
-        inputRef={register}
-        error={Boolean(error)}
-        label={tt('reward name')}
-        helperText={get(errors, 'name.message')}
-      />
-      <TextField
-        fullWidth
-        type="number"
-        name="points"
-        variant="outlined"
-        autoComplete="off"
-        inputRef={register}
-        className={cx.input}
-        error={Boolean(error)}
-        label={tt('reward points')}
-        helperText={get(errors, 'name.points')}
-      />
-      <Box textAlign="center">
-        <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          disabled={Boolean(formState.isSubmitting)}
-        >
-          {t('save')}
-        </Button>
-      </Box>
-    </form>
+    <Card className={clsx([cx.container, props.className])}>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Typography variant="subtitle2">
+            {tt('add a reward')}
+          </Typography>
+          <TextField
+            fullWidth
+            name="name"
+            variant="outlined"
+            className={cx.input}
+            inputRef={register}
+            error={Boolean(error)}
+            label={tt('reward name')}
+            helperText={get(errors, 'name.message')}
+          />
+          <TextField
+            fullWidth
+            type="number"
+            name="points"
+            variant="outlined"
+            autoComplete="off"
+            inputRef={register}
+            className={cx.input}
+            error={Boolean(error)}
+            label={tt('reward points')}
+            helperText={get(errors, 'name.points')}
+          />
+          <Box textAlign="center">
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained"
+              disabled={Boolean(formState.isSubmitting)}
+            >
+              {t('save')}
+            </Button>
+          </Box>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

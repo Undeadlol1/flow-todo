@@ -30,6 +30,7 @@ import {
   handleErrors,
   calculateUserLevel,
 } from '../../../services/index';
+import UserPoints from '../../users/UserPoints';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -117,6 +118,7 @@ export const LoginOrLogoutButton = memo(() => {
           )}
           onClick={handleUsernameClick}
         >
+          <UserPoints value={points} />
           <Badge
             overlap="circle"
             color="secondary"
@@ -126,8 +128,8 @@ export const LoginOrLogoutButton = memo(() => {
             <If condition={hasPhoto}>
               <Then>
                 <Avatar
-                  className={classes.avatar}
                   src={user.photoURL}
+                  className={classes.avatar}
                 />
               </Then>
               <Else>

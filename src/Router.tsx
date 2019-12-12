@@ -42,15 +42,13 @@ export default memo(function Router() {
         console.error('anonymous signin error: ', error);
       });
   }
+
   useFirestoreConnect([
     {
       collection: 'profiles',
       doc: userAuth!.uid,
       storeAs: 'profile',
     },
-  ]);
-
-  useFirestoreConnect([
     {
       collection: 'tasks',
       where: [
@@ -60,8 +58,6 @@ export default memo(function Router() {
       ],
       storeAs: 'activeTasks',
     },
-  ]);
-  useFirestoreConnect([
     {
       collection: 'tasks',
       where: [
@@ -71,8 +67,6 @@ export default memo(function Router() {
       ],
       storeAs: 'tasksDoneToday',
     },
-  ]);
-  useFirestoreConnect([
     {
       collection: 'tasks',
       where: [['userId', '==', userId]],

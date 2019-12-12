@@ -77,6 +77,9 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
         >
+          <MenuItem onClick={() => addPoints(auth.uid, 50)}>
+            Add 50 points
+          </MenuItem>
           <MenuItem onClick={resetPoints}>Reset points</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
           <MenuItem onClick={createRandomTask}>

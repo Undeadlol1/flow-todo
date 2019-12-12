@@ -26,6 +26,7 @@ import {
   willUserLevelUp,
   showLevelUpAnimation,
 } from '../../services/index';
+import { useFirestore } from 'react-redux-firebase';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -48,6 +49,7 @@ export default memo(() => {
   const [t] = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const firestoreRedux = useFirestore();
   const { enqueueSnackbar } = useSnackbar();
   const [isRequested, setRequested] = useState();
 
@@ -75,7 +77,7 @@ export default memo(() => {
     // TODO: load task data
     // return;
   }
-  const taskPointer = firestore().doc('tasks/' + taskId);
+  const taskPointer = firestoreRedux.doc('tasks/' + taskId);
   let [task, taskLoading, taskError] = useDocumentData(
     // @ts-ignore
     !isAppIntroMode || !currentTask ? taskPointer : undefined,

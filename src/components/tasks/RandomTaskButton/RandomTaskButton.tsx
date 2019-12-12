@@ -14,11 +14,8 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import { Link } from 'react-router-dom';
-import {
-  Task,
-  upsertTask,
-  useTypedSelector,
-} from '../../../store/index';
+import { useFirestore } from 'react-redux-firebase';
+import { Task, useTypedSelector } from '../../../store/index';
 
 const useStyles = makeStyles({
   paper: {
@@ -47,13 +44,21 @@ export const RandomTaskButton = ({
   const [t] = useTranslation();
 
   const docs = tasks || [];
+  const firestore = useFirestore();
   const activeTaskId = get(docs.find(i => i.isCurrent), 'id');
+  // TODO make this a service (TaskPageContainer has similar funcitonality)
+  // TODO exclude activeTaskId from from next line
+  const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);
   // TODO: move logic into a service?
-  if (!isEmpty(docs) && !activeTaskId && !isAppTourActive) {
-    upsertTask(
-      { isCurrent: true },
-      get(docs, `[${random(docs.length - 1)}].id`),
-    );
+  if (
+    !isEmpty(docs) &&
+    !activeTaskId &&
+    !isAppTourActive &&
+    randomTaskId
+  ) {
+    firestore
+      .doc('tasks/' + randomTaskId)
+      .update({ isCurrent: true });
   }
 
   const buttonText = t(

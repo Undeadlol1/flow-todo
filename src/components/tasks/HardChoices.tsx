@@ -1,6 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography, {
+  TypographyProps,
+} from '@material-ui/core/Typography';
 import { UserInfo } from 'firebase';
 import get from 'lodash/get';
 import React from 'react';
@@ -24,6 +26,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
   },
 }));
+const paragraphProps: TypographyProps = {
+  paragraph: true,
+  variant: 'body2',
+  color: 'textSecondary',
+};
 
 const HardChoices = (
   props: Partial<{
@@ -51,10 +58,10 @@ const HardChoices = (
       <Grid item xs={12}>
         <Collapsible title={t('Add subtasks')}>
           <>
-            <Typography paragraph>
+            <Typography {...paragraphProps}>
               {t('any task can be split')}
             </Typography>
-            <Typography paragraph>
+            <Typography {...paragraphProps}>
               {t('simplest thing to do?')}
             </Typography>
             <CreateSubtask
@@ -80,10 +87,10 @@ const HardChoices = (
       <Grid item xs={12}>
         <Collapsible title={t('Rework task')}>
           <>
-            <Typography display="block" paragraph>
+            <Typography {...paragraphProps}>
               {t('reformulating is a good idea')}
             </Typography>
-            <Typography display="block" paragraph>
+            <Typography {...paragraphProps}>
               {t('how to formulate a task?')}
             </Typography>
             <UpsertTask
@@ -99,10 +106,12 @@ const HardChoices = (
       <Grid item xs={12}>
         <Collapsible title={t('add a tag')}>
           <>
-            <Typography paragraph>
+            <Typography {...paragraphProps}>
               {t('add tags to categorize')}
             </Typography>
-            <Typography paragraph>{t('tagsExample')}</Typography>
+            <Typography {...paragraphProps}>
+              {t('tagsExample')}
+            </Typography>
             <TagsForm
               tags={get(props, 'task.tags')}
               taskId={props.taskId as string}

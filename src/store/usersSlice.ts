@@ -3,6 +3,7 @@ import { UserInfo } from 'firebase';
 
 interface UsersState {
   current: UserInfo;
+  isLevelUpAnimationActive: boolean;
 }
 
 const currentUserInitialState = {
@@ -16,6 +17,7 @@ const currentUserInitialState = {
 };
 
 const initialState: UsersState = {
+  isLevelUpAnimationActive: false,
   current: currentUserInitialState,
 };
 
@@ -29,10 +31,16 @@ const userSlice = createSlice({
     logout(state, payload) {
       state.current = currentUserInitialState;
     },
-    toggleUserLoading(state, payload) {},
+    toggleLevelUpAnimation(state) {
+      state.isLevelUpAnimationActive = !state.isLevelUpAnimationActive;
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const {
+  login,
+  logout,
+  toggleLevelUpAnimation,
+} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -22,6 +22,10 @@ import {
 } from '../../store/index';
 import TaskPage from './TaskPage';
 import { TaskHistory } from '../../store/index';
+import {
+  willUserLevelUp,
+  showLevelUpAnimation,
+} from '../../services/index';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -59,6 +63,9 @@ export default memo(() => {
   const currentTask = activeTasks.find(t => t.isCurrent);
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
+  );
+  const userPoints = useTypedSelector(s =>
+    get(s, 'firestore.data.profile.points', 0),
   );
 
   if (
@@ -138,6 +145,8 @@ export default memo(() => {
           enqueueSnackbar(snackbarMessage, {
             variant: snackbarVariant,
           });
+        if (willUserLevelUp(userPoints, pointsToAdd))
+          showLevelUpAnimation();
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         if (error.message.includes('Null value error.')) {

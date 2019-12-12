@@ -44,6 +44,14 @@ export default memo(function Router() {
   }
   useFirestoreConnect([
     {
+      collection: 'profiles',
+      doc: userAuth!.uid,
+      storeAs: 'profile',
+    },
+  ]);
+
+  useFirestoreConnect([
+    {
       collection: 'tasks',
       where: [
         ['userId', '==', userId],

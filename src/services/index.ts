@@ -20,6 +20,7 @@ import ru from 'date-fns/locale/ru';
 import PrettyError from 'pretty-error';
 import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
+import { toggleLevelUpAnimation } from '../store/usersSlice';
 
 const logger = debug('utils');
 
@@ -178,6 +179,17 @@ export function calculatePointsToNextLevel(level: number) {
   return baseXP * ((level ^ exponent) | 1);
 }
 
+export function willUserLevelUp(
+  currentPoints: number,
+  pointsAboutToAdd: number,
+): boolean {
+  const currentLevel = calculateUserLevel(currentPoints);
+  const levelAfterAddingPoints = calculateUserLevel(
+    currentPoints + pointsAboutToAdd,
+  );
+  return levelAfterAddingPoints > currentLevel;
+}
+
 export function useScreenIsNarrow(): boolean {
   const theme = useTheme();
   const isScreenNarrow = useMediaQuery(theme.breakpoints.down('xs'));
@@ -212,4 +224,9 @@ export function useTypedTranslate() {
     key: keyof typeof engnlishStrings.translation,
     ...rest: any
   ) => t(key, ...rest);
+}
+
+export function showLevelUpAnimation() {
+  store.dispatch(toggleLevelUpAnimation());
+  setTimeout(() => store.dispatch(toggleLevelUpAnimation()), 5000);
 }

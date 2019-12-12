@@ -41,6 +41,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     // @ts-ignore
     auth.uid && firestore().doc(`profiles/${auth.uid}`),
   );
+  const profilePoints = get(profile, 'points', 0);
 
   function createRandomTask() {
     upsertTask({
@@ -71,7 +72,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   function addUserPoints() {
     const pointToAdd = 50;
     addPoints(auth.uid, pointToAdd);
-    if (willUserLevelUp(profile.points, pointToAdd))
+    if (willUserLevelUp(profilePoints, pointToAdd))
       showLevelUpAnimation();
   }
 

@@ -33,6 +33,7 @@ export const ExpirienceProgressBar: React.FC<{
   const classes = useStyles();
   // @ts-ignore
   const { uid } = useTypedSelector(state => state.firebase.auth);
+  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
   const [profile, profileLoading, profileError] = useDocumentData(
     uid && firestore().doc(`profiles/${uid}`),
   );
@@ -76,12 +77,14 @@ export const ExpirienceProgressBar: React.FC<{
       >
         <LinearProgress
           color="secondary"
-          variant="determinate"
+          value={progressPercent === 100 ? 0 : progressPercent}
           className={cx(!profile && classes.hidden, [
             classes.progress,
             props.className,
           ])}
-          value={progressPercent === 100 ? 0 : progressPercent}
+          variant={
+            isLevelUpAnimationActive ? 'indeterminate' : 'determinate'
+          }
         />
       </Tooltip>
     );

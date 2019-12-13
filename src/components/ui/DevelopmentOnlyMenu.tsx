@@ -5,8 +5,12 @@ import Box from '@material-ui/core/Box';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import BuildIcon from '@material-ui/icons/Build';
-import { upsertTask, addPoints } from '../../store/index';
-import { useSelector } from 'react-redux';
+import {
+  upsertTask,
+  addPoints,
+  useTypedSelector,
+} from '../../store/index';
+import { useSelector, useDispatch } from 'react-redux';
 import get from 'lodash/get';
 import { UserInfo } from 'firebase';
 import { firestore } from 'firebase/app';
@@ -17,10 +21,13 @@ import {
 } from '../../services/index';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import random from 'lodash/random';
+import { getNewlyUnlockedReward } from '../../services/index';
 import {
   willUserLevelUp,
   showLevelUpAnimation,
 } from '../../services/index';
+import { Reward } from '../../store/rewardsSlice';
+import { toggleRewardModal } from '../../store/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const DevelopmentOnlyMenu: React.FC<{}> = () => {
   const cx = useStyles();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const toggleMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
@@ -43,6 +51,9 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     auth.uid && firestore().doc(`profiles/${auth.uid}`),
   );
   const profilePoints = get(profile, 'points', 0);
+  const rewards = useTypedSelector(
+    s => s.firestore.ordered.rewards as Reward[],
+  );
 
   function createTask() {
     upsertTask({
@@ -82,9 +93,16 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
 
   function addUserPoints() {
     const pointToAdd = 50;
+    const nextReward = getNewlyUnlockedReward(
+      profilePoints,
+      pointToAdd,
+      rewards,
+    );
     addPoints(auth.uid, pointToAdd);
     if (willUserLevelUp(profilePoints, pointToAdd))
       showLevelUpAnimation();
+    // TODO refactor
+    if (nextReward) dispatch(toggleRewardModal());
   }
 
   if (process.env.NODE_ENV !== 'development') return null;

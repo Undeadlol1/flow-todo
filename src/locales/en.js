@@ -51,6 +51,8 @@ export default {
       required: 'Required',
       atleast3Symbols: 'Atleast 3 symbols',
       textIsTooLong: 'Text is too long',
+      minimumValue: 'Minumum value is {{value}}',
+      maxixmumValue: 'Maximum value is {{value}}',
     },
     'seems like anonymous upgrading failed':
       'Seems like upgrding account from anonymous failed. Sorry',

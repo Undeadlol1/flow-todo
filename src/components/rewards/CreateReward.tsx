@@ -36,8 +36,8 @@ const CreateReward = (props: Props) => {
   const cx = useStyles();
   const { t } = useTranslation();
   const tt = useTypedTranslate();
-  const userId: string = useTypedSelector(s =>
-    get(s, 'firebase.auth.uid'),
+  const userId = useTypedSelector(
+    s => get(s, 'firebase.auth.uid') as string,
   );
   const {
     register,
@@ -48,14 +48,13 @@ const CreateReward = (props: Props) => {
     setError,
   } = useForm({
     validationSchema: Yup.object({
-      // TODO i18n
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
         .max(100, t('validation.textIsTooLong'))
         .required(t('validation.required')),
       points: Yup.number()
-        // .min(3, t('validation.atleast3Symbols'))
-        // .max(100, t('validation.textIsTooLong'))
+        .min(1, t('validation.minimumValue', { value: 1 }))
+        .max(10000, t('validation.maximumValue', { value: 1000 }))
         .required(t('validation.required')),
     }),
   });
@@ -102,7 +101,7 @@ const CreateReward = (props: Props) => {
             className={cx.input}
             error={Boolean(error)}
             label={tt('reward points')}
-            helperText={get(errors, 'name.points')}
+            helperText={get(errors, 'points.message')}
           />
           <Box textAlign="center">
             <Button

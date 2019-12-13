@@ -52,6 +52,8 @@ export default {
       required: 'Обязательно',
       atleast3Symbols: 'Не менее 3 символов',
       textIsTooLong: 'Текст слишком длинный',
+      minimumValue: 'Минимальное значениеш: {{value}}',
+      maxixmumValue: 'Максимальное значение: {{value}}',
     },
     'seems like anonymous upgrading failed':
       'Похоже что не получилось обновить анонимный аккаунт. Извините',

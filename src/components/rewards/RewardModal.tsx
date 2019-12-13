@@ -38,28 +38,31 @@ const RewardModal: React.FC<Props> = props => {
     i => i.points <= userPoints,
     rewards || [],
   );
-  function handleClose() {
+
+  function toggleModal() {
     dispatch(toggleRewardModal());
   }
-
   async function claimReward() {
     try {
+      toggleModal();
       await Promise.all([
-        firestore.doc('rewards/' + nextReward!.id).delete(),
-        firestore
+        await firestore
           .doc('profiles/' + profile.userId)
           .update({ points: profile.points - nextReward!.points }),
+        await firestore.delete({
+          collection: 'rewards',
+          doc: nextReward!.id,
+        }),
       ]);
     } catch (e) {
       handleErrors(e);
-    } finally {
-      dispatch(toggleRewardModal());
     }
   }
+
   return (
     <Dialog
       open={props.isOpen}
-      onClose={() => dispatch(toggleRewardModal())}
+      onClose={toggleModal}
       aria-labelledby="alert-dialog-title"
       className={clsx(props.className)}
       aria-describedby="alert-dialog-title"
@@ -74,11 +77,12 @@ const RewardModal: React.FC<Props> = props => {
         <Button onClick={claimReward} color="primary">
           {t('take')}
         </Button>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button onClick={toggleModal} color="primary" autoFocus>
           {t('keep earning')}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
+
 export default memo(RewardModal);

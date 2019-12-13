@@ -169,7 +169,11 @@ export function addPoints(
   return firestore()
     .doc('profiles/' + userId)
     .set(
-      { userId, points: FieldValue.increment(points) },
+      {
+        userId,
+        coins: FieldValue.increment(points),
+        points: FieldValue.increment(points),
+      },
       { merge: true },
     );
 }

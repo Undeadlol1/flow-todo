@@ -4,12 +4,14 @@ export type UiState = {
   loading: boolean;
   isSidebarOpen: boolean;
   isAppTourActive: boolean;
+  isRewardModalOpen: boolean;
 };
 
 const initialState: UiState = {
   loading: true,
   isSidebarOpen: false,
   isAppTourActive: false,
+  isRewardModalOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -22,9 +24,16 @@ const uiSlice = createSlice({
     toggleSidebar(state) {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
+    toggleRewardModal(state) {
+      state.isRewardModalOpen = !state.isRewardModalOpen;
+    },
   },
 });
 
-export const { toggleAppTour, toggleSidebar } = uiSlice.actions;
+export const {
+  toggleAppTour,
+  toggleSidebar,
+  toggleRewardModal,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

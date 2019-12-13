@@ -21,6 +21,8 @@ import PrettyError from 'pretty-error';
 import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
 import { toggleLevelUpAnimation } from '../store/usersSlice';
+import { Reward } from '../store/rewardsSlice';
+import { sort, findLastIndex } from 'ramda';
 
 const logger = debug('utils');
 
@@ -188,6 +190,35 @@ export function willUserLevelUp(
     currentPoints + pointsAboutToAdd,
   );
   return levelAfterAddingPoints > currentLevel;
+}
+
+export function getNewlyUnlockedReward(
+  currentPoints: number,
+  pointsAboutToAdd: number,
+  rewards: Reward[],
+): Reward | undefined {
+  const sortedRewards = sort((a, b) => a.points - b.points, rewards);
+  const currentRewardIndex = findLastIndex(
+    i => i.points <= currentPoints,
+    rewards,
+  );
+  const nextRewardIndex = findLastIndex(
+    i => i.points <= currentPoints + pointsAboutToAdd,
+    rewards,
+  );
+  const nextReward = rewards[nextRewardIndex];
+  logger('sortedRewards: ', sortedRewards);
+  logger('currentRewardIndex: ', currentRewardIndex);
+  logger('nextRewardIndex: ', nextRewardIndex);
+  logger('nextReward: ', nextReward);
+  if (
+    nextRewardIndex !== -1 &&
+    nextReward.points <= currentPoints + pointsAboutToAdd &&
+    currentRewardIndex &&
+    get(rewards, `[${currentRewardIndex}].points`) !==
+      nextReward.points
+  )
+    return nextReward;
 }
 
 export function useScreenIsNarrow(): boolean {

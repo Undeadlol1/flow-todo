@@ -82,5 +82,8 @@ export default {
     'add a reward': 'Add a reward',
     'reward name': 'Name',
     'reward points': 'Points',
+    'you unlocked a reward': 'You unlocked a reward',
+    take: 'Take',
+    'keep earning': 'Keep earning',
   },
 };

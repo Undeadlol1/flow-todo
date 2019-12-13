@@ -83,5 +83,8 @@ export default {
     'add a reward': 'Добавить вознаграждение',
     'reward name': 'Название',
     'reward points': 'Oчки',
+    'you unlocked a reward': 'Вы открыли награду',
+    take: 'Забрать',
+    'keep earning': 'Продолжить копить',
   },
 };

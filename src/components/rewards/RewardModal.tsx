@@ -4,16 +4,19 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import clsx from 'clsx';
+import get from 'lodash/get';
+import findLast from 'ramda/es/findLast';
 import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { useTypedSelector } from '../../store';
+import { useFirestore } from 'react-redux-firebase';
+import {
+  handleErrors,
+  useTypedTranslate,
+} from '../../services/index';
+import { Profile, useTypedSelector } from '../../store';
 import { Reward } from '../../store/rewardsSlice';
 import { toggleRewardModal } from '../../store/uiSlice';
 import RewardCard from './RewardCard';
-import get from 'lodash/get';
-import findLast from 'ramda/es/findLast';
-import { handleErrors } from '../../services/index';
-import { useFirestore, UserProfile } from 'react-redux-firebase';
 
 interface Props {
   isOpen: boolean;
@@ -22,8 +25,11 @@ interface Props {
 
 const RewardModal: React.FC<Props> = props => {
   const dispatch = useDispatch();
+  const t = useTypedTranslate();
   const firestore = useFirestore();
-  const { profile } = useTypedSelector(s => s.firestore.data);
+  const { profile }: { profile: Profile } = useTypedSelector(
+    s => s.firestore.data,
+  );
   const userPoints = get(profile, 'points', 0);
   const rewards = useTypedSelector(
     s => s.firestore.ordered.rewards as Reward[],
@@ -41,8 +47,8 @@ const RewardModal: React.FC<Props> = props => {
       await Promise.all([
         firestore.doc('rewards/' + nextReward!.id).delete(),
         firestore
-          .doc('profile/' + profile!.id)
-          .update({ coins: profile.coins - nextReward!.points }),
+          .doc('profiles/' + profile.userId)
+          .update({ points: profile.points - nextReward!.points }),
       ]);
     } catch (e) {
       handleErrors(e);
@@ -53,28 +59,23 @@ const RewardModal: React.FC<Props> = props => {
   return (
     <Dialog
       open={props.isOpen}
-      // onClose={handleClose}
+      onClose={() => dispatch(toggleRewardModal())}
       aria-labelledby="alert-dialog-title"
-      // aria-describedby="alert-dialog-description"
       className={clsx(props.className)}
+      aria-describedby="alert-dialog-title"
     >
       <DialogTitle id="alert-dialog-title">
-        Вы открыли награду!
+        {t('you unlocked a reward')}!
       </DialogTitle>
       <DialogContent>
         <RewardCard reward={nextReward} />
-        {/* <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means
-            sending anonymous location data to Google, even when no
-            apps are running.
-          </DialogContentText> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={claimReward} color="primary">
-          Забрать
+          {t('take')}
         </Button>
         <Button onClick={handleClose} color="primary" autoFocus>
-          Продолжить копить
+          {t('keep earning')}
         </Button>
       </DialogActions>
     </Dialog>

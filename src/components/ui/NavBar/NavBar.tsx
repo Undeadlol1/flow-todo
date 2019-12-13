@@ -118,7 +118,11 @@ export const LoginOrLogoutButton = memo(() => {
           )}
           onClick={handleUsernameClick}
         >
-          <UserPoints value={points} />
+          {/* TODO change "points" to "coins" or something else */}
+          {/* NOTE during development I realized there must be two types of data: */}
+          {/* "expirience"(a way to calculate level) and "coins"(currency to spend on rewards) */}
+          {/* previously both of them were simply called "points" */}
+          <UserPoints value={profile.coins} />
           <Badge
             overlap="circle"
             color="secondary"

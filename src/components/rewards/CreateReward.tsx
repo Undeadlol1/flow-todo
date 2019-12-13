@@ -54,7 +54,7 @@ const CreateReward = (props: Props) => {
         .required(t('validation.required')),
       points: Yup.number()
         .min(1, t('validation.minimumValue', { value: 1 }))
-        .max(10000, t('validation.maximumValue', { value: 1000 }))
+        .max(10000, t('validation.maximumValue', { value: 10000 }))
         .required(t('validation.required')),
     }),
   });

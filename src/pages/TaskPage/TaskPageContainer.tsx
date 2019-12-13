@@ -12,6 +12,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import {
   calculateNextRepetition,
   handleErrors,
+  getNewlyUnlockedReward,
 } from '../../services';
 import { deleteTask, updateSubtask } from '../../store';
 import {
@@ -21,12 +22,14 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import TaskPage from './TaskPage';
-import { TaskHistory } from '../../store/index';
+import { TaskHistory, Profile } from '../../store/index';
 import {
   willUserLevelUp,
   showLevelUpAnimation,
 } from '../../services/index';
 import { useFirestore } from 'react-redux-firebase';
+import { toggleRewardModal } from '../../store/uiSlice';
+import { Reward } from '../../store/rewardsSlice';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -55,6 +58,12 @@ export default memo(() => {
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
+  const profile = useTypedSelector(
+    s => s.firestore.data.profile as Profile,
+  );
+  const rewards = useTypedSelector(
+    s => s.firestore.ordered.rewards as Reward[],
+  );
   const activeTasks =
     useTypedSelector<Task[]>(
       ({ firestore }) => firestore.ordered.activeTasks,
@@ -114,6 +123,15 @@ export default memo(() => {
             },
           }),
         );
+        if (willUserLevelUp(userPoints, options.pointsToAdd || 0))
+          showLevelUpAnimation();
+        // TODO refactor
+        const nextReward = getNewlyUnlockedReward(
+          profile.points,
+          options.pointsToAdd || 0,
+          rewards,
+        );
+        if (nextReward) dispatch(toggleRewardModal());
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         handleErrors(error);
@@ -149,6 +167,13 @@ export default memo(() => {
           });
         if (willUserLevelUp(userPoints, pointsToAdd))
           showLevelUpAnimation();
+        // TODO refactor
+        const nextReward = getNewlyUnlockedReward(
+          profile.points,
+          pointsToAdd,
+          rewards,
+        );
+        if (nextReward) dispatch(toggleRewardModal());
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         if (error.message.includes('Null value error.')) {

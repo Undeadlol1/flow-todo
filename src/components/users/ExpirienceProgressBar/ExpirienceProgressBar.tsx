@@ -1,21 +1,17 @@
-import React, { memo } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'clsx';
-import { useTypedSelector } from '../../../store';
 import debug from 'debug';
-import { firestore } from 'firebase/app';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
 import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
+import React, { memo } from 'react';
 import {
   calculatePointsToNextLevel,
   calculateTotalPointsToReachALevel,
-} from '../../../services/index';
-import {
-  handleErrors,
   calculateUserLevel,
 } from '../../../services/index';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Profile, useTypedSelector } from '../../../store';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles(theme => ({
@@ -31,13 +27,11 @@ export const ExpirienceProgressBar: React.FC<{
   className?: string;
 }> = memo(props => {
   const classes = useStyles();
-  // @ts-ignore
-  const { uid } = useTypedSelector(state => state.firebase.auth);
   const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
-  const [profile, profileLoading, profileError] = useDocumentData(
-    uid && firestore().doc(`profiles/${uid}`),
+  const profile = useTypedSelector(
+    s => s.firestore.data.profile as Profile,
   );
-  const userPoints = get(profile, 'points', 0);
+  const userPoints = get(profile, 'experience', 0);
   const level = calculateUserLevel(userPoints);
 
   const pointsToReachPreviousLevel = calculateTotalPointsToReachALevel(
@@ -61,8 +55,7 @@ export const ExpirienceProgressBar: React.FC<{
   );
   log('progressPercent: ', progressPercent);
 
-  if (profileError) handleErrors(profileError);
-  if (profileLoading)
+  if (isUndefined(profile))
     return (
       <LinearProgress
         color="secondary"

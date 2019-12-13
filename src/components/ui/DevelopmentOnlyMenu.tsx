@@ -1,31 +1,29 @@
-import React, { useState, MouseEvent } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
 import Box from '@material-ui/core/Box';
+import Fab from '@material-ui/core/Fab';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 import BuildIcon from '@material-ui/icons/Build';
-import {
-  upsertTask,
-  addPoints,
-  useTypedSelector,
-} from '../../store/index';
-import { useSelector, useDispatch } from 'react-redux';
-import get from 'lodash/get';
 import { UserInfo } from 'firebase';
-import { firestore } from 'firebase/app';
+import get from 'lodash/get';
+import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
+import React, { MouseEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
 import {
   calculatePointsToNextLevel,
   calculateUserLevel,
-} from '../../services/index';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import random from 'lodash/random';
-import { getNewlyUnlockedReward } from '../../services/index';
-import {
-  willUserLevelUp,
+  getNewlyUnlockedReward,
   showLevelUpAnimation,
+  willUserLevelUp,
 } from '../../services/index';
+import {
+  addPoints,
+  Profile,
+  upsertTask,
+  useTypedSelector,
+} from '../../store/index';
 import { Reward } from '../../store/rewardsSlice';
 import { toggleRewardModal } from '../../store/uiSlice';
 
@@ -40,15 +38,15 @@ const useStyles = makeStyles(theme => ({
 const DevelopmentOnlyMenu: React.FC<{}> = () => {
   const cx = useStyles();
   const dispatch = useDispatch();
+  const firestore = useFirestore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const toggleMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   };
 
   const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
-  const [profile] = useDocumentData(
-    // @ts-ignore
-    auth.uid && firestore().doc(`profiles/${auth.uid}`),
+  const profile = useTypedSelector(
+    s => s.firestore.data.profile as Profile,
   );
   const profilePoints = get(profile, 'points', 0);
   const rewards = useTypedSelector(
@@ -76,19 +74,15 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   function resetPoints() {
-    firestore()
-      .doc('profiles/' + auth.uid)
-      .update({ points: 0 });
+    firestore.doc('profiles/' + auth.uid).update({ points: 0 });
   }
 
   function createAReward() {
-    firestore()
-      .collection('rewards')
-      .add({
-        userId: auth.uid,
-        name: loremIpsum({ count: random(1, 5), units: 'words' }),
-        points: random(0, 100),
-      });
+    firestore.collection('rewards').add({
+      userId: auth.uid,
+      name: loremIpsum({ count: random(1, 5), units: 'words' }),
+      points: random(0, 100),
+    });
   }
 
   function addUserPoints() {

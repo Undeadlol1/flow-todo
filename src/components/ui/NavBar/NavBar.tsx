@@ -1,36 +1,38 @@
-import React, { useState, memo } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link, useHistory } from 'react-router-dom';
-import { auth, firestore } from 'firebase/app';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import Avatar from '@material-ui/core/Avatar';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import { If, Then, Else, When } from 'react-if';
-import { useTranslation } from 'react-i18next';
 import Slide from '@material-ui/core/Slide';
-import Badge from '@material-ui/core/Badge';
-import Fade from '@material-ui/core/Fade';
-import clsx from 'clsx';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import get from 'lodash/get';
-import { useWindowSize } from '@reach/window-size';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useWindowSize } from '@reach/window-size';
+import clsx from 'clsx';
+import debug from 'debug';
+import { auth } from 'firebase/app';
+import get from 'lodash/get';
+import React, { memo, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useTranslation } from 'react-i18next';
+import { Else, If, Then, When } from 'react-if';
 import { useDispatch } from 'react-redux';
-import { useTypedSelector } from '../../../store';
-import { toggleSidebar } from '../../../store/uiSlice';
+import { Link, useHistory } from 'react-router-dom';
 import {
-  handleErrors,
   calculateUserLevel,
+  handleErrors,
 } from '../../../services/index';
+import { Profile, useTypedSelector } from '../../../store';
+import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
+
+const log = debug('NavBar');
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,12 +77,14 @@ export const LoginOrLogoutButton = memo(() => {
   const [, userLoading, userError] = useAuthState(auth());
   // @ts-ignore
   const user = useTypedSelector(state => state.firebase.auth);
-  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
-  const [profile, profileLoading, profileError] = useDocumentData(
-    user.uid && firestore().doc(`profiles/${user.uid}`),
+  const profile = useTypedSelector(
+    s => s.firestore.data.profile as Profile,
   );
+  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
 
   const points = get(profile, 'points', 0);
+  log('profile: ', profile);
+  const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
@@ -96,9 +100,9 @@ export const LoginOrLogoutButton = memo(() => {
       .catch(handleErrors);
   }
 
-  handleErrors((userError || profileError) as Error);
+  handleErrors(userError);
 
-  if (userLoading || profileLoading) {
+  if (userLoading) {
     return (
       <CircularProgress
         color="secondary"
@@ -118,16 +122,14 @@ export const LoginOrLogoutButton = memo(() => {
           )}
           onClick={handleUsernameClick}
         >
-          {/* TODO change "points" to "coins" or something else */}
-          {/* NOTE during development I realized there must be two types of data: */}
-          {/* "expirience"(a way to calculate level) and "coins"(currency to spend on rewards) */}
-          {/* previously both of them were simply called "points" */}
-          <UserPoints value={profile.coins} />
+          <UserPoints value={points} />
           <Badge
             overlap="circle"
             color="secondary"
             // NOTE: "+1" is a quick fix
-            badgeContent={Math.trunc(calculateUserLevel(points)) + 1}
+            badgeContent={
+              Math.trunc(calculateUserLevel(experience)) + 1
+            }
           >
             <If condition={hasPhoto}>
               <Then>

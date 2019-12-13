@@ -28,7 +28,7 @@ const RewardsPage: React.FC<Props> = () => {
           <CreateReward />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container justify="center">
         <Grid container item xs={12} sm={8} md={8} lg={6}>
           <RewardsList values={rewards} />
         </Grid>

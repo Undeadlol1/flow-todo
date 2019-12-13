@@ -20,6 +20,7 @@ import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar'
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import Sidebar from './components/ui/Sidebar';
 import RewardsPage from './pages/RewardsPage';
+import RewardModal from './components/rewards/RewardModal';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -29,6 +30,7 @@ export default memo(function Router() {
   const db = firestore().collection('tasks');
   // @ts-ignore
   const userAuth = useTypedSelector(state => state.firebase.auth);
+  const { isRewardModalOpen } = useTypedSelector(s => s.ui);
 
   const [user, userLoading, userError] = useAuthState(auth());
   const userId = useTypedSelector(state => state.users.current.uid);
@@ -73,6 +75,12 @@ export default memo(function Router() {
       where: [['userId', '==', userId]],
       storeAs: 'createdAtleastOneTask',
       limit: 1,
+    },
+    {
+      collection: 'rewards',
+      where: [['userId', '==', userId]],
+      orderBy: ['points', 'asc'],
+      // where: [['userId', '==', userId], ['isDone', '==', false]],
     },
   ]);
 
@@ -137,6 +145,7 @@ export default memo(function Router() {
       <NavBar />
       <ExpirienceProgressBar />
       <Sidebar />
+      <RewardModal isOpen={isRewardModalOpen} />
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">

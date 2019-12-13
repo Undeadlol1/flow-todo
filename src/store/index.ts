@@ -21,6 +21,12 @@ import userSlice from './usersSlice';
 const log = debug('store');
 const { FieldValue } = firestore;
 
+export type Profile = {
+  userId: string;
+  points: number;
+  experience: number;
+};
+
 export type Subtask = {
   id: string;
   isDone: boolean;
@@ -171,8 +177,8 @@ export function addPoints(
     .set(
       {
         userId,
-        coins: FieldValue.increment(points),
         points: FieldValue.increment(points),
+        experience: FieldValue.increment(points),
       },
       { merge: true },
     );

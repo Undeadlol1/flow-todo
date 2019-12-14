@@ -21,6 +21,7 @@ import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import Sidebar from './components/ui/Sidebar';
 import RewardsPage from './pages/RewardsPage';
 import RewardModal from './components/rewards/RewardModal';
+import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -158,6 +159,9 @@ export default memo(function Router() {
           </Route>
           <Route path="/signIn">
             <SignInPage />
+          </Route>
+          <Route path="/profile">
+            <ProfilePageContainer />
           </Route>
           <Route path="/">
             <TasksContext.Provider value={providerValue}>

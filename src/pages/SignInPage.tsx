@@ -1,18 +1,16 @@
-import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
-import firebase, { auth, User, firestore } from 'firebase/app';
-// WIP
-// import * as firebaseui from 'firebaseui';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
-import AppTour from '../components/ui/AppTour';
+import debug from 'debug';
+import firebase, { auth, firestore, User } from 'firebase/app';
+import get from 'lodash/get';
+import nanoid from 'nanoid';
+import React, { memo, useMemo } from 'react';
 import FirebaseUIAuth from 'react-firebaseui-localized';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import AppTour from '../components/ui/AppTour';
 import { handleErrors, showSnackbar } from '../services/index';
 import { addPoints } from '../store/index';
-import { useHistory } from 'react-router-dom';
-import debug from 'debug';
-import nanoid from 'nanoid';
-import get from 'lodash/get';
 
 const log = debug('SigninPage');
 debug.enable('SigninPage store');
@@ -33,6 +31,7 @@ export default memo(() => {
   const history = useHistory();
 
   async function mergeAnonymousUpgradeConflicts(error: any) {
+    console.log('mergeAnonymousUpgradeConflicts: ');
     const db = firestore();
     const batch = firestore().batch();
 
@@ -98,8 +97,6 @@ export default memo(() => {
     }
   }
 
-  // WIP
-  // https://github.com/Undeadlol1/flow-todo/issues/7
   const uiConfig = {
     signInFlow: 'popup',
     signInSuccessUrl: '/',
@@ -107,49 +104,38 @@ export default memo(() => {
     signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      //   {
-      //     // Google provider must be enabled in Firebase Console to support one-tap
-      //     // sign-up.
-      //     provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      //     // Required to enable this provider in one-tap sign-up.
-      //     authMethod: 'https://accounts.google.com',
-      //     // Required to enable ID token credentials for this provider.
-      //     // This can be obtained from the Credentials page of the Google APIs
-      //     // console.
-      //     clientId: '772125171665-ci6st9nbunsrvhv6jdb0e2avmkto9vod.apps.googleusercontent.com',
-      //   },
     ],
-    // Required to enable one-tap sign-up credential helper.
-    // NOTE: GOOGLE_YOLO is a string "googleyolo".
-    // NOTE: We can remove "firebaseui" module to save space by using said string
-    // NOTE: Will it take no effect because react-firebaseui relies on it?
-    // // credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
     callbacks: {
       signInFailure: mergeAnonymousUpgradeConflicts,
     },
   };
 
-  return (
-    <Grid
-      container
-      spacing={2}
-      justify="center"
-      direction="column"
-      alignItems="stretch"
-      alignContent="center"
-      className={classes.pageContainer}
-    >
-      <Grid item xs={12} sm={8} md={8} lg={6}>
-        <div className={classes.buttonsContainer}>
-          <FirebaseUIAuth
-            config={uiConfig}
-            firebase={firebase}
-            lang={i18n.language}
-            auth={firebase.auth()}
-          />
-        </div>
+  console.log('i18n.language: ', i18n.language);
+  return useMemo(
+    () => (
+      <Grid
+        container
+        spacing={2}
+        justify="center"
+        direction="column"
+        alignItems="stretch"
+        alignContent="center"
+        className={classes.pageContainer}
+      >
+        <Grid item xs={12} sm={8} md={8} lg={6}>
+          <div className={classes.buttonsContainer}>
+            <FirebaseUIAuth
+              key={123}
+              config={uiConfig}
+              firebase={firebase}
+              lang={i18n.language}
+              auth={firebase.auth()}
+            />
+          </div>
+        </Grid>
+        <AppTour step={3} />
       </Grid>
-      <AppTour step={3} />
-    </Grid>
+    ),
+    [],
   );
 });

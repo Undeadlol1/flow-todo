@@ -21,7 +21,6 @@ import {
 import { Profile, useTypedSelector } from '../../store/index';
 
 const log = debug('ProfilePage');
-debug.enable('ProfilePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
@@ -52,7 +51,8 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         })
         .catch(handleErrors);
   }
-
+  const title =
+    props.user!.displayNae || props.user!.email || t('anonymous');
   return (
     <Grid
       container
@@ -62,19 +62,19 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid item xs={12} sm={6}>
         <If condition={props.isLoading}>
           <Then>
             <Skeleton component={Box} width="100%" height="200px" />
           </Then>
           <Else>
             <Card>
-              <CardHeader title={props.user!.uid} />
+              <CardHeader title={title} />
             </Card>
           </Else>
         </If>
       </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid item xs={12} sm={6}>
         <Card>
           <List>
             <ListItem button onClick={() => reset('points')}>

@@ -5,16 +5,28 @@ import CreateReward from '../components/rewards/CreateReward';
 import RewardsList from '../components/rewards/RewardsList';
 import { useTypedSelector } from '../store/index';
 import { Reward } from '../store/rewardsSlice';
+import debug from 'debug';
+import { makeStyles } from '@material-ui/core';
 
+const log = debug('RewardsPage');
+const useStyles = makeStyles(theme => ({
+  pageContainer: {
+    marginTop: 0,
+    marginBottom: 0,
+    minHeight: 'calc(100vh - 74px)',
+  },
+}));
 interface Props {}
 
 const RewardsPage: React.FC<Props> = () => {
+  const cx = useStyles();
   const rewards = useTypedSelector(
     s => s.firestore.ordered.rewards as Reward[],
   );
+  log('rewards: %O', rewards);
 
   return (
-    <Box>
+    <Box className={cx.pageContainer}>
       <Grid container justify="center" spacing={2}>
         <Grid
           component={Box}

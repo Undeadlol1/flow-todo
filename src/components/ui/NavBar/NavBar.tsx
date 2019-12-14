@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Slide from '@material-ui/core/Slide';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -67,12 +65,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const LoginOrLogoutButton = memo(() => {
-  const [t] = useTranslation();
   const classes = useStyles();
-  const history = useHistory();
   const theme = useTheme();
   const windowSize = useWindowSize();
-  const [menuAnchor, setAnchor] = useState();
 
   const [, userLoading, userError] = useAuthState(auth());
   // @ts-ignore
@@ -87,18 +82,6 @@ export const LoginOrLogoutButton = memo(() => {
   const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);
   const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
-
-  function handleUsernameClick(event: React.MouseEvent<HTMLElement>) {
-    if (user.isAnonymous) history.push('/signin');
-    else setAnchor(event.currentTarget);
-  }
-
-  function signOut() {
-    return auth()
-      .signOut()
-      .then(() => history.push('/'))
-      .catch(handleErrors);
-  }
 
   handleErrors(userError);
 
@@ -115,12 +98,13 @@ export const LoginOrLogoutButton = memo(() => {
     <>
       <Slide in timeout={500} direction="left">
         <Button
+          component={Link}
+          to="/profile"
           className={clsx(
             classes.link,
             classes.username,
             isLevelUpAnimationActive && 'animated pulse infinite',
           )}
-          onClick={handleUsernameClick}
         >
           <UserPoints value={points} />
           <Badge
@@ -151,14 +135,6 @@ export const LoginOrLogoutButton = memo(() => {
           </When>
         </Button>
       </Slide>
-      <Menu
-        keepMounted
-        anchorEl={menuAnchor}
-        open={Boolean(menuAnchor)}
-        onClose={() => setAnchor(null)}
-      >
-        <MenuItem onClick={signOut}>{t('log out')}</MenuItem>
-      </Menu>
     </>
   );
 });

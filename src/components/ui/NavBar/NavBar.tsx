@@ -6,19 +6,18 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
-import { useWindowSize } from '@reach/window-size';
 import clsx from 'clsx';
 import debug from 'debug';
 import { auth } from 'firebase/app';
 import get from 'lodash/get';
 import React, { memo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Else, If, Then, When } from 'react-if';
+import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -28,6 +27,7 @@ import {
 import { Profile, useTypedSelector } from '../../../store';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
+import Box from '@material-ui/core/Box';
 
 const log = debug('NavBar');
 
@@ -50,9 +50,6 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(2),
     },
   },
-  username: {
-    paddingRight: 0,
-  },
   loading: {
     [theme.breakpoints.up('sm')]: {
       marginRight: theme.spacing(2),
@@ -61,12 +58,14 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(3),
     },
   },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
 }));
 
 export const LoginOrLogoutButton = memo(() => {
   const classes = useStyles();
-  const theme = useTheme();
-  const windowSize = useWindowSize();
 
   const [, userLoading, userError] = useAuthState(auth());
   // @ts-ignore
@@ -80,7 +79,6 @@ export const LoginOrLogoutButton = memo(() => {
   log('profile: ', profile);
   const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);
-  const isScreenWide = windowSize.width > theme.breakpoints.values.sm;
 
   handleErrors(userError);
 
@@ -101,11 +99,12 @@ export const LoginOrLogoutButton = memo(() => {
           to="/profile"
           className={clsx(
             classes.link,
-            classes.username,
             isLevelUpAnimationActive && 'animated pulse infinite',
           )}
         >
-          <UserPoints value={points} />
+          <Box mr={0.5}>
+            <UserPoints value={points} />
+          </Box>
           <Badge
             overlap="circle"
             color="secondary"
@@ -118,7 +117,7 @@ export const LoginOrLogoutButton = memo(() => {
               <Then>
                 <Avatar
                   src={user.photoURL}
-                  className={classes.avatar}
+                  className={clsx(classes.avatar, classes.large)}
                 />
               </Then>
               <Else>
@@ -129,9 +128,6 @@ export const LoginOrLogoutButton = memo(() => {
               </Else>
             </If>
           </Badge>
-          <When condition={isScreenWide}>
-            <Typography>{user.displayName || user.email}</Typography>
-          </When>
         </Button>
       </Slide>
     </>

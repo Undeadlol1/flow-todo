@@ -16,12 +16,11 @@ import clsx from 'clsx';
 import debug from 'debug';
 import { auth } from 'firebase/app';
 import get from 'lodash/get';
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useTranslation } from 'react-i18next';
 import { Else, If, Then, When } from 'react-if';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   calculateUserLevel,
   handleErrors,

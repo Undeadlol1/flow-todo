@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: 'calc(100vh - 74px)',
   },
 }));
+
 interface Props {}
 
 const RewardsPage: React.FC<Props> = () => {

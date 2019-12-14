@@ -3,33 +3,33 @@ import get from 'lodash/get';
 import once from 'lodash/once';
 import random from 'lodash/random';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { useSnackbar, OptionsObject } from 'notistack';
+import { OptionsObject, useSnackbar } from 'notistack';
 import React, { memo, useState } from 'react';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   calculateNextRepetition,
-  handleErrors,
   getNewlyUnlockedReward,
+  handleErrors,
 } from '../../services';
+import {
+  showLevelUpAnimation,
+  willUserLevelUp,
+} from '../../services/index';
 import { deleteTask, updateSubtask } from '../../store';
 import {
   addPoints,
   Subtask,
   Task,
+  TaskHistory,
   useTypedSelector,
 } from '../../store/index';
-import TaskPage from './TaskPage';
-import { TaskHistory, Profile } from '../../store/index';
-import {
-  willUserLevelUp,
-  showLevelUpAnimation,
-} from '../../services/index';
-import { useFirestore } from 'react-redux-firebase';
-import { toggleRewardModal } from '../../store/uiSlice';
 import { Reward } from '../../store/rewardsSlice';
+import { toggleRewardModal } from '../../store/uiSlice';
+import TaskPage from './TaskPage';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -58,9 +58,6 @@ export default memo(() => {
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
-  const profile = useTypedSelector(
-    s => s.firestore.data.profile as Profile,
-  );
   const rewards = useTypedSelector(
     s => s.firestore.ordered.rewards as Reward[],
   );
@@ -127,7 +124,7 @@ export default memo(() => {
           showLevelUpAnimation();
         // TODO refactor
         const nextReward = getNewlyUnlockedReward(
-          profile.points,
+          userPoints,
           options.pointsToAdd || 0,
           rewards,
         );
@@ -169,7 +166,7 @@ export default memo(() => {
           showLevelUpAnimation();
         // TODO refactor
         const nextReward = getNewlyUnlockedReward(
-          profile.points,
+          userPoints,
           pointsToAdd,
           rewards,
         );

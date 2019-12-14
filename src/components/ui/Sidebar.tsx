@@ -5,20 +5,19 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import debug from 'debug';
 import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
+import { Unless } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { useDispatch } from 'react-redux';
+import { getFirebase } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import {
-  useTypedTranslate,
   handleErrors,
+  useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
 import { toggleSidebar } from '../../store/uiSlice';
-import { getFirebase } from 'react-redux-firebase';
-import { auth } from 'firebase/app';
-import { When, Unless } from 'react-if';
-import isUndefined from 'lodash/isUndefined';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -48,13 +47,10 @@ const Sidebar: React.FC<{}> = () => {
   const t = useTypedTranslate();
   const dispatch = useDispatch();
   const { isSidebarOpen } = useTypedSelector(s => s.ui);
-  // @ts-ignore
-  const auth = useTypedSelector(s => s.firebase.auth);
   const isAnonymous = useTypedSelector(s =>
     get(s, 'firebase.auth.isAnonymous'),
   );
   function logoutIfNeeded() {
-    console.log('logoutIfNeeded: ');
     if (!isAnonymous)
       getFirebase()
         .logout()

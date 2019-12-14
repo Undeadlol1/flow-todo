@@ -110,7 +110,6 @@ export default memo(() => {
     },
   };
 
-  console.log('i18n.language: ', i18n.language);
   return useMemo(
     () => (
       <Grid
@@ -136,6 +135,7 @@ export default memo(() => {
         <AppTour step={3} />
       </Grid>
     ),
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [i18n, classes],
   );
 });

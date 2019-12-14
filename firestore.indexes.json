@@ -35,6 +35,20 @@
           "order": "ASCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "rewards",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "points",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []

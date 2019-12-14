@@ -1,15 +1,27 @@
+import { ListItem, ListItemText } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
 import debug from 'debug';
 import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import { UserProfile as User } from 'react-redux-firebase';
+import { Else, If, Then } from 'react-if';
+import {
+  useFirestore,
+  UserProfile as User,
+} from 'react-redux-firebase';
+import {
+  handleErrors,
+  useTypedTranslate,
+} from '../../services/index';
 import { Profile, useTypedSelector } from '../../store/index';
 
 const log = debug('ProfilePage');
+debug.enable('ProfilePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
@@ -26,19 +38,60 @@ interface Props {
 
 export const ProfilePage = memo(function ProfilePage(props: Props) {
   const classes = useStyles();
+  const t = useTypedTranslate();
+  const firestore = useFirestore();
+
+  function reset(fieldToReset: string) {
+    if (props.isLoading) return;
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm(t('are you sure')))
+      firestore
+        .doc('profiles/' + props.user!.uid)
+        .update({
+          [fieldToReset]: 0,
+        })
+        .catch(handleErrors);
+  }
+
   return (
     <Grid
       container
       spacing={2}
       justify="center"
-      direction="column"
       alignItems="stretch"
       alignContent="center"
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
+        <If condition={props.isLoading}>
+          <Then>
+            <Skeleton component={Box} width="100%" height="200px" />
+          </Then>
+          <Else>
+            <Card>
+              <CardHeader title={props.user!.uid} />
+            </Card>
+          </Else>
+        </If>
+      </Grid>
+      <Grid item xs={12} sm={8} md={8} lg={6}>
         <Card>
-          <CardHeader title={props.user!.uid} />
+          <List>
+            <ListItem button onClick={() => reset('points')}>
+              <ListItemText>
+                {props.isLoading ? <Skeleton /> : t('reset points')}
+              </ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => reset('experience')}>
+              <ListItemText>
+                {props.isLoading ? (
+                  <Skeleton />
+                ) : (
+                  t('reset experience')
+                )}
+              </ListItemText>
+            </ListItem>
+          </List>
         </Card>
       </Grid>
     </Grid>
@@ -49,9 +102,10 @@ export const ProfilePageContainer = memo(
   function ProfilePageContainer(props) {
     const user = useTypedSelector(s => get(s, 'firebase.auth'));
     const profile = useTypedSelector(s => get(s, 'firebase.profile'));
-    log('user: ', user);
-    log('profile: ', profile);
-    const isLoading = isUndefined(user) || isUndefined(profile);
+    const isLoading = !(user.isLoaded && profile.isLoaded);
+    log('user: %O', user);
+    log('profile: %O', profile);
+    log('isLoading', isLoading);
     return (
       <ProfilePage
         {...{

@@ -86,5 +86,8 @@ export default {
     'you unlocked a reward': 'Вы открыли награду',
     take: 'Забрать',
     'keep earning': 'Продолжить копить',
+    'reset points': 'Обнулить очки',
+    'reset experience': 'Обнулить опыт',
+    'are you sure': 'Вы уверены? Эне может быть отменено.',
   },
 };

@@ -85,5 +85,8 @@ export default {
     'you unlocked a reward': 'You unlocked a reward',
     take: 'Take',
     'keep earning': 'Keep earning',
+    'reset points': 'Reset points',
+    'reset experience': 'Reset experience',
+    'are you sure': "Are you sure? This action can't be undone.",
   },
 };

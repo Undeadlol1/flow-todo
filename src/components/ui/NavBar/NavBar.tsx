@@ -58,10 +58,6 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(3),
     },
   },
-  large: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
-  },
 }));
 
 export const LoginOrLogoutButton = memo(() => {
@@ -117,7 +113,7 @@ export const LoginOrLogoutButton = memo(() => {
               <Then>
                 <Avatar
                   src={user.photoURL}
-                  className={clsx(classes.avatar, classes.large)}
+                  className={clsx(classes.avatar)}
                 />
               </Then>
               <Else>

@@ -8,12 +8,9 @@ import get from 'lodash/get';
 import findLast from 'ramda/es/findLast';
 import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { useFirestore } from 'react-redux-firebase';
-import {
-  handleErrors,
-  useTypedTranslate,
-} from '../../services/index';
+import { useTypedTranslate } from '../../services/index';
 import { Profile, useTypedSelector } from '../../store';
+import { claimReward } from '../../store/index';
 import { Reward } from '../../store/rewardsSlice';
 import { toggleRewardModal } from '../../store/uiSlice';
 import RewardCard from './RewardCard';
@@ -26,7 +23,6 @@ interface Props {
 const RewardModal: React.FC<Props> = props => {
   const dispatch = useDispatch();
   const t = useTypedTranslate();
-  const firestore = useFirestore();
   const { profile }: { profile: Profile } = useTypedSelector(
     s => s.firestore.data,
   );
@@ -34,29 +30,18 @@ const RewardModal: React.FC<Props> = props => {
   const rewards = useTypedSelector(
     s => s.firestore.ordered.rewards as Reward[],
   );
-  const nextReward = findLast(
+  const unlockedReward = findLast(
     i => i.points <= userPoints,
     rewards || [],
-  );
+  ) as Reward;
 
   function toggleModal() {
     dispatch(toggleRewardModal());
   }
-  async function claimReward() {
-    try {
-      toggleModal();
-      await Promise.all([
-        await firestore
-          .doc('profiles/' + profile.userId)
-          .update({ points: profile.points - nextReward!.points }),
-        await firestore.delete({
-          collection: 'rewards',
-          doc: nextReward!.id,
-        }),
-      ]);
-    } catch (e) {
-      handleErrors(e);
-    }
+
+  function takeReward() {
+    toggleModal();
+    claimReward(unlockedReward);
   }
 
   return (
@@ -71,10 +56,10 @@ const RewardModal: React.FC<Props> = props => {
         {t('you unlocked a reward')}!
       </DialogTitle>
       <DialogContent>
-        <RewardCard reward={nextReward} />
+        <RewardCard reward={unlockedReward} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={claimReward} color="primary">
+        <Button onClick={takeReward} color="primary">
           {t('take')}
         </Button>
         <Button onClick={toggleModal} color="primary" autoFocus>

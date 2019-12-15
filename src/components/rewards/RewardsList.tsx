@@ -1,13 +1,14 @@
-import isUndefined from 'lodash/isUndefined';
-import React, { memo } from 'react';
-import { Reward } from '../../store/rewardsSlice';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
-import nanoid from 'nanoid';
-import isNull from 'lodash/isNull';
 import { makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
+import get from 'lodash/get';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
+import nanoid from 'nanoid';
+import React, { memo } from 'react';
+import { useTypedSelector } from '../../store/index';
+import { Reward } from '../../store/rewardsSlice';
+import RewardCard from './RewardCard';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -22,6 +23,10 @@ interface Props {
 
 const RewardsList: React.FC<Props> = ({ values: rewards }) => {
   const cx = useStyles();
+  const profile = useTypedSelector(s =>
+    get(s, 'firebase.profile', {}),
+  );
+
   if (isNull(rewards)) return null;
   if (isUndefined(rewards))
     return (
@@ -41,9 +46,12 @@ const RewardsList: React.FC<Props> = ({ values: rewards }) => {
     return (
       <Box width="100%">
         {rewards.map(r => (
-          <Card key={r.id} className={cx.card}>
-            <CardHeader title={r.name} subheader={r.points} />
-          </Card>
+          <RewardCard
+            reward={r}
+            key={r.id}
+            className={cx.card}
+            displayActions={profile.points >= r.points}
+          />
         ))}
       </Box>
     );

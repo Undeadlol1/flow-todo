@@ -11,12 +11,17 @@ import { snackbarReducer } from 'material-ui-snackbar-redux';
 import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
-import { firestoreReducer, reduxFirestore } from 'redux-firestore';
+import {
+  firestoreReducer,
+  reduxFirestore,
+  getFirestore,
+} from 'redux-firestore';
 import { initializeFirebase, handleErrors } from '../services/index';
 import tasksSlice from './tasksSlice';
 import rewardsSlice from './rewardsSlice';
 import uiSlice from './uiSlice';
 import userSlice from './usersSlice';
+import { Reward } from './rewardsSlice';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -182,6 +187,16 @@ export function addPoints(
       },
       { merge: true },
     );
+}
+
+export function claimReward(reward: Reward) {
+  const fs = getFirestore(firebase);
+  return Promise.all([
+    fs.doc('profiles/' + reward.userId).update({
+      points: firestore.FieldValue.increment(reward.points * -1),
+    }),
+    fs.doc('rewards/' + reward.id).delete(),
+  ]).catch(handleErrors);
 }
 
 const rootReducer = combineReducers({

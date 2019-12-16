@@ -53,7 +53,8 @@ export default {
       atleast3Symbols: 'Не менее 3 символов',
       textIsTooLong: 'Текст слишком длинный',
       minimumValue: 'Минимальное значениеш: {{value}}',
-      maxixmumValue: 'Максимальное значение: {{value}}',
+      maximumValue: 'Максимальное значение: {{value}}',
+      invalidURL: 'Что-то не так с URL',
     },
     'seems like anonymous upgrading failed':
       'Похоже что не получилось обновить анонимный аккаунт. Извините',
@@ -83,6 +84,7 @@ export default {
     'add a reward': 'Добавить вознаграждение',
     'reward name': 'Название',
     'reward points': 'Oчки',
+    'reward image non required': 'Картинка награды (не обязательно)',
     'you unlocked a reward': 'Вы открыли награду',
     take: 'Забрать',
     'keep earning': 'Продолжить копить',

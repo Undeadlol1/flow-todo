@@ -56,6 +56,7 @@ const CreateReward = (props: Props) => {
         .min(1, t('validation.minimumValue', { value: 1 }))
         .max(10000, t('validation.maximumValue', { value: 10000 }))
         .required(t('validation.required')),
+      image: Yup.string().url(t('validation.invalidURL')),
     }),
   });
   const error = get(errors, 'name.message');
@@ -99,9 +100,20 @@ const CreateReward = (props: Props) => {
             autoComplete="off"
             inputRef={register}
             className={cx.input}
-            error={Boolean(error)}
             label={tt('reward points')}
             helperText={get(errors, 'points.message')}
+            error={Boolean(get(errors, 'points.message'))}
+          />
+          <TextField
+            fullWidth
+            name="image"
+            variant="outlined"
+            autoComplete="off"
+            inputRef={register}
+            className={cx.input}
+            label={tt('reward image non required')}
+            helperText={get(errors, 'image.message')}
+            error={Boolean(get(errors, 'image.message'))}
           />
           <Box textAlign="center">
             <Button

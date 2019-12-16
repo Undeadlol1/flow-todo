@@ -52,7 +52,8 @@ export default {
       atleast3Symbols: 'Atleast 3 symbols',
       textIsTooLong: 'Text is too long',
       minimumValue: 'Minumum value is {{value}}',
-      maxixmumValue: 'Maximum value is {{value}}',
+      maximumValue: 'Maximum value is {{value}}',
+      invalidURL: 'Something is wrong with this URL',
     },
     'seems like anonymous upgrading failed':
       'Seems like upgrding account from anonymous failed. Sorry',
@@ -82,6 +83,7 @@ export default {
     'add a reward': 'Add a reward',
     'reward name': 'Name',
     'reward points': 'Points',
+    'reward image non required': 'Reward image (not required)',
     'you unlocked a reward': 'You unlocked a reward',
     take: 'Take',
     'keep earning': 'Keep earning',

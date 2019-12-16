@@ -10,6 +10,7 @@ import { When } from 'react-if';
 import { useTypedTranslate } from '../../services/index';
 import { Reward } from '../../store/rewardsSlice';
 import { claimReward } from '../../store';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const log = debug('RewardCard');
 const useStyles = makeStyles(theme => ({
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   reward?: Reward;
+  isRaised?: boolean;
   className?: string;
   displayActions?: boolean;
 }
@@ -34,11 +36,21 @@ const RewardCard: React.FC<Props> = ({
   const cx = useStyles();
   log('reward: %O', reward);
   log('displayActions:', displayActions);
+
   if (!reward) return null;
+
+  const hasImage = Boolean(reward.image);
+  const shouldDisplayActions = Boolean(displayActions);
   return (
-    <Card className={clsx(cx.card, props.className)}>
+    <Card
+      raised={props.isRaised}
+      className={clsx(cx.card, props.className)}
+    >
       <CardHeader title={reward.name} subheader={reward.points} />
-      <When condition={Boolean(displayActions)}>
+      <When condition={hasImage}>
+        <CardMedia component="img" src={reward.image} />
+      </When>
+      <When condition={shouldDisplayActions}>
         <CardActions>
           <Button onClick={() => claimReward(reward)}>
             {t('take')}

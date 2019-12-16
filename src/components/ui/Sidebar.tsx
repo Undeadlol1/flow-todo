@@ -72,7 +72,7 @@ const Sidebar: React.FC<{}> = () => {
         <ListItem
           button
           onClick={() => {
-            history.push('rewards');
+            history.push('/rewards');
             dispatch(toggleSidebar());
           }}
         >

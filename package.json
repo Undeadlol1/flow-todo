@@ -69,6 +69,7 @@
     "react-test-renderer": "^16.12.0",
     "react-use": "^13.9.0",
     "react-use-toggle": "^0.1.0",
+    "react-use-web-share": "^1.0.1",
     "redux": "^4.0.4",
     "redux-firestore": "^0.10.0",
     "typescript": "3.6.4",

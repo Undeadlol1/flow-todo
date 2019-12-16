@@ -89,5 +89,7 @@ export default {
     'reset experience': 'Reset experience',
     'are you sure': "Are you sure? This action can't be undone.",
     anonymous: 'Anonymous',
+    share: 'Share',
+    'gamified todo list': 'Gamified TODO list',
   },
 };

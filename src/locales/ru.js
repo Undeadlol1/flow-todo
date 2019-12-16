@@ -90,5 +90,7 @@ export default {
     'reset experience': 'Обнулить опыт',
     'are you sure': 'Вы уверены? Эне может быть отменено.',
     anonymous: 'Аноним',
+    share: 'Поделиться',
+    'gamified todo list': 'Геймифицированный задачник',
   },
 };

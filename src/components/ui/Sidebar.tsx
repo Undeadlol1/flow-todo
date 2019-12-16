@@ -1,17 +1,20 @@
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import ShareIcon from '@material-ui/icons/Share';
 import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import { Unless } from 'react-if';
+import { Unless, When } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { useDispatch } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
+import useWebShare from 'react-use-web-share';
 import {
   handleErrors,
   useTypedTranslate,
@@ -33,6 +36,9 @@ const useStyles = makeStyles({
     color: 'inherit',
     textDecoration: 'none',
   },
+  upperCase: {
+    textTransform: 'uppercase',
+  },
 });
 
 const StyledListText = withStyles({
@@ -47,6 +53,16 @@ const Sidebar: React.FC<{}> = () => {
   const history = useHistory();
   const t = useTypedTranslate();
   const dispatch = useDispatch();
+  const { share, isSupported: isShareSupported } = useWebShare(
+    function onSuccess() {
+      dispatch(toggleSidebar());
+    },
+    // @ts-ignore
+    function onFailure(error) {
+      handleErrors(error);
+    },
+  );
+
   const { isSidebarOpen } = useTypedSelector(s => s.ui);
   const { isAnonymous } = useTypedSelector(s =>
     get(s, 'firebase.auth'),
@@ -61,6 +77,14 @@ const Sidebar: React.FC<{}> = () => {
       getFirebase()
         .logout()
         .catch(handleErrors);
+  }
+
+  function shareMainPage() {
+    share({
+      title: 'Flow TODO',
+      text: 'Геймифицированный задачник',
+      url: get(window, 'location.origin'),
+    });
   }
 
   return (
@@ -83,6 +107,17 @@ const Sidebar: React.FC<{}> = () => {
             <StyledListText primary={t('feedback')} />
           </ListItem>
         </MailTo>
+        <When condition={isShareSupported}>
+          <ListItem button onClick={shareMainPage}>
+            <ListItemIcon>
+              <ShareIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={t('share')}
+              className={cx.upperCase}
+            />
+          </ListItem>
+        </When>
         <Unless condition={isUndefined(isAnonymous)}>
           <ListItem button onClick={logoutOrRedirect}>
             <StyledListText

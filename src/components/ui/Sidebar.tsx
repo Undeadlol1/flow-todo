@@ -11,7 +11,7 @@ import { Unless } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { useDispatch } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   handleErrors,
   useTypedTranslate,
@@ -44,28 +44,38 @@ const StyledListText = withStyles({
 
 const Sidebar: React.FC<{}> = () => {
   const cx = useStyles();
+  const history = useHistory();
   const t = useTypedTranslate();
   const dispatch = useDispatch();
   const { isSidebarOpen } = useTypedSelector(s => s.ui);
-  const isAnonymous = useTypedSelector(s =>
-    get(s, 'firebase.auth.isAnonymous'),
+  const { isAnonymous } = useTypedSelector(s =>
+    get(s, 'firebase.auth'),
   );
-  function logoutIfNeeded() {
-    if (!isAnonymous)
-      getFirebase()
-        .logout()
-        .then(() => console.log('logged user out'))
-        .catch(handleErrors);
-  }
   log('isAnonymous: ', isAnonymous);
   log('isSidebarOpen: ', isSidebarOpen);
+
+  function logoutOrRedirect() {
+    dispatch(toggleSidebar());
+    if (isAnonymous) history.push('/signin');
+    else
+      getFirebase()
+        .logout()
+        .catch(handleErrors);
+  }
+
   return (
     <Drawer
       open={isSidebarOpen}
       onClose={() => dispatch(toggleSidebar())}
     >
       <List className={cx.list}>
-        <ListItem button component={Link} to="/rewards">
+        <ListItem
+          button
+          onClick={() => {
+            history.push('rewards');
+            dispatch(toggleSidebar());
+          }}
+        >
           <StyledListText primary={t('rewards')} />
         </ListItem>
         <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
@@ -74,14 +84,10 @@ const Sidebar: React.FC<{}> = () => {
           </ListItem>
         </MailTo>
         <Unless condition={isUndefined(isAnonymous)}>
-          <ListItem button onClick={logoutIfNeeded}>
-            {isAnonymous ? (
-              <Link to="/signin" className={cx.link}>
-                <StyledListText primary={t('log in')} />
-              </Link>
-            ) : (
-              <StyledListText primary={t('log out')} />
-            )}
+          <ListItem button onClick={logoutOrRedirect}>
+            <StyledListText
+              primary={t(isAnonymous ? 'log in' : 'log out')}
+            />
           </ListItem>
         </Unless>
       </List>

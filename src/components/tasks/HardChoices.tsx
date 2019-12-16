@@ -16,7 +16,6 @@ import Collapsible from './../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
-import TagsForm from './TagsForm';
 import isString from 'lodash/isString';
 import UpsertNote from './UpsertNote/UpsertNote';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
@@ -103,7 +102,7 @@ const HardChoices = (
           </>
         </Collapsible>
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Collapsible title={t('add a tag')}>
           <>
             <Typography {...paragraphProps}>
@@ -118,7 +117,7 @@ const HardChoices = (
             />
           </>
         </Collapsible>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

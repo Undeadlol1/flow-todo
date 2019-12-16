@@ -66,7 +66,14 @@ function App() {
             <MaterialSnackbarProvider
               SnackbarProps={{ autoHideDuration: 4000 }}
             >
-              <NotistackSnackbarProver dense={isMobile}>
+              <NotistackSnackbarProver
+                autoHideDuration={3500}
+                dense={isMobile}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+              >
                 <Router />
               </NotistackSnackbarProver>
             </MaterialSnackbarProvider>

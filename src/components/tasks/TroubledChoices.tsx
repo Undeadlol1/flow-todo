@@ -1,17 +1,17 @@
-import React from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import { useTranslation } from 'react-i18next';
-import addHours from 'date-fns/addHours';
-import Slide from '@material-ui/core/Slide';
-import { Link, useLocation } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
-import {
-  updateTaskParams,
-  deleteTaskArguments,
-} from '../../pages/TaskPage/TaskPageContainer';
+import Button, { ButtonProps } from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Slide from '@material-ui/core/Slide';
+import { makeStyles } from '@material-ui/core/styles';
+import addHours from 'date-fns/addHours';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
+import {
+  deleteTaskArguments,
+  updateTaskParams,
+} from '../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -40,6 +40,9 @@ const TroublesChoices = ({
   };
   function postPone() {
     updateTask({
+      pointsToAdd: 0,
+      snackbarVariant: 'default',
+      snackbarMessage: t('Posponed until tomorrow'),
       values: {
         isCurrent: false,
         dueAt: addHours(new Date(), 12).getTime(),
@@ -48,9 +51,6 @@ const TroublesChoices = ({
         createdAt: Date.now(),
         actionType: 'postpone',
       },
-      snackbarMessage: t('Posponed until tomorrow'),
-      snackbarVariant: 'default',
-      pointsToAdd: 0,
     });
   }
   function destroy() {

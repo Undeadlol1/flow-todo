@@ -55,7 +55,10 @@ const HardChoices = (
   return (
     <Grid item container {...TaskPageGridWidth} justify="center">
       <Grid item xs={12}>
-        <Collapsible title={t('Add subtasks')}>
+        <Collapsible
+          title={t('Add subtasks')}
+          isOpen={get(task, 'subtasks.length')}
+        >
           <>
             <Typography {...paragraphProps}>
               {t('any task can be split')}

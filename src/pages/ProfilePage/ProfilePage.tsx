@@ -1,9 +1,11 @@
-import { ListItem, ListItemText } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import debug from 'debug';
@@ -51,6 +53,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         })
         .catch(handleErrors);
   }
+  const photoUrl = props.user!.photoURL;
   const title =
     props.user!.displayName || props.user!.email || t('anonymous');
   return (
@@ -70,6 +73,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
           <Else>
             <Card>
               <CardHeader title={title} />
+              <CardMedia component="img" src={photoUrl} />
             </Card>
           </Else>
         </If>

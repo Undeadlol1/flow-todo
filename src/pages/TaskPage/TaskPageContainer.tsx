@@ -1,11 +1,10 @@
 import { firestore } from 'firebase/app';
 import get from 'lodash/get';
-import once from 'lodash/once';
+import isUndefined from 'lodash/isUndefined';
 import random from 'lodash/random';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import { OptionsObject, useSnackbar } from 'notistack';
-import React, { memo, useState } from 'react';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
+import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
@@ -68,7 +67,7 @@ export default memo(() => {
   const { requested } = useTypedSelector(
     ({ firestore }) => firestore.status,
   );
-  const currentTask = activeTasks.find(t => t.isCurrent);
+  let currentTask = activeTasks.find(t => t.isCurrent);
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
   );
@@ -76,20 +75,28 @@ export default memo(() => {
     get(s, 'firestore.data.profile.points', 0),
   );
 
-  if (
-    get(requested, 'activeTasks') &&
-    get(currentTask, 'id') !== taskId
-  ) {
-    // TODO: load task data
-    // return;
-  }
+  useEffect(() => {
+    if (
+      !isAppIntroMode &&
+      get(requested, 'activeTasks') &&
+      get(currentTask, 'id') !== taskId
+    ) {
+      firestoreRedux.get({
+        doc: taskId,
+        collection: 'tasks',
+        storeAs: 'currentTask',
+      });
+    }
+  }, [currentTask, requested]);
+
   const taskPointer = firestoreRedux.doc('tasks/' + taskId);
-  let [task, taskLoading, taskError] = useDocumentData(
-    // @ts-ignore
-    !isAppIntroMode || !currentTask ? taskPointer : undefined,
+  let task = useTypedSelector(s =>
+    get(s, 'firestore.ordered.currentTask[0]'),
   );
 
-  if (taskError) once(() => handleErrors(taskError));
+  if (get(currentTask, 'id') === taskId) task = currentTask;
+  // TODO find out how to get errors from redux-firestore
+  // if (taskError) once(() => handleErrors(taskError))();
 
   if (isAppIntroMode) {
     task = {
@@ -207,7 +214,7 @@ export default memo(() => {
       }
     },
     task: task || {},
-    loading: taskLoading || isRequested,
+    loading: isUndefined(task) || isRequested,
     taskId,
     isAppIntroMode,
   };

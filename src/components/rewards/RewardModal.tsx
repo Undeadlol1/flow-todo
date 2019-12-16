@@ -56,7 +56,7 @@ const RewardModal: React.FC<Props> = props => {
         {t('you unlocked a reward')}!
       </DialogTitle>
       <DialogContent>
-        <RewardCard reward={unlockedReward} />
+        <RewardCard reward={unlockedReward} isRaised />
       </DialogContent>
       <DialogActions>
         <Button onClick={takeReward} color="primary">

@@ -48,9 +48,6 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
     color: theme.palette.text.primary,
   },
-  choices: {
-    marginTop: '20px',
-  },
 }));
 
 export const TaskPageGridWidth: GridProps = {
@@ -162,7 +159,7 @@ export default function TaskPage(props: TaskPageProps) {
                 </Grid>
               </When>
               <Zoom in>
-                <Box width="100%" textAlign="center" mt={4}>
+                <Box width="100%" textAlign="center">
                   <Card className="animated pulse infinite">
                     <CardHeader subheader={t('what do you feel')} />
                     <CardContent>

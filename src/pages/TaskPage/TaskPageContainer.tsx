@@ -87,7 +87,8 @@ export default memo(() => {
         storeAs: 'currentTask',
       });
     }
-  }, [currentTask, requested]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTask, requested, isAppIntroMode, taskId]);
 
   const taskPointer = firestoreRedux.doc('tasks/' + taskId);
   let task = useTypedSelector(s =>

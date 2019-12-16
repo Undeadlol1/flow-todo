@@ -52,7 +52,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         .catch(handleErrors);
   }
   const title =
-    props.user!.displayNae || props.user!.email || t('anonymous');
+    props.user!.displayName || props.user!.email || t('anonymous');
   return (
     <Grid
       container

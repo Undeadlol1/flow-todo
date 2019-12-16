@@ -1,4 +1,3 @@
-import { firestore } from 'firebase/app';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import random from 'lodash/random';
@@ -162,7 +161,7 @@ export default memo(() => {
           addPoints(task.userId, pointsToAdd),
         ]);
         if (nextTaskId)
-          await firestore()
+          await firestoreRedux
             .doc('tasks/' + nextTaskId)
             .update({ isCurrent: true });
         // @ts-ignore

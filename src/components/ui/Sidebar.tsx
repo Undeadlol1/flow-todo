@@ -11,7 +11,7 @@ import { Unless } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { useDispatch } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   handleErrors,
   useTypedTranslate,

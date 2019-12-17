@@ -56,7 +56,7 @@ const HardChoices = (
       <Grid item xs={12}>
         <Collapsible
           title={t('Add subtasks')}
-          isOpen={get(task, 'subtasks.length')}
+          isOpen={Boolean(get(task, 'subtasks.length'))}
         >
           <>
             <Typography {...paragraphProps}>

@@ -66,7 +66,12 @@ export const ExpirienceProgressBar: React.FC<{
     return (
       <Tooltip
         arrow
-        title={userPoints + '/' + pointsToReachNextLevel}
+        title={
+          userPoints -
+          pointsToReachPreviousLevel +
+          '/' +
+          (pointsToReachNextLevel - pointsToReachPreviousLevel)
+        }
       >
         <LinearProgress
           color="secondary"

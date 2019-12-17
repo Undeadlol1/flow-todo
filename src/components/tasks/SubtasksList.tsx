@@ -9,17 +9,17 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import arrayMove from 'array-move';
 import isEmpty from 'lodash/isEmpty';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   SortableContainer,
   SortableElement,
   SortableHandle,
 } from 'react-sortable-hoc';
+import { getFirestore } from '../../services/index';
 import { deleteSubtask, Subtask } from '../../store';
-import arrayMove from 'array-move';
-import { firestore } from 'firebase/app';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -89,23 +89,27 @@ const SortableListContainer = SortableContainer(
 
 export default function SubtasksList({ documents, ...props }: Props) {
   const classes = useStyles();
+  const [subtasksStub, setSubtasksStub] = useState<
+    Subtask[] | undefined
+  >();
 
   if (!documents || isEmpty(documents)) return null;
 
+  const firestore = getFirestore();
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
-    firestore()
+    const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
+    firestore
       .collection('tasks')
       .doc(documents[0].parentId)
-      .update({
-        subtasks: arrayMove(documents, oldIndex, newIndex),
-      });
+      .update({ subtasks: updatedSubtasks })
+      .then(() => setSubtasksStub(updatedSubtasks));
   };
 
   return (
     <Paper elevation={6} className={classes.paper}>
       <SortableListContainer
         lockAxis="y"
-        items={documents}
+        items={subtasksStub || documents}
         onSortEnd={onSortEnd}
         useDragHandle={true}
       />

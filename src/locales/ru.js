@@ -90,7 +90,8 @@ export default {
     'keep earning': 'Продолжить копить',
     'reset points': 'Обнулить очки',
     'reset experience': 'Обнулить опыт',
-    'are you sure': 'Вы уверены? Эне может быть отменено.',
+    'are you sure':
+      'Вы уверены? Это действие не может быть отменено.',
     anonymous: 'Аноним',
     share: 'Поделиться',
     'gamified todo list': 'Геймифицированный задачник',

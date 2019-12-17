@@ -16,7 +16,6 @@ import Collapsible from './../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
-import isString from 'lodash/isString';
 import UpsertNote from './UpsertNote/UpsertNote';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
 
@@ -76,9 +75,7 @@ const HardChoices = (
         </Collapsible>
       </Grid>
       <Grid item xs={12}>
-        <Collapsible
-          title={t(taskNote ? 'A note' : 'Add a note')}
-        >
+        <Collapsible title={t(taskNote ? 'A note' : 'Add a note')}>
           <UpsertNote
             taskId={taskId as string}
             defaultValue={taskNote}

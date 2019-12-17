@@ -77,7 +77,6 @@ const HardChoices = (
       </Grid>
       <Grid item xs={12}>
         <Collapsible
-          isOpen={isString(taskNote)}
           title={t(taskNote ? 'A note' : 'Add a note')}
         >
           <UpsertNote

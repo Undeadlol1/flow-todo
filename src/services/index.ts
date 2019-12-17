@@ -23,6 +23,7 @@ import engnlishStrings from '../locales/en';
 import { toggleLevelUpAnimation } from '../store/usersSlice';
 import { Reward } from '../store/rewardsSlice';
 import { sort, findLastIndex } from 'ramda';
+import { getFirebase } from 'react-redux-firebase';
 
 const logger = debug('utils');
 
@@ -260,4 +261,8 @@ export function useTypedTranslate() {
 export function showLevelUpAnimation() {
   store.dispatch(toggleLevelUpAnimation());
   setTimeout(() => store.dispatch(toggleLevelUpAnimation()), 5000);
+}
+
+export function getFirestore() {
+  return getFirebase().firestore();
 }

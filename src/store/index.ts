@@ -11,17 +11,16 @@ import { snackbarReducer } from 'material-ui-snackbar-redux';
 import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer, reduxFirestore } from 'redux-firestore';
 import {
-  firestoreReducer,
-  reduxFirestore,
   getFirestore,
-} from 'redux-firestore';
-import { initializeFirebase, handleErrors } from '../services/index';
+  handleErrors,
+  initializeFirebase,
+} from '../services/index';
+import rewardsSlice, { Reward } from './rewardsSlice';
 import tasksSlice from './tasksSlice';
-import rewardsSlice from './rewardsSlice';
 import uiSlice from './uiSlice';
 import userSlice from './usersSlice';
-import { Reward } from './rewardsSlice';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -87,14 +86,14 @@ export function upsertTask(
   if (isCreate && !values.userId)
     return Promise.reject('You forgot to add userId');
 
-  return firestore()
+  return getFirestore()
     .collection('tasks')
     .doc(taskId || nanoid())
     .set(payload, { merge: true });
 }
 
 export function deleteTask(taskId: string): Promise<void | Error> {
-  return firestore()
+  return getFirestore()
     .doc('tasks/' + taskId)
     .delete();
 }
@@ -105,7 +104,7 @@ export function createSubtask(
     name: string;
   },
 ): Promise<void | Error> {
-  return firestore()
+  return getFirestore()
     .doc('tasks/' + taskId)
     .update({
       subtasks: FieldValue.arrayUnion({
@@ -126,11 +125,11 @@ export async function updateSubtask(
     isDone: boolean;
   },
 ): Promise<void | Error> {
-  const docRef = firestore().doc('tasks/' + subtask.parentId);
+  const docRef = getFirestore().doc('tasks/' + subtask.parentId);
   const task: any = await docRef.get();
-  const newSubtasks: any[] = task
-    .data()
-    .subtasks.map((i: Subtask) => {
+  console.log('task: ', task);
+  const newSubtasks: any[] = task.subtasks // .data()
+    .map((i: Subtask) => {
       return i.id === subtask.id ? Object.assign({}, i, values) : i;
     });
   return docRef.update({
@@ -144,7 +143,7 @@ export function deleteSubtask(
     id: string;
   },
 ): Promise<void | Error> {
-  return firestore()
+  return getFirestore()
     .doc('tasks/' + taskId)
     .update({
       subtasks: FieldValue.arrayRemove(subtask),
@@ -152,11 +151,9 @@ export function deleteSubtask(
 }
 
 export function changeTags(taskId: string, tags: string[]) {
-  return firestore()
+  return getFirestore()
     .doc('tasks/' + taskId)
-    .update({
-      tags,
-    })
+    .update({ tags })
     .catch(handleErrors);
 }
 
@@ -166,7 +163,7 @@ export function upsertProfile(values: {
   userId: string;
   points: number;
 }): Promise<void> {
-  return firestore()
+  return getFirestore()
     .doc('profiles/' + values.userId)
     .set(values, { merge: true });
 }
@@ -177,7 +174,7 @@ export function addPoints(
 ): Promise<void> {
   log('addPoints.userId', userId);
   log('addPoints.points', points);
-  return firestore()
+  return getFirestore()
     .doc('profiles/' + userId)
     .set(
       {
@@ -190,7 +187,7 @@ export function addPoints(
 }
 
 export function claimReward(reward: Reward) {
-  const fs = getFirestore(firebase);
+  const fs = getFirestore();
   return Promise.all([
     fs.doc('profiles/' + reward.userId).update({
       points: firestore.FieldValue.increment(reward.points * -1),

@@ -41,6 +41,7 @@ export type Subtask = {
 
 export type TaskHistory = {
   createdAt: number;
+  comment?: string;
   actionType:
     | 'postpone'
     | 'updateName'

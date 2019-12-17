@@ -93,5 +93,8 @@ export default {
     anonymous: 'Anonymous',
     share: 'Share',
     'gamified todo list': 'Gamified TODO list',
+    'provide reason': 'Please, provide a reason:',
+    'dont do things you dont want':
+      "Never do things you don't want. We will find a solution later",
   },
 };

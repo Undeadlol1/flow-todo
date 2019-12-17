@@ -5,9 +5,9 @@ import Slide from '@material-ui/core/Slide';
 import { makeStyles } from '@material-ui/core/styles';
 import addHours from 'date-fns/addHours';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
+import { useTypedTranslate } from '../../services/index';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -30,7 +30,7 @@ const TroublesChoices = ({
   updateTask: (options: updateTaskParams) => Promise<void>;
 }) => {
   const classes = useStyles();
-  const [t] = useTranslation();
+  const t = useTypedTranslate();
   const { pathname } = useLocation();
   const commonButtonProps: ButtonProps = {
     fullWidth: true,
@@ -38,11 +38,13 @@ const TroublesChoices = ({
     variant: 'contained',
     className: classes.button,
   };
-  function postPone() {
+  function postPone(reason?: string) {
     updateTask({
       pointsToAdd: 0,
       snackbarVariant: 'default',
-      snackbarMessage: t('Posponed until tomorrow'),
+      snackbarMessage: reason
+        ? t('dont do things you dont want')
+        : t('Posponed until tomorrow'),
       values: {
         isCurrent: false,
         dueAt: addHours(new Date(), 12).getTime(),
@@ -50,8 +52,13 @@ const TroublesChoices = ({
       history: {
         createdAt: Date.now(),
         actionType: 'postpone',
+        comment: reason,
       },
     });
+  }
+  function dontWantTo() {
+    const reason = prompt(t('provide reason'));
+    if (reason) postPone(reason);
   }
   function destroy() {
     const pointsToAdd = 10;
@@ -91,14 +98,13 @@ const TroublesChoices = ({
               {t('notImportant')}
             </Button>
           </Grid>
-          {/* NOTE: WIP */}
-          {/* <Grid item xs={12}>
-            <Button {...commonButtonProps} disabled>
+          <Grid item xs={12}>
+            <Button {...commonButtonProps} onClick={dontWantTo}>
               {t('dont want to')}
             </Button>
-          </Grid> */}
+          </Grid>
           <Grid item xs={12}>
-            <Button {...commonButtonProps} onClick={postPone}>
+            <Button {...commonButtonProps} onClick={() => postPone()}>
               {t('cant right now')}
             </Button>
           </Grid>

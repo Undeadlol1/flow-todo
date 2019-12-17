@@ -95,5 +95,8 @@ export default {
     anonymous: 'Аноним',
     share: 'Поделиться',
     'gamified todo list': 'Геймифицированный задачник',
+    'provide reason': 'Пожалуйста, укажите причину:',
+    'dont do things you dont want':
+      'Не делай вещи, которые не хочешь. Мы найдем решение проблемы позже',
   },
 };

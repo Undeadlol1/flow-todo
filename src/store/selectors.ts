@@ -1,5 +1,6 @@
 import { User } from 'firebase';
 import get from 'lodash/fp/get';
+import getOr from 'lodash/fp/getOr';
 import { createSelector } from 'reselect';
 import { Profile, Task } from './index';
 import { Reward } from './rewardsSlice';
@@ -22,6 +23,11 @@ export const rewardsSelector = createSelector(
 export const profileSelector = createSelector(
   get('firebase.profile'),
   profile => profile as Profile,
+);
+
+export const profilePointsSelector = createSelector(
+  profileSelector,
+  getOr(0, 'points'),
 );
 
 export const authSelector = createSelector(

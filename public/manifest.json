@@ -1,6 +1,19 @@
 {
   "short_name": "TODO",
   "name": "Flow TODO",
+  "start_url": ".",
+  "display": "standalone",
+  "share_target": {
+    "action": "/share-target/",
+    "method": "GET",
+    "params": {
+      "url": "url",
+      "text": "text",
+      "title": "title"
+    }
+  },
+  "theme_color": "#81D4FA",
+  "background_color": "#fafafa",
   "icons": [
     {
       "src": "favicon.ico",
@@ -47,9 +60,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#81D4FA",
-  "background_color": "#fafafa"
+  ]
 }

@@ -24,6 +24,7 @@ import { useTypedSelector } from '../../../store';
 import {
   authSelector,
   profileSelector,
+  usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
@@ -64,7 +65,9 @@ export const LoginOrLogoutButton = memo(() => {
 
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
-  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
+  const { isLevelUpAnimationActive } = useTypedSelector(
+    usersSelector,
+  );
   const points = get(profile, 'points', 0);
   const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);

@@ -3,21 +3,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography, {
   TypographyProps,
 } from '@material-ui/core/Typography';
-import { UserInfo } from 'firebase';
 import get from 'lodash/get';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { TaskPageGridWidth } from '../../pages/TaskPage';
 import {
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { addPoints, Task } from '../../store/index';
+import { addPoints, Task, useTypedSelector } from '../../store/index';
+import { authSelector } from '../../store/selectors';
 import Collapsible from './../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
-import { TaskPageGridWidth } from '../../pages/TaskPage';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -40,7 +39,7 @@ const HardChoices = (
   const classes = useStyles();
   const { task, taskId } = props;
   const taskNote = get(task, 'note');
-  const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
+  const auth = useTypedSelector(authSelector);
   const addPointsOnSuccess = (points = 10) => {
     addPoints(auth.uid, points);
     showSnackbar(

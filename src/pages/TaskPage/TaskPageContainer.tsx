@@ -25,6 +25,7 @@ import {
   currentTaskSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
+import { activeTaskSelector } from '../../store/selectors';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -57,7 +58,7 @@ export default memo(() => {
   const { requested } = useTypedSelector(
     ({ firestore }) => firestore.status,
   );
-  let currentTask = activeTasks.find(t => t.isCurrent);
+  let currentTask = useTypedSelector(activeTaskSelector);
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
   );
@@ -68,11 +69,15 @@ export default memo(() => {
       get(requested, 'activeTasks') &&
       get(currentTask, 'id') !== taskId
     ) {
-      firestoreRedux.get({
-        doc: taskId,
-        collection: 'tasks',
-        storeAs: 'currentTask',
-      });
+      setRequested(true);
+      firestoreRedux
+        .get({
+          doc: taskId,
+          collection: 'tasks',
+          storeAs: 'currentTask',
+        })
+        .then(() => setRequested(false))
+        .catch(handleErrors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTask, requested, isAppIntroMode, taskId]);
@@ -106,7 +111,6 @@ export default memo(() => {
             action: t('undo'),
             async handleAction() {
               await Promise.all([
-                // @ts-ignore
                 taskPointer.set(task),
                 addPointsWithSideEffects(
                   task.userId,
@@ -186,7 +190,7 @@ export default memo(() => {
       }
     },
     task: task || {},
-    loading: isUndefined(task) || isRequested,
+    loading: isUndefined(currentTask) || isRequested,
     taskId,
     isAppIntroMode,
   };

@@ -1,6 +1,7 @@
-import { User } from 'firebase';
+import { UserInfo } from 'firebase/app';
 import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
+import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
 import { Profile, Task } from './index';
 import { Reward } from './rewardsSlice';
@@ -32,5 +33,5 @@ export const profilePointsSelector = createSelector(
 
 export const authSelector = createSelector(
   get('firebase.auth'),
-  profile => profile as User,
+  auth => auth as UserInfo & FirebaseReducer.AuthState,
 );

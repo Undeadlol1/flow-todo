@@ -5,6 +5,7 @@ import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
 import { Profile, Task } from './index';
 import { Reward } from './rewardsSlice';
+import { UiState } from './uiSlice';
 
 export const activeTasksSelector = createSelector(
   get('firestore.ordered.activeTasks'),
@@ -34,4 +35,9 @@ export const profilePointsSelector = createSelector(
 export const authSelector = createSelector(
   get('firebase.auth'),
   auth => auth as UserInfo & FirebaseReducer.AuthState,
+);
+
+export const uiSelector = createSelector(
+  get('ui'),
+  ui => ui as UiState,
 );

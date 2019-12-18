@@ -41,8 +41,7 @@ const HardChoices = (
   const { task, taskId } = props;
   const taskNote = get(task, 'note');
   const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
-  const addPointsOnSuccess = () => {
-    const points = 10;
+  const addPointsOnSuccess = (points = 10) => {
     addPoints(auth.uid, points);
     showSnackbar(
       t('youAreCloserToYourGoal', {
@@ -66,9 +65,9 @@ const HardChoices = (
               {t('simplest thing to do?')}
             </Typography>
             <CreateSubtask
-              callback={addPointsOnSuccess}
               className={classes.form}
               taskId={props.taskId as string}
+              callback={() => addPointsOnSuccess(5)}
             />
             <SubtasksList documents={props.task!.subtasks} />
           </>

@@ -15,15 +15,22 @@ import RewardsPage from './pages/RewardsPage';
 import SignInPage from './pages/SignInPage';
 import TaskPage from './pages/TaskPage';
 import { useTypedSelector } from './store/index';
-import { authSelector, uiSelector } from './store/selectors';
+import {
+  authSelector,
+  uiSelector,
+  authErrorSelector,
+} from './store/selectors';
 import { handleErrors } from './services/index';
 
 const today = Date.now();
 
 export default memo(function Router() {
   const user = useTypedSelector(authSelector);
-  const userId = get(user, 'uid', '');
+  const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
+  const userId = get(user, 'uid', '');
+
+  handleErrors(authError);
 
   if (user.isLoaded && user.isEmpty) {
     auth()

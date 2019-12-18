@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import { Profile, Task } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
+import { AuthError } from '@firebase/auth-types';
 
 export const activeTasksSelector = createSelector(
   get('firestore.ordered.activeTasks'),
@@ -40,6 +41,11 @@ export const profilePointsSelector = createSelector(
 export const authSelector = createSelector(
   get('firebase.auth'),
   auth => auth as UserInfo & FirebaseReducer.AuthState,
+);
+
+export const authErrorSelector = createSelector(
+  get('firebase.authError'),
+  error => error as AuthError,
 );
 
 export const uiSelector = createSelector(

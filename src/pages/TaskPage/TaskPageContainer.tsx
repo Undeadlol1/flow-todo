@@ -25,9 +25,14 @@ import {
   TaskHistory,
   useTypedSelector,
 } from '../../store/index';
-import { Reward } from '../../store/rewardsSlice';
+import {
+  activeTasksSelector,
+  profileSelector,
+  rewardsSelector,
+} from '../../store/selectors';
 import { toggleRewardModal } from '../../store/uiSlice';
 import TaskPage from './TaskPage';
+import { currentTaskSelector } from '../../store/selectors';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -56,13 +61,8 @@ export default memo(() => {
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
-  const rewards = useTypedSelector(
-    s => s.firestore.ordered.rewards as Reward[],
-  );
-  const activeTasks =
-    useTypedSelector<Task[]>(
-      ({ firestore }) => firestore.ordered.activeTasks,
-    ) || [];
+  const rewards = useTypedSelector(rewardsSelector);
+  const activeTasks = useTypedSelector(activeTasksSelector) || [];
   const { requested } = useTypedSelector(
     ({ firestore }) => firestore.status,
   );
@@ -70,9 +70,7 @@ export default memo(() => {
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
   );
-  const userPoints = useTypedSelector(s =>
-    get(s, 'firestore.data.profile.points', 0),
-  );
+  const userPoints = useTypedSelector(profileSelector).points || 0;
 
   useEffect(() => {
     if (
@@ -90,10 +88,9 @@ export default memo(() => {
   }, [currentTask, requested, isAppIntroMode, taskId]);
 
   const taskPointer = firestoreRedux.doc('tasks/' + taskId);
-  let task = useTypedSelector(s =>
-    get(s, 'firestore.ordered.currentTask[0]'),
-  );
+  let task = useTypedSelector(currentTaskSelector);
 
+  // @ts-ignore
   if (get(currentTask, 'id') === taskId) task = currentTask;
   // TODO find out how to get errors from redux-firestore
   // if (taskError) once(() => handleErrors(taskError))();
@@ -101,7 +98,7 @@ export default memo(() => {
   if (isAppIntroMode) {
     task = {
       name: t('exampleTask'),
-    };
+    } as Task;
   }
 
   const mergedProps = {

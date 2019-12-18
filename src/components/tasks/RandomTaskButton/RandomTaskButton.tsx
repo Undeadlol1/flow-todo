@@ -16,6 +16,8 @@ import { Else, If, Then } from 'react-if';
 import { Link } from 'react-router-dom';
 import { useFirestore } from 'react-redux-firebase';
 import { Task, useTypedSelector } from '../../../store/index';
+import { useSelector } from 'react-redux';
+import { activeTasksSelector } from '../../../store/selectors';
 
 const useStyles = makeStyles({
   paper: {
@@ -102,18 +104,16 @@ interface ContainerProps {
 export default memo(function RandomTaskButtonContainer(
   props: ContainerProps,
 ) {
-  const tasks = useTypedSelector(
-    s => s.firestore.ordered.activeTasks,
-  );
+  const tasks = useSelector(activeTasksSelector);
   const { isAppTourActive } = useTypedSelector(s => s.ui);
 
   return (
     <RandomTaskButton
       {...{
         ...props,
+        isAppTourActive,
         tasks: tasks,
         loading: isUndefined(tasks),
-        isAppTourActive,
       }}
     />
   );

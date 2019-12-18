@@ -1,56 +1,40 @@
-import React, { useEffect, memo } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-import { firestore, auth, UserInfo } from 'firebase/app';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import NavBar from './components/ui/NavBar/NavBar';
-import SignInPage from './pages/SignInPage';
-import HomePage from './pages/HomePage/HomePage';
-import TaskPage from './pages/TaskPage';
-import { TasksContext } from './store/contexts';
-import { useDispatch } from 'react-redux';
-import { getTasksSuccess } from './store/tasksSlice';
-import { normalizeQueryResponse } from './services/index';
-import subtractHours from 'date-fns/subHours';
-import { login, logout } from './store/usersSlice';
-import { useTypedSelector } from './store/index';
+import { auth } from 'firebase/app';
+import get from 'lodash/get';
+import React, { memo } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
-import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
-import Sidebar from './components/ui/Sidebar';
-import RewardsPage from './pages/RewardsPage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RewardModal from './components/rewards/RewardModal';
+import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
+import NavBar from './components/ui/NavBar/NavBar';
+import Sidebar from './components/ui/Sidebar';
+import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
+import HomePage from './pages/HomePage/HomePage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
+import RewardsPage from './pages/RewardsPage';
+import SignInPage from './pages/SignInPage';
+import TaskPage from './pages/TaskPage';
+import { useTypedSelector } from './store/index';
+import { authSelector, uiSelector } from './store/selectors';
+import { handleErrors } from './services/index';
 
 const today = Date.now();
-const lastSixteenHours = subtractHours(new Date(), 16).getTime();
 
 export default memo(function Router() {
-  const dispatch = useDispatch();
-  const db = firestore().collection('tasks');
-  // @ts-ignore
-  const userAuth = useTypedSelector(state => state.firebase.auth);
-  const { isRewardModalOpen } = useTypedSelector(s => s.ui);
+  const user = useTypedSelector(authSelector);
+  const userId = get(user, 'uid', '');
+  const { isRewardModalOpen } = useTypedSelector(uiSelector);
 
-  const [user, userLoading, userError] = useAuthState(auth());
-  const userId = useTypedSelector(state => state.users.current.uid);
-
-  if (userAuth.isEmpty && userAuth.isLoaded) {
+  if (user.isLoaded && user.isEmpty) {
     auth()
       .signInAnonymously()
-      .then(() => {
-        console.info('anonymous login was successful');
-      })
-      .catch(function(error) {
-        console.error('anonymous signin error: ', error);
-      });
+      .catch(handleErrors);
   }
 
   useFirestoreConnect([
     {
+      doc: userId,
       collection: 'profiles',
-      doc: userAuth!.uid,
       storeAs: 'profile',
     },
     {
@@ -64,15 +48,6 @@ export default memo(function Router() {
     },
     {
       collection: 'tasks',
-      where: [
-        ['userId', '==', userId],
-        ['isDone', '==', true],
-        ['doneAt', '>', lastSixteenHours],
-      ],
-      storeAs: 'tasksDoneToday',
-    },
-    {
-      collection: 'tasks',
       where: [['userId', '==', userId]],
       storeAs: 'createdAtleastOneTask',
       limit: 1,
@@ -81,65 +56,9 @@ export default memo(function Router() {
       collection: 'rewards',
       where: [['userId', '==', userId]],
       orderBy: ['points', 'asc'],
-      // where: [['userId', '==', userId], ['isDone', '==', false]],
     },
   ]);
 
-  useEffect(() => {
-    if (!userLoading) {
-      if (user) dispatch(login(user.toJSON() as UserInfo));
-      else dispatch(logout(user));
-    }
-  }, [userLoading, user, dispatch]);
-
-  useEffect(() => {
-    const unsubscribe = db
-      .where('userId', '==', userId)
-      .where('isDone', '==', false)
-      .where('dueAt', '<', today)
-      .onSnapshot(
-        tasksSnapshot => {
-          dispatch(
-            getTasksSuccess(
-              // @ts-ignore
-              normalizeQueryResponse(tasksSnapshot),
-            ),
-          );
-        },
-        error => {
-          console.error('tasks snapshot returned error', error);
-        },
-      );
-    return () => unsubscribe();
-  }, [userId, db, dispatch]);
-
-  const [tasks, tasksLoading, tasksError] = useCollection(
-    user &&
-      db
-        .where('userId', '==', user.uid)
-        .where('isDone', '==', false)
-        .where('dueAt', '<', today),
-  );
-
-  const [
-    tasksDoneToday,
-    tasksDoneTodayLoading,
-    tasksDoneTodayError,
-  ] = useCollection(
-    user &&
-      db
-        .where('userId', '==', user && user.uid)
-        .where('isDone', '==', true)
-        .where('doneAt', '>', lastSixteenHours),
-  );
-
-  const providerValue = {
-    currentTask: {},
-    tasks: tasks || ({} as firestore.QuerySnapshot),
-    error: tasksError || userError || tasksDoneTodayError,
-    loading: tasksLoading || userLoading || tasksDoneTodayLoading,
-    tasksDoneToday: tasksDoneToday || ({} as firestore.QuerySnapshot),
-  };
   return (
     <BrowserRouter>
       <DevelopmentOnlyMenu />
@@ -150,9 +69,7 @@ export default memo(function Router() {
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">
-            <TasksContext.Provider value={providerValue}>
-              <TaskPage />
-            </TasksContext.Provider>
+            <TaskPage />
           </Route>
           <Route path="/rewards">
             <RewardsPage />
@@ -164,9 +81,7 @@ export default memo(function Router() {
             <ProfilePageContainer />
           </Route>
           <Route path="/">
-            <TasksContext.Provider value={providerValue}>
-              <HomePage />
-            </TasksContext.Provider>
+            <HomePage />
           </Route>
         </Switch>
       </Container>

@@ -188,13 +188,15 @@ export function addPoints(
 }
 
 export function claimReward(reward: Reward) {
-  const fs = getFirestore();
-  return Promise.all([
+  try {
+    const fs = getFirestore();
+    if (!reward.isReccuring) fs.doc('rewards/' + reward.id).delete();
     fs.doc('profiles/' + reward.userId).update({
       points: firestore.FieldValue.increment(reward.points * -1),
-    }),
-    fs.doc('rewards/' + reward.id).delete(),
-  ]).catch(handleErrors);
+    });
+  } catch (error) {
+    handleErrors(error);
+  }
 }
 
 const rootReducer = combineReducers({

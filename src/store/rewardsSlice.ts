@@ -6,6 +6,7 @@ export type Reward = {
   name: string;
   points: number;
   image?: string;
+  isReccuring?: boolean;
 };
 
 interface RewardsState {

@@ -84,6 +84,7 @@ export default {
     'reward name': 'Name',
     'reward points': 'Points',
     'reward image non required': 'Reward image (not required)',
+    'reward is recurring': 'Reward is reccuring',
     'you unlocked a reward': 'You unlocked a reward',
     take: 'Take',
     'keep earning': 'Keep earning',

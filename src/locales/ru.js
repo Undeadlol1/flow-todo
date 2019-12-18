@@ -85,6 +85,7 @@ export default {
     'reward name': 'Название',
     'reward points': 'Oчки',
     'reward image non required': 'Картинка награды (не обязательно)',
+    'reward is recurring': 'Награда повторяющаяся',
     'you unlocked a reward': 'Вы открыли награду',
     take: 'Забрать',
     'keep earning': 'Продолжить копить',

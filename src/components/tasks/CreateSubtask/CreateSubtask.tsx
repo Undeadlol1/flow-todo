@@ -1,13 +1,14 @@
-import React, { memo } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import clsx from 'clsx';
+import get from 'lodash/get';
+import invoke from 'lodash/invoke';
+import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import useToggle from 'react-use/esm/useToggle';
 import * as Yup from 'yup';
-import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import { createSubtask } from '../../../store/index';
-import invoke from 'lodash/invoke';
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -22,6 +23,7 @@ interface Props {
 const CreateSubtask = (props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
+  const [isLocked, toggleLock] = useToggle(false);
   const { register, handleSubmit, errors, reset, setError } = useForm(
     {
       validationSchema: Yup.object({
@@ -33,10 +35,13 @@ const CreateSubtask = (props: Props) => {
     },
   );
   const error = get(errors, 'name.message');
+
   function onSubmit(values: any) {
+    toggleLock();
     return createSubtask(props.taskId, values)
       .then(() => {
         reset({});
+        toggleLock();
         invoke(props, 'callback');
       })
       .catch(e => setError('name', 'mismatch', get(e, 'message', e)));
@@ -53,6 +58,7 @@ const CreateSubtask = (props: Props) => {
         variant="outlined"
         autoComplete="off"
         inputRef={register}
+        disabled={isLocked}
         error={Boolean(error)}
         label={t('Add subtasks')}
         helperText={get(errors, 'name.message')}

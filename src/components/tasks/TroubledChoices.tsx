@@ -38,7 +38,7 @@ const TroublesChoices = ({
     variant: 'contained',
     className: classes.button,
   };
-  function postPone(reason?: string) {
+  function postPone(reason = '') {
     updateTask({
       pointsToAdd: 0,
       snackbarVariant: 'default',

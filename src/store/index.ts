@@ -11,7 +11,11 @@ import { snackbarReducer } from 'material-ui-snackbar-redux';
 import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
-import { firestoreReducer, reduxFirestore } from 'redux-firestore';
+import {
+  firestoreReducer,
+  getFirestore as getFirestore2,
+  reduxFirestore,
+} from 'redux-firestore';
 import {
   getFirestore,
   getNewlyUnlockedReward,
@@ -60,7 +64,7 @@ export type TaskHistory = {
 };
 
 export type Task = {
-  id?: string;
+  id: string;
   name: string;
   dueAt: number;
   doneAt?: number;
@@ -68,6 +72,7 @@ export type Task = {
   note?: string;
   isDone: boolean;
   isCurrent?: boolean;
+  isPinned?: boolean;
   repetitionLevel?: number;
   subtasks?: Subtask[];
   history?: TaskHistory[];
@@ -106,24 +111,33 @@ export function deleteTask(taskId: string): Promise<void | Error> {
     .doc('tasks/' + taskId)
     .delete();
 }
-
+// NOTE: WIP
 export function createSubtask(
   taskId: string,
   values: {
     name: string;
   },
 ): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .update({
-      subtasks: FieldValue.arrayUnion({
-        id: nanoid(),
-        isDone: false,
-        parentId: taskId,
-        createdAt: Date.now(),
-        name: values.name.trim(),
-      }),
-    });
+  console.log('taskId: ', taskId);
+  return (
+    getFirestore2(firebase)
+      // return getFirestore()
+      .update(
+        { collection: 'tasks', doc: taskId },
+        {
+          // TODO: this might be the reason of "id" dissapearing from Task
+          // TODO: Use firestore from from redux-firestore
+          subtasks: FieldValue.arrayUnion({
+            // TODO: this might be the reason of "id" dissapearing from Task
+            id: nanoid(),
+            isDone: false,
+            parentId: taskId,
+            createdAt: Date.now(),
+            name: values.name.trim(),
+          }),
+        },
+      )
+  );
 }
 
 export async function updateSubtask(

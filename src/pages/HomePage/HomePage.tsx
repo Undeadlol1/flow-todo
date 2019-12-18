@@ -9,6 +9,7 @@ import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskBut
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { Task, useTypedSelector } from '../../store/index';
+import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -63,6 +64,9 @@ export const HomePage = memo(function HomePage(props: Props) {
       alignContent="center"
       className={classes.pageContainer}
     >
+      <Grid item xs={12} sm={8} md={8} lg={6}>
+        <PinnedTask />
+      </Grid>
       <Grid
         item
         xs={12}

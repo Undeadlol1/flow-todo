@@ -1,12 +1,13 @@
+import { AuthError } from '@firebase/auth-types';
 import { UserInfo } from 'firebase/app';
 import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
+import find from 'ramda/es/find';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
 import { Profile, Task } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
-import { AuthError } from '@firebase/auth-types';
 
 export const activeTasksSelector = createSelector(
   get('firestore.ordered.activeTasks'),
@@ -16,6 +17,11 @@ export const activeTasksSelector = createSelector(
 export const activeTaskSelector = createSelector(
   get('firestore.ordered.activeTasks'),
   (tasks: Task[] = []) => tasks.find(i => !!i.isCurrent),
+);
+
+export const pinnedTaskSelector = createSelector(
+  getOr([], 'firestore.ordered.activeTasks'),
+  find((i: Task) => !!i.isPinned),
 );
 
 export const currentTaskSelector = createSelector(

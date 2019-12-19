@@ -61,6 +61,7 @@ const UpsertNote = props => {
       className={classes.container}
       onSubmit={handleSubmit(createNote)}
     >
+      {props.children}
       <TextField
         multiline
         fullWidth
@@ -90,6 +91,7 @@ const UpsertNote = props => {
 };
 
 UpsertNote.propTypes = {
+  children: PropTypes.element,
   error: PropTypes.string,
   defaultValue: PropTypes.string,
   taskId: PropTypes.string.isRequired,

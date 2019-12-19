@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { useFirestore } from 'react-redux-firebase';
 import { Task, useTypedSelector } from '../../../store/index';
 import { useSelector } from 'react-redux';
+import { activeTaskSelector } from '../../../store/selectors';
 import {
   activeTasksSelector,
   uiSelector,
@@ -50,7 +51,7 @@ export const RandomTaskButton = ({
 
   const docs = tasks || [];
   const firestore = useFirestore();
-  const activeTaskId = get(docs.find(i => i.isCurrent), 'id');
+  const activeTaskId = get(useSelector(activeTaskSelector), 'id');
   // TODO make this a service (TaskPageContainer has similar funcitonality)
   // TODO exclude activeTaskId from from next line
   const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);

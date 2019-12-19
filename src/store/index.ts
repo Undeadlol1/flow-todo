@@ -60,7 +60,7 @@ export type TaskHistory = {
 };
 
 export type Task = {
-  id?: string;
+  id: string;
   name: string;
   dueAt: number;
   doneAt?: number;

@@ -10,12 +10,12 @@ import { AuthError } from '@firebase/auth-types';
 import { UsersState } from './usersSlice';
 
 export const activeTasksSelector = createSelector(
-  get('firestore.ordered.activeTasks'),
+  get('firestore.ordered.tasks'),
   activeTasks => activeTasks as Task[],
 );
 
 export const activeTaskSelector = createSelector(
-  get('firestore.ordered.activeTasks'),
+  activeTasksSelector,
   (tasks: Task[] = []) => tasks.find(i => !!i.isCurrent),
 );
 

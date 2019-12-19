@@ -40,10 +40,19 @@ export default memo(function Router() {
 
   useFirestoreConnect([
     {
+      collection: 'tasks',
+      where: [
+        ['userId', '==', userId],
+        ['isDone', '==', false],
+        ['dueAt', '<', today],
+      ],
+    },
+    {
       doc: userId,
       collection: 'profiles',
       storeAs: 'profile',
     },
+    // TODO: make sure this is never used and remove it
     {
       collection: 'tasks',
       where: [

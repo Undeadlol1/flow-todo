@@ -1,27 +1,28 @@
-import React, { useEffect, memo } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-import { firestore, auth, UserInfo } from 'firebase/app';
+import subtractHours from 'date-fns/subHours';
+import { auth, firestore, UserInfo } from 'firebase/app';
+import React, { memo, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import NavBar from './components/ui/NavBar/NavBar';
-import SignInPage from './pages/SignInPage';
-import HomePage from './pages/HomePage/HomePage';
-import TaskPage from './pages/TaskPage';
-import { TasksContext } from './store/contexts';
 import { useDispatch } from 'react-redux';
-import { getTasksSuccess } from './store/tasksSlice';
-import { normalizeQueryResponse } from './services/index';
-import subtractHours from 'date-fns/subHours';
-import { login, logout } from './store/usersSlice';
-import { useTypedSelector } from './store/index';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
-import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
-import Sidebar from './components/ui/Sidebar';
-import RewardsPage from './pages/RewardsPage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RewardModal from './components/rewards/RewardModal';
+import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
+import NavBar from './components/ui/NavBar/NavBar';
+import Sidebar from './components/ui/Sidebar';
+import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
+import HomePage from './pages/HomePage/HomePage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
+import RewardsPage from './pages/RewardsPage';
+import SignInPage from './pages/SignInPage';
+import TaskPage from './pages/TaskPage';
+import { normalizeQueryResponse } from './services/index';
+import { TasksContext } from './store/contexts';
+import { useTypedSelector } from './store/index';
+import { getTasksSuccess } from './store/tasksSlice';
+import { login, logout } from './store/usersSlice';
+import WebShareTargetPage from './pages/WebShareTargetPage';
 
 const today = Date.now();
 const lastSixteenHours = subtractHours(new Date(), 16).getTime();
@@ -162,6 +163,9 @@ export default memo(function Router() {
           </Route>
           <Route path="/profile">
             <ProfilePageContainer />
+          </Route>
+          <Route path="/web-share-target">
+            <WebShareTargetPage />
           </Route>
           <Route path="/">
             <TasksContext.Provider value={providerValue}>

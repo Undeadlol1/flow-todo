@@ -96,13 +96,14 @@ export const LoginOrLogoutButton = memo(() => {
           )}
         >
           <Box mr={0.5}>
-            <UserPoints value={points} />
+            {profile.isLoaded && <UserPoints value={points} />}
           </Box>
           <Badge
             overlap="circle"
             color="secondary"
             // NOTE: "+1" is a quick fix
             badgeContent={
+              profile.isLoaded &&
               Math.trunc(calculateUserLevel(experience)) + 1
             }
           >

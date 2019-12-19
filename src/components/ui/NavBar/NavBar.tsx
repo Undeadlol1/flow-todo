@@ -1,6 +1,7 @@
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
@@ -13,21 +14,20 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import debug from 'debug';
-import { auth } from 'firebase/app';
 import get from 'lodash/get';
 import React, { memo } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { calculateUserLevel } from '../../../services/index';
+import { useTypedSelector } from '../../../store';
 import {
-  calculateUserLevel,
-  handleErrors,
-} from '../../../services/index';
-import { Profile, useTypedSelector } from '../../../store';
+  authSelector,
+  profileSelector,
+  usersSelector,
+} from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
-import Box from '@material-ui/core/Box';
 
 const log = debug('NavBar');
 
@@ -63,22 +63,19 @@ const useStyles = makeStyles(theme => ({
 export const LoginOrLogoutButton = memo(() => {
   const classes = useStyles();
 
-  const [, userLoading, userError] = useAuthState(auth());
-  // @ts-ignore
-  const user = useTypedSelector(state => state.firebase.auth);
-  const profile = useTypedSelector(
-    s => s.firestore.data.profile as Profile,
+  const user = useTypedSelector(authSelector);
+  const profile = useTypedSelector(profileSelector);
+  const { isLevelUpAnimationActive } = useTypedSelector(
+    usersSelector,
   );
-  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
-
   const points = get(profile, 'points', 0);
-  log('profile: ', profile);
   const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);
+  log('profile: ', profile);
+  // TODO: find out how to handle auth errors in redux-firebase
+  // handleErrors(userError);
 
-  handleErrors(userError);
-
-  if (userLoading) {
+  if (!user.isLoaded) {
     return (
       <CircularProgress
         color="secondary"
@@ -112,7 +109,7 @@ export const LoginOrLogoutButton = memo(() => {
             <If condition={hasPhoto}>
               <Then>
                 <Avatar
-                  src={user.photoURL}
+                  src={user.photoURL as string}
                   className={clsx(classes.avatar)}
                 />
               </Then>

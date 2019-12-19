@@ -85,6 +85,7 @@ export default {
     'reward name': 'Название',
     'reward points': 'Oчки',
     'reward image non required': 'Картинка награды (не обязательно)',
+    'reward is recurring': 'Награда повторяющаяся',
     'you unlocked a reward': 'Вы открыли награду',
     take: 'Забрать',
     'keep earning': 'Продолжить копить',
@@ -98,5 +99,7 @@ export default {
     'provide reason': 'Пожалуйста, укажите причину:',
     'dont do things you dont want':
       'Не делай вещи, которые не хочешь. Мы найдем решение проблемы позже',
+    'sometimes you need to gather your thouthgs':
+      'Иногда чтобы продвинуться дальше необходимо собраться с мыслями. Вы можете добавить всю сопутствующую информацию сюда:',
   },
 };

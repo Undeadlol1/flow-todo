@@ -84,6 +84,7 @@ export default {
     'reward name': 'Name',
     'reward points': 'Points',
     'reward image non required': 'Reward image (not required)',
+    'reward is recurring': 'Reward is reccuring',
     'you unlocked a reward': 'You unlocked a reward',
     take: 'Take',
     'keep earning': 'Keep earning',
@@ -96,5 +97,7 @@ export default {
     'provide reason': 'Please, provide a reason:',
     'dont do things you dont want':
       "Never do things you don't want. We will find a solution later",
+    'sometimes you need to gather your thouthgs':
+      'Sometimes in order to move forward you might need to gather your thoughts. You can add all additional information here:',
   },
 };

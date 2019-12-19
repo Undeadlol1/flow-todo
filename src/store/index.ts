@@ -14,12 +14,20 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer, reduxFirestore } from 'redux-firestore';
 import {
   getFirestore,
+  getNewlyUnlockedReward,
   handleErrors,
   initializeFirebase,
+  showLevelUpAnimation,
+  willUserLevelUp,
 } from '../services/index';
 import rewardsSlice, { Reward } from './rewardsSlice';
+import {
+  authSelector,
+  profilePointsSelector,
+  rewardsSelector,
+} from './selectors';
 import tasksSlice from './tasksSlice';
-import uiSlice from './uiSlice';
+import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 
 const log = debug('store');
@@ -52,7 +60,7 @@ export type TaskHistory = {
 };
 
 export type Task = {
-  id?: string;
+  id: string;
   name: string;
   dueAt: number;
   doneAt?: number;
@@ -184,17 +192,39 @@ export function addPoints(
         experience: FieldValue.increment(points),
       },
       { merge: true },
-    );
+    )
+    .catch(handleErrors);
+}
+
+export function addPointsWithSideEffects(
+  userId: string,
+  points: number,
+): Promise<void> {
+  const state = store.getState();
+  const auth = authSelector(state);
+  const profilePoints = profilePointsSelector(state);
+  const nextReward = getNewlyUnlockedReward(
+    profilePoints,
+    points,
+    rewardsSelector(state),
+  );
+  // TODO refactor
+  if (nextReward) store.dispatch(toggleRewardModal());
+  if (willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
+
+  return addPoints(auth.uid, points);
 }
 
 export function claimReward(reward: Reward) {
-  const fs = getFirestore();
-  return Promise.all([
+  try {
+    const fs = getFirestore();
+    if (!reward.isReccuring) fs.doc('rewards/' + reward.id).delete();
     fs.doc('profiles/' + reward.userId).update({
       points: firestore.FieldValue.increment(reward.points * -1),
-    }),
-    fs.doc('rewards/' + reward.id).delete(),
-  ]).catch(handleErrors);
+    });
+  } catch (error) {
+    handleErrors(error);
+  }
 }
 
 const rootReducer = combineReducers({

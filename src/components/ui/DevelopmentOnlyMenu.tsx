@@ -4,28 +4,22 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import BuildIcon from '@material-ui/icons/Build';
-import { UserInfo } from 'firebase';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
 import React, { MouseEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import {
   calculatePointsToNextLevel,
   calculateUserLevel,
-  getNewlyUnlockedReward,
-  showLevelUpAnimation,
-  willUserLevelUp,
 } from '../../services/index';
 import {
   addPoints,
-  Profile,
+  addPointsWithSideEffects,
   upsertTask,
   useTypedSelector,
 } from '../../store/index';
-import { Reward } from '../../store/rewardsSlice';
-import { toggleRewardModal } from '../../store/uiSlice';
+import { authSelector, profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,21 +31,14 @@ const useStyles = makeStyles(theme => ({
 
 const DevelopmentOnlyMenu: React.FC<{}> = () => {
   const cx = useStyles();
-  const dispatch = useDispatch();
   const firestore = useFirestore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const toggleMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   };
 
-  const auth: UserInfo = useSelector(s => get(s, 'firebase.auth'));
-  const profile = useTypedSelector(
-    s => s.firestore.data.profile as Profile,
-  );
-  const profilePoints = get(profile, 'points', 0);
-  const rewards = useTypedSelector(
-    s => s.firestore.ordered.rewards as Reward[],
-  );
+  const auth = useTypedSelector(authSelector);
+  const profile = useTypedSelector(profileSelector);
 
   function createTask() {
     upsertTask({
@@ -85,20 +72,6 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     });
   }
 
-  function addUserPoints() {
-    const pointToAdd = 50;
-    const nextReward = getNewlyUnlockedReward(
-      profilePoints,
-      pointToAdd,
-      rewards,
-    );
-    addPoints(auth.uid, pointToAdd);
-    if (willUserLevelUp(profilePoints, pointToAdd))
-      showLevelUpAnimation();
-    // TODO refactor
-    if (nextReward) dispatch(toggleRewardModal());
-  }
-
   if (process.env.NODE_ENV !== 'development') return null;
   else
     return (
@@ -112,7 +85,11 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
         >
-          <MenuItem onClick={addUserPoints}>Add 50 points</MenuItem>
+          <MenuItem
+            onClick={() => addPointsWithSideEffects(auth.uid, 50)}
+          >
+            Add 50 points
+          </MenuItem>
           <MenuItem onClick={resetPoints}>Reset points</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
           <MenuItem onClick={createAReward}>Add a reward</MenuItem>

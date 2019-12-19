@@ -16,6 +16,12 @@ import { Else, If, Then } from 'react-if';
 import { Link } from 'react-router-dom';
 import { useFirestore } from 'react-redux-firebase';
 import { Task, useTypedSelector } from '../../../store/index';
+import { useSelector } from 'react-redux';
+import { activeTaskSelector } from '../../../store/selectors';
+import {
+  activeTasksSelector,
+  uiSelector,
+} from '../../../store/selectors';
 
 const useStyles = makeStyles({
   paper: {
@@ -45,7 +51,7 @@ export const RandomTaskButton = ({
 
   const docs = tasks || [];
   const firestore = useFirestore();
-  const activeTaskId = get(docs.find(i => i.isCurrent), 'id');
+  const activeTaskId = get(useSelector(activeTaskSelector), 'id');
   // TODO make this a service (TaskPageContainer has similar funcitonality)
   // TODO exclude activeTaskId from from next line
   const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);
@@ -102,18 +108,16 @@ interface ContainerProps {
 export default memo(function RandomTaskButtonContainer(
   props: ContainerProps,
 ) {
-  const tasks = useTypedSelector(
-    s => s.firestore.ordered.activeTasks,
-  );
-  const { isAppTourActive } = useTypedSelector(s => s.ui);
+  const tasks = useSelector(activeTasksSelector);
+  const { isAppTourActive } = useTypedSelector(uiSelector);
 
   return (
     <RandomTaskButton
       {...{
         ...props,
+        isAppTourActive,
         tasks: tasks,
         loading: isUndefined(tasks),
-        isAppTourActive,
       }}
     />
   );

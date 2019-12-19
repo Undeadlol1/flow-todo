@@ -10,24 +10,22 @@ import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   calculateNextRepetition,
-  getNewlyUnlockedReward,
   handleErrors,
 } from '../../services';
-import {
-  showLevelUpAnimation,
-  willUserLevelUp,
-} from '../../services/index';
 import { deleteTask, updateSubtask } from '../../store';
 import {
-  addPoints,
+  addPointsWithSideEffects,
   Subtask,
   Task,
   TaskHistory,
   useTypedSelector,
 } from '../../store/index';
-import { Reward } from '../../store/rewardsSlice';
-import { toggleRewardModal } from '../../store/uiSlice';
+import {
+  activeTasksSelector,
+  currentTaskSelector,
+} from '../../store/selectors';
 import TaskPage from './TaskPage';
+import { activeTaskSelector } from '../../store/selectors';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -56,22 +54,13 @@ export default memo(() => {
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
-  const rewards = useTypedSelector(
-    s => s.firestore.ordered.rewards as Reward[],
-  );
-  const activeTasks =
-    useTypedSelector<Task[]>(
-      ({ firestore }) => firestore.ordered.activeTasks,
-    ) || [];
+  const activeTasks = useTypedSelector(activeTasksSelector) || [];
   const { requested } = useTypedSelector(
     ({ firestore }) => firestore.status,
   );
-  let currentTask = activeTasks.find(t => t.isCurrent);
+  let currentTask = useTypedSelector(activeTaskSelector);
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
-  );
-  const userPoints = useTypedSelector(s =>
-    get(s, 'firestore.data.profile.points', 0),
   );
 
   useEffect(() => {
@@ -80,20 +69,23 @@ export default memo(() => {
       get(requested, 'activeTasks') &&
       get(currentTask, 'id') !== taskId
     ) {
-      firestoreRedux.get({
-        doc: taskId,
-        collection: 'tasks',
-        storeAs: 'currentTask',
-      });
+      setRequested(true);
+      firestoreRedux
+        .get({
+          doc: taskId,
+          collection: 'tasks',
+          storeAs: 'currentTask',
+        })
+        .then(() => setRequested(false))
+        .catch(handleErrors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTask, requested, isAppIntroMode, taskId]);
 
-  const taskPointer = firestoreRedux.doc('tasks/' + taskId);
-  let task = useTypedSelector(s =>
-    get(s, 'firestore.ordered.currentTask[0]'),
-  );
+  const taskPointer = firestoreRedux.doc('tasks/' + nextTaskId);
+  let task = useTypedSelector(currentTaskSelector);
 
+  // @ts-ignore
   if (get(currentTask, 'id') === taskId) task = currentTask;
   // TODO find out how to get errors from redux-firestore
   // if (taskError) once(() => handleErrors(taskError))();
@@ -101,7 +93,7 @@ export default memo(() => {
   if (isAppIntroMode) {
     task = {
       name: t('exampleTask'),
-    };
+    } as Task;
   }
 
   const mergedProps = {
@@ -110,7 +102,7 @@ export default memo(() => {
       try {
         await Promise.all([
           deleteTask(taskId),
-          addPoints(task.userId, 10),
+          addPointsWithSideEffects(task.userId, 10),
         ]);
         dispatch(
           snackbarActions.show({
@@ -119,23 +111,16 @@ export default memo(() => {
             action: t('undo'),
             async handleAction() {
               await Promise.all([
-                // @ts-ignore
                 taskPointer.set(task),
-                addPoints(task.userId, options.pointsToAdd || -10),
+                addPointsWithSideEffects(
+                  task.userId,
+                  options.pointsToAdd || -10,
+                ),
               ]);
               history.push(`/tasks/${taskId}`);
             },
           }),
         );
-        if (willUserLevelUp(userPoints, options.pointsToAdd || 0))
-          showLevelUpAnimation();
-        // TODO refactor
-        const nextReward = getNewlyUnlockedReward(
-          userPoints,
-          options.pointsToAdd || 0,
-          rewards,
-        );
-        if (nextReward) dispatch(toggleRewardModal());
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         handleErrors(error);
@@ -153,31 +138,26 @@ export default memo(() => {
     }: updateTaskParams) {
       try {
         setRequested(true);
+
         await Promise.all([
-          taskPointer.update({
+          await firestoreRedux.doc('tasks/' + taskId).update({
+            ...task,
             ...values,
             history: [...get(task, 'history', []), historyToAdd],
           }),
-          addPoints(task.userId, pointsToAdd),
+          await addPointsWithSideEffects(task.userId, pointsToAdd),
+          nextTaskId
+            ? await firestoreRedux.doc('tasks/' + nextTaskId).update({
+                ...activeTasks.find(t => t.id === nextTaskId),
+                isCurrent: true,
+              })
+            : Promise.resolve(),
         ]);
-        if (nextTaskId)
-          await firestoreRedux
-            .doc('tasks/' + nextTaskId)
-            .update({ isCurrent: true });
-        // @ts-ignore
+
         if (snackbarMessage)
           enqueueSnackbar(snackbarMessage, {
             variant: snackbarVariant,
           });
-        if (willUserLevelUp(userPoints, pointsToAdd))
-          showLevelUpAnimation();
-        // TODO refactor
-        const nextReward = getNewlyUnlockedReward(
-          userPoints,
-          pointsToAdd,
-          rewards,
-        );
-        if (nextReward) dispatch(toggleRewardModal());
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
       } catch (error) {
         if (error.message.includes('Null value error.')) {
@@ -214,7 +194,7 @@ export default memo(() => {
       }
     },
     task: task || {},
-    loading: isUndefined(task) || isRequested,
+    loading: isUndefined(currentTask) || isRequested,
     taskId,
     isAppIntroMode,
   };

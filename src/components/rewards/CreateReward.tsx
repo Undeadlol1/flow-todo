@@ -1,28 +1,33 @@
-import React, { memo } from 'react';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
+import { firestore } from 'firebase/app';
+import get from 'lodash/get';
+import invoke from 'lodash/invoke';
+import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import invoke from 'lodash/invoke';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import { firestore } from 'firebase/app';
-import { useTypedSelector } from '../../store/index';
 import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
+import { useTypedSelector } from '../../store/index';
 
 const useStyles = makeStyles(theme => ({
   container: {},
   input: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  switch: {
     marginBottom: theme.spacing(2),
   },
 }));
@@ -57,6 +62,7 @@ const CreateReward = (props: Props) => {
         .max(10000, t('validation.maximumValue', { value: 10000 }))
         .required(t('validation.required')),
       image: Yup.string().url(t('validation.invalidURL')),
+      isReccuring: Yup.boolean(),
     }),
   });
   const error = get(errors, 'name.message');
@@ -114,6 +120,12 @@ const CreateReward = (props: Props) => {
             label={tt('reward image non required')}
             helperText={get(errors, 'image.message')}
             error={Boolean(get(errors, 'image.message'))}
+          />
+          <FormControlLabel
+            name="isReccuring"
+            className={cx.switch}
+            label={tt('reward is recurring')}
+            control={<Switch inputRef={register} />}
           />
           <Box textAlign="center">
             <Button

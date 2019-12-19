@@ -20,7 +20,7 @@ export const activeTaskSelector = createSelector(
 );
 
 export const currentTaskSelector = createSelector(
-  get('firestore.ordered.currentTask[0'),
+  get('firestore.ordered.currentTask[0]'),
   task => (task || {}) as Task,
 );
 

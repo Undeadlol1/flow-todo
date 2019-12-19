@@ -96,7 +96,7 @@ export const LoginOrLogoutButton = memo(() => {
           )}
         >
           <Box mr={0.5}>
-            {profile.isLoaded && <UserPoints value={points} />}
+            <UserPoints value={points} isLoaded={profile.isLoaded} />
           </Box>
           <Badge
             overlap="circle"

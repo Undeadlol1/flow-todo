@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {}
 
-export const WebShareTarget = memo((props: Props) => {
+const WebShareTargetPage = memo((props: Props) => {
   const classes = useStyles();
   const params: any = useParams();
   const location = useLocation();
@@ -48,4 +48,4 @@ export const WebShareTarget = memo((props: Props) => {
   );
 });
 
-export default memo(WebShareTarget);
+export default WebShareTargetPage;

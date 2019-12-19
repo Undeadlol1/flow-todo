@@ -1,4 +1,4 @@
-import { Box, CardHeader } from '@material-ui/core';
+import { Box, CardHeader, Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -31,6 +31,7 @@ import {
   updateTaskParams,
 } from './TaskPageContainer';
 import head from 'ramda/es/head';
+import { useFirestore } from 'react-redux-firebase';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -68,12 +69,19 @@ interface TaskPageProps {
 
 export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
+  const firestoreRedux = useFirestore();
   const t = useTypedTranslate();
   const { path, url } = route;
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
+
+  function makePinned() {
+    firestoreRedux.update('tasks/' + taskId, {
+      isPinned: true,
+    });
+  }
 
   if (loading) {
     return (
@@ -109,6 +117,7 @@ export default function TaskPage(props: TaskPageProps) {
             <Zoom in>
               <Card>
                 <CardContent>
+                  <Button onClick={makePinned}>PIN</Button>
                   <When condition={hasSubtasks}>
                     <Typography color="textSecondary" gutterBottom>
                       {task.name}

@@ -1,19 +1,26 @@
-import React from 'react';
-import * as Yup from 'yup';
-import get from 'lodash/get';
-import useForm from 'react-hook-form';
-import isUndefined from 'lodash/isUndefined';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
 import Grow from '@material-ui/core/Grow';
-import { useSnackbar } from 'notistack';
-import { upsertTask, addPoints } from '../../../store/index';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import get from 'lodash/get';
 import invoke from 'lodash/invoke';
-import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
+import { useSnackbar } from 'notistack';
+import React from 'react';
+import useForm from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import * as Yup from 'yup';
 import { useTypedTranslate } from '../../../services/index';
+import {
+  addPointsWithSideEffects,
+  upsertTask,
+} from '../../../store/index';
+import {
+  activeTasksSelector,
+  authSelector,
+} from '../../../store/selectors';
 
 const useStyles = makeStyles({
   container: {},
@@ -115,12 +122,8 @@ function UpsertTaskContainer(props: ContainerProps) {
   const translate = useTypedTranslate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const userId: string = useSelector(s =>
-    get(s, 'firebase.auth.uid'),
-  );
-  const activeTasks = useSelector(s =>
-    get(s, 'firestore.ordered.activeTasks'),
-  );
+  const userId = useSelector(authSelector).uid;
+  const activeTasks = useSelector(activeTasksSelector);
   const shouldAddBonusPoints = pointsToAdd || isEmpty(activeTasks);
 
   async function createDocumentAndReset(
@@ -131,7 +134,9 @@ function UpsertTaskContainer(props: ContainerProps) {
     try {
       await upsertTask({ name, userId }, props.taskId);
       if (shouldAddBonusPoints)
-        await addPoints(userId, pointsToAdd || 10);
+        await addPointsWithSideEffects(userId, pointsToAdd || 10);
+
+      if (callback) callback();
       if (resetFormOnSuccess) reset();
       if (showSnackbarOnSuccess) {
         enqueueSnackbar(
@@ -148,7 +153,6 @@ function UpsertTaskContainer(props: ContainerProps) {
           },
         );
       }
-      if (callback) callback();
     } catch (error) {
       console.error(error);
       enqueueSnackbar(

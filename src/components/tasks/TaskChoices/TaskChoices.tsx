@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
@@ -8,8 +9,10 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
+import head from 'ramda/es/head';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { When } from 'react-if';
+import { TaskPageGridWidth } from '../../../pages/TaskPage';
 import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 import {
   calculateNextRepetition,
@@ -18,11 +21,9 @@ import {
 import {
   distanceBetweenDates,
   showSnackbar,
+  useTypedTranslate,
 } from '../../../services/index';
 import { Task } from '../../../store/index';
-import { When } from 'react-if';
-import { TaskPageGridWidth } from '../../../pages/TaskPage';
-import head from 'ramda/es/head';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -41,7 +42,7 @@ interface Props {
 }
 
 const TaskChoices = (props: Props) => {
-  const [t] = useTranslation();
+  const t = useTypedTranslate();
   const classes = useStyles();
   const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
@@ -126,6 +127,11 @@ const TaskChoices = (props: Props) => {
         className={classes.container}
         classes={{ root: props.className }}
       >
+        <Grid {...commonGridProps}>
+          <Typography paragraph align="left">
+            {t('if you spend atleast 5 minutes')}
+          </Typography>
+        </Grid>
         <Grid {...commonGridProps}>
           <Button
             {...commonButtonProps}

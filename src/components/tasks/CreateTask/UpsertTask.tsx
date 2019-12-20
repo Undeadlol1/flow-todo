@@ -22,7 +22,6 @@ import {
 import { authSelector } from '../../../store/selectors';
 
 const useStyles = makeStyles({
-  container: {},
   button: {
     marginTop: '20px',
     width: '100%',
@@ -45,7 +44,7 @@ interface ComponentProps extends CommonProps {
 export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm<{ name: string }>({
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, t('validation.atleast3Symbols'))
@@ -65,7 +64,6 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        className={classes.container}
         onSubmit={form.handleSubmit((values: any) =>
           props.onSubmit(values, form.reset),
         )}
@@ -97,10 +95,6 @@ export function UpsertTask(props: ComponentProps) {
   );
 }
 
-type FormData = {
-  name: string;
-};
-
 interface ContainerProps extends CommonProps {
   callback?: Function;
   beforeSubmitHook?: Function;
@@ -128,9 +122,12 @@ function UpsertTaskContainer({
     try {
       invoke(props, 'beforeSubmitHook');
 
-      await upsertTask({ name, userId }, taskId);
-      if (pointsToAdd)
-        await addPointsWithSideEffects(userId, pointsToAdd || 10);
+      await Promise.all([
+        upsertTask({ name, userId }, taskId),
+        pointsToAdd
+          ? addPointsWithSideEffects(userId, pointsToAdd || 10)
+          : Promise.resolve(),
+      ]);
 
       invoke(props, 'callback');
       if (resetFormOnSuccess) reset();
@@ -157,9 +154,4 @@ function UpsertTaskContainer({
   };
   return <UpsertTask {...mergedProps} />;
 }
-
-UpsertTaskContainer.defaultValues = {
-  showSnackbarOnSuccess: true,
-} as Partial<ContainerProps>;
-
 export default React.memo(UpsertTaskContainer);

@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Slide from '@material-ui/core/Slide';
@@ -61,12 +61,9 @@ const TroublesChoices = ({
     if (reason) postPone(reason);
   }
   function destroy() {
-    const pointsToAdd = 10;
     deleteTask({
-      pointsToAdd,
-      snackbarMessage: t('getRidOfUnimportant', {
-        points: pointsToAdd,
-      }),
+      pointsToAdd: 10,
+      snackbarMessage: t('getRidOfUnimportant', { points: 10 }),
     });
   }
   return (

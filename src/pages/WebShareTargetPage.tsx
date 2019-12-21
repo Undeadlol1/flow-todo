@@ -45,7 +45,9 @@ const WebShareTargetPage = memo((props: Props) => {
         <UpsertTask
           autoFocus
           defaultValue={
-            (query.get('title') || query.get('text')) as string
+            query.get('title') ||
+            query.get('text') ||
+            query.get('url')
           }
         />
       </Grid>

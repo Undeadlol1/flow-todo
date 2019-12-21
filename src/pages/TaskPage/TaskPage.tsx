@@ -1,4 +1,4 @@
-import { Box, CardHeader, Button } from '@material-ui/core';
+import { Box, CardHeader } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
@@ -18,7 +18,6 @@ import prop from 'ramda/es/prop';
 import React from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
-import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
@@ -31,7 +30,7 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import { useFirestore } from 'react-redux-firebase';
+import TaskPageFABMenu from './TaskPageFABMenu';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -69,19 +68,12 @@ interface TaskPageProps {
 
 export default function TaskPage(props: TaskPageProps) {
   const route = useRouteMatch() || {};
-  const firestoreRedux = useFirestore();
   const t = useTypedTranslate();
   const { path, url } = route;
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
-
-  function makePinned() {
-    firestoreRedux.update('tasks/' + taskId, {
-      isPinned: true,
-    });
-  }
 
   if (loading) {
     return (
@@ -112,7 +104,7 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
-      <CreateTaskFab />
+      <TaskPageFABMenu taskId={taskId} />
       <Grid item xs={12}>
         <Grid
           item
@@ -123,7 +115,6 @@ export default function TaskPage(props: TaskPageProps) {
             <Zoom in>
               <Card>
                 <CardContent>
-                  <Button onClick={makePinned}>PIN</Button>
                   <When condition={hasSubtasks}>
                     <Typography color="textSecondary" gutterBottom>
                       {task.name}

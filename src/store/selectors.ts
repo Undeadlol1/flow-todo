@@ -1,6 +1,5 @@
 import { AuthError } from '@firebase/auth-types';
 import { UserInfo } from 'firebase/app';
-import extend from 'lodash/extend';
 import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
 import { FirebaseReducer } from 'react-redux-firebase';
@@ -21,16 +20,8 @@ export const activeTaskSelector = createSelector(
 );
 
 export const pinnedTaskSelector = createSelector(
-  getOr({}, 'firestore.data.activeTasks'),
-  (tasks: any) => {
-    let taskId = '';
-    Object.getOwnPropertyNames(tasks).forEach(id => {
-      if (tasks[id] && tasks[id].isPinned) taskId = id;
-    });
-    return extend(tasks[taskId], {
-      id: taskId,
-    }) as Task;
-  },
+  get('firestore.ordered.pinnedTask[0]'),
+  task => (task || {}) as Task,
 );
 
 export const currentTaskSelector = createSelector(

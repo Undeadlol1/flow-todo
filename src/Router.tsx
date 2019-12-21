@@ -67,6 +67,12 @@ export default memo(function Router() {
     },
     {
       collection: 'tasks',
+      where: [['userId', '==', userId], ['isPinned', '==', true]],
+      storeAs: 'pinnedTask',
+      limit: 1,
+    },
+    {
+      collection: 'tasks',
       where: [['userId', '==', userId]],
       storeAs: 'createdAtleastOneTask',
       limit: 1,

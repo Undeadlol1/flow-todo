@@ -47,6 +47,7 @@ export default memo(function Router() {
         ['isDone', '==', false],
         ['dueAt', '<', today],
       ],
+      limit: 100,
     },
     {
       doc: userId,
@@ -62,6 +63,7 @@ export default memo(function Router() {
         ['dueAt', '<', today],
       ],
       storeAs: 'activeTasks',
+      limit: 100,
     },
     {
       collection: 'tasks',
@@ -73,6 +75,7 @@ export default memo(function Router() {
       collection: 'rewards',
       where: [['userId', '==', userId]],
       orderBy: ['points', 'asc'],
+      limit: 100,
     },
   ]);
 

@@ -11,7 +11,11 @@ import {
   calculateTotalPointsToReachALevel,
   calculateUserLevel,
 } from '../../../services/index';
-import { Profile, useTypedSelector } from '../../../store';
+import { useTypedSelector } from '../../../store';
+import {
+  profileSelector,
+  usersSelector,
+} from '../../../store/selectors';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles(theme => ({
@@ -27,10 +31,10 @@ export const ExpirienceProgressBar: React.FC<{
   className?: string;
 }> = memo(props => {
   const classes = useStyles();
-  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
-  const profile = useTypedSelector(
-    s => s.firestore.data.profile as Profile,
+  const { isLevelUpAnimationActive } = useTypedSelector(
+    usersSelector,
   );
+  const profile = useTypedSelector(profileSelector);
   const userPoints = get(profile, 'experience', 0);
   const level = calculateUserLevel(userPoints);
 

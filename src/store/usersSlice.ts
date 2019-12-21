@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserInfo } from 'firebase';
 
-interface UsersState {
+export interface UsersState {
   current: UserInfo;
   isLevelUpAnimationActive: boolean;
 }

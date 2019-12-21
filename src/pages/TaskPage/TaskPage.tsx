@@ -1,7 +1,6 @@
 import { Box, CardHeader, Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import Grid, { GridProps } from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,10 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import Skeleton from '@material-ui/lab/Skeleton';
 import filter from 'lodash/filter';
 import isString from 'lodash/isString';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
+import head from 'ramda/es/head';
 import prop from 'ramda/es/prop';
 import React from 'react';
 import { When } from 'react-if';
@@ -30,7 +31,6 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import head from 'ramda/es/head';
 import { useFirestore } from 'react-redux-firebase';
 
 const useStyles = makeStyles(theme => ({
@@ -86,10 +86,18 @@ export default function TaskPage(props: TaskPageProps) {
   if (loading) {
     return (
       <Grid
-        item
-        component={CircularProgress}
-        className={classes.loadingContainer}
-      />
+        container
+        spacing={4}
+        justify="center"
+        alignItems="center"
+        className={classes.pageContainer}
+      >
+        <Grid item {...TaskPageGridWidth}>
+          <Box width="100%" height="400px">
+            <Skeleton style={{ height: '100%' }} />
+          </Box>
+        </Grid>
+      </Grid>
     );
   }
 
@@ -97,8 +105,6 @@ export default function TaskPage(props: TaskPageProps) {
     <Grid
       container
       spacing={4}
-      direction="row"
-      justify="center"
       alignItems="center"
       alignContent="center"
       className={classes.pageContainer}

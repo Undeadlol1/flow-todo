@@ -82,7 +82,7 @@ export default memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTask, requested, isAppIntroMode, taskId]);
 
-  const taskPointer = firestoreRedux.doc('tasks/' + taskId);
+  const taskPointer = firestoreRedux.doc('tasks/' + nextTaskId);
   let task = useTypedSelector(currentTaskSelector);
 
   // @ts-ignore
@@ -138,18 +138,22 @@ export default memo(() => {
     }: updateTaskParams) {
       try {
         setRequested(true);
+
         await Promise.all([
-          taskPointer.update({
+          await firestoreRedux.doc('tasks/' + taskId).update({
+            ...task,
             ...values,
             history: [...get(task, 'history', []), historyToAdd],
           }),
-          addPointsWithSideEffects(task.userId, pointsToAdd),
+          await addPointsWithSideEffects(task.userId, pointsToAdd),
+          nextTaskId
+            ? await firestoreRedux.doc('tasks/' + nextTaskId).update({
+                ...activeTasks.find(t => t.id === nextTaskId),
+                isCurrent: true,
+              })
+            : Promise.resolve(),
         ]);
-        if (nextTaskId)
-          await firestoreRedux
-            .doc('tasks/' + nextTaskId)
-            .update({ isCurrent: true });
-        // @ts-ignore
+
         if (snackbarMessage)
           enqueueSnackbar(snackbarMessage, {
             variant: snackbarVariant,

@@ -24,6 +24,7 @@ import { useTypedSelector } from '../../../store';
 import {
   authSelector,
   profileSelector,
+  usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
@@ -64,7 +65,9 @@ export const LoginOrLogoutButton = memo(() => {
 
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
-  const { isLevelUpAnimationActive } = useTypedSelector(s => s.users);
+  const { isLevelUpAnimationActive } = useTypedSelector(
+    usersSelector,
+  );
   const points = get(profile, 'points', 0);
   const experience = get(profile, 'experience', 0);
   const hasPhoto = Boolean(user && user.photoURL);
@@ -93,13 +96,14 @@ export const LoginOrLogoutButton = memo(() => {
           )}
         >
           <Box mr={0.5}>
-            <UserPoints value={points} />
+            <UserPoints value={points} isLoaded={profile.isLoaded} />
           </Box>
           <Badge
             overlap="circle"
             color="secondary"
             // NOTE: "+1" is a quick fix
             badgeContent={
+              profile.isLoaded &&
               Math.trunc(calculateUserLevel(experience)) + 1
             }
           >

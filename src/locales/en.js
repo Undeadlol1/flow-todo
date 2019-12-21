@@ -97,5 +97,9 @@ export default {
     'provide reason': 'Please, provide a reason:',
     'dont do things you dont want':
       "Never do things you don't want. We will find a solution later",
+    'sometimes you need to gather your thouthgs':
+      'Sometimes in order to move forward you might need to gather your thoughts. You can add all additional information here:',
+    'if you spend atleast 5 minutes':
+      'If you spent at least 5 minutes working on a task, no matter the outcome, you may click "made step forward". Good job.',
   },
 };

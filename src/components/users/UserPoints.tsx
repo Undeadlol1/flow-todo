@@ -7,20 +7,29 @@ import debug from 'debug';
 const logger = debug('UserPoints');
 
 const UserPoints = memo(
-  ({ value: nextPoints }: { value: number }) => {
+  ({
+    isLoaded = true,
+    value: nextPoints,
+  }: {
+    value: number;
+    isLoaded?: boolean;
+  }) => {
     const previousPoints = usePrevious(nextPoints) || 0;
     const difference = nextPoints - previousPoints;
     logger('previousPoints', previousPoints);
     logger('nextPoints', nextPoints);
     logger('difference', difference);
+    logger('isLoaded', isLoaded);
     return (
       <Chip
         color="secondary"
         label={
-          <CountUp
-            end={nextPoints}
-            start={previousPoints && nextPoints - difference}
-          />
+          isLoaded && (
+            <CountUp
+              end={nextPoints}
+              start={previousPoints && nextPoints - difference}
+            />
+          )
         }
       />
     );

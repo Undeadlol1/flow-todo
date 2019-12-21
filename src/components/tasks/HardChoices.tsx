@@ -77,7 +77,11 @@ const HardChoices = (
           <UpsertNote
             taskId={taskId as string}
             defaultValue={taskNote}
-          />
+          >
+            <Typography {...paragraphProps}>
+              {t('sometimes you need to gather your thouthgs')}
+            </Typography>
+          </UpsertNote>
         </Collapsible>
       </Grid>
       <Grid item xs={12}>

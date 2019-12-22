@@ -25,7 +25,10 @@ import {
   currentTaskSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import { activeTaskSelector } from '../../store/selectors';
+import {
+  activeTaskSelector,
+  firestoreStatusSelector,
+} from '../../store/selectors';
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
@@ -53,20 +56,18 @@ export default memo(() => {
   const [isRequested, setRequested] = useState();
 
   const { taskId = '' } = useParams();
-  const isAppIntroMode = taskId === 'introExample';
   const activeTasks = useTypedSelector(activeTasksSelector) || [];
-  const { requested } = useTypedSelector(
-    ({ firestore }) => firestore.status,
-  );
-  let currentTask = useTypedSelector(activeTaskSelector);
   const nextTaskId = getRandomTaskId(
     activeTasks.filter((t: any) => !t.isCurrent),
   );
+  let currentTask = useTypedSelector(activeTaskSelector);
 
+  const isAppIntroMode = taskId === 'introExample';
+  const firesotreStatus = useTypedSelector(firestoreStatusSelector);
   useEffect(() => {
     if (
       !isAppIntroMode &&
-      get(requested, 'activeTasks') &&
+      get(firesotreStatus, 'requested.activeTasks') &&
       get(currentTask, 'id') !== taskId
     ) {
       setRequested(true);
@@ -80,9 +81,8 @@ export default memo(() => {
         .catch(handleErrors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTask, requested, isAppIntroMode, taskId]);
+  }, [currentTask, firesotreStatus, isAppIntroMode, taskId]);
 
-  const taskPointer = firestoreRedux.doc('tasks/' + nextTaskId);
   let task = useTypedSelector(currentTaskSelector);
 
   // @ts-ignore
@@ -97,38 +97,6 @@ export default memo(() => {
   }
 
   const mergedProps = {
-    async deleteTask(options: deleteTaskArguments = {}) {
-      setRequested(true);
-      try {
-        await Promise.all([
-          deleteTask(taskId),
-          addPointsWithSideEffects(task.userId, 10),
-        ]);
-        dispatch(
-          snackbarActions.show({
-            message:
-              options.snackbarMessage || t('successfullyDeleted'),
-            action: t('undo'),
-            async handleAction() {
-              await Promise.all([
-                taskPointer.set(task),
-                addPointsWithSideEffects(
-                  task.userId,
-                  options.pointsToAdd || -10,
-                ),
-              ]);
-              history.push(`/tasks/${taskId}`);
-            },
-          }),
-        );
-        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
-      } catch (error) {
-        handleErrors(error);
-        history.push(`/tasks/${taskId}`);
-      } finally {
-        setRequested(false);
-      }
-    },
     async updateTask({
       values,
       snackbarMessage,
@@ -191,6 +159,38 @@ export default memo(() => {
         ]);
       } catch (e) {
         return handleErrors(e);
+      }
+    },
+    async deleteTask(options: deleteTaskArguments = {}) {
+      setRequested(true);
+      try {
+        await Promise.all([
+          deleteTask(taskId),
+          addPointsWithSideEffects(task.userId, 10),
+        ]);
+        dispatch(
+          snackbarActions.show({
+            message:
+              options.snackbarMessage || t('successfullyDeleted'),
+            action: t('undo'),
+            async handleAction() {
+              await Promise.all([
+                firestoreRedux.doc('tasks/' + taskId).set(task),
+                addPointsWithSideEffects(
+                  task.userId,
+                  options.pointsToAdd || -10,
+                ),
+              ]);
+              history.push(`/tasks/${taskId}`);
+            },
+          }),
+        );
+        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
+      } catch (error) {
+        handleErrors(error);
+        history.push(`/tasks/${taskId}`);
+      } finally {
+        setRequested(false);
       }
     },
     task: task || {},

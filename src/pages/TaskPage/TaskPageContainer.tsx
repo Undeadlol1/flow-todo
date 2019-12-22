@@ -58,9 +58,8 @@ export default memo(() => {
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
 
   const tasks = useTypedSelector(tasksSelector) || [];
-  let task =
-    find(tasks, ['id', taskId]) ||
-    useTypedSelector(fetchedTaskSelector);
+  const fetchedTask = useTypedSelector(fetchedTaskSelector);
+  let task = find(tasks, ['id', taskId]) || fetchedTask;
 
   // Fetch task if needed
   useEffect(() => {

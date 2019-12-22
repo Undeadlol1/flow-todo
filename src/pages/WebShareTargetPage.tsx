@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { createTask } from '../store/index';
 import { authSelector } from '../store/selectors';
-import { not } from 'ramda';
+import not from 'ramda/es/not';
 import queryString from 'query-string';
 
 const useStyles = makeStyles(theme => ({

@@ -24,6 +24,7 @@ import { toggleLevelUpAnimation } from '../store/usersSlice';
 import { Reward } from '../store/rewardsSlice';
 import { sort, findLastIndex } from 'ramda';
 import { getFirebase } from 'react-redux-firebase';
+import random from 'lodash/random';
 
 const logger = debug('utils');
 
@@ -265,4 +266,8 @@ export function showLevelUpAnimation() {
 
 export function getFirestore() {
   return getFirebase().firestore();
+}
+
+export function getRandomTaskId(tasks: Task[]): string {
+  return get(tasks, `[${random(tasks.length - 1)}].id`);
 }

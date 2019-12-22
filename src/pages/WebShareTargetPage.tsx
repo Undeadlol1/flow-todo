@@ -1,9 +1,15 @@
-import { Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { memo } from 'react';
-import { useLocation } from 'react-router-dom';
-import UpsertTask from '../components/tasks/CreateTask/UpsertTask';
+import nanoid from 'nanoid';
+import React, { memo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { createTask } from '../store/index';
+import { authSelector } from '../store/selectors';
+import { not } from 'ramda';
+import queryString from 'query-string';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -13,43 +19,42 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface Props {}
-
-const WebShareTargetPage = memo((props: Props) => {
+const WebShareTargetPage = memo(() => {
   const classes = useStyles();
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
+  const history = useHistory();
+  const auth = useSelector(authSelector);
+  const query = queryString.parse(useLocation().search);
+  const [inProgress, setInProgress] = useState(false);
+
+  useEffect(() => {
+    const id = nanoid();
+    const { note, url } = query;
+    const name = (query.name || note || url) as string;
+
+    if (auth.uid && name && !inProgress) {
+      setInProgress(not);
+      createTask({
+        id,
+        name,
+        userId: auth.uid,
+        note: (url || note) as string,
+      }).then(() => history.push('/tasks/' + id));
+    }
+  }, [auth, inProgress, history, query]);
 
   return (
     <Grid
       container
       spacing={2}
       justify="center"
-      direction="column"
       alignItems="stretch"
       alignContent="center"
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <Typography variant="h4">
-          query title: {JSON.stringify(query.get('title'))}
-        </Typography>
-        <Typography variant="h4">
-          query text: {JSON.stringify(query.get('text'))}
-        </Typography>
-        <Typography variant="h4" gutterBottom>
-          query url: {JSON.stringify(query.get('url'))}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6}>
-        <UpsertTask
-          autoFocus
-          defaultValue={
-            query.get('title') ||
-            query.get('text') ||
-            query.get('url')
-          }
-        />
+        <Box textAlign="center">
+          <CircularProgress />
+        </Box>
       </Grid>
     </Grid>
   );

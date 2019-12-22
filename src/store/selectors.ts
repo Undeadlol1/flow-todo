@@ -3,7 +3,7 @@ import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { Profile, Task } from './index';
+import { Profile, Task, RootReducer } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { AuthError } from '@firebase/auth-types';
@@ -48,6 +48,9 @@ export const authErrorSelector = createSelector(
   get('firebase.authError'),
   error => error as AuthError,
 );
+
+export const firestoreStatusSelector = (state: RootReducer) =>
+  state.firestore.status;
 
 export const uiSelector = createSelector(
   get('ui'),

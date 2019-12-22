@@ -264,6 +264,8 @@ const rootReducer = combineReducers({
   firestore: firestoreReducer,
 });
 
+export type RootReducer = ReturnType<typeof rootReducer>;
+
 const store = configureStore({
   reducer: rootReducer,
   middleware: [

@@ -9,17 +9,17 @@ import { UiState } from './uiSlice';
 import { AuthError } from '@firebase/auth-types';
 import { UsersState } from './usersSlice';
 
-export const activeTasksSelector = createSelector(
+export const tasksSelector = createSelector(
   get('firestore.ordered.tasks'),
   activeTasks => activeTasks as Task[],
 );
 
 export const activeTaskSelector = createSelector(
-  activeTasksSelector,
+  tasksSelector,
   (tasks: Task[] = []) => tasks.find(i => !!i.isCurrent),
 );
 
-export const currentTaskSelector = createSelector(
+export const fetchedTaskSelector = createSelector(
   get('firestore.ordered.currentTask[0]'),
   task => (task || {}) as Task,
 );

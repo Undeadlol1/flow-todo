@@ -129,7 +129,7 @@ export default memo(() => {
       } catch (error) {
         handleErrors(error);
         if (error.message.includes('Null value error.')) {
-          history.push('/');
+          return history.push('/');
         }
         history.push('/tasks/' + taskId);
       }

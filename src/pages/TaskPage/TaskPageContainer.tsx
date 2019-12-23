@@ -95,7 +95,12 @@ export default memo(() => {
     } as Task;
   }
 
-  const nextTaskId = getRandomTaskId(filter(tasks, ['id', taskId]));
+  const nextTaskId = getRandomTaskId(
+    filter(tasks, t => t.id !== taskId),
+  );
+  log('taskId: ', taskId);
+  log('nextTaskId: ', nextTaskId);
+
   const mergedProps = {
     async updateTask({
       values,

@@ -5,16 +5,18 @@ import {
   Theme,
 } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import RoomIcon from '@material-ui/icons/Room';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import invoke from 'lodash/invoke';
 import React from 'react';
 import { useFirestore } from 'react-redux-firebase';
+import { useHistory } from 'react-router-dom';
 import useToggle from 'react-use/esm/useToggle';
 import { useFabStyles } from '../../components/ui/Fab';
+import { useTypedTranslate } from '../../services/index';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,15 +34,18 @@ export default function TaskPageFABMenu(props: Props) {
   const fabClasses = useFabStyles();
   const [open, toggleOpen] = useToggle(false);
   const firestoreRedux = useFirestore();
+  const history = useHistory();
+  const t = useTypedTranslate();
 
-  function makePinned() {
+  function pin() {
     firestoreRedux.update('tasks/' + props.taskId, {
       isPinned: true,
     });
+    history.push('/');
   }
 
   const actions = [
-    { icon: <FileCopyIcon />, name: 'Pin', onClick: makePinned },
+    { icon: <RoomIcon />, name: t('pin'), onClick: pin },
     // { icon: <SaveIcon />, name: 'Save' },
     // { icon: <PrintIcon />, name: 'Print' },
     // { icon: <ShareIcon />, name: 'Share' },

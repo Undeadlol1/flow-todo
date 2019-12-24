@@ -4,7 +4,6 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { OptionsObject, useSnackbar } from 'notistack';
 import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -15,6 +14,7 @@ import {
   getRandomTaskId,
   handleErrors,
 } from '../../services';
+import { showSnackbar } from '../../services/index';
 import { deleteTask, updateSubtask } from '../../store';
 import {
   addPointsWithSideEffects,
@@ -36,7 +36,6 @@ export interface updateTaskParams {
   values: any;
   pointsToAdd?: number;
   snackbarMessage: string;
-  snackbarVariant?: OptionsObject['variant'];
   history: TaskHistory;
 }
 
@@ -50,7 +49,6 @@ export default memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
-  const { enqueueSnackbar } = useSnackbar();
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
@@ -107,15 +105,10 @@ export default memo(() => {
       snackbarMessage,
       pointsToAdd = 10,
       history: historyToAdd,
-      snackbarVariant = 'success',
     }: updateTaskParams) {
       try {
+        showSnackbar(snackbarMessage);
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
-
-        if (snackbarMessage)
-          enqueueSnackbar(snackbarMessage, {
-            variant: snackbarVariant,
-          });
 
         await Promise.all([
           await firestoreRedux.doc('tasks/' + taskId).update({

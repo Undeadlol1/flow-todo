@@ -41,7 +41,6 @@ const TroublesChoices = ({
   function postPone(reason = '') {
     updateTask({
       pointsToAdd: 0,
-      snackbarVariant: 'default',
       snackbarMessage: reason
         ? t('dont do things you dont want')
         : t('Posponed until tomorrow'),

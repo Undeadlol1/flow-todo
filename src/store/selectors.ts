@@ -11,7 +11,7 @@ import { UsersState } from './usersSlice';
 
 export const tasksSelector = createSelector(
   get('firestore.ordered.tasks'),
-  activeTasks => activeTasks as Task[],
+  (tasks: Task[] = []) => tasks.filter(i => !i.isPinned),
 );
 
 export const activeTaskSelector = createSelector(

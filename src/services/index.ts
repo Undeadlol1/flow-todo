@@ -25,6 +25,7 @@ import { Reward } from '../store/rewardsSlice';
 import { sort, findLastIndex } from 'ramda';
 import { getFirebase } from 'react-redux-firebase';
 import random from 'lodash/random';
+import { toggleSidebar as toggleUiSidebar } from '../store/uiSlice';
 
 const logger = debug('utils');
 
@@ -270,4 +271,8 @@ export function getFirestore() {
 
 export function getRandomTaskId(tasks: Task[]): string {
   return get(tasks, `[${random(tasks.length - 1)}].id`);
+}
+
+export function toggleSidebar() {
+  store.dispatch(toggleUiSidebar());
 }

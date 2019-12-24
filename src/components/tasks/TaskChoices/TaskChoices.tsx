@@ -23,7 +23,8 @@ import {
   showSnackbar,
   useTypedTranslate,
 } from '../../../services/index';
-import { Task } from '../../../store/index';
+import { Task, Subtask } from '../../../store/index';
+import map from 'lodash/map';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -44,7 +45,8 @@ interface Props {
 const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
   const classes = useStyles();
-  const activeSubtasks = filter(props.task.subtasks, i => !i.isDone);
+  const activeSubtasks =
+    filter(props.task.subtasks, i => !i.isDone) || [];
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
     fullWidth: true,
@@ -113,7 +115,27 @@ const TaskChoices = (props: Props) => {
   }
 
   function doneSubtask() {
-    props.updateSubtask(head(activeSubtasks));
+    const pointsToAdd = 10;
+    props.updateTask({
+      pointsToAdd,
+      values: {
+        ...calculateNextRepetition(props.task, 'normal'),
+        subtasks: map(props.task!.subtasks, (t: Subtask) =>
+          // @ts-ignore
+          t.id === head(activeSubtasks || []).id
+            ? { ...t, isDone: true, doneAt: Date.now() }
+            : t,
+        ),
+        isCurrent: false,
+      },
+      history: {
+        createdAt: Date.now(),
+        actionType: 'updateSubtask',
+      },
+      snackbarMessage: t('goodJobPointsRecieved', {
+        points: pointsToAdd,
+      }),
+    });
   }
 
   return (

@@ -51,6 +51,10 @@ export default memo(() => {
         .collection('tasks')
         .where('userId', '==', anonymousUser.uid)
         .get();
+      const anonymousUserRewards = await db
+        .collection('rewards')
+        .where('userId', '==', anonymousUser.uid)
+        .get();
       const nonAnonymousUser = get(
         await auth().signInWithCredential(error.credential),
         'user',
@@ -59,6 +63,7 @@ export default memo(() => {
       log('signedInUser: ', nonAnonymousUser);
       log('anonymousUser: ', anonymousUser);
       log('anonymousUserTasks: ', anonymousUserTasks);
+      log('anonymousUserRewards: ', anonymousUserRewards);
       log('anonymousUserProfile: ', anonymousUserProfile);
 
       if (anonymousUserProfile.exists) {
@@ -75,8 +80,20 @@ export default memo(() => {
             userId: nonAnonymousUser.uid,
           });
         }
-        await batch.commit();
       }
+      if (!anonymousUserRewards.empty) {
+        for (const reward of anonymousUserRewards.docs) {
+          const rewardToUpdate = db
+            .collection('rewards')
+            .doc(nanoid());
+          batch.set(rewardToUpdate, {
+            ...reward.data(),
+            userId: nonAnonymousUser.uid,
+          });
+        }
+      }
+
+      await batch.commit();
 
       await anonymousUser.delete();
       /*

@@ -18,10 +18,7 @@ import { useFirestore } from 'react-redux-firebase';
 import { Task, useTypedSelector } from '../../../store/index';
 import { useSelector } from 'react-redux';
 import { activeTaskSelector } from '../../../store/selectors';
-import {
-  activeTasksSelector,
-  uiSelector,
-} from '../../../store/selectors';
+import { tasksSelector, uiSelector } from '../../../store/selectors';
 
 const useStyles = makeStyles({
   paper: {
@@ -51,14 +48,14 @@ export const RandomTaskButton = ({
 
   const docs = tasks || [];
   const firestore = useFirestore();
-  const activeTaskId = get(useSelector(activeTaskSelector), 'id');
+  const currentTaskId = get(useSelector(activeTaskSelector), 'id');
   // TODO make this a service (TaskPageContainer has similar funcitonality)
   // TODO exclude activeTaskId from from next line
   const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);
   // TODO: move logic into a service?
   if (
     !isEmpty(docs) &&
-    !activeTaskId &&
+    !currentTaskId &&
     !isAppTourActive &&
     randomTaskId
   ) {
@@ -68,11 +65,11 @@ export const RandomTaskButton = ({
   }
 
   const buttonText = t(
-    activeTaskId || isAppTourActive ? 'start' : 'noTasks',
+    currentTaskId || isAppTourActive ? 'start' : 'noTasks',
   );
-  const isDisabled = loading || get(tasks, 'empty') || !activeTaskId;
+  const isDisabled = loading || get(tasks, 'empty') || !currentTaskId;
   const linkPath = `/tasks/${
-    isAppTourActive ? 'introExample' : activeTaskId
+    isAppTourActive ? 'introExample' : currentTaskId
   }`;
 
   return (
@@ -108,7 +105,7 @@ interface ContainerProps {
 export default memo(function RandomTaskButtonContainer(
   props: ContainerProps,
 ) {
-  const tasks = useSelector(activeTasksSelector);
+  const tasks = useSelector(tasksSelector);
   const { isAppTourActive } = useTypedSelector(uiSelector);
 
   return (

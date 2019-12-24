@@ -81,6 +81,31 @@ export type Task = {
   tags?: string[];
 };
 
+export function createTask(values: {
+  id?: string;
+  name: string;
+  userId: string;
+  note?: string;
+  tags?: string[];
+}) {
+  return (
+    getFirestore()
+      .collection('tasks')
+      .doc(values.id || nanoid())
+      // TODO: was tired while writing this code.
+      // Is this correct*
+      .set(
+        extend(values, {
+          isDone: false,
+          cratedAt: Date.now(),
+          dueAt: subDays(new Date(), 1).getTime(),
+        }),
+        { merge: true },
+      )
+      .catch(handleErrors)
+  );
+}
+
 export function upsertTask(
   values: {
     name?: string;
@@ -140,26 +165,6 @@ export function createSubtask(
         },
       )
   );
-}
-
-export async function updateSubtask(
-  subtask: Subtask,
-  values: {
-    name?: string;
-    doneAt: number;
-    isDone: boolean;
-  },
-): Promise<void | Error> {
-  const docRef = getFirestore().doc('tasks/' + subtask.parentId);
-  const task: any = await docRef.get();
-  console.log('task: ', task);
-  const newSubtasks: any[] = task.subtasks // .data()
-    .map((i: Subtask) => {
-      return i.id === subtask.id ? Object.assign({}, i, values) : i;
-    });
-  return docRef.update({
-    subtasks: newSubtasks,
-  });
 }
 
 export function deleteSubtask(
@@ -252,6 +257,8 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });
+
+export type RootReducer = ReturnType<typeof rootReducer>;
 
 const store = configureStore({
   reducer: rootReducer,

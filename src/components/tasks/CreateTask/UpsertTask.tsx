@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 interface CommonProps {
   taskId?: string;
   autoFocus?: boolean;
-  defaultValue?: string;
+  defaultValue?: string | null;
 }
 
 interface ComponentProps extends CommonProps {

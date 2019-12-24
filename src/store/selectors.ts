@@ -4,18 +4,18 @@ import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { Profile, Task } from './index';
+import { Profile, Task, RootReducer } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
 
-export const activeTasksSelector = createSelector(
+export const tasksSelector = createSelector(
   get('firestore.ordered.tasks'),
   activeTasks => activeTasks as Task[],
 );
 
 export const activeTaskSelector = createSelector(
-  activeTasksSelector,
+  tasksSelector,
   (tasks: Task[] = []) => tasks.find(i => !!i.isCurrent),
 );
 
@@ -24,7 +24,7 @@ export const pinnedTaskSelector = createSelector(
   task => (task || {}) as Task,
 );
 
-export const currentTaskSelector = createSelector(
+export const fetchedTaskSelector = createSelector(
   get('firestore.ordered.currentTask[0]'),
   task => (task || {}) as Task,
 );
@@ -53,6 +53,9 @@ export const authErrorSelector = createSelector(
   get('firebase.authError'),
   error => error as AuthError,
 );
+
+export const firestoreStatusSelector = (state: RootReducer) =>
+  state.firestore.status;
 
 export const uiSelector = createSelector(
   get('ui'),

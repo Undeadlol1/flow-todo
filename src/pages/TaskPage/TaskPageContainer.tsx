@@ -1,41 +1,36 @@
+import debug from 'debug';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
 import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
-import random from 'lodash/random';
+import isEmpty from 'lodash/isEmpty';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { OptionsObject, useSnackbar } from 'notistack';
 import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  calculateNextRepetition,
-  handleErrors,
-} from '../../services';
-import { deleteTask, updateSubtask } from '../../store';
+import { getRandomTaskId, handleErrors } from '../../services';
+import { showSnackbar } from '../../services/index';
+import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
-  Subtask,
   Task,
   TaskHistory,
   useTypedSelector,
 } from '../../store/index';
 import {
-  activeTasksSelector,
-  currentTaskSelector,
+  fetchedTaskSelector,
+  firestoreStatusSelector,
+  tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import { activeTaskSelector } from '../../store/selectors';
 
-export function getRandomTaskId(tasks: Task[]): string {
-  return get(tasks, `[${random(tasks.length - 1)}].id`);
-}
+const log = debug('TaskPageContainer');
 
 export interface updateTaskParams {
   values: any;
   pointsToAdd?: number;
   snackbarMessage: string;
-  snackbarVariant?: OptionsObject['variant'];
   history: TaskHistory;
 }
 
@@ -49,26 +44,25 @@ export default memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
-  const { enqueueSnackbar } = useSnackbar();
-  const [isRequested, setRequested] = useState();
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
-  const activeTasks = useTypedSelector(activeTasksSelector) || [];
-  const { requested } = useTypedSelector(
-    ({ firestore }) => firestore.status,
-  );
-  let currentTask = useTypedSelector(activeTaskSelector);
-  const nextTaskId = getRandomTaskId(
-    activeTasks.filter((t: any) => !t.isCurrent),
-  );
+  const [isRequested, setRequested] = useState(false);
+  const firestoreStatus = useTypedSelector(firestoreStatusSelector);
 
+  const tasks = useTypedSelector(tasksSelector) || [];
+  const fetchedTask = useTypedSelector(fetchedTaskSelector);
+  let task = find(tasks, ['id', taskId]) || fetchedTask;
+
+  // Fetch task if needed
   useEffect(() => {
     if (
       !isAppIntroMode &&
-      get(requested, 'activeTasks') &&
-      get(currentTask, 'id') !== taskId
+      get(firestoreStatus, 'requested.activeTasks') &&
+      get(task, 'id') !== taskId &&
+      !isRequested
     ) {
+      log('task fetching is in progress');
       setRequested(true);
       firestoreRedux
         .get({
@@ -77,16 +71,14 @@ export default memo(() => {
           storeAs: 'currentTask',
         })
         .then(() => setRequested(false))
-        .catch(handleErrors);
+        .catch(error => {
+          handleErrors(error);
+          history.push('/');
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTask, requested, isAppIntroMode, taskId]);
+  }, [task, isRequested, firestoreStatus, isAppIntroMode, taskId]);
 
-  const taskPointer = firestoreRedux.doc('tasks/' + nextTaskId);
-  let task = useTypedSelector(currentTaskSelector);
-
-  // @ts-ignore
-  if (get(currentTask, 'id') === taskId) task = currentTask;
   // TODO find out how to get errors from redux-firestore
   // if (taskError) once(() => handleErrors(taskError))();
 
@@ -96,7 +88,45 @@ export default memo(() => {
     } as Task;
   }
 
+  const nextTaskId = getRandomTaskId(
+    filter(tasks, t => t.id !== taskId),
+  );
+  log('taskId: ', taskId);
+  log('nextTaskId: ', nextTaskId);
+
   const mergedProps = {
+    async updateTask({
+      values,
+      snackbarMessage,
+      pointsToAdd = 10,
+      history: historyToAdd,
+    }: updateTaskParams) {
+      try {
+        showSnackbar(snackbarMessage);
+        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
+
+        await Promise.all([
+          await firestoreRedux.doc('tasks/' + taskId).update({
+            ...task,
+            ...values,
+            history: [...get(task, 'history', []), historyToAdd],
+          }),
+          await addPointsWithSideEffects(task.userId, pointsToAdd),
+          nextTaskId
+            ? await firestoreRedux.doc('tasks/' + nextTaskId).update({
+                ...tasks.find(t => t.id === nextTaskId),
+                isCurrent: true,
+              })
+            : Promise.resolve(),
+        ]);
+      } catch (error) {
+        handleErrors(error);
+        if (error.message.includes('Null value error.')) {
+          return history.push('/');
+        }
+        history.push('/tasks/' + taskId);
+      }
+    },
     async deleteTask(options: deleteTaskArguments = {}) {
       setRequested(true);
       try {
@@ -111,7 +141,7 @@ export default memo(() => {
             action: t('undo'),
             async handleAction() {
               await Promise.all([
-                taskPointer.set(task),
+                firestoreRedux.doc('tasks/' + taskId).set(task),
                 addPointsWithSideEffects(
                   task.userId,
                   options.pointsToAdd || -10,
@@ -129,72 +159,8 @@ export default memo(() => {
         setRequested(false);
       }
     },
-    async updateTask({
-      values,
-      snackbarMessage,
-      pointsToAdd = 10,
-      history: historyToAdd,
-      snackbarVariant = 'success',
-    }: updateTaskParams) {
-      try {
-        setRequested(true);
-
-        await Promise.all([
-          await firestoreRedux.doc('tasks/' + taskId).update({
-            ...task,
-            ...values,
-            history: [...get(task, 'history', []), historyToAdd],
-          }),
-          await addPointsWithSideEffects(task.userId, pointsToAdd),
-          nextTaskId
-            ? await firestoreRedux.doc('tasks/' + nextTaskId).update({
-                ...activeTasks.find(t => t.id === nextTaskId),
-                isCurrent: true,
-              })
-            : Promise.resolve(),
-        ]);
-
-        if (snackbarMessage)
-          enqueueSnackbar(snackbarMessage, {
-            variant: snackbarVariant,
-          });
-        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
-      } catch (error) {
-        if (error.message.includes('Null value error.')) {
-          history.push('/');
-        }
-        handleErrors(error);
-        history.push('/tasks/' + taskId);
-      } finally {
-        setRequested(false);
-      }
-    },
-    async updateSubtask(subtask: Subtask) {
-      setRequested(true);
-      try {
-        await Promise.all([
-          updateSubtask(subtask, {
-            isDone: true,
-            doneAt: Date.now(),
-          }),
-          this.updateTask({
-            values: {
-              isCurrent: false,
-              ...calculateNextRepetition(task, 'good'),
-            },
-            history: {
-              createdAt: Date.now(),
-              actionType: 'updateSubtask',
-            },
-            snackbarMessage: t('Good job!'),
-          }),
-        ]);
-      } catch (e) {
-        return handleErrors(e);
-      }
-    },
     task: task || {},
-    loading: isUndefined(currentTask) || isRequested,
+    loading: isEmpty(task) || isRequested,
     taskId,
     isAppIntroMode,
   };

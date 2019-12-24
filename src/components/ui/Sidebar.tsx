@@ -4,6 +4,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import EmailIcon from '@material-ui/icons/Email';
+import ExitIcon from '@material-ui/icons/ExitToApp';
+import GitftIcon from '@material-ui/icons/Redeem';
 import ShareIcon from '@material-ui/icons/Share';
 import debug from 'debug';
 import get from 'lodash/get';
@@ -11,16 +15,16 @@ import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Unless, When } from 'react-if';
 import MailTo from 'react-mailto.js';
-import { useDispatch } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useWebShare from 'react-use-web-share';
 import {
   handleErrors,
+  toggleSidebar,
   useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
-import { toggleSidebar } from '../../store/uiSlice';
+import { authSelector, uiSelector } from '../../store/selectors';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -36,9 +40,6 @@ const useStyles = makeStyles({
     color: 'inherit',
     textDecoration: 'none',
   },
-  upperCase: {
-    textTransform: 'uppercase',
-  },
 });
 
 const StyledListText = withStyles({
@@ -52,26 +53,19 @@ const Sidebar: React.FC<{}> = () => {
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
-  const dispatch = useDispatch();
-  const { share, isSupported: isShareSupported } = useWebShare(
-    function onSuccess() {
-      dispatch(toggleSidebar());
-    },
-    // @ts-ignore
-    function onFailure(error) {
-      handleErrors(error);
-    },
-  );
-
-  const { isSidebarOpen } = useTypedSelector(s => s.ui);
-  const { isAnonymous } = useTypedSelector(s =>
-    get(s, 'firebase.auth'),
-  );
+  const { isSidebarOpen } = useTypedSelector(uiSelector);
+  const { isAnonymous } = useTypedSelector(authSelector);
   log('isAnonymous: ', isAnonymous);
   log('isSidebarOpen: ', isSidebarOpen);
 
+  const { share, isSupported: isShareSupported } = useWebShare(
+    toggleSidebar,
+    // @ts-ignore
+    handleErrors,
+  );
+
   function logoutOrRedirect() {
-    dispatch(toggleSidebar());
+    toggleSidebar();
     if (isAnonymous) history.push('/signin');
     else
       getFirebase()
@@ -82,28 +76,31 @@ const Sidebar: React.FC<{}> = () => {
   function shareMainPage() {
     share({
       title: 'Flow TODO',
-      text: 'Геймифицированный задачник',
+      text: t('gamified todo list'),
       url: get(window, 'location.origin'),
     });
   }
 
   return (
-    <Drawer
-      open={isSidebarOpen}
-      onClose={() => dispatch(toggleSidebar())}
-    >
+    <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
         <ListItem
           button
           onClick={() => {
             history.push('/rewards');
-            dispatch(toggleSidebar());
+            toggleSidebar();
           }}
         >
+          <ListItemIcon>
+            <GitftIcon />
+          </ListItemIcon>
           <StyledListText primary={t('rewards')} />
         </ListItem>
         <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
           <ListItem button>
+            <ListItemIcon>
+              <EmailIcon />
+            </ListItemIcon>
             <StyledListText primary={t('feedback')} />
           </ListItem>
         </MailTo>
@@ -112,14 +109,14 @@ const Sidebar: React.FC<{}> = () => {
             <ListItemIcon>
               <ShareIcon />
             </ListItemIcon>
-            <ListItemText
-              primary={t('share')}
-              className={cx.upperCase}
-            />
+            <StyledListText primary={t('share')} />
           </ListItem>
         </When>
         <Unless condition={isUndefined(isAnonymous)}>
           <ListItem button onClick={logoutOrRedirect}>
+            <ListItemIcon>
+              {isAnonymous ? <AccountBoxIcon /> : <ExitIcon />}
+            </ListItemIcon>
             <StyledListText
               primary={t(isAnonymous ? 'log in' : 'log out')}
             />

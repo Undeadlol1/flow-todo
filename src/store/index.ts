@@ -153,26 +153,6 @@ export function createSubtask(
     });
 }
 
-export async function updateSubtask(
-  subtask: Subtask,
-  values: {
-    name?: string;
-    doneAt: number;
-    isDone: boolean;
-  },
-): Promise<void | Error> {
-  const docRef = getFirestore().doc('tasks/' + subtask.parentId);
-  const task: any = await docRef.get();
-  console.log('task: ', task);
-  const newSubtasks: any[] = task.subtasks // .data()
-    .map((i: Subtask) => {
-      return i.id === subtask.id ? Object.assign({}, i, values) : i;
-    });
-  return docRef.update({
-    subtasks: newSubtasks,
-  });
-}
-
 export function deleteSubtask(
   taskId: string,
   subtask: {

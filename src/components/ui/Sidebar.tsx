@@ -40,9 +40,6 @@ const useStyles = makeStyles({
     color: 'inherit',
     textDecoration: 'none',
   },
-  upperCase: {
-    textTransform: 'uppercase',
-  },
 });
 
 const StyledListText = withStyles({
@@ -112,10 +109,7 @@ const Sidebar: React.FC<{}> = () => {
             <ListItemIcon>
               <ShareIcon />
             </ListItemIcon>
-            <ListItemText
-              primary={t('share')}
-              className={cx.upperCase}
-            />
+            <StyledListText primary={t('share')} />
           </ListItem>
         </When>
         <Unless condition={isUndefined(isAnonymous)}>

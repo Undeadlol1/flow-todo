@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
 interface Props {
   task: Task;
   className?: string;
-  updateSubtask: Function;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
 

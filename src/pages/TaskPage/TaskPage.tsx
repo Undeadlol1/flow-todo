@@ -61,7 +61,6 @@ interface TaskPageProps {
   taskId: string;
   loading: boolean;
   isAppIntroMode: boolean;
-  updateSubtask: Function;
   deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }

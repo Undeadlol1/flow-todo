@@ -9,16 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  calculateNextRepetition,
-  getRandomTaskId,
-  handleErrors,
-} from '../../services';
+import { getRandomTaskId, handleErrors } from '../../services';
 import { showSnackbar } from '../../services/index';
-import { deleteTask, updateSubtask } from '../../store';
+import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
-  Subtask,
   Task,
   TaskHistory,
   useTypedSelector,
@@ -130,30 +125,6 @@ export default memo(() => {
           return history.push('/');
         }
         history.push('/tasks/' + taskId);
-      }
-    },
-    async updateSubtask(subtask: Subtask) {
-      setRequested(true);
-      try {
-        await Promise.all([
-          updateSubtask(subtask, {
-            isDone: true,
-            doneAt: Date.now(),
-          }),
-          this.updateTask({
-            values: {
-              isCurrent: false,
-              ...calculateNextRepetition(task, 'good'),
-            },
-            history: {
-              createdAt: Date.now(),
-              actionType: 'updateSubtask',
-            },
-            snackbarMessage: t('Good job!'),
-          }),
-        ]);
-      } catch (e) {
-        return handleErrors(e);
       }
     },
     async deleteTask(options: deleteTaskArguments = {}) {

@@ -22,6 +22,8 @@ import {
 } from '../../../store/selectors';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 let taskId = '';
 const log = debug('Pinnedtask');
@@ -60,7 +62,9 @@ export default memo(function PinnedTask() {
 
   return (
     <Card>
-      <CardHeader title={task.name} />
+      <Link component={RouterLink} to={'tasks/' + taskId}>
+        <CardHeader title={task.name} />
+      </Link>
       <CardContent>
         <CreateSubtask taskId={taskId} />
         <SubtasksList documents={task.subtasks} />

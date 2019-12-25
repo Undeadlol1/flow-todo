@@ -10,6 +10,8 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { Task, useTypedSelector } from '../../store/index';
 import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
+import { tasksSelector, uiSelector } from '../../store/selectors';
+import get from 'lodash/fp/get';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -87,10 +89,11 @@ export const HomePage = memo(function HomePage(props: Props) {
 });
 
 export default memo(function HomePageContainer(props) {
-  const { createdAtleastOneTask, activeTasks } = useTypedSelector(
-    s => s.firestore.ordered,
+  const activeTasks = useTypedSelector(tasksSelector);
+  const { createdAtleastOneTask } = useTypedSelector(
+    get('firestore.ordered'),
   );
-  const { isAppTourActive } = useTypedSelector(state => state.ui);
+  const { isAppTourActive } = useTypedSelector(uiSelector);
   const isLoading =
     isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   return (

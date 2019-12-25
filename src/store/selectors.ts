@@ -8,10 +8,14 @@ import { Profile, Task, RootReducer } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
+import isUndefined from 'lodash/isUndefined';
 
 export const tasksSelector = createSelector(
   get('firestore.ordered.tasks'),
-  (tasks: Task[] = []) => tasks.filter(i => !i.isPinned),
+  (tasks: Task[]) => {
+    if (isUndefined(tasks)) return tasks;
+    return tasks.filter(i => !i.isPinned);
+  },
 );
 
 export const activeTaskSelector = createSelector(

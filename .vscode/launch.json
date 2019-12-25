@@ -1,15 +1,11 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
+  "version": "0.1.0",
   "configurations": [
     {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "type": "vscode-edge-devtools.debug",
+      "request": "attach",
+      "name": "Attach to Microsoft Edge and open the Elements tool",
+      "url": "http://localhost:3000/"
     }
   ]
 }

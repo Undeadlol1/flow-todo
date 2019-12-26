@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container';
 import { auth } from 'firebase/app';
 import get from 'lodash/get';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RewardModal from './components/rewards/RewardModal';
@@ -29,7 +29,12 @@ export default memo(function Router() {
   const user = useTypedSelector(authSelector);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
-  const userId = get(user, 'uid', '');
+  // Store userId in localStorage to improve loading times on startup
+  const userId =
+    get(user, 'uid', '') || localStorage.getItem('userId') || '';
+  useEffect(() => {
+    if (userId) localStorage.setItem('userId', userId);
+  }, [userId]);
 
   handleErrors(authError);
 

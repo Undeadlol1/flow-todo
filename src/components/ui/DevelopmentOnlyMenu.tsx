@@ -7,6 +7,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
+import nanoid from 'nanoid';
 import React, { MouseEvent, useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import {
@@ -16,8 +17,8 @@ import {
 import {
   addPoints,
   addPointsWithSideEffects,
-  upsertTask,
   useTypedSelector,
+  createTask,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
 
@@ -40,8 +41,10 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   const auth = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
 
-  function createTask() {
-    upsertTask({
+  function addTask() {
+    const taskId = nanoid();
+    createTask({
+      id: taskId,
       userId: auth.uid,
       name: loremIpsum({
         count: 4,
@@ -51,6 +54,18 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
         count: 3,
         units: 'word',
       }).split(' '),
+      subtasks: Array(random(5))
+        .fill('')
+        .map(() => ({
+          id: nanoid(),
+          name: loremIpsum({
+            count: 4,
+            units: 'words',
+          }),
+          isDone: false,
+          parentId: taskId,
+          createdAt: Date.now(),
+        })),
     });
   }
 
@@ -93,7 +108,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           <MenuItem onClick={resetPoints}>Reset points</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
           <MenuItem onClick={createAReward}>Add a reward</MenuItem>
-          <MenuItem onClick={createTask}>Add a task</MenuItem>
+          <MenuItem onClick={addTask}>Add a task</MenuItem>
         </Menu>
       </Box>
     );

@@ -87,6 +87,7 @@ export function createTask(values: {
   userId: string;
   note?: string;
   tags?: string[];
+  subtasks?: Subtask[];
 }) {
   return (
     getFirestore()
@@ -130,7 +131,8 @@ export function upsertTask(
   return getFirestore()
     .collection('tasks')
     .doc(taskId || nanoid())
-    .set(payload, { merge: true });
+    .set(payload, { merge: true })
+    .catch(handleErrors);
 }
 
 export function deleteTask(taskId: string): Promise<void | Error> {

@@ -26,6 +26,7 @@ import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import { useTypedTranslate } from '../../services/index';
 import { Task } from '../../store';
+import MuiLink from '@material-ui/core/Link';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -43,10 +44,6 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     left: 'calc(50% - 15px)',
     top: 'calc(50% - 56px)',
-  },
-  link: {
-    textDecoration: 'none',
-    color: theme.palette.text.primary,
   },
 }));
 
@@ -110,9 +107,9 @@ export default function TaskPage(props: TaskPageProps) {
           style={{ margin: '0 auto' }}
           {...TaskPageGridWidth}
         >
-          <Link className={classes.link} to={`/tasks/${taskId}`}>
-            <Zoom in>
-              <Card>
+          <Zoom in>
+            <Card>
+              <MuiLink component={Link} to={`/tasks/${taskId}`}>
                 <CardContent>
                   <When condition={hasSubtasks}>
                     <Typography color="textSecondary" gutterBottom>
@@ -127,9 +124,9 @@ export default function TaskPage(props: TaskPageProps) {
                     )(activeSubtasks)}
                   </Typography>
                 </CardContent>
-              </Card>
-            </Zoom>
-          </Link>
+              </MuiLink>
+            </Card>
+          </Zoom>
         </Grid>
       </Grid>
       <Grid container justify="center" item xs={12}>

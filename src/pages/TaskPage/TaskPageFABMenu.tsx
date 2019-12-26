@@ -71,7 +71,7 @@ export default function TaskPageFABMenu(props: Props) {
 
   return (
     <div className={classes.root}>
-      <Backdrop open={true} />
+      <Backdrop open={open} />
       <SpeedDial
         //   TODO: i18n
         ariaLabel="SpeedDial tooltip example"

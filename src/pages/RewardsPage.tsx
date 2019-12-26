@@ -6,7 +6,7 @@ import React, { memo } from 'react';
 import CreateReward from '../components/rewards/CreateReward';
 import RewardsList from '../components/rewards/RewardsList';
 import { useTypedSelector } from '../store/index';
-import { Reward } from '../store/rewardsSlice';
+import { rewardsSelector } from '../store/selectors';
 
 const log = debug('RewardsPage');
 const useStyles = makeStyles(theme => ({
@@ -21,9 +21,7 @@ interface Props {}
 
 const RewardsPage: React.FC<Props> = () => {
   const cx = useStyles();
-  const rewards = useTypedSelector(
-    s => s.firestore.ordered.rewards as Reward[],
-  );
+  const rewards = useTypedSelector(rewardsSelector);
   log('rewards: %O', rewards);
 
   return (

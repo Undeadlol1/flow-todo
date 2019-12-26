@@ -102,5 +102,6 @@ export default {
     'if you spend atleast 5 minutes':
       'If you spent at least 5 minutes working on a task, no matter the outcome, you may click "made step forward". Good job.',
     pin: 'Pin',
+    'reset intervals': 'Reset intervals counter',
   },
 };

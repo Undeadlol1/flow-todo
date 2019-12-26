@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import RestoreIcon from '@material-ui/icons/Restore';
 import RoomIcon from '@material-ui/icons/Room';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
@@ -16,7 +17,11 @@ import { useFirestore } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useToggle from 'react-use/esm/useToggle';
 import { useFabStyles } from '../../components/ui/Fab';
-import { useTypedTranslate } from '../../services/index';
+import {
+  handleErrors,
+  showSnackbar,
+  useTypedTranslate,
+} from '../../services/index';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,23 +43,35 @@ export default function TaskPageFABMenu(props: Props) {
   const t = useTypedTranslate();
 
   function pin() {
-    firestoreRedux.update('tasks/' + props.taskId, {
-      isPinned: true,
-    });
+    firestoreRedux
+      .update('tasks/' + props.taskId, {
+        isPinned: true,
+      })
+      .catch(handleErrors);
     history.push('/');
+  }
+
+  function resetIntervals() {
+    firestoreRedux
+      .update('tasks/' + props.taskId, {
+        repetitionLevel: 0,
+      })
+      .then(() => showSnackbar(t('Successfully saved')))
+      .catch(handleErrors);
   }
 
   const actions = [
     { icon: <RoomIcon />, name: t('pin'), onClick: pin },
-    // { icon: <SaveIcon />, name: 'Save' },
-    // { icon: <PrintIcon />, name: 'Print' },
-    // { icon: <ShareIcon />, name: 'Share' },
-    // { icon: <FavoriteIcon />, name: 'Like' },
+    {
+      icon: <RestoreIcon />,
+      name: t('reset intervals'),
+      onClick: resetIntervals,
+    },
   ];
 
   return (
     <div className={classes.root}>
-      <Backdrop open={open} />
+      <Backdrop open={true} />
       <SpeedDial
         //   TODO: i18n
         ariaLabel="SpeedDial tooltip example"

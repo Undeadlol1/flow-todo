@@ -24,6 +24,7 @@ import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 
 let taskId = '';
 const log = debug('Pinnedtask');
@@ -39,10 +40,10 @@ export default memo(function PinnedTask() {
   if (isEmpty(task)) return null;
   if (task && task.id) taskId = task.id;
 
-  async function done() {
+  function done() {
     const points = 30;
     showSnackbar(t('goodJobPointsRecieved', { points }));
-    await Promise.all([
+    Promise.all([
       addPointsWithSideEffects(auth.uid, points),
       taskRef.update({
         isDone: true,
@@ -70,14 +71,16 @@ export default memo(function PinnedTask() {
         <SubtasksList documents={task.subtasks} />
       </CardContent>
       <CardActions>
-        {/* TODO aria */}
-        <IconButton aria-label="share" onClick={done}>
-          <DoneIcon />
-        </IconButton>
-        {/* TODO aria */}
-        <IconButton aria-label="add to favorites" onClick={unpin}>
-          <ClearIcon />
-        </IconButton>
+        <Tooltip title={t('done task')}>
+          <IconButton aria-label={t('done task')} onClick={done}>
+            <DoneIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={t('unpin')}>
+          <IconButton aria-label={t('unpin')} onClick={unpin}>
+            <ClearIcon />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );

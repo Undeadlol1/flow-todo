@@ -177,10 +177,8 @@ export function calculateTotalPointsToReachALevel(
 }
 
 export function calculatePointsToNextLevel(level: number) {
-  // "Disgea" formula is used
-  // http://howtomakeanrpg.com/a/how-to-make-an-rpg-levels.html
-  const baseXP = level <= 3 ? 30 : 10;
   const exponent = 1.1;
+  const baseXP = level <= 3 ? 30 : 10;
   return baseXP * ((level ^ exponent) | 1);
 }
 

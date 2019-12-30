@@ -1,4 +1,7 @@
-import { calculateNextRepetition } from './index';
+import {
+  calculateNextRepetition,
+  findSequenceDuplicates,
+} from './index';
 import nanoid from 'nanoid';
 
 describe('spacedRepetion()', () => {
@@ -11,5 +14,12 @@ describe('spacedRepetion()', () => {
       dueAt: Date.now(),
     });
     expect(typeof result).toBe('object');
+  });
+});
+
+describe('findSequenceDuplicates()', () => {
+  it('returns a value', () => {
+    const result = findSequenceDuplicates();
+    // expect(typeof result).toBe('object');
   });
 });

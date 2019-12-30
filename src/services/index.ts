@@ -26,6 +26,10 @@ import { sort, findLastIndex } from 'ramda';
 import { getFirebase } from 'react-redux-firebase';
 import random from 'lodash/random';
 import { toggleSidebar as toggleUiSidebar } from '../store/uiSlice';
+import languageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
+import enTranslations from '../locales/en';
+import ruTranslations from '../locales/ru';
 
 const logger = debug('utils');
 
@@ -273,4 +277,23 @@ export function getRandomTaskId(tasks: Task[]): string {
 
 export function toggleSidebar() {
   store.dispatch(toggleUiSidebar());
+}
+
+export function initializeI18n() {
+  return i18n
+    .use(languageDetector)
+    .use(initReactI18next)
+    .init({
+      lng: 'ru',
+      debug: false,
+      fallbackLng: 'en',
+      interpolation: {
+        // not needed for react as it escapes by default
+        escapeValue: false,
+      },
+      resources: {
+        en: enTranslations,
+        ru: ruTranslations,
+      },
+    });
 }

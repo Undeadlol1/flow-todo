@@ -1,7 +1,7 @@
 import Chip from '@material-ui/core/Chip';
 import React, { memo } from 'react';
 import CountUp from 'react-countup';
-import usePrevious from 'react-use/esm/usePrevious';
+import usePrevious from 'react-use/lib/usePrevious';
 import debug from 'debug';
 
 const logger = debug('UserPoints');

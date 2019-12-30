@@ -6,7 +6,7 @@ import invoke from 'lodash/invoke';
 import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import useToggle from 'react-use/esm/useToggle';
+import useToggle from 'react-use/lib/useToggle';
 import * as Yup from 'yup';
 import { createSubtask } from '../../../store/index';
 

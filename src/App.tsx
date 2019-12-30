@@ -8,8 +8,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
 import { useWindowSize } from '@reach/window-size';
 import i18n from 'i18next';
-import languageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import firebase from 'firebase/app';
@@ -18,9 +16,8 @@ import { createFirestoreInstance } from 'redux-firestore';
 import { ruRU, enUS } from '@material-ui/core/locale/';
 import store from './store';
 import Router from './Router';
-import en from './locales/en';
-import ru from './locales/ru';
 import './App.css';
+import { initializeI18n } from './services';
 
 initializeI18n();
 
@@ -82,25 +79,6 @@ function App() {
       </ReduxProvider>
     </div>
   );
-}
-
-export function initializeI18n() {
-  return i18n
-    .use(languageDetector)
-    .use(initReactI18next)
-    .init({
-      lng: 'ru',
-      debug: false,
-      fallbackLng: 'en',
-      interpolation: {
-        // not needed for react as it escapes by default
-        escapeValue: false,
-      },
-      resources: {
-        en,
-        ru,
-      },
-    });
 }
 
 export default App;

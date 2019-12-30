@@ -15,7 +15,7 @@ import invoke from 'lodash/invoke';
 import React from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
-import useToggle from 'react-use/esm/useToggle';
+import useToggle from 'react-use/lib/useToggle';
 import { useFabStyles } from '../../components/ui/Fab';
 import {
   handleErrors,

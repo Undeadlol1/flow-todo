@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import useToggle from 'react-use/esm/useToggle';
+import useToggle from 'react-use/lib/useToggle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import UpsertTask from './CreateTask/UpsertTask';

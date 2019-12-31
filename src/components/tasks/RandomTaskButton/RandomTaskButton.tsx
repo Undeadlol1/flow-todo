@@ -19,6 +19,7 @@ import { Task, useTypedSelector } from '../../../store/index';
 import { useSelector } from 'react-redux';
 import { activeTaskSelector } from '../../../store/selectors';
 import { tasksSelector, uiSelector } from '../../../store/selectors';
+import { useScreenIsNarrow } from '../../../services/index';
 
 const useStyles = makeStyles({
   paper: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles({
   buttonRoot: {
     padding: 0,
     textAlign: 'center',
+  },
+  fullWidth: {
+    width: '100%',
   },
 });
 
@@ -45,6 +49,7 @@ export const RandomTaskButton = ({
 }: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
+  const isScreenNarrow = useScreenIsNarrow();
 
   const docs = tasks || [];
   const firestore = useFirestore();
@@ -79,9 +84,19 @@ export const RandomTaskButton = ({
       disabled={isDisabled}
       component={isDisabled ? 'div' : Link}
       classes={{ root: classes.buttonRoot }}
-      className={clsx(['RandomTaskButton', className])}
+      className={clsx([
+        'RandomTaskButton',
+        className,
+        isScreenNarrow && classes.fullWidth,
+      ])}
     >
-      <Paper elevation={6} className={classes.paper}>
+      <Paper
+        elevation={6}
+        className={clsx({
+          [classes.paper]: true,
+          [classes.fullWidth]: isScreenNarrow,
+        })}
+      >
         <If condition={loading}>
           <Then>
             <CircularProgress />

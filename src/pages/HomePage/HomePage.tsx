@@ -12,6 +12,8 @@ import { Task, useTypedSelector } from '../../store/index';
 import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
 import { tasksSelector, uiSelector } from '../../store/selectors';
 import get from 'lodash/fp/get';
+import clsx from 'clsx';
+import { useScreenIsNarrow } from '../../services/index';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -22,6 +24,9 @@ const useStyles = makeStyles(theme => ({
   },
   randomButtonContainer: {
     margin: '0 auto',
+  },
+  fullWidth: {
+    width: '100%',
   },
 }));
 
@@ -34,6 +39,7 @@ interface Props {
 
 export const HomePage = memo(function HomePage(props: Props) {
   const classes = useStyles();
+  const isScreeenNarrow = useScreenIsNarrow();
 
   const {
     isLoading,
@@ -66,16 +72,19 @@ export const HomePage = memo(function HomePage(props: Props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid item xs={12} sm={12} md={8} lg={6}>
         <PinnedTask />
       </Grid>
       <Grid
         item
         xs={12}
-        sm={8}
+        sm={12}
         md={8}
         lg={6}
-        className={classes.randomButtonContainer}
+        className={clsx(
+          classes.randomButtonContainer,
+          isScreeenNarrow && classes.fullWidth,
+        )}
       >
         {renderButtonOrWelcomeCard()}
       </Grid>

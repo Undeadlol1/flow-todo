@@ -70,3 +70,6 @@ export const usersSelector = createSelector(
   get('users'),
   users => users as UsersState,
 );
+
+export const excludedTagsSelector = (state: RootReducer) =>
+  state.tasks.excludedTags;

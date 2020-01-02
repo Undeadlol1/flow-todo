@@ -4,10 +4,7 @@ import debug from 'debug';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 import React, { memo } from 'react';
-import {
-  tasksSelector,
-  excludedTagsSelector,
-} from '../../store/selectors';
+import { excludedTagsSelector } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { excludeTag, includeTag } from '../../store/tasksSlice';
 import { useTheme } from '@material-ui/core/styles';

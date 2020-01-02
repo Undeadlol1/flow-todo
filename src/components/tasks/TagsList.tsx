@@ -9,12 +9,14 @@ import {
   excludedTagsSelector,
 } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { excludeTag } from '../../store/tasksSlice';
+import { excludeTag, includeTag } from '../../store/tasksSlice';
+import { useTheme } from '@material-ui/core/styles';
 
 const log = debug('TagsList');
 
 export const TagsList: React.FC<{}> = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const tasks = useSelector(tasksSelector);
   const excludedTags = useSelector(excludedTagsSelector);
@@ -35,10 +37,17 @@ export const TagsList: React.FC<{}> = () => {
   return (
     <Box>
       {uniqueTags.map(tag => {
-        const isInactive = excludedTags.includes(tag);
-        const onClick = () => dispatch(excludeTag(tag));
+        const isActive = !excludedTags.includes(tag);
         return (
-          <Button disabled={isInactive} key={tag} onClick={onClick}>
+          <Button
+            key={tag}
+            onClick={() =>
+              dispatch(isActive ? excludeTag(tag) : includeTag(tag))
+            }
+            style={{
+              color: isActive ? 'inherit' : theme.palette.grey.A700,
+            }}
+          >
             {tag}
           </Button>
         );

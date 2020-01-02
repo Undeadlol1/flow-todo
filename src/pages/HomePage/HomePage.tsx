@@ -14,6 +14,7 @@ import { tasksSelector, uiSelector } from '../../store/selectors';
 import get from 'lodash/fp/get';
 import clsx from 'clsx';
 import { useScreenIsNarrow } from '../../services/index';
+import { TagsList } from '../../components/tasks/TagsList';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -87,6 +88,9 @@ export const HomePage = memo(function HomePage(props: Props) {
         )}
       >
         {renderButtonOrWelcomeCard()}
+      </Grid>
+      <Grid item xs={12} sm={8} md={8} lg={6}>
+        <TagsList />
       </Grid>
       <CreateTaskFab
         isHidden={isLoading}

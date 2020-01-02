@@ -17,6 +17,7 @@ import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
+import TagsForm from './TagsForm';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -103,7 +104,7 @@ const HardChoices = (
           </>
         </Collapsible>
       </Grid>
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <Collapsible title={t('add a tag')}>
           <>
             <Typography {...paragraphProps}>
@@ -118,7 +119,7 @@ const HardChoices = (
             />
           </>
         </Collapsible>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };

@@ -10,11 +10,25 @@ import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
 import isUndefined from 'lodash/isUndefined';
 
-export const tasksSelector = createSelector(
+export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
-  (tasks: Task[]) => {
+  (tasks: Task[]) => tasks,
+);
+
+export const excludedTagsSelector = (state: RootReducer) =>
+  state.tasks.excludedTags;
+
+export const tasksSelector = createSelector(
+  fetchedTasksSelector,
+  excludedTagsSelector,
+  (tasks: Task[], excludedTags) => {
     if (isUndefined(tasks)) return tasks;
-    return tasks.filter(i => !i.isPinned);
+    const tasksWithoutPinnedTask = tasks.filter(i => !i.isPinned);
+    const tasksWithoutExludedTags = tasksWithoutPinnedTask.filter(
+      ({ tags = [] }) =>
+        !tags.some(tag => excludedTags.includes(tag)),
+    );
+    return tasksWithoutExludedTags;
   },
 );
 
@@ -70,6 +84,3 @@ export const usersSelector = createSelector(
   get('users'),
   users => users as UsersState,
 );
-
-export const excludedTagsSelector = (state: RootReducer) =>
-  state.tasks.excludedTags;

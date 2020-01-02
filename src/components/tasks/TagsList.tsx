@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { excludeTag, includeTag } from '../../store/tasksSlice';
 import { useTheme } from '@material-ui/core/styles';
+import { fetchedTasksSelector } from '../../store/selectors';
 
 const log = debug('TagsList');
 
@@ -18,7 +19,7 @@ export const TagsList: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const tasks = useSelector(tasksSelector);
+  const tasks = useSelector(fetchedTasksSelector);
   const excludedTags = useSelector(excludedTagsSelector);
 
   if (!tasks) return null;

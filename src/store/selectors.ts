@@ -9,6 +9,8 @@ import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
 import isUndefined from 'lodash/isUndefined';
+import uniq from 'lodash/uniq';
+import isEmpty from 'lodash/isEmpty';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -35,6 +37,19 @@ export const tasksSelector = createSelector(
 export const activeTaskSelector = createSelector(
   tasksSelector,
   (tasks: Task[] = []) => tasks.find(i => !!i.isCurrent),
+);
+
+export const tagsOfFetchedTasksSelector = createSelector(
+  fetchedTasksSelector,
+  (tasks: Task[] = []): string[] => {
+    let allTags: string[] = [];
+    (tasks || [])
+      .filter(t => !isEmpty(t.tags))
+      .forEach(t => {
+        (t.tags as string[]).forEach(tag => allTags.push(tag));
+      });
+    return uniq(allTags);
+  },
 );
 
 export const pinnedTaskSelector = createSelector(

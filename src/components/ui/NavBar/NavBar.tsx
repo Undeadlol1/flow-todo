@@ -88,42 +88,51 @@ export const LoginOrLogoutButton = memo(() => {
   return (
     <>
       <Slide in timeout={500} direction="left">
-        <Button
-          component={Link}
-          to="/profile"
-          className={clsx(
-            classes.link,
-            isLevelUpAnimationActive && 'animated pulse infinite',
-          )}
-        >
-          <Box mr={0.5}>
-            <UserPoints value={points} isLoaded={profile.isLoaded} />
-          </Box>
-          <Badge
-            overlap="circle"
-            color="secondary"
-            // NOTE: "+1" is a quick fix
-            badgeContent={
-              profile.isLoaded &&
-              Math.trunc(calculateUserLevel(experience)) + 1
-            }
+        <Box mr={0.5}>
+          <Button
+            component={Link}
+            to="/profile"
+            className={clsx(
+              classes.link,
+              isLevelUpAnimationActive && 'animated pulse infinite',
+            )}
           >
-            <If condition={hasPhoto}>
-              <Then>
-                <Avatar
-                  src={user.photoURL as string}
-                  className={clsx(classes.avatar)}
-                />
-              </Then>
-              <Else>
-                <AccountCircle
-                  fontSize="large"
-                  className={classes.avatar}
-                />
-              </Else>
-            </If>
-          </Badge>
-        </Button>
+            <UserPoints value={points} isLoaded={profile.isLoaded} />
+          </Button>
+          <Button
+            component={Link}
+            to="/profile"
+            className={clsx(
+              classes.link,
+              isLevelUpAnimationActive && 'animated pulse infinite',
+            )}
+          >
+            <Badge
+              overlap="circle"
+              color="secondary"
+              // NOTE: "+1" is a quick fix
+              badgeContent={
+                profile.isLoaded &&
+                Math.trunc(calculateUserLevel(experience)) + 1
+              }
+            >
+              <If condition={hasPhoto}>
+                <Then>
+                  <Avatar
+                    src={user.photoURL as string}
+                    className={clsx(classes.avatar)}
+                  />
+                </Then>
+                <Else>
+                  <AccountCircle
+                    fontSize="large"
+                    className={classes.avatar}
+                  />
+                </Else>
+              </If>
+            </Badge>
+          </Button>
+        </Box>
       </Slide>
     </>
   );

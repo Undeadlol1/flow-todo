@@ -91,7 +91,7 @@ export const LoginOrLogoutButton = memo(() => {
         <Box mr={0.5}>
           <Button
             component={Link}
-            to="/profile"
+            to="/rewards"
             className={clsx(
               classes.link,
               isLevelUpAnimationActive && 'animated pulse infinite',

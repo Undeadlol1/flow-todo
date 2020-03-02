@@ -9,6 +9,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import GitftIcon from '@material-ui/icons/Redeem';
 import ShareIcon from '@material-ui/icons/Share';
+import HelpIcon from '@material-ui/icons/Help';
 import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
@@ -112,6 +113,19 @@ const Sidebar: React.FC<{}> = () => {
             <StyledListText primary={t('share')} />
           </ListItem>
         </When>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/fag');
+            toggleSidebar();
+          }}
+        >
+          <ListItemIcon>
+            <HelpIcon />
+          </ListItemIcon>
+          {/* TODO: add translations */}
+          <StyledListText primary={'FAQ'} />
+        </ListItem>
         <Unless condition={isUndefined(isAnonymous)}>
           <ListItem button onClick={logoutOrRedirect}>
             <ListItemIcon>

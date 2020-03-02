@@ -22,6 +22,7 @@ import {
 } from './store/selectors';
 import { handleErrors } from './services/index';
 import WebShareTargetPage from './pages/WebShareTargetPage';
+import FAQPage from './pages/FAQPage';
 
 const today = Date.now();
 
@@ -110,6 +111,9 @@ export default memo(function Router() {
           </Route>
           <Route path="/profile">
             <ProfilePageContainer />
+          </Route>
+          <Route path="/fag">
+            <FAQPage />
           </Route>
           <Route path="/web-share-target">
             <WebShareTargetPage />

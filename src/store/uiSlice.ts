@@ -38,10 +38,7 @@ const uiSlice = createSlice({
     toggleRewardModal(state) {
       state.isRewardModalOpen = !state.isRewardModalOpen;
     },
-    setPreferedColorScheme(
-      state,
-      { payload }: PayloadAction<UiColorScheme>,
-    ) {
+    setColorScheme(state, { payload }: PayloadAction<UiColorScheme>) {
       state.preferedColorScheme = payload;
       localStorage.setItem('prereferedColorScheme', payload);
     },
@@ -52,7 +49,7 @@ export const {
   toggleAppTour,
   toggleSidebar,
   toggleRewardModal,
-  setPreferedColorScheme,
+  setColorScheme,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

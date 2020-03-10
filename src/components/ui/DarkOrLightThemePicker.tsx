@@ -8,10 +8,7 @@ import Card from '@material-ui/core/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSelector } from '../../store/selectors';
 import { useTypedTranslate } from '../../services/index';
-import {
-  setPreferedColorScheme,
-  UiColorScheme,
-} from '../../store/uiSlice';
+import { setColorScheme, UiColorScheme } from '../../store/uiSlice';
 
 const DarkOrLightThemePicker = () => {
   const t = useTypedTranslate();
@@ -24,9 +21,7 @@ const DarkOrLightThemePicker = () => {
       name?: string | undefined;
     }>,
   ) {
-    dispatch(
-      setPreferedColorScheme(event.target.value as UiColorScheme),
-    );
+    dispatch(setColorScheme(event.target.value as UiColorScheme));
   }
 
   return (

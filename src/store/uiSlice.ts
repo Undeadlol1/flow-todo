@@ -12,17 +12,16 @@ export type UiState = {
 
 const prereferedColorScheme = localStorage.getItem(
   'prereferedColorScheme',
-) as UiColorScheme | 'undefined';
+) as UiColorScheme | null;
 
 const initialState: UiState = {
   loading: true,
   isSidebarOpen: false,
   isAppTourActive: false,
   isRewardModalOpen: false,
-  preferedColorScheme:
-    prereferedColorScheme === 'undefined'
-      ? 'light'
-      : prereferedColorScheme,
+  preferedColorScheme: prereferedColorScheme
+    ? prereferedColorScheme
+    : 'light',
 };
 
 const uiSlice = createSlice({

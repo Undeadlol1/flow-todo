@@ -21,6 +21,7 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import { Profile, useTypedSelector } from '../../store/index';
+import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 
 const log = debug('ProfilePage');
 const useStyles = makeStyles(theme => ({
@@ -97,6 +98,9 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
             </ListItem>
           </List>
         </Card>
+        <Box mt={2}>
+          <DarkOrLightThemePicker />
+        </Box>
       </Grid>
     </Grid>
   );

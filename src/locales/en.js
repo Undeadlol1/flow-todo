@@ -104,5 +104,8 @@ export default {
     pin: 'Pin',
     unpin: 'Unpin',
     'reset intervals': 'Reset intervals counter',
+    select_theme: 'Select a theme',
+    select_theme_dark: 'Dark',
+    select_theme_light: 'Light',
   },
 };

@@ -106,5 +106,8 @@ export default {
     pin: 'Закрепить',
     unpin: 'Открепить',
     'reset intervals': 'Обнулить счетчик интервалов',
+    select_theme: 'Выберите тему',
+    select_theme_dark: 'Тëмная',
+    select_theme_light: 'Светлая',
   },
 };

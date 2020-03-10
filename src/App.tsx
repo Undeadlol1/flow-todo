@@ -1,46 +1,22 @@
-import React from 'react';
-import {
-  ThemeProvider,
-  createMuiTheme,
-} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { useWindowSize } from '@reach/window-size';
-import i18n from 'i18next';
-import { Provider as ReduxProvider } from 'react-redux';
-import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import firebase from 'firebase/app';
+import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
+import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
+import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
-import { ruRU, enUS } from '@material-ui/core/locale/';
-import store from './store';
-import Router from './Router';
 import './App.css';
+import Router from './Router';
 import { initializeI18n } from './services';
+import store from './store';
+import { Theme } from './Theme';
 
 initializeI18n();
 
 function App() {
-  const { language } = i18n;
-  const prefersDarkMode = useMediaQuery(
-    '(prefers-color-scheme: dark)',
-  );
-  const theme = React.useMemo(
-    () =>
-      createMuiTheme(
-        {
-          palette: {
-            primary: { main: '#81D4FA' },
-            secondary: { main: '#00838F', contrastText: '#ffffff' },
-            type: prefersDarkMode ? 'dark' : 'light',
-          },
-        },
-        // @ts-ignore
-        { ru: ruRU, en: enUS }[language],
-      ),
-    [language, prefersDarkMode],
-  );
+  const theme = React.useMemo(() => createMuiTheme(), []);
   const isMobile =
     useWindowSize().width < theme.breakpoints.values.sm;
 
@@ -58,8 +34,7 @@ function App() {
     <div className="App">
       <ReduxProvider store={store}>
         <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+          <Theme>
             <MaterialSnackbarProvider
               SnackbarProps={{ autoHideDuration: 4000 }}
             >
@@ -74,7 +49,7 @@ function App() {
                 <Router />
               </NotistackSnackbarProver>
             </MaterialSnackbarProvider>
-          </ThemeProvider>
+          </Theme>
         </ReactReduxFirebaseProvider>
       </ReduxProvider>
     </div>

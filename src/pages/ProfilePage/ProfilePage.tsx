@@ -23,7 +23,6 @@ import {
 import { Profile, useTypedSelector } from '../../store/index';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 
-const log = debug('ProfilePage');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     marginTop: 0,
@@ -108,6 +107,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
 
 export const ProfilePageContainer = memo(
   function ProfilePageContainer(props) {
+    const log = debug('ProfilePage');
     const user = useTypedSelector(s => get(s, 'firebase.auth'));
     const profile = useTypedSelector(s => get(s, 'firebase.profile'));
     const isLoading = !(user.isLoaded && profile.isLoaded);

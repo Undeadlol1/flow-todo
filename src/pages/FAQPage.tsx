@@ -39,7 +39,7 @@ const FAQPage = memo(function FAQPage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={6}>
-        <Box mb={2}>
+        <Box mb={4}>
           <Typography align="center" variant="h1">
             {t('frequently asked questions')}
           </Typography>

@@ -124,7 +124,7 @@ const Sidebar: React.FC<{}> = () => {
             <HelpIcon />
           </ListItemIcon>
           {/* TODO: add translations */}
-          <StyledListText primary={'FAQ'} />
+          <StyledListText primary={t('faq')} />
         </ListItem>
         <Unless condition={isUndefined(isAnonymous)}>
           <ListItem button onClick={logoutOrRedirect}>

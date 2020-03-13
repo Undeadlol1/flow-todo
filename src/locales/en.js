@@ -107,5 +107,7 @@ export default {
     select_theme: 'Select a theme',
     select_theme_dark: 'Dark',
     select_theme_light: 'Light',
+    faq: 'FAQ',
+    'frequently asked questions': 'Frequently Asked Questions',
   },
 };

@@ -6,6 +6,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { useTypedTranslate } from '../services/index';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -24,6 +26,7 @@ const data = [
 ];
 
 const FAQPage = memo(function FAQPage() {
+  const t = useTypedTranslate();
   const classes = useStyles();
 
   return (
@@ -36,10 +39,12 @@ const FAQPage = memo(function FAQPage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={6}>
+        <Box mb={2}>
+          <Typography align="center" variant="h1">
+            {t('frequently asked questions')}
+          </Typography>
+        </Box>
         {/* TODO: i18n */}
-        <Typography align="center" variant="h1">
-          FAQ
-        </Typography>
         {data.map(i => (
           <ExpansionPanel>
             <ExpansionPanelSummary

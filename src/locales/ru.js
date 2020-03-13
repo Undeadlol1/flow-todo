@@ -109,5 +109,7 @@ export default {
     select_theme: 'Выберите тему',
     select_theme_dark: 'Тëмная',
     select_theme_light: 'Светлая',
+    faq: 'ЧаВо',
+    'frequently asked questions': 'Часто Задаваемые Вопросы',
   },
 };

@@ -73,7 +73,7 @@ const TaskChoices = (props: Props) => {
         createdAt: Date.now(),
         // @ts-ignore
         actionType:
-          confidence === 'normal' ? 'stepForwardA' : 'leapForward',
+          confidence === 'normal' ? 'stepForward' : 'leapForward',
       },
       pointsToAdd: confidence === 'normal' ? 10 : 20,
       snackbarMessage: t('important to step forward'),

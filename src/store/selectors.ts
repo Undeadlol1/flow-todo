@@ -4,7 +4,7 @@ import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { Profile, Task, RootReducer } from './index';
+import { Profile, Task, RootReducer, TaskHistory } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
@@ -15,6 +15,11 @@ import isEmpty from 'lodash/isEmpty';
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
   (tasks: Task[]) => tasks,
+);
+
+export const taskLogsSelector = createSelector(
+  get('firestore.ordered.taskLogs'),
+  (tasks: TaskHistory[]) => tasks,
 );
 
 export const excludedTagsSelector = (state: RootReducer) =>

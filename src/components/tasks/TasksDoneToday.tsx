@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { useSelector } from 'react-redux';
-import { tasksHistorySelector } from '../../store/selectors';
+import { taskLogsSelector as taskLogs } from '../../store/selectors';
 import includes from 'ramda/es/includes';
 import compose from 'lodash/fp/compose';
 import size from 'lodash/fp/size';
@@ -29,7 +29,7 @@ const TasksDoneToday: React.FC<{}> = () => {
     filter(({ actionType }) =>
       includes(actionType, ['stepForward', 'leapForward', 'setDone']),
     ),
-  )(useSelector(tasksHistorySelector));
+  )(useSelector(taskLogs));
 
   return (
     <>

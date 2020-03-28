@@ -23,8 +23,10 @@ import {
 import { handleErrors } from './services/index';
 import WebShareTargetPage from './pages/WebShareTargetPage';
 import FAQPage from './pages/FAQPage';
+import subDays from 'date-fns/subDays';
 
 const today = Date.now();
+const yesterday = subDays(today, 1).getTime();
 
 export default memo(function Router() {
   const user = useTypedSelector(authSelector);
@@ -69,6 +71,14 @@ export default memo(function Router() {
         ['dueAt', '<', today],
       ],
       storeAs: 'activeTasks',
+      limit: 100,
+    },
+    {
+      collection: 'taskLogs',
+      where: [
+        ['userId', '==', userId],
+        ['createdAt', '>', yesterday],
+      ],
       limit: 100,
     },
     {

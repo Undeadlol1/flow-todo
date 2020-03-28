@@ -109,7 +109,15 @@ export default memo(() => {
           await firestoreRedux.doc('tasks/' + taskId).update({
             ...task,
             ...values,
+            // TODO make sure subcollections instead of array are
+            // working properly and remove this line
             history: [...get(task, 'history', []), historyToAdd],
+          }),
+          await firestoreRedux.collection('taskHistory').add({
+            ...historyToAdd,
+            taskId: taskId,
+            userId: task.userId,
+            createdAt: Date.now(),
           }),
           await addPointsWithSideEffects(task.userId, pointsToAdd),
           nextTaskId

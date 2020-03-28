@@ -22,7 +22,7 @@ const TasksDoneToday: React.FC<{}> = () => {
   const classes = useStyles();
   const t = useTypedTranslate();
 
-  const tasksPerDay = 5;
+  const tasksPerDay = 3;
   const logs = useSelector(taskLogs);
   const tasksToday = compose(
     size,

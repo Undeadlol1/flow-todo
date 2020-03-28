@@ -15,6 +15,7 @@ import get from 'lodash/fp/get';
 import clsx from 'clsx';
 import { useScreenIsNarrow } from '../../services/index';
 import { TagsList } from '../../components/tasks/TagsList';
+import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -74,6 +75,7 @@ export const HomePage = memo(function HomePage(props: Props) {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={12} md={8} lg={6}>
+        <TasksDoneToday />
         <PinnedTask />
       </Grid>
       <Grid

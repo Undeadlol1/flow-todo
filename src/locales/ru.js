@@ -111,5 +111,6 @@ export default {
     select_theme_light: 'Светлая',
     faq: 'ЧаВо',
     'frequently asked questions': 'Часто Задаваемые Вопросы',
+    completed_tasks_today: 'Выполнено задач сегодня',
   },
 };

@@ -109,5 +109,6 @@ export default {
     select_theme_light: 'Light',
     faq: 'FAQ',
     'frequently asked questions': 'Frequently Asked Questions',
+    completed_tasks_today: 'Tasks completed today',
   },
 };

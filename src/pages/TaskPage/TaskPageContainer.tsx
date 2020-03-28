@@ -113,7 +113,7 @@ export default memo(() => {
             // working properly and remove this line
             history: [...get(task, 'history', []), historyToAdd],
           }),
-          await firestoreRedux.collection('taskHistory').add({
+          await firestoreRedux.collection('taskLogs').add({
             ...historyToAdd,
             taskId: taskId,
             userId: task.userId,

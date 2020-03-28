@@ -26,7 +26,6 @@ const TasksDoneToday: React.FC<{}> = () => {
   const logs = useSelector(taskLogs);
   const tasksToday = compose(
     size,
-    // @ts-ignore
     filter(({ actionType }) =>
       includes(actionType, ['stepForward', 'leapForward', 'setDone']),
     ),

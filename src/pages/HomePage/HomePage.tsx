@@ -60,7 +60,12 @@ export const HomePage = memo(function HomePage(props: Props) {
       isAppTourActive ||
       !isEmpty(createdAtleastOneTask)
     )
-      return <GetRandomTask className={'IntroHandle__taskButton'} />;
+      return (
+        <>
+          <TasksDoneToday />
+          <GetRandomTask className={'IntroHandle__taskButton'} />;
+        </>
+      );
     else return <WelcomeCard />;
   }
 
@@ -75,7 +80,6 @@ export const HomePage = memo(function HomePage(props: Props) {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={12} md={8} lg={6}>
-        <TasksDoneToday />
         <PinnedTask />
       </Grid>
       <Grid

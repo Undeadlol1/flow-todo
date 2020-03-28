@@ -23,14 +23,16 @@ const TasksDoneToday: React.FC<{}> = () => {
   const t = useTypedTranslate();
 
   const tasksPerDay = 5;
+  const logs = useSelector(taskLogs);
   const tasksToday = compose(
     size,
     // @ts-ignore
     filter(({ actionType }) =>
       includes(actionType, ['stepForward', 'leapForward', 'setDone']),
     ),
-  )(useSelector(taskLogs));
+  )(logs);
 
+  if (typeof logs === 'undefined' || null) return null;
   return (
     <>
       <Card>

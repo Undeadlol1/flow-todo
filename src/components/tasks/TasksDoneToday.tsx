@@ -23,13 +23,14 @@ const TasksDoneToday: React.FC<{}> = () => {
 
   const tasksPerDay = 3;
   const logs = useSelector(taskLogs);
-  const tasksToday = countBy(logs, log =>
-    includes(log.actionType, [
-      'stepForward',
-      'leapForward',
-      'setDone',
-    ]),
-  ).true;
+  const tasksToday =
+    countBy(logs, log =>
+      includes(log.actionType, [
+        'stepForward',
+        'leapForward',
+        'setDone',
+      ]),
+    ).true || 0;
 
   if (isLoaded(logs))
     return (

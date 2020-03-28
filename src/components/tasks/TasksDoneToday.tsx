@@ -7,10 +7,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { useSelector } from 'react-redux';
 import { taskLogsSelector as taskLogs } from '../../store/selectors';
 import includes from 'ramda/es/includes';
-import compose from 'lodash/fp/compose';
-import size from 'lodash/fp/size';
-import filter from 'lodash/fp/filter';
 import { useTypedTranslate } from '../../services/index';
+import { isLoaded } from 'react-redux-firebase';
+import countBy from 'lodash/countBy';
 
 const useStyles = makeStyles({
   progress: {
@@ -24,39 +23,41 @@ const TasksDoneToday: React.FC<{}> = () => {
 
   const tasksPerDay = 3;
   const logs = useSelector(taskLogs);
-  const tasksToday = compose(
-    size,
-    filter(({ actionType }) =>
-      includes(actionType, ['stepForward', 'leapForward', 'setDone']),
-    ),
-  )(logs);
+  const tasksToday = countBy(logs, log =>
+    includes(log.actionType, [
+      'stepForward',
+      'leapForward',
+      'setDone',
+    ]),
+  ).true;
 
-  if (typeof logs === 'undefined' || null) return null;
-  return (
-    <>
-      <Card>
-        <CardHeader
-          title={
-            t('completed_tasks_today') +
-            `: ${tasksToday}/${tasksPerDay}`
-          }
-        />
-        <CardContent>
-          <MobileStepper
-            steps={tasksPerDay + 1}
-            variant="progress"
-            position="static"
-            classes={classes}
-            activeStep={
-              tasksToday > tasksPerDay ? tasksPerDay : tasksToday
+  if (isLoaded(logs))
+    return (
+      <>
+        <Card>
+          <CardHeader
+            title={
+              t('completed_tasks_today') +
+              `: ${tasksToday}/${tasksPerDay}`
             }
-            nextButton={<div />}
-            backButton={<div />}
           />
-        </CardContent>
-      </Card>
-    </>
-  );
+          <CardContent>
+            <MobileStepper
+              steps={tasksPerDay + 1}
+              variant="progress"
+              position="static"
+              classes={classes}
+              activeStep={
+                tasksToday > tasksPerDay ? tasksPerDay : tasksToday
+              }
+              nextButton={<div />}
+              backButton={<div />}
+            />
+          </CardContent>
+        </Card>
+      </>
+    );
+  else return null;
 };
 
 export default React.memo(TasksDoneToday);

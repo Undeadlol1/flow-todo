@@ -27,15 +27,17 @@ const data = [
     'Задачи которые не особо важны и которые вечно откладываешь в долгий ящик.',
     'Тем не менее, которые неплохо было бы сделать.',
     'Например: выкинуть ненужные вещи, убраться на балконе.',
-    ,
+  ],
+  [
+    'Где все мои задачи?',
+    'Приложение намеренно скрывает от вас список всех задач. Это часть дизайна.',
+    'То есть, после того как вы добавили задачу в приложение, вы не должны о ней беспокоиться. Программа сама решит когда вы должны будете заняться задачей. В этом ее предназначение. Она создана для того чтобы облегчать вам жизнь, чтобы помогать вам перестать беспокоиться о невыполненных делах.',
   ],
   ['Куда пропадают мои задачи?', ''],
-  ['Где все мои задачи?', ''],
   [
     'Что значит "аноним"? Зачем регистрироваться?',
     'Аноним - анонимный пользователь. По-умолчанию все пользователи анонимны. Это позволяет вам пользоваться приложением без регистрации.',
     'ВНИМАНИЕ: если вы не зарегистрируетесь то в будущем ваши данные будут потеряны.',
-    ,
   ],
 ];
 
@@ -59,8 +61,8 @@ const FAQPage = memo(function FAQPage() {
           </Typography>
         </Box>
         {/* TODO: i18n */}
-        {data.map(([question, ...answerParagpraphs]) => (
-          <ExpansionPanel>
+        {data.map(([question, ...answerParagpraphs], index) => (
+          <ExpansionPanel key={index}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -71,9 +73,11 @@ const FAQPage = memo(function FAQPage() {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Box>
+              <Box key={index}>
                 {answerParagpraphs.map(answer => (
-                  <Typography paragraph>{answer}</Typography>
+                  <Typography paragraph key={answer}>
+                    {answer}
+                  </Typography>
                 ))}
               </Box>
             </ExpansionPanelDetails>

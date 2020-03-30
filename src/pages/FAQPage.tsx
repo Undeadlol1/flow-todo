@@ -18,9 +18,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const data = [
-  ['Что это за приложение?', 'Тест'],
-  ['Зачем оно нужно?', ''],
-  ['Какие задачи решает?', ''],
+  [
+    'Что это за приложение?',
+    'Оно помогает выполнять дела которые ты вечно откладываешь.',
+  ],
+  [
+    'Какие задачи решает?',
+    ` Задачи которые не особо важны и которые вечно откладываешь в долгий ящик.
+    Тем не менее, которые неплохо было бы сделать.
+    Например: выкинуть ненужные вещи, убраться на балконе.`,
+  ],
   ['Куда пропадают мои задачи?', ''],
   ['Где все мои задачи?', ''],
   ['Что значит "аноним"?', ''],
@@ -40,8 +47,8 @@ const FAQPage = memo(function FAQPage() {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={6}>
-        <Box mb={4}>
-          <Typography align="center" variant="h1">
+        <Box mb={4} textAlign="center">
+          <Typography variant="h1">
             {t('frequently asked questions')}
           </Typography>
         </Box>
@@ -58,7 +65,7 @@ const FAQPage = memo(function FAQPage() {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>{i[1]}</Typography>
+              <Typography paragraph>{i[1]}</Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         ))}

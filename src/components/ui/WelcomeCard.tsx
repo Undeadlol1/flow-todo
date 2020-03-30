@@ -28,13 +28,10 @@ const WelcomeCard: React.FC<Props> = () => {
   return (
     <Paper className={classes.container} elevation={6}>
       <img className={classes.image} src="/images/logo.png" alt="" />
+      {/* TODO: i18n */}
       <Typography paragraph>
         Вы когда-нибудь откладывали задачи на потом и никогда не
         возвращались к ним?
-      </Typography>
-      <Typography paragraph>
-        Когда-нибудь думали что "неплохо было бы сделать Х" и никогда
-        не делали?
       </Typography>
       <Typography paragraph>
         Когда-нибудь оставляли задачи невыполненными потому что

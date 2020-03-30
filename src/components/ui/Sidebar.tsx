@@ -116,7 +116,7 @@ const Sidebar: React.FC<{}> = () => {
         <ListItem
           button
           onClick={() => {
-            history.push('/fag');
+            history.push('/faq');
             toggleSidebar();
           }}
         >

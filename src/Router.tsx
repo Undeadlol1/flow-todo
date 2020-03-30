@@ -122,7 +122,7 @@ export default memo(function Router() {
           <Route path="/profile">
             <ProfilePageContainer />
           </Route>
-          <Route path="/fag">
+          <Route path="/faq">
             <FAQPage />
           </Route>
           <Route path="/web-share-target">

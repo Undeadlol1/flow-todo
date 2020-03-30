@@ -34,8 +34,9 @@ export const Theme: FunctionComponent<{}> = React.memo(
     // Make font sizes responsive
     // @ts-ignore
     theme.typography.h1 = {
-      [theme.breakpoints.down('md')]: {
-        fontSize: '2.4rem',
+      fontSize: '2.4rem',
+      [theme.breakpoints.up('sm')]: {
+        fontSize: '3rem',
       },
     };
 

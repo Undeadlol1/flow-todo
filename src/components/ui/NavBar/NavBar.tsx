@@ -159,7 +159,7 @@ export default memo(() => {
               className={clsx([classes.title])}
             >
               <Link className={classes.link} to="/">
-                Flow TODO
+                Долгий Ящик
               </Link>
             </Typography>
           </Fade>

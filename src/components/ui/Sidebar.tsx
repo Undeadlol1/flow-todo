@@ -75,7 +75,7 @@ const Sidebar: React.FC<{}> = () => {
 
   function shareMainPage() {
     share({
-      title: 'Flow TODO',
+      title: 'Долгий Ящик',
       text: t('gamified todo list'),
       url: get(window, 'location.origin'),
     });

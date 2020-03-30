@@ -1,6 +1,6 @@
 {
-  "short_name": "TODO",
-  "name": "Flow TODO",
+  "short_name": "Долгий Ящик",
+  "name": "Долгий Ящик",
   "start_url": ".",
   "display": "standalone",
   "share_target": {

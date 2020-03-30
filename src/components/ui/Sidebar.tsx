@@ -7,7 +7,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
-import GitftIcon from '@material-ui/icons/Redeem';
 import ShareIcon from '@material-ui/icons/Share';
 import HelpIcon from '@material-ui/icons/Help';
 import debug from 'debug';
@@ -88,23 +87,15 @@ const Sidebar: React.FC<{}> = () => {
         <ListItem
           button
           onClick={() => {
-            history.push('/rewards');
+            history.push('/faq');
             toggleSidebar();
           }}
         >
           <ListItemIcon>
-            <GitftIcon />
+            <HelpIcon />
           </ListItemIcon>
-          <StyledListText primary={t('rewards')} />
+          <StyledListText primary={t('faq')} />
         </ListItem>
-        <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
-          <ListItem button>
-            <ListItemIcon>
-              <EmailIcon />
-            </ListItemIcon>
-            <StyledListText primary={t('feedback')} />
-          </ListItem>
-        </MailTo>
         <When condition={isShareSupported}>
           <ListItem button onClick={shareMainPage}>
             <ListItemIcon>
@@ -113,19 +104,14 @@ const Sidebar: React.FC<{}> = () => {
             <StyledListText primary={t('share')} />
           </ListItem>
         </When>
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/faq');
-            toggleSidebar();
-          }}
-        >
-          <ListItemIcon>
-            <HelpIcon />
-          </ListItemIcon>
-          {/* TODO: add translations */}
-          <StyledListText primary={t('faq')} />
-        </ListItem>
+        <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
+          <ListItem button>
+            <ListItemIcon>
+              <EmailIcon />
+            </ListItemIcon>
+            <StyledListText primary={t('feedback')} />
+          </ListItem>
+        </MailTo>
         <Unless condition={isUndefined(isAnonymous)}>
           <ListItem button onClick={logoutOrRedirect}>
             <ListItemIcon>

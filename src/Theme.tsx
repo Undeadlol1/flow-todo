@@ -30,6 +30,13 @@ export const Theme: FunctionComponent<{}> = ({ children }) => {
       ),
     [language, uiState.preferedColorScheme],
   );
+  // Make font sizes responsive
+  // @ts-ignore
+  theme.typography.h1 = {
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2.4rem',
+    },
+  };
 
   return (
     <ThemeProvider theme={theme}>

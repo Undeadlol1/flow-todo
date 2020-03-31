@@ -23,10 +23,11 @@ import {
 import { handleErrors } from './services/index';
 import WebShareTargetPage from './pages/WebShareTargetPage';
 import FAQPage from './pages/FAQPage';
-import subDays from 'date-fns/subDays';
+import subHours from 'date-fns/subHours';
+import getHours from 'date-fns/getHours';
 
 const today = Date.now();
-const yesterday = subDays(today, 1).getTime();
+const yesterday = subHours(today, getHours(today)).getTime();
 
 export default memo(function Router() {
   const user = useTypedSelector(authSelector);

@@ -71,7 +71,7 @@ const FAQPage = memo(function FAQPage() {
         </Box>
         {/* TODO: i18n */}
         {data.map(([question, ...answerParagpraphs], index) => (
-          <ExpansionPanel key={index} expanded>
+          <ExpansionPanel key={index}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"

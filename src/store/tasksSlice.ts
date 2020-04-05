@@ -7,6 +7,10 @@ interface TasksState {
   tasks?: Task[];
   loading: boolean;
   error: string | null;
+  // NOTE: there might be a situation where only one array is used
+  // TODO: make sure only relevant code exists
+  activeTags: string[];
+  // TODO: change to "inactiveTags"?
   excludedTags: string[];
 }
 
@@ -14,6 +18,7 @@ const initialState: TasksState = {
   tasks: [],
   error: null,
   loading: false,
+  activeTags: [],
   excludedTags: [],
 };
 
@@ -31,11 +36,16 @@ const tasksSlice = createSlice({
     },
     excludeTag(state, action: PayloadAction<string>) {
       state.excludedTags.push(action.payload);
+      state.activeTags = filter(
+        state.activeTags,
+        tag => tag !== action.payload,
+      );
     },
-    includeTag(state, action: PayloadAction<string>) {
+    includeTag(state, { payload }: PayloadAction<string>) {
+      state.activeTags.push(payload);
       state.excludedTags = filter(
         state.excludedTags,
-        tag => tag !== action.payload,
+        tag => tag !== payload,
       );
     },
   },

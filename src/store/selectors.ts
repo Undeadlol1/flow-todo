@@ -25,6 +25,9 @@ export const taskLogsSelector = createSelector(
 export const excludedTagsSelector = (state: RootReducer) =>
   state.tasks.excludedTags;
 
+export const activeTagsSelector = (state: RootReducer) =>
+  state.tasks.activeTags;
+
 export const tasksSelector = createSelector(
   fetchedTasksSelector,
   excludedTagsSelector,

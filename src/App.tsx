@@ -34,7 +34,7 @@ function App() {
     <div className="App">
       <ReduxProvider store={store}>
         <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
-          <Theme>
+          <Theme isMobile={isMobile}>
             <MaterialSnackbarProvider
               SnackbarProps={{ autoHideDuration: 4000 }}
             >

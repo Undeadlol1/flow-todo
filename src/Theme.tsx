@@ -85,7 +85,7 @@ export const Theme: FunctionComponent<{
         // @ts-ignore
         { ru: ruRU, en: enUS }[language],
       ),
-    [language, uiState.preferedColorScheme],
+    [language, uiState.preferedColorScheme, isMobile],
   );
   // Make font sizes responsive
   // @ts-ignore

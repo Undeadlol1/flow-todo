@@ -41,7 +41,7 @@ export const Theme: FunctionComponent<{
                   margin: 'dense',
                 },
                 MuiIconButton: {
-                  size: 'small',
+                  size: 'medium',
                 },
                 MuiInputBase: {
                   margin: 'dense',
@@ -56,7 +56,7 @@ export const Theme: FunctionComponent<{
                   margin: 'dense',
                 },
                 MuiFab: {
-                  size: 'small',
+                  size: 'medium',
                 },
                 MuiTable: {
                   size: 'small',

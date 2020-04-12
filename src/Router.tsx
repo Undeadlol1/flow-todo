@@ -9,7 +9,7 @@ import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
-import HomePage from './pages/HomePage/HomePage';
+import HomePage from './pages/IndexPage/IndexPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
 import RewardsPage from './pages/RewardsPage';
 import SignInPage from './pages/SignInPage';

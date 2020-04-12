@@ -40,7 +40,7 @@ interface Props {
   createdAtleastOneTask?: Task[];
 }
 
-export const HomePage = memo(function HomePage(props: Props) {
+export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
 
@@ -121,7 +121,7 @@ export default memo(function HomePageContainer(props) {
   const isLoading =
     isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   return (
-    <HomePage
+    <IndexPage
       {...{
         isLoading,
         activeTasks,

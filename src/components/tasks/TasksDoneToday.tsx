@@ -10,6 +10,8 @@ import includes from 'ramda/es/includes';
 import { useTypedTranslate } from '../../services/index';
 import { isLoaded } from 'react-redux-firebase';
 import countBy from 'lodash/countBy';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
   progress: {
@@ -32,7 +34,9 @@ const TasksDoneToday: React.FC<{}> = () => {
       ]),
     ).true || 0;
 
-  if (isLoaded(logs))
+  if (!isLoaded(logs))
+    return <Skeleton component={Box} width="100%" height="200px" />;
+  else
     return (
       <>
         <Card>
@@ -58,7 +62,6 @@ const TasksDoneToday: React.FC<{}> = () => {
         </Card>
       </>
     );
-  else return null;
 };
 
 export default React.memo(TasksDoneToday);

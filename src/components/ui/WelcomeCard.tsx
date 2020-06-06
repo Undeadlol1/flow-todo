@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   image: {
+    width: '100%',
     margin: '0 auto',
     display: 'block',
     paddingBottom: theme.spacing(3),

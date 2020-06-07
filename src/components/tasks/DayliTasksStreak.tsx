@@ -1,13 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const DayliTasksStreak = () => {
-    return null
-    return (
-        <div>
-            <p>"Стрик законченных задач."</p>
-            <p>Этот компонент находится в разработке.</p>
-        </div>
-    )
-}
+  return null;
+};
 
-export default DayliTasksStreak
+export default DayliTasksStreak;

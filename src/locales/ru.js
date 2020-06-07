@@ -29,7 +29,7 @@ export default {
     'Edit the note': 'Обновить заметку',
     'A note': 'Заметка',
     'there are difficulties': 'Есть трудности',
-    hard: 'Тяжело',
+    hard: 'Это тяжело',
     notImportant: 'Это не важно',
     'dont want to': 'Не хочу',
     'cant right now': 'Не могу сейчас',

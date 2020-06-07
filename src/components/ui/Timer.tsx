@@ -4,15 +4,16 @@ import { useAudio, useTimeoutFn } from 'react-use';
 import Fab from './Fab';
 
 interface Props {
+  autoStart?: boolean;
   className?: string;
 }
 
 export default (props: Props) => {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(props.autoStart);
+  // TODO rename
+  const [isAutoStarted, setIsAutoStarted] = useState(false);
   const duration = 5 * 60 * 1000;
-  const [audio, , controls] = useAudio({
-    src: '/sounds/alert.ogg',
-  });
+  const [audio, , controls] = useAudio({ src: '/sounds/alert.ogg' });
 
   const [, , audioIntervalReset] = useTimeoutFn(() => {
     if (isActive) controls.play();
@@ -22,6 +23,12 @@ export default (props: Props) => {
     <>
       {audio}
       <Timer
+        // @ts-ignore
+        formatValue={val => {
+          // Timer returns '0' seconds by default'.
+          if (val === 0) return '00';
+          else return val;
+        }}
         onStop={controls.play}
         direction="backward"
         startImmediately={false}
@@ -30,6 +37,10 @@ export default (props: Props) => {
         {/*
         // @ts-ignore */}
         {({ start, resume, pause, stop, reset, timerState }) => {
+          if (props.autoStart && !isAutoStarted) {
+            start();
+            setIsAutoStarted(true);
+          }
           function toggleTimer() {
             audioIntervalReset();
             isActive ? reset() : start();
@@ -38,8 +49,6 @@ export default (props: Props) => {
           return (
             <Fab
               color="primary"
-              // TODO:
-              //   aria-label={t('createTask')}
               onClick={toggleTimer}
               className={props.className}
             >

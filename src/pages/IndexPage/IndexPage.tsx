@@ -17,6 +17,7 @@ import { useScreenIsNarrow } from '../../services/index';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import { Unless } from 'react-if';
+import DayliTasksStreak from '../../components/tasks/DayliTasksStreak';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -82,6 +83,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
           )}
         >
           <TasksDoneToday />
+          <DayliTasksStreak />
         </Unless>
       </Grid>
       <Grid item xs={12} sm={12} md={8} lg={6}>

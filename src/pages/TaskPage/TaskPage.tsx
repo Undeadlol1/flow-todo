@@ -31,7 +31,6 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import TaskPageFABMenu from './TaskPageFABMenu';
 import Timer from '../../components/ui/Timer';
 
 const useStyles = makeStyles(theme => ({

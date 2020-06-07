@@ -32,6 +32,7 @@ import {
   updateTaskParams,
 } from './TaskPageContainer';
 import TaskPageFABMenu from './TaskPageFABMenu';
+import Timer from '../../components/ui/Timer';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -100,7 +101,7 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
-      <TaskPageFABMenu taskId={taskId} />
+      <Timer autoStart />
       <Grid item xs={12}>
         <Grid
           item

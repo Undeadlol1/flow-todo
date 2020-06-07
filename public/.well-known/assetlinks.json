@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "flow-todo-5824b.web.app",
+            "sha256_cert_fingerprints": [
+                "A2:39:DB:91:54:2E:C8:78:95:70:6B:14:AE:95:CF:75:66:D4:74:B9:0C:DE:27:C2:F3:A9:14:AF:1C:72:48:FA"
+            ]
+        }
+    }
+]

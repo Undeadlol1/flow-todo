@@ -11,8 +11,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const timerDuration = 5 * 1000;
-  // const timerDuration = 5 * 60 * 1000;
+  const timerDuration = 5 * 60 * 1000;
   const [isActive, setIsActive] = useState(props.autoStart);
   // TODO rename
   const [isAutoStarted, setIsAutoStarted] = useState(false);

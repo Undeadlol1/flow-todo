@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const DayliTasksStreak = () => {
-  return null;
+  return <div />;
 };
 
-export default DayliTasksStreak;
+export default memo(DayliTasksStreak);

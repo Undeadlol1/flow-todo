@@ -16,7 +16,10 @@ jobs:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
           name: Install Dependencies
-          command: yarn install --frozen-lockfile --production -q
+          # NOTE yarn warnings do not allow to properly cache dependencies.
+          command: yarn install --frozen-lockfile --production=true -q
+          # TODO try to use this to fix caching problems
+          # yarn install 2> >(grep -v warning 1>&2)
       - save_cache:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}

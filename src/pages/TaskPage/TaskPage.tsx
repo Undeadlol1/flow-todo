@@ -24,14 +24,17 @@ import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
-import { useTypedTranslate } from '../../services/index';
+import {
+  useTypedTranslate,
+  showSnackbar,
+} from '../../services/index';
 import { Task } from '../../store';
 import MuiLink from '@material-ui/core/Link';
 import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import TaskPageFABMenu from './TaskPageFABMenu';
+import Timer from '../../components/ui/Timer';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -100,7 +103,14 @@ export default function TaskPage(props: TaskPageProps) {
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>
-      <TaskPageFABMenu taskId={taskId} />
+      <Timer
+        onEnd={() => {
+          showSnackbar(
+            'Вы достаточно поработали над задачей. Можете смело жать "продвинулся". Вы молодец.',
+          );
+        }}
+        autoStart
+      />
       <Grid item xs={12}>
         <Grid
           item

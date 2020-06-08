@@ -53,6 +53,7 @@ export const RandomTaskButton = ({
 
   const docs = tasks || [];
   const firestore = useFirestore();
+  const currentTasks = useSelector(tasksSelector);
   const currentTaskId = get(useSelector(activeTaskSelector), 'id');
   // TODO make this a service (TaskPageContainer has similar funcitonality)
   // TODO exclude activeTaskId from from next line
@@ -69,9 +70,10 @@ export const RandomTaskButton = ({
       .update({ isCurrent: true });
   }
 
-  const buttonText = t(
-    currentTaskId || isAppTourActive ? 'start' : 'noTasks',
-  );
+  // const buttonText = t(
+  //   currentTaskId || isAppTourActive ? 'start' : 'noTasks',
+  // );
+  const buttonText = `Задач: ${currentTasks && currentTasks.length}`;
   const isDisabled = loading || get(tasks, 'empty') || !currentTaskId;
   const linkPath = `/tasks/${
     isAppTourActive ? 'introExample' : currentTaskId

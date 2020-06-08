@@ -12,6 +12,7 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from '../../pages/TaskPage/TaskPageContainer';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -88,6 +89,16 @@ const TroublesChoices = ({
             >
               {t('hard')}
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography paragraph>
+              {/* TODO: i18n */}
+              Не стесняйтесь жать эту кнопку.
+            </Typography>
+            <Typography paragraph>
+              {/* TODO: i18n */}
+              Лишь 20% усилий дают 80% результата.
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Button {...commonButtonProps} onClick={destroy}>

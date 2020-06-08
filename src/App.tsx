@@ -17,8 +17,10 @@ initializeI18n();
 
 function App() {
   const theme = React.useMemo(() => createMuiTheme(), []);
-  const isMobile =
-    useWindowSize().width < theme.breakpoints.values.sm;
+  const isMobile = false;
+  // This is an experiment. Mobie app might look better without density.
+  // const isMobile =
+  //   useWindowSize().width < theme.breakpoints.values.sm;
 
   const reduxFirebaseProps = {
     firebase,

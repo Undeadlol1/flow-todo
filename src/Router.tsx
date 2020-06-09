@@ -32,6 +32,7 @@ const yesterday = subHours(today, getHours(today)).getTime();
 
 export default memo(function Router() {
   const user = useTypedSelector(authSelector);
+  console.log('logged in user: ', user);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
   // Store userId in localStorage to improve loading times on startup

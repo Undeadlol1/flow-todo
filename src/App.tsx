@@ -1,5 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { useWindowSize } from '@reach/window-size';
+// import { useWindowSize } from '@reach/window-size';
 import firebase from 'firebase/app';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
@@ -16,7 +15,7 @@ import { Theme } from './Theme';
 initializeI18n();
 
 function App() {
-  const theme = React.useMemo(() => createMuiTheme(), []);
+  // const theme = React.useMemo(() => createMuiTheme(), []);
   const isMobile = false;
   // This is an experiment. Mobie app might look better without density.
   // const isMobile =

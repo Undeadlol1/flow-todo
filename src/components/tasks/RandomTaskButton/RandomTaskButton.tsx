@@ -11,7 +11,6 @@ import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import random from 'lodash/random';
 import React, { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import { Link } from 'react-router-dom';
 import { useFirestore } from 'react-redux-firebase';
@@ -48,7 +47,6 @@ export const RandomTaskButton = ({
   isAppTourActive,
 }: Props) => {
   const classes = useStyles();
-  const [t] = useTranslation();
   const isScreenNarrow = useScreenIsNarrow();
 
   const docs = tasks || [];

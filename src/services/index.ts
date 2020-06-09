@@ -48,10 +48,10 @@ export function calculateNextRepetition(
   logger('confidence: ', confidence);
   const today = new Date();
   const levels = [
-    addDays(today, 1),
     addDays(today, 2),
-    addDays(today, 4),
-    addDays(today, 7),
+    addDays(today, 3),
+    addDays(today, 5),
+    addDays(today, 8),
     addDays(today, 14),
     addDays(today, 28),
     addMonths(today, 2),

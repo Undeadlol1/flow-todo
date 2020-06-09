@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => {
 });
 
 export function TasksList({
- loading, tasks, canDelete, deleteTask 
+ loading, tasks, canDelete, deleteTask,
 }) {
   const [t] = useTranslation();
   const classes = useStyles();

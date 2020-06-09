@@ -25,6 +25,7 @@ import WebShareTargetPage from './pages/WebShareTargetPage';
 import FAQPage from './pages/FAQPage';
 import subHours from 'date-fns/subHours';
 import getHours from 'date-fns/getHours';
+import TasksPage from './pages/TasksPage';
 
 const today = Date.now();
 const yesterday = subHours(today, getHours(today)).getTime();
@@ -113,6 +114,9 @@ export default memo(function Router() {
         <Switch>
           <Route path="/tasks/:taskId">
             <TaskPage />
+          </Route>
+          <Route path="/tasks">
+            <TasksPage />
           </Route>
           <Route path="/rewards">
             <RewardsPage />

@@ -94,6 +94,15 @@ export default memo(() => {
   log('taskId: ', taskId);
   log('nextTaskId: ', nextTaskId);
 
+  async function activateNextTask() {
+    return nextTaskId
+      ? firestoreRedux.doc('tasks/' + nextTaskId).update({
+          ...tasks.find(t => t.id === nextTaskId),
+          isCurrent: true,
+        })
+      : Promise.resolve();
+  }
+
   const mergedProps = {
     async updateTask({
       values,
@@ -120,12 +129,7 @@ export default memo(() => {
             createdAt: Date.now(),
           }),
           await addPointsWithSideEffects(task.userId, pointsToAdd),
-          nextTaskId
-            ? await firestoreRedux.doc('tasks/' + nextTaskId).update({
-                ...tasks.find(t => t.id === nextTaskId),
-                isCurrent: true,
-              })
-            : Promise.resolve(),
+          await activateNextTask(),
         ]);
       } catch (error) {
         handleErrors(error);
@@ -141,6 +145,7 @@ export default memo(() => {
         await Promise.all([
           deleteTask(taskId),
           addPointsWithSideEffects(task.userId, 10),
+          activateNextTask(),
         ]);
         dispatch(
           snackbarActions.show({

@@ -71,7 +71,9 @@ export const LoginOrLogoutButton = memo(() => {
   );
   const points = useTypedSelector(profilePointsSelector);
   const experience = get(profile, 'experience', 0);
-  const hasPhoto = Boolean(user && user.photoURL);
+  const photoUrl =
+    get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
+  const hasPhoto = !!photoUrl;
   log('profile: ', profile);
   // TODO: find out how to handle auth errors in redux-firebase
   // handleErrors(userError);
@@ -119,7 +121,7 @@ export const LoginOrLogoutButton = memo(() => {
               <If condition={hasPhoto}>
                 <Then>
                   <Avatar
-                    src={user.photoURL as string}
+                    src={photoUrl}
                     className={clsx(classes.avatar)}
                   />
                 </Then>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,14 +6,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import isEmpty from 'lodash/isEmpty';
-import { TasksContext } from '../../../store/contexts';
+import { tasksSelector } from '../../../store/selectors.ts';
+import { useTypedSelector } from '../../../store/index.ts';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -39,15 +38,14 @@ const useStyles = makeStyles(theme => {
 export function TasksList({
  loading, tasks, canDelete, deleteTask,
 }) {
-  const [t] = useTranslation();
   const classes = useStyles();
   if (loading) return null;
   if (isEmpty(tasks) || tasks.empty) return null;
+
   return (
     <Paper elevation={6} className={classes.paper}>
-      <ListSubheader>{t('tasks completed today')}</ListSubheader>
       <List className={classes.list}>
-        {tasks.docs.map(task => (
+        {tasks.map(task => (
           <ListItem
             key={task.id}
             component={Link}
@@ -56,7 +54,7 @@ export function TasksList({
           >
             <ListItemText
               className={classes.text}
-              primary={task.data().name}
+              primary={task.name}
             />
             <When condition={canDelete}>
               <ListItemSecondaryAction>
@@ -84,20 +82,18 @@ TasksList.defaultProps = {
 
 TasksList.propTypes = {
   loading: PropTypes.bool,
-  tasks: PropTypes.object,
+  tasks: PropTypes.array,
   canDelete: PropTypes.bool,
   deleteTask: PropTypes.func,
 };
 
 export default function TasksListContainer(props) {
-  const { tasksDoneToday, error, loading } = useContext(TasksContext);
-
-  if (error) console.error(error);
+  const tasks = useTypedSelector(tasksSelector);
 
   const mergeProps = {
     ...props,
-    loading,
-    tasks: tasksDoneToday,
+    loading: tasks === undefined,
+    tasks,
   };
 
   return <TasksList {...mergeProps} />;

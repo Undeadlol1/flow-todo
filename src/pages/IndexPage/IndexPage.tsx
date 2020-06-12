@@ -1,23 +1,23 @@
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import debug from 'debug';
+import get from 'lodash/fp/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
+import { Unless } from 'react-if';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
+import DayliTasksStreak from '../../components/tasks/DayliTasksStreak';
 import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
-import AppTour from '../../components/ui/AppTour';
-import WelcomeCard from '../../components/ui/WelcomeCard';
-import { Task, useTypedSelector } from '../../store/index';
-import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
-import { tasksSelector, uiSelector } from '../../store/selectors';
-import get from 'lodash/fp/get';
-import clsx from 'clsx';
-import { useScreenIsNarrow } from '../../services/index';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
-import { Unless } from 'react-if';
-import DayliTasksStreak from '../../components/tasks/DayliTasksStreak';
+import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
+import AppTour from '../../components/ui/AppTour';
+import WelcomeCard from '../../components/ui/WelcomeCard';
+import { useScreenIsNarrow } from '../../services/index';
+import { Task, useTypedSelector } from '../../store/index';
+import { tasksSelector, uiSelector } from '../../store/selectors';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({

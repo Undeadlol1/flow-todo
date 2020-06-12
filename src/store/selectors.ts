@@ -79,7 +79,7 @@ export const rewardsSelector = createSelector(
 
 export const profileSelector = createSelector(
   get('firebase.profile'),
-  profile => profile as Profile,
+  profile => (profile || {}) as Profile,
 );
 
 export const profilePointsSelector = createSelector(

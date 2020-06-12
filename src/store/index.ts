@@ -38,8 +38,8 @@ const log = debug('store');
 const { FieldValue } = firestore;
 
 export type DayliStreak = {
-  streakBeginsAt: number;
-  streakUpdatedAt: number;
+  startsAt: number;
+  updatedAt: number;
 };
 
 export type Profile = {

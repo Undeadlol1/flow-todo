@@ -24,7 +24,6 @@ export const TagsList: React.FC<{}> = () => {
       <Box>
         {uniqueTags.map(tag => {
           const isActive = !exludedTags.includes(tag);
-          console.log('isActive: ', isActive);
           const color = isActive
             ? 'inherit'
             : theme.palette.grey[300];

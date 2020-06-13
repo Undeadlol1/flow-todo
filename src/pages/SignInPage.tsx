@@ -13,7 +13,6 @@ import { handleErrors, showSnackbar } from '../services/index';
 import { addPoints } from '../store/index';
 
 const log = debug('SigninPage');
-debug.enable('SigninPage store');
 const useStyles = makeStyles(theme => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
@@ -31,7 +30,7 @@ export default memo(() => {
   const history = useHistory();
 
   async function mergeAnonymousUpgradeConflicts(error: any) {
-    console.log('mergeAnonymousUpgradeConflicts: ');
+    console.warn('mergeAnonymousUpgradeConflicts: ');
     const db = firestore();
     const batch = firestore().batch();
 

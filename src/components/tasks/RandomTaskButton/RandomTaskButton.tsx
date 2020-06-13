@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import clsx from 'clsx';
+import debug from 'debug';
 import { firestore } from 'firebase/app';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -12,13 +13,19 @@ import isUndefined from 'lodash/isUndefined';
 import random from 'lodash/random';
 import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
-import { Link } from 'react-router-dom';
-import { useFirestore } from 'react-redux-firebase';
-import { Task, useTypedSelector } from '../../../store/index';
 import { useSelector } from 'react-redux';
-import { activeTaskSelector } from '../../../store/selectors';
-import { tasksSelector, uiSelector } from '../../../store/selectors';
+import { useFirestore } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
 import { useScreenIsNarrow } from '../../../services/index';
+import { Task, useTypedSelector } from '../../../store/index';
+import {
+  activeTaskSelector,
+  tasksSelector,
+  uiSelector,
+} from '../../../store/selectors';
+
+const log = debug('RandomTaskButton');
+debug.enable('RandomTaskButton');
 
 const useStyles = makeStyles({
   paper: {
@@ -76,6 +83,8 @@ export const RandomTaskButton = ({
   const linkPath = `/tasks/${
     isAppTourActive ? 'introExample' : currentTaskId
   }`;
+  log('isDisabled: ', isDisabled);
+  log('linkPath: ', linkPath);
 
   return (
     <Button

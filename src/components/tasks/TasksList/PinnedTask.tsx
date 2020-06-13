@@ -28,7 +28,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 let taskId = '';
 const log = debug('Pinnedtask');
-debug.enable('PinnedTask');
 
 export default memo(function PinnedTask() {
   const t = useTypedTranslate();

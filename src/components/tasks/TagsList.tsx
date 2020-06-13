@@ -8,7 +8,7 @@ import {
   fetchedTasksSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
-import { excludeTag, includeTag } from '../../store/tasksSlice';
+import { toggleTag } from '../../store/tasksSlice';
 
 export const TagsList: React.FC<{}> = () => {
   const theme = useTheme();
@@ -29,12 +29,12 @@ export const TagsList: React.FC<{}> = () => {
             ? 'inherit'
             : theme.palette.grey[300];
 
-          function toggleTag() {
-            dispatch(isActive ? excludeTag(tag) : includeTag(tag));
-          }
-
           return (
-            <Button key={tag} onClick={toggleTag} style={{ color }}>
+            <Button
+              key={tag}
+              style={{ color }}
+              onClick={() => dispatch(toggleTag(tag))}
+            >
               {tag}
             </Button>
           );

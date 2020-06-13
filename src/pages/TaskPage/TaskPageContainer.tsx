@@ -24,7 +24,11 @@ import {
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import { profileSelector, authSelector } from '../../store/selectors';
+import {
+  profileSelector,
+  authSelector,
+  tasksDoneTodaySelector,
+} from '../../store/selectors';
 import merge from 'lodash/merge';
 import { Profile } from '../../store/index';
 
@@ -54,7 +58,7 @@ export default memo(() => {
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
   const auth = useTypedSelector(authSelector);
-  console.log('auth: ', auth);
+  const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
 
   const tasks = useTypedSelector(tasksSelector) || [];
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
@@ -110,18 +114,29 @@ export default memo(() => {
   }
 
   async function updateDailyStreak() {
-    // TODO what if streak is broken?
-    // if (takssdone > minimum)
-    // if (updatedAt > is not today)
-    return firestoreRedux.doc('profiles/' + auth.uid).update(
-      merge(profile, {
-        dailyStreak: {
-          // TODO this doesnot work
-          startsAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-      } as Profile),
-    );
+    if (false) {
+      const isUpdatedToday = false;
+      // TODO this is calculated by comparing ".updatedAt" with today.
+      // (cont) if difference is more than one day then streak is broken.
+      const isStreakBroken = false;
+      // TODO what if streak is broken?
+      // if (takssdone > minimum)
+      // if (updatedAt > is not today)
+      if (profile.userId && tasksDoneToday > 3 && !isUpdatedToday) {
+        // TODO use "upsertProfile" funciton
+        return firestoreRedux.doc('profiles/' + auth.uid).update(
+          merge(profile, {
+            dailyStreak: {
+              updatedAt: Date.now(),
+              // TODO make sure that this works if startsAt == 0
+              startsAt: isStreakBroken
+                ? Date.now()
+                : profile.dailyStreak.startsAt,
+            },
+          } as Profile),
+        );
+      }
+    }
   }
 
   const mergedProps = {

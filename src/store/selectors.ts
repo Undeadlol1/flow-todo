@@ -11,6 +11,8 @@ import { UsersState } from './usersSlice';
 import isUndefined from 'lodash/isUndefined';
 import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
+import countBy from 'lodash/countBy';
+import includes from 'ramda/es/includes';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -20,6 +22,18 @@ export const fetchedTasksSelector = createSelector(
 export const taskLogsSelector = createSelector(
   get('firestore.ordered.taskLogs'),
   (tasks: TaskHistory[]) => tasks,
+);
+
+export const tasksDoneTodaySelector = createSelector(
+  taskLogsSelector,
+  logs =>
+    countBy(logs, log =>
+      includes(log.actionType, [
+        'stepForward',
+        'leapForward',
+        'setDone',
+      ]),
+    ).true || 0,
 );
 
 export const excludedTagsSelector = (state: RootReducer) =>
@@ -79,7 +93,17 @@ export const rewardsSelector = createSelector(
 
 export const profileSelector = createSelector(
   get('firebase.profile'),
-  profile => (profile || {}) as Profile,
+  // Add default values to profile.
+  value => {
+    // New object is created to avoid "no mutations" error.
+    let profile = Object.create((value || {}) as Profile);
+    if (!profile.dailyStreak)
+      profile.dailyStreak = {
+        startsAt: 0,
+        updatedAt: 0,
+      };
+    return profile as Profile;
+  },
 );
 
 export const profilePointsSelector = createSelector(

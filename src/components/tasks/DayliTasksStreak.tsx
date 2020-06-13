@@ -8,10 +8,10 @@ import { profileSelector } from '../../store/selectors';
 import differenceInDays from 'date-fns/differenceInDays';
 
 const DayliTasksStreak = () => {
-  const streak = useSelector(profileSelector).dailyStreak || {};
+  const { dailyStreak } = useSelector(profileSelector);
   const daysInARow = differenceInDays(
-    streak.updatedAt || 0,
-    streak.startsAt || 0,
+    dailyStreak.updatedAt,
+    dailyStreak.startsAt,
   );
 
   if (daysInARow <= 0) return null;

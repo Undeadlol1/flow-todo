@@ -7,16 +7,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { useSelector } from 'react-redux';
 import {
   taskLogsSelector as taskLogs,
-  // usersSelector,
+  tasksDoneTodaySelector,
 } from '../../store/selectors';
-import includes from 'ramda/es/includes';
 import { useTypedTranslate } from '../../services/index';
 import { isLoaded } from 'react-redux-firebase';
-import countBy from 'lodash/countBy';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Box from '@material-ui/core/Box';
-// import { profileSelector } from '../../store/selectors';
-// import { upsertProfile } from '../../store/index';
 
 const useStyles = makeStyles({
   progress: {
@@ -30,26 +26,7 @@ const TasksDoneToday: React.FC<{}> = () => {
 
   const tasksPerDay = 3;
   const logs = useSelector(taskLogs);
-  const tasksToday =
-    countBy(logs, log =>
-      includes(log.actionType, [
-        'stepForward',
-        'leapForward',
-        'setDone',
-      ]),
-    ).true || 0;
-
-  console.log('tasksToday: ', tasksToday);
-  // const profile = useSelector(profileSelector);
-  // If done tasks and current date not set
-  // TODO refactor date comparisson
-  // if (
-  //   tasksToday > tasksPerDay &&
-  //   !(profile.dayliStreak.streakUpdatedAt < Date.now())
-  // ) {
-  // run once
-  // upsertProfile({ values: profile });
-  // }
+  const tasksToday = useSelector(tasksDoneTodaySelector);
 
   if (!isLoaded(logs))
     return <Skeleton component={Box} width="100%" height="200px" />;

@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -19,7 +20,15 @@ const WelcomeCard: React.FC<{}> = () => {
   const classes = useStyles();
   return (
     <Paper className={classes.container} elevation={6}>
-      <img className={classes.image} src="/images/logo.png" alt="" />
+      <Grid container justify="center">
+        <Grid item xs={7} sm={6} md={6} lg={6}>
+          <img
+            className={classes.image}
+            src="/images/logo.png"
+            alt=""
+          />
+        </Grid>
+      </Grid>
       {/* TODO: i18n */}
       <Typography paragraph>
         Это приложение поможет справиться с задачами, которые ты вечно

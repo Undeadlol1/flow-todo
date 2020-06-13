@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import { When } from 'react-if';
 import isEmpty from 'lodash/isEmpty';
+import Box from '@material-ui/core/Box';
 import { tasksSelector } from '../../../store/selectors.ts';
 import { useTypedSelector } from '../../../store/index.ts';
 
@@ -43,7 +44,7 @@ export function TasksList({
   if (isEmpty(tasks) || tasks.empty) return null;
 
   return (
-    <Paper elevation={6} className={classes.paper}>
+    <Box mx="auto" component={Paper} elevation={6} className={classes.paper}>
       <List className={classes.list}>
         {tasks.map(task => (
           <ListItem
@@ -70,7 +71,7 @@ export function TasksList({
           </ListItem>
         ))}
       </List>
-    </Paper>
+    </Box>
   );
 }
 

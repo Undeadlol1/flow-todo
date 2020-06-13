@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ViewListIcon from '@material-ui/icons/ViewList';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import ShareIcon from '@material-ui/icons/Share';
@@ -84,6 +85,18 @@ const Sidebar: React.FC<{}> = () => {
   return (
     <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/tasks');
+            toggleSidebar();
+          }}
+        >
+          <ListItemIcon>
+            <ViewListIcon />
+          </ListItemIcon>
+          <StyledListText primary={t('tasks list')} />
+        </ListItem>
         <ListItem
           button
           onClick={() => {

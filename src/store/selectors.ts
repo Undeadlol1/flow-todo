@@ -39,6 +39,7 @@ export const tasksDoneTodaySelector = createSelector(
 export const excludedTagsSelector = (state: RootReducer) =>
   state.tasks.excludedTags;
 
+// TODO is this needed? How do we determine if tags are active?
 export const activeTagsSelector = (state: RootReducer) =>
   state.tasks.activeTags;
 

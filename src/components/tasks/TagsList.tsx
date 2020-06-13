@@ -4,29 +4,30 @@ import { useTheme } from '@material-ui/core/styles';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  excludedTagsSelector,
   fetchedTasksSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
 import { excludeTag, includeTag } from '../../store/tasksSlice';
-import { activeTagsSelector } from '../../store/selectors';
 
 export const TagsList: React.FC<{}> = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const tasks = useSelector(fetchedTasksSelector);
-  const activeTags = useSelector(activeTagsSelector);
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
+  const exludedTags = useSelector(excludedTagsSelector);
 
   if (!tasks) return null;
   else
     return (
       <Box>
         {uniqueTags.map(tag => {
-          const isActive = activeTags.includes(tag);
+          const isActive = !exludedTags.includes(tag);
+          console.log('isActive: ', isActive);
           const color = isActive
             ? 'inherit'
-            : theme.palette.grey.A700;
+            : theme.palette.grey[300];
 
           function toggleTag() {
             dispatch(isActive ? excludeTag(tag) : includeTag(tag));

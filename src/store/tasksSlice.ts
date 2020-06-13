@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Task } from './index';
 import remove from 'lodash/remove';
+import isEqual from 'lodash/fp/isEqual';
 
 // TODO remove unused properties
 interface TasksState {
@@ -36,17 +37,9 @@ const tasksSlice = createSlice({
     },
     excludeTag(state, action: PayloadAction<string>) {
       state.excludedTags.push(action.payload);
-      // state.activeTags = filter(
-      //   state.activeTags,
-      //   tag => tag !== action.payload,
-      // );
     },
     includeTag(state, { payload }: PayloadAction<string>) {
-      // state.activeTags.push(payload);
-      state.excludedTags = remove(
-        state.excludedTags,
-        i => i === payload,
-      );
+      remove(state.excludedTags, isEqual(payload));
     },
   },
 });

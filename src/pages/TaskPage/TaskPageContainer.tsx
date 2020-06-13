@@ -24,6 +24,9 @@ import {
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
+import { profileSelector, authSelector } from '../../store/selectors';
+import merge from 'lodash/merge';
+import { Profile } from '../../store/index';
 
 const log = debug('TaskPageContainer');
 
@@ -49,6 +52,9 @@ export default memo(() => {
   const isAppIntroMode = taskId === 'introExample';
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
+  const profile = useTypedSelector(profileSelector);
+  const auth = useTypedSelector(authSelector);
+  console.log('auth: ', auth);
 
   const tasks = useTypedSelector(tasksSelector) || [];
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
@@ -103,6 +109,21 @@ export default memo(() => {
       : Promise.resolve();
   }
 
+  async function updateDailyStreak() {
+    // TODO what if streak is broken?
+    // if (takssdone > minimum)
+    // if (updatedAt > is not today)
+    return firestoreRedux.doc('profiles/' + auth.uid).update(
+      merge(profile, {
+        dailyStreak: {
+          // TODO this doesnot work
+          startsAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+      } as Profile),
+    );
+  }
+
   const mergedProps = {
     async updateTask({
       values,
@@ -130,6 +151,7 @@ export default memo(() => {
           }),
           await addPointsWithSideEffects(task.userId, pointsToAdd),
           await activateNextTask(),
+          await updateDailyStreak(),
         ]);
       } catch (error) {
         handleErrors(error);

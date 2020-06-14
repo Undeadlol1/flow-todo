@@ -19,6 +19,7 @@ interface Props {
 export const CreateTaskFab: React.FC<Props> = props => {
   const [t] = useTranslation();
   const [isDialogOpen, toggleDialog] = useToggle(false);
+  const createdTasksBefore = !isEmpty(props.createdAtleastOneTask);
   return (
     <>
       <Dialog
@@ -37,11 +38,14 @@ export const CreateTaskFab: React.FC<Props> = props => {
       <Fab
         onClick={toggleDialog}
         aria-label={t('createTask')}
-        className={cx([props.className, 'IntroHandle__createTask'])}
+        className={cx([
+          props.className,
+          'IntroHandle__createTask',
+          !createdTasksBefore && 'animated pulse infinite',
+        ])}
         isHidden={props.isHidden}
       >
-        {!isEmpty(props.createdAtleastOneTask) &&
-        isEmpty(props.activeTasks) ? (
+        {createdTasksBefore && isEmpty(props.activeTasks) ? (
           '+10'
         ) : (
           <AddIcon />

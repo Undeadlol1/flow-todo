@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import Grid, { GridProps } from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
@@ -11,6 +12,7 @@ import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Skeleton from '@material-ui/lab/Skeleton';
 import filter from 'lodash/filter';
 import isString from 'lodash/isString';
+import { useSnackbar } from 'notistack';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
 import head from 'ramda/es/head';
@@ -24,17 +26,13 @@ import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
-import {
-  useTypedTranslate,
-  showSnackbar,
-} from '../../services/index';
+import Timer from '../../components/ui/Timer';
+import { useTypedTranslate } from '../../services/index';
 import { Task } from '../../store';
-import MuiLink from '@material-ui/core/Link';
 import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import Timer from '../../components/ui/Timer';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -66,6 +64,7 @@ interface TaskPageProps {
 }
 
 export default function TaskPage(props: TaskPageProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const route = useRouteMatch() || {};
   const t = useTypedTranslate();
   const { path, url } = route;
@@ -105,8 +104,12 @@ export default function TaskPage(props: TaskPageProps) {
       </When>
       <Timer
         onEnd={() => {
-          showSnackbar(
-            'Вы достаточно поработали над задачей. Можете смело жать "продвинулся". Вы молодец.',
+          // TODO i18n
+          enqueueSnackbar(
+            'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
+            {
+              autoHideDuration: 10000,
+            },
           );
         }}
         autoStart

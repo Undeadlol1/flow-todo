@@ -105,11 +105,11 @@ const TroublesChoices = ({
               {t('notImportant')}
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Button {...commonButtonProps} onClick={dontWantTo}>
               {t('dont want to')}
             </Button>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <Button {...commonButtonProps} onClick={() => postPone()}>
               {t('cant right now')}

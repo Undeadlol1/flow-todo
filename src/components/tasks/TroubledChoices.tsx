@@ -56,10 +56,10 @@ const TroublesChoices = ({
       },
     });
   }
-  function dontWantTo() {
-    const reason = prompt(t('provide reason'));
-    if (reason) postPone(reason);
-  }
+  // function dontWantTo() {
+  //   const reason = prompt(t('provide reason'));
+  //   if (reason) postPone(reason);
+  // }
   function destroy() {
     deleteTask({
       pointsToAdd: 10,

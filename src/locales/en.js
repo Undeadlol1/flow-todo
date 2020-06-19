@@ -24,7 +24,7 @@ export default {
       'The most important thing is not to reach your goal but to step further',
     'Something went wrong': 'Something went wrong',
     'task was note created': 'Task was note created',
-    'Add a note': 'Add a note',
+    'Add a note': 'Add note',
     'A note': 'A note',
     'Edit the note': 'Edit note',
     hard: "It's hard",

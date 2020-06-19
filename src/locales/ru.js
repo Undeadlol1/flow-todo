@@ -26,7 +26,7 @@ export default {
     'Something went wrong': 'Что-то пошло не так',
     'task was note created': 'Задача не была создана',
     'Add a note': 'Добавьтe заметку',
-    'Edit the note': 'Обновить заметку',
+    'Edit the note': 'Обновитe заметку',
     'A note': 'Заметка',
     'there are difficulties': 'Есть трудности',
     hard: 'Это тяжело',

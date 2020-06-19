@@ -74,7 +74,9 @@ const HardChoices = (
         </Collapsible>
       </Grid>
       <Grid item xs={12}>
-        <Collapsible title={t(taskNote ? 'A note' : 'Add a note')}>
+        <Collapsible
+          title={t(taskNote ? 'Edit the note' : 'Add a note')}
+        >
           <UpsertNote
             taskId={taskId as string}
             defaultValue={taskNote}

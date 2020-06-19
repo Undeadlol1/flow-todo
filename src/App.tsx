@@ -43,17 +43,10 @@ function App() {
               <NotistackSnackbarProver
                 autoHideDuration={3500}
                 dense={isMobile}
-                anchorOrigin={
-                  isMobile
-                    ? {
-                        vertical: 'top',
-                        horizontal: 'center',
-                      }
-                    : {
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                      }
-                }
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
               >
                 <Router />
               </NotistackSnackbarProver>

@@ -28,6 +28,9 @@ export const Theme: FunctionComponent<{
           },
           props: isMobile
             ? {
+                MuiList: {
+                  dense: true,
+                },
                 MuiSnackbar: {
                   anchorOrigin: {
                     vertical: 'top',
@@ -38,6 +41,12 @@ export const Theme: FunctionComponent<{
             : {},
           overrides: isMobile
             ? {
+                MuiSnackbar: {
+                  root: {
+                    // Prevent snackbar from overflowing FAB.
+                    marginBottom: 90,
+                  },
+                },
                 MuiIconButton: {
                   sizeSmall: {
                     // Adjust spacing to reach minimal touch target hitbox

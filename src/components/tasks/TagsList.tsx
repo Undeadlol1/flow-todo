@@ -21,7 +21,7 @@ export const TagsList: React.FC<{}> = () => {
   if (!tasks) return null;
   else
     return (
-      <Box>
+      <Box textAlign="center">
         {uniqueTags.map(tag => {
           const isActive = !exludedTags.includes(tag);
           const color = isActive

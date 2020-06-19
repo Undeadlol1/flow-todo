@@ -1,3 +1,4 @@
+import TinderCard from 'react-tinder-card';
 import { Box, CardHeader } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,7 +18,7 @@ import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
 import head from 'ramda/es/head';
 import prop from 'ramda/es/prop';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
@@ -62,6 +63,26 @@ interface TaskPageProps {
   deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
+
+const SwipeCardExperiments: FunctionComponent<{}> = props => {
+  const onSwipe = (direction: string) => {
+    console.log('You swiped: ' + direction);
+  };
+
+  const onCardLeftScreen = (myIdentifier: string) => {
+    console.log(myIdentifier + ' left the screen');
+  };
+
+  return (
+    <TinderCard
+      onSwipe={onSwipe}
+      onCardLeftScreen={() => onCardLeftScreen('fooBar')}
+      preventSwipe={['up', 'down']}
+    >
+      {props.children}
+    </TinderCard>
+  );
+};
 
 export default function TaskPage(props: TaskPageProps) {
   const { enqueueSnackbar } = useSnackbar();
@@ -177,31 +198,33 @@ export default function TaskPage(props: TaskPageProps) {
               </When>
               <Zoom in>
                 <Box width="100%" textAlign="center">
-                  <Card className="animated pulse infinite">
-                    <CardHeader subheader={t('what do you feel')} />
-                    <CardContent>
-                      <Grid item container xs={12}>
-                        <Grid item xs>
-                          <Fab
-                            component={Link}
-                            color="secondary"
-                            to={url + '/isGood'}
-                          >
-                            <SatisfiedIcon fontSize="large" />
-                          </Fab>
-                        </Grid>
-                        <Grid item xs>
-                          <Fab
-                            component={Link}
-                            color="primary"
-                            to={url + '/isTroublesome'}
-                          >
-                            <DissatisfiedIcon fontSize="large" />
-                          </Fab>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
+                  <SwipeCardExperiments>
+                    <Card>
+                      <CardHeader subheader={t('what do you feel')} />
+                      <CardContent>
+                        {/* <Grid item container xs={12}>
+                          <Grid item xs>
+                            <Fab
+                              component={Link}
+                              color="secondary"
+                              to={url + '/isGood'}
+                            >
+                              <SatisfiedIcon fontSize="large" />
+                            </Fab>
+                          </Grid>
+                          <Grid item xs>
+                            <Fab
+                              component={Link}
+                              color="primary"
+                              to={url + '/isTroublesome'}
+                            >
+                              <DissatisfiedIcon fontSize="large" />
+                            </Fab>
+                          </Grid>
+                        </Grid> */}
+                      </CardContent>
+                    </Card>
+                  </SwipeCardExperiments>
                 </Box>
               </Zoom>
             </Grid>

@@ -11256,6 +11256,11 @@ p-reduce@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-reduce/-/p-reduce-1.0.0.tgz#18c2b0dd936a4690a529f8231f58a0fdb6a47dfa"
   integrity sha1-GMKw3ZNqRpClKfgjH1ig/bakffo=
 
+p-sleep@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/p-sleep/-/p-sleep-1.1.0.tgz#a6c9333059b5103c3c0e46bcbba95a1f7969095b"
+  integrity sha512-bwP3GKZirBUYMtiUuBrheLUQdRXVeE/pmHOaLpNJzNfAD4b5AjDn6l823brXcQFade4G/g7GMNQ3KV86E8EaEw==
+
 p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
@@ -13088,6 +13093,13 @@ react-textarea-autosize@^7.1.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
     prop-types "^15.6.0"
+
+react-tinder-card@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-tinder-card/-/react-tinder-card-1.1.4.tgz#8872c083674f32a621d5e39d6020cc07b6f4215a"
+  integrity sha512-dMvteTEJH138T0SZtsNaaBpBFHaBHUlzTAjwQzEcode+r2tc2MfcXCAPiMwXJpi5PYaai14ExmMwnQG9zrqLfg==
+  dependencies:
+    p-sleep "^1.1.0"
 
 react-transition-group@^4.3.0:
   version "4.3.0"

@@ -110,7 +110,6 @@ export default memo(() => {
       : Promise.resolve();
   }
 
-  console.log('streak: ', profile.dailyStreak);
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
@@ -119,11 +118,9 @@ export default memo(() => {
     const isStreakBroken =
       !streak.startsAt ||
       differenceInDays(streak.updatedAt, now) >= 1;
-    console.log('isUpdatedToday: ', isUpdatedToday);
-    console.log('isStreakBroken: ', isStreakBroken);
-    console.log('tasksDoneToday: ', tasksDoneToday);
-    console.log('profile: ', profile);
-    if (tasksDoneToday + 1 > 3 && !isUpdatedToday) {
+
+    if (tasksDoneToday + 1 > 2 && !isUpdatedToday) {
+      console.log('update is running');
       const payload = Object.assign({}, profile, {
         dailyStreak: {
           updatedAt: now,

@@ -20,6 +20,7 @@ const DayliTasksStreak = () => {
       <Card>
         <CardContent>
           <Typography>
+            {/* TODO i18n */}
             Задачи выполнены дней подряд: {daysInARow + 1}
           </Typography>
         </CardContent>

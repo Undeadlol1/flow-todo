@@ -38,8 +38,8 @@ const log = debug('store');
 const { FieldValue } = firestore;
 
 export type DayliStreak = {
-  startsAt: number;
-  updatedAt: number;
+  startsAt: Date;
+  updatedAt: Date;
 };
 
 export type Profile = {
@@ -197,10 +197,10 @@ export function changeTags(taskId: string, tags: string[]) {
 
 initializeFirebase();
 
-export function upsertProfile(values: {
-  userId: string;
-  points: number;
-}): Promise<void> {
+export function upsertProfile(
+  userId: string,
+  values: Profile,
+): Promise<void> {
   return getFirestore()
     .doc('profiles/' + values.userId)
     .set(values, { merge: true });

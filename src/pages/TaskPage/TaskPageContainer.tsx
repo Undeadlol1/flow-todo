@@ -1,3 +1,4 @@
+import differenceInDays from 'date-fns/differenceInDays';
 import debug from 'debug';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -19,18 +20,14 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import {
+  authSelector,
   fetchedTaskSelector,
   firestoreStatusSelector,
+  profileSelector,
+  tasksDoneTodaySelector,
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import {
-  profileSelector,
-  authSelector,
-  tasksDoneTodaySelector,
-} from '../../store/selectors';
-import merge from 'lodash/merge';
-import { Profile } from '../../store/index';
 
 const log = debug('TaskPageContainer');
 
@@ -113,29 +110,30 @@ export default memo(() => {
       : Promise.resolve();
   }
 
+  console.log('streak: ', profile.dailyStreak);
   async function updateDailyStreak() {
-    if (false) {
-      const isUpdatedToday = false;
-      // TODO this is calculated by comparing ".updatedAt" with today.
-      // (cont) if difference is more than one day then streak is broken.
-      const isStreakBroken = false;
-      // TODO what if streak is broken?
-      // if (takssdone > minimum)
-      // if (updatedAt > is not today)
-      if (profile.userId && tasksDoneToday > 3 && !isUpdatedToday) {
-        // TODO use "upsertProfile" funciton
-        return firestoreRedux.doc('profiles/' + auth.uid).update(
-          merge(profile, {
-            dailyStreak: {
-              updatedAt: Date.now(),
-              // TODO make sure that this works if startsAt == 0
-              startsAt: isStreakBroken
-                ? Date.now()
-                : profile.dailyStreak.startsAt,
-            },
-          } as Profile),
-        );
-      }
+    const now = Date.now();
+    const streak = profile.dailyStreak;
+    const isUpdatedToday =
+      differenceInDays(streak.updatedAt, now) === 0;
+    const isStreakBroken =
+      !streak.startsAt ||
+      differenceInDays(streak.updatedAt, now) >= 1;
+    console.log('isUpdatedToday: ', isUpdatedToday);
+    console.log('isStreakBroken: ', isStreakBroken);
+    console.log('tasksDoneToday: ', tasksDoneToday);
+    console.log('profile: ', profile);
+    if (tasksDoneToday + 1 > 3 && !isUpdatedToday) {
+      const payload = Object.assign({}, profile, {
+        dailyStreak: {
+          updatedAt: now,
+          startsAt: isStreakBroken ? now : streak.startsAt,
+        },
+      });
+      console.log('payload: ', payload);
+      return firestoreRedux
+        .doc('profiles/' + auth.uid)
+        .update(payload);
     }
   }
 

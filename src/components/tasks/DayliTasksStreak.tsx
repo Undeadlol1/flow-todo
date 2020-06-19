@@ -8,19 +8,19 @@ import { profileSelector } from '../../store/selectors';
 import differenceInDays from 'date-fns/differenceInDays';
 
 const DayliTasksStreak = () => {
-  const { dailyStreak } = useSelector(profileSelector);
-  const daysInARow = differenceInDays(
-    dailyStreak.updatedAt,
-    dailyStreak.startsAt,
-  );
+  const { startsAt, updatedAt } = useSelector(
+    profileSelector,
+  ).dailyStreak;
 
-  if (daysInARow <= 0) return null;
+  if (!startsAt) return null;
+
+  const daysInARow = differenceInDays(updatedAt, startsAt);
   return (
     <Box mt={4}>
       <Card>
         <CardContent>
           <Typography>
-            Задачи выполнены дней подряд: {daysInARow}
+            Задачи выполнены дней подряд: {daysInARow + 1}
           </Typography>
         </CardContent>
       </Card>

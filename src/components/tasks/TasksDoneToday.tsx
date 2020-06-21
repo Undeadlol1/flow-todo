@@ -13,9 +13,11 @@ import { useTypedTranslate } from '../../services/index';
 import { isLoaded } from 'react-redux-firebase';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   progress: {
+    padding: 0,
     width: '100%',
   },
 });
@@ -35,13 +37,13 @@ const TasksDoneToday: React.FC<{}> = () => {
     return (
       <>
         <Card>
-          <CardHeader
-            title={
-              t('completed_tasks_today') +
-              `: ${tasksToday}/${tasksPerDay}`
-            }
-          />
           <CardContent>
+            <Box mb={2}>
+              <Typography variant="h6">
+                {t('completed_tasks_today') +
+                  `: ${tasksToday}/${tasksPerDay}`}
+              </Typography>
+            </Box>
             <MobileStepper
               steps={tasksPerDay + 1}
               variant="progress"

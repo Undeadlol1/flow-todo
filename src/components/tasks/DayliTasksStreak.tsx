@@ -16,12 +16,14 @@ const DayliTasksStreak = () => {
 
   const daysInARow = differenceInDays(updatedAt, startsAt);
   return (
-    <Box mt={4}>
+    <Box mt={4} fontWeight={100}>
       <Card>
         <CardContent>
-          <Typography>
-            {/* TODO i18n */}
-            Задачи выполнены дней подряд: {daysInARow + 1}
+          <Typography variant="h6">
+            <Box fontWeight={100}>
+              {/* TODO i18n */}
+              Задачи выполнены дней подряд: {daysInARow + 1}
+            </Box>
           </Typography>
         </CardContent>
       </Card>

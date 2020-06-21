@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,7 +10,16 @@ import {
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontWeight: 100,
+  },
+}));
+
 export const TagsList: React.FC<{}> = () => {
+  const cx = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -32,6 +41,7 @@ export const TagsList: React.FC<{}> = () => {
             <Button
               key={tag}
               style={{ color }}
+              className={cx.button}
               onClick={() => dispatch(toggleTag(tag))}
             >
               {tag}

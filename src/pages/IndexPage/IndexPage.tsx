@@ -18,6 +18,7 @@ import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { Task, useTypedSelector } from '../../store/index';
 import { tasksSelector, uiSelector } from '../../store/selectors';
+import Box from '@material-ui/core/Box';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -103,7 +104,9 @@ export const IndexPage = memo(function HomePage(props: Props) {
         {renderButtonOrWelcomeCard()}
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <TagsList />
+        <Box mt={2}>
+          <TagsList />
+        </Box>
       </Grid>
       <CreateTaskFab
         isHidden={isLoading}

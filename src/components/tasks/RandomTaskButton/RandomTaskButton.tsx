@@ -27,9 +27,11 @@ import {
 const log = debug('RandomTaskButton');
 debug.enable('RandomTaskButton');
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   paper: {
+    color: theme.palette.secondary.contrastText,
     padding: '100px',
+    backgroundColor: theme.palette.primary.main,
   },
   buttonRoot: {
     padding: 0,
@@ -38,7 +40,7 @@ const useStyles = makeStyles({
   fullWidth: {
     width: '100%',
   },
-});
+}));
 
 interface Props {
   tasks?: Task[];
@@ -89,7 +91,7 @@ export const RandomTaskButton = ({
   return (
     <Button
       to={linkPath}
-      color="primary"
+      // color="primary"
       disabled={isDisabled}
       component={isDisabled ? 'div' : Link}
       classes={{ root: classes.buttonRoot }}
@@ -100,9 +102,8 @@ export const RandomTaskButton = ({
       ])}
     >
       <Paper
-        elevation={6}
-        className={clsx({
-          [classes.paper]: true,
+        // elevation={6}
+        className={clsx(classes.paper, {
           [classes.fullWidth]: isScreenNarrow,
         })}
       >
@@ -112,7 +113,7 @@ export const RandomTaskButton = ({
           </Then>
           <Else>
             <Zoom in>
-              <Typography>{buttonText}</Typography>
+              <Typography variant="h6">{buttonText}</Typography>
             </Zoom>
           </Else>
         </If>

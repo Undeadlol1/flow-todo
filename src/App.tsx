@@ -1,4 +1,5 @@
 // import { useWindowSize } from '@reach/window-size';
+import { SnackbarOrigin } from '@material-ui/core/Snackbar';
 import { createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
@@ -31,6 +32,11 @@ function App() {
     createFirestoreInstance,
   };
 
+  const snachbarPosition: SnackbarOrigin = {
+    vertical: 'bottom',
+    horizontal: 'center',
+  };
+
   return (
     <div className="App">
       <ReduxProvider store={store}>
@@ -38,15 +44,15 @@ function App() {
           <Theme isMobile={isMobile}>
             {/* TODO do i even use this? Remove if not */}
             <MaterialSnackbarProvider
-              SnackbarProps={{ autoHideDuration: 4000 }}
+              SnackbarProps={{
+                autoHideDuration: 4000,
+                anchorOrigin: snachbarPosition,
+              }}
             >
               <NotistackSnackbarProver
                 autoHideDuration={3500}
                 dense={isMobile}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
+                anchorOrigin={snachbarPosition}
               >
                 <Router />
               </NotistackSnackbarProver>

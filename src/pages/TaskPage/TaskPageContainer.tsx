@@ -5,13 +5,13 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { snackbarActions } from 'material-ui-snackbar-redux';
+import { useSnackbar } from 'notistack';
 import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import { getRandomTaskId, handleErrors } from '../../services';
-import { showSnackbar } from '../../services/index';
 import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
@@ -48,6 +48,7 @@ export default memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { taskId = '' } = useParams();
   const isAppIntroMode = taskId === 'introExample';
@@ -142,7 +143,8 @@ export default memo(() => {
       history: historyToAdd,
     }: updateTaskParams) {
       try {
-        showSnackbar(snackbarMessage);
+        console.log('update task');
+        enqueueSnackbar(snackbarMessage);
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
         await Promise.all([
@@ -172,6 +174,7 @@ export default memo(() => {
       }
     },
     async deleteTask(options: deleteTaskArguments = {}) {
+      console.log('delete task');
       setRequested(true);
       try {
         await Promise.all([

@@ -12,8 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import { When } from 'react-if';
 import isEmpty from 'lodash/isEmpty';
 import Box from '@material-ui/core/Box';
-import { tasksSelector } from '../../../store/selectors.ts';
-import { useTypedSelector } from '../../../store/index.ts';
+import { tasksSelector } from '../../../store/selectors';
+import { useTypedSelector, Task } from '../../../store/index';
 
 const useStyles = makeStyles(theme => {
   const color = theme.palette.text.primary;
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => {
     },
     text: {
       overflow: 'hidden',
-      whiteSpace: 'nowrap',
+      // whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
     },
     paper: {
@@ -36,17 +36,26 @@ const useStyles = makeStyles(theme => {
   };
 });
 
+// TODO add props types
 export function TasksList({
- loading, tasks, canDelete, deleteTask,
-}) {
+  loading,
+  tasks,
+  canDelete,
+  deleteTask,
+}: any) {
   const classes = useStyles();
   if (loading) return null;
   if (isEmpty(tasks) || tasks.empty) return null;
 
   return (
-    <Box mx="auto" component={Paper} elevation={6} className={classes.paper}>
+    <Box
+      mx="auto"
+      component={Paper}
+      // elevation={6}
+      className={classes.paper}
+    >
       <List className={classes.list}>
-        {tasks.map(task => (
+        {tasks.map((task: Task) => (
           <ListItem
             key={task.id}
             component={Link}
@@ -88,7 +97,8 @@ TasksList.propTypes = {
   deleteTask: PropTypes.func,
 };
 
-export default function TasksListContainer(props) {
+// TODO add props types
+export default function TasksListContainer(props: any) {
   const tasks = useTypedSelector(tasksSelector);
 
   const mergeProps = {

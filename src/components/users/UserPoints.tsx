@@ -34,6 +34,14 @@ const UserPoints = memo(
       />
     );
   },
+  function(previousProps, nextProps) {
+    logger('nextProps: ', nextProps);
+    logger('previousProps: ', previousProps);
+    // There is a strange bug where on window resize
+    // state resets and value is 0. Then it data is fetched again.
+    if (nextProps.value == 0) return true;
+    return false;
+  },
 );
 
 export default UserPoints;

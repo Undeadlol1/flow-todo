@@ -77,13 +77,10 @@ export const RandomTaskButton = ({
       .update({ isCurrent: true });
   }
 
-  // const buttonText = t(
-  //   currentTaskId || isAppTourActive ? 'start' : 'noTasks',
-  // );
   const buttonText = `Задач: ${currentTasks && currentTasks.length}`;
   const isDisabled = loading || get(tasks, 'empty') || !currentTaskId;
   const linkPath = `/tasks/${
-    isAppTourActive ? 'introExample' : currentTaskId
+    isAppTourActive ? 'introExample' : 'active'
   }`;
   log('isDisabled: ', isDisabled);
   log('linkPath: ', linkPath);

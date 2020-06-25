@@ -26,6 +26,7 @@ import {
   profileSelector,
   tasksDoneTodaySelector,
   tasksSelector,
+  activeTaskSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 
@@ -50,7 +51,16 @@ export default memo(() => {
   const firestoreRedux = useFirestore();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { taskId = '' } = useParams();
+  let { taskId = '' } = useParams();
+  const currentTaskId = get(
+    useTypedSelector(activeTaskSelector),
+    'id',
+  );
+  // TODO refactor
+  if (taskId === 'active') {
+    taskId = currentTaskId as string;
+  }
+
   const isAppIntroMode = taskId === 'introExample';
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
@@ -170,7 +180,7 @@ export default memo(() => {
         if (error.message.includes('Null value error.')) {
           return history.push('/');
         }
-        history.push('/tasks/' + taskId);
+        history.push('/tasks/active');
       }
     },
     async deleteTask(options: deleteTaskArguments = {}) {
@@ -199,10 +209,10 @@ export default memo(() => {
             },
           }),
         );
-        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
+        history.push(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);
-        history.push(`/tasks/${taskId}`);
+        history.push(`/tasks/active`);
       } finally {
         setRequested(false);
       }

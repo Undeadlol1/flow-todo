@@ -1,8 +1,3 @@
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -26,6 +21,13 @@ import {
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
 import { authSelector, uiSelector } from '../../store/selectors';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({

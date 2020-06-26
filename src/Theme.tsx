@@ -28,9 +28,6 @@ export const Theme: FunctionComponent<{
           },
           props: isMobile
             ? {
-                MuiList: {
-                  dense: true,
-                },
                 MuiSnackbar: {
                   anchorOrigin: {
                     vertical: 'top',

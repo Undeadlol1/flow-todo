@@ -78,7 +78,7 @@
     "yup": "^0.27.0"
   },
   "scripts": {
-    "start": "concurrently \"firebase emulators:start --only firestore\" \"react-scripts start\"",
+    "start": "concurrently \"firebase emulators:start --only firestore\" \"react-app-rewired start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -113,7 +113,9 @@
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
+    "babel-plugin-import": "^1.13.0",
     "concurrently": "^5.0.0",
+    "customize-cra": "^1.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "eslint": "^6.6.0",
@@ -128,6 +130,7 @@
     "faker": "^4.1.0",
     "jest-enzyme": "^7.1.2",
     "prettier": "1.18.2",
+    "react-app-rewired": "^2.1.6",
     "source-map-explorer": "^2.1.0"
   }
 }

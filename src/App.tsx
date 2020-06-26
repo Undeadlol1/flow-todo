@@ -4,7 +4,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
-import React from 'react';
+import React, { memo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { useWindowSize } from 'react-use';
@@ -64,4 +64,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

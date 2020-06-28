@@ -20,15 +20,17 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import {
+  activeTaskSelector,
   authSelector,
   fetchedTaskSelector,
   firestoreStatusSelector,
   profileSelector,
   tasksDoneTodaySelector,
+  tasksPerDaySelector,
   tasksSelector,
-  activeTaskSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
+import merge from 'lodash/merge';
 
 const log = debug('TaskPageContainer');
 
@@ -66,6 +68,7 @@ export default memo(() => {
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
   const auth = useTypedSelector(authSelector);
+  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
   const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
 
   const tasks = useTypedSelector(tasksSelector) || [];
@@ -130,9 +133,10 @@ export default memo(() => {
       !streak.startsAt ||
       differenceInDays(streak.updatedAt, now) >= 1;
 
-    if (tasksDoneToday + 1 > 2 && !isUpdatedToday) {
+    // TODO
+    if (tasksDoneToday + 1 > tasksPerDay && !isUpdatedToday) {
       console.log('update is running');
-      const payload = Object.assign({}, profile, {
+      const payload = merge(profile, {
         dailyStreak: {
           updatedAt: now,
           startsAt: isStreakBroken ? now : streak.startsAt,

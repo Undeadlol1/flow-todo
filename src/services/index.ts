@@ -150,11 +150,7 @@ export function handleErrors(
 }
 
 export function showSnackbar(message: string) {
-  store.dispatch(
-    snackbarActions.show({
-      message,
-    }),
-  );
+  store.dispatch(snackbarActions.show({ message }));
 }
 
 export function calculateUserLevel(userPoints: number): number {

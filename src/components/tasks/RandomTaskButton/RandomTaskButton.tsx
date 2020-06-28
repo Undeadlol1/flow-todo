@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import clsx from 'clsx';
-import debug from 'debug';
 import { firestore } from 'firebase/app';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -23,8 +22,6 @@ import {
   tasksSelector,
   uiSelector,
 } from '../../../store/selectors';
-
-const log = debug('RandomTaskButton');
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -81,8 +78,6 @@ export const RandomTaskButton = ({
   const linkPath = `/tasks/${
     isAppTourActive ? 'introExample' : 'active'
   }`;
-  log('isDisabled: ', isDisabled);
-  log('linkPath: ', linkPath);
 
   return (
     <Button

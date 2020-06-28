@@ -1,18 +1,19 @@
-import MobileStepper from '@material-ui/core/MobileStepper';
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { useSelector } from 'react-redux';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
+import React from 'react';
+import { isLoaded } from 'react-redux-firebase';
+import { useTypedTranslate } from '../../services/index';
+import { useTypedSelector } from '../../store';
 import {
   taskLogsSelector as taskLogs,
   tasksDoneTodaySelector,
+  tasksPerDaySelector,
 } from '../../store/selectors';
-import { useTypedTranslate } from '../../services/index';
-import { isLoaded } from 'react-redux-firebase';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   progress: {
@@ -25,9 +26,10 @@ const TasksDoneToday: React.FC<{}> = () => {
   const classes = useStyles();
   const t = useTypedTranslate();
 
-  const tasksPerDay = 3;
-  const logs = useSelector(taskLogs);
-  const tasksToday = useSelector(tasksDoneTodaySelector);
+  const logs = useTypedSelector(taskLogs);
+  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
+  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
+  console.log('tasksPerDay: ', tasksPerDay);
 
   if (!isLoaded(logs))
     return <Skeleton component={Box} width="100%" height="200px" />;

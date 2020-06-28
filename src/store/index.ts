@@ -38,6 +38,7 @@ const log = debug('store');
 const { FieldValue } = firestore;
 
 export type DayliStreak = {
+  perDay: number;
   startsAt: Date;
   updatedAt: Date;
 };
@@ -201,6 +202,7 @@ export function upsertProfile(
   userId: string,
   values: Profile,
 ): Promise<void> {
+  if (!values.userId) throw Error('You must specify userId!');
   return getFirestore()
     .doc('profiles/' + values.userId)
     .set(values, { merge: true });

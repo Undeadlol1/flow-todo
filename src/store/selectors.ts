@@ -13,6 +13,7 @@ import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import countBy from 'lodash/countBy';
 import includes from 'ramda/es/includes';
+import filter from 'lodash/filter';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -47,13 +48,14 @@ export const tasksSelector = createSelector(
   fetchedTasksSelector,
   excludedTagsSelector,
   (tasks: Task[], excludedTags) => {
+    // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;
-    const tasksWithoutPinnedTask = tasks.filter(i => !i.isPinned);
-    const tasksWithoutExludedTags = tasksWithoutPinnedTask.filter(
+    // TODO refactor
+    return filter(
+      tasks,
       ({ tags = [] }) =>
-        !tags.some(tag => excludedTags.includes(tag)),
+        !tags.some(tag => excludedTags.includes(tag.toLowerCase())),
     );
-    return tasksWithoutExludedTags;
   },
 );
 

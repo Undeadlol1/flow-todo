@@ -25,7 +25,6 @@ import {
 } from '../../../store/selectors';
 
 const log = debug('RandomTaskButton');
-debug.enable('RandomTaskButton');
 
 const useStyles = makeStyles(theme => ({
   paper: {

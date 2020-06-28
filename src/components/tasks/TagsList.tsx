@@ -25,7 +25,9 @@ export const TagsList: React.FC<{}> = () => {
 
   const tasks = useSelector(fetchedTasksSelector);
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
+  console.log('uniqueTags: ', uniqueTags);
   const exludedTags = useSelector(excludedTagsSelector);
+  console.log('exludedTags: ', exludedTags);
 
   if (!tasks) return null;
   else

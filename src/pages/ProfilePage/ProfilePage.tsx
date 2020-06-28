@@ -22,6 +22,7 @@ import {
 } from '../../services/index';
 import { Profile, useTypedSelector } from '../../store/index';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
+import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -79,6 +80,12 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         </If>
       </Grid>
       <Grid item xs={12} sm={6}>
+        <Box mb={2}>
+          <DayliTasksStreakForm />
+        </Box>
+        <Box mb={2}>
+          <DarkOrLightThemePicker />
+        </Box>
         <Card>
           <List>
             <ListItem button onClick={() => reset('points')}>
@@ -97,9 +104,6 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
             </ListItem>
           </List>
         </Card>
-        <Box mt={2}>
-          <DarkOrLightThemePicker />
-        </Box>
       </Grid>
     </Grid>
   );

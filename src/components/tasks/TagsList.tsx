@@ -9,6 +9,9 @@ import {
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
+import debug from 'debug';
+
+const log = debug('TagsList');
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -25,9 +28,10 @@ export const TagsList: React.FC<{}> = () => {
 
   const tasks = useSelector(fetchedTasksSelector);
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
-  console.log('uniqueTags: ', uniqueTags);
   const exludedTags = useSelector(excludedTagsSelector);
-  console.log('exludedTags: ', exludedTags);
+
+  log('uniqueTags: ', uniqueTags);
+  log('exludedTags: ', exludedTags);
 
   if (!tasks) return null;
   else

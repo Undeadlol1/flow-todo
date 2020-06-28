@@ -49,8 +49,8 @@ function App() {
               }}
             >
               <NotistackSnackbarProver
-                autoHideDuration={3500}
                 dense={isMobile}
+                autoHideDuration={3500}
                 anchorOrigin={snachbarPosition}
               >
                 <Router />

@@ -103,6 +103,17 @@ export default function TaskPage(props: TaskPageProps) {
         <AppTour step={2} />
       </When>
       <Timer
+        onStart={() => {
+          setTimeout(() => {
+            // TODO i18n
+            enqueueSnackbar(
+              'Не думай об этом. Просто начни действовать',
+              {
+                autoHideDuration: 5000,
+              },
+            );
+          }, 2500);
+        }}
         onEnd={() => {
           // TODO i18n
           enqueueSnackbar(

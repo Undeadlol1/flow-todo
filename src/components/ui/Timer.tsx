@@ -6,6 +6,7 @@ import Fab from './Fab';
 interface Props {
   // Run function on timer stop.
   onEnd?: Function;
+  onStart?: Function;
   autoStart?: boolean;
   className?: string;
 }
@@ -34,6 +35,8 @@ export default (props: Props) => {
           if (val === 0) return '00';
           else return val;
         }}
+        // @ts-ignore
+        onStart={props.onStart}
         // @ts-ignore
         onStop={props.onEnd}
         direction="backward"

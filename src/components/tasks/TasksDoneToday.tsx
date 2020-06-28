@@ -13,6 +13,7 @@ import { isLoaded } from 'react-redux-firebase';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import DayliTasksStreak from './DayliTasksStreak';
 
 const useStyles = makeStyles({
   progress: {
@@ -53,6 +54,7 @@ const TasksDoneToday: React.FC<{}> = () => {
               nextButton={<div />}
               backButton={<div />}
             />
+            <DayliTasksStreak mt={2} />
           </CardContent>
         </Card>
       </>

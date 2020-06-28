@@ -1,13 +1,11 @@
-import React, { memo } from 'react';
-import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Box, { BoxProps } from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import differenceInDays from 'date-fns/differenceInDays';
+import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { profileSelector } from '../../store/selectors';
-import differenceInDays from 'date-fns/differenceInDays';
 
-const DayliTasksStreak = () => {
+const DayliTasksStreak = (props: BoxProps) => {
   const { startsAt, updatedAt } = useSelector(
     profileSelector,
   ).dailyStreak;
@@ -16,18 +14,12 @@ const DayliTasksStreak = () => {
 
   const daysInARow = differenceInDays(updatedAt, startsAt);
   return (
-    <Box mt={4} fontWeight={100}>
-      <Card>
-        <CardContent>
-          <Typography variant="h6">
-            <Box fontWeight={100}>
-              {/* TODO i18n */}
-              Задачи выполнены дней подряд: {daysInARow + 1}
-            </Box>
-          </Typography>
-        </CardContent>
-      </Card>
-    </Box>
+    <Typography variant="h6">
+      <Box fontWeight={100} {...props}>
+        {/* TODO i18n */}
+        Задачи выполнены дней подряд: {daysInARow + 1}
+      </Box>
+    </Typography>
   );
 };
 

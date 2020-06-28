@@ -84,7 +84,6 @@ export const IndexPage = memo(function HomePage(props: Props) {
           )}
         >
           <TasksDoneToday />
-          <DayliTasksStreak />
         </Unless>
       </Grid>
       <Grid item xs={12} sm={12} md={8} lg={6}>

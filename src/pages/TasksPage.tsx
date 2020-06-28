@@ -1,11 +1,10 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import debug from 'debug';
 import React, { memo } from 'react';
-import { TasksList } from './../components/tasks/TasksList/TasksList';
 import { useTypedSelector } from '../store';
 import { tasksSelector } from '../store/selectors';
+import { TasksList } from './../components/tasks/TasksList/TasksList';
 
 const log = debug('RewardsPage');
 const useStyles = makeStyles(theme => ({

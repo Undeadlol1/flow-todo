@@ -17,7 +17,7 @@ import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
 import head from 'ramda/es/head';
 import prop from 'ramda/es/prop';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
@@ -73,6 +73,18 @@ export default function TaskPage(props: TaskPageProps) {
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
   const hasSubtasks = Boolean(activeSubtasks.length);
 
+  // Show encouraging snackbar after short delay
+  // NOTE: Make sure snackbar is not shown when user redirects.
+  useEffect(() => {
+    const snackBarTimeout = setTimeout(() => {
+      // TODO i18n
+      enqueueSnackbar('Не думай об этом. Просто начни действовать', {
+        autoHideDuration: 5000,
+      });
+    }, 2500);
+    return () => clearTimeout(snackBarTimeout);
+  }, []);
+
   if (loading) {
     return (
       <Grid
@@ -103,17 +115,6 @@ export default function TaskPage(props: TaskPageProps) {
         <AppTour step={2} />
       </When>
       <Timer
-        onStart={() => {
-          setTimeout(() => {
-            // TODO i18n
-            enqueueSnackbar(
-              'Не думай об этом. Просто начни действовать',
-              {
-                autoHideDuration: 5000,
-              },
-            );
-          }, 2500);
-        }}
         onEnd={() => {
           // TODO i18n
           enqueueSnackbar(

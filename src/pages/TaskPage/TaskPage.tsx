@@ -83,7 +83,7 @@ export default function TaskPage(props: TaskPageProps) {
       });
     }, 2500);
     return () => clearTimeout(snackBarTimeout);
-  }, []);
+  }, [enqueueSnackbar]);
 
   if (loading) {
     return (

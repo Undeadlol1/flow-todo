@@ -22,7 +22,7 @@ const RewardsPage: React.FC<{}> = () => {
 
   return (
     <Grid container justify="center" className={cx.pageContainer}>
-      <Grid container item xs={12} sm={8} md={8} lg={6}>
+      <Grid item xs={12} sm={8} md={8} lg={6}>
         <TasksList tasks={tasks || []} />
       </Grid>
     </Grid>

@@ -30,7 +30,7 @@ import TasksPage from './pages/TasksPage';
 const today = Date.now();
 const yesterday = subHours(today, getHours(today)).getTime();
 
-export default memo(function Router() {
+export default memo(function RouterAndDataLoader() {
   const user = useTypedSelector(authSelector);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);

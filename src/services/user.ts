@@ -53,9 +53,6 @@ export default class UserService {
         const now = Date.now();
         const isUpdatedToday =
             differenceInDays(streak.updatedAt, now) === 0;
-        const isStreakBroken =
-            !streak.startsAt ||
-            differenceInDays(streak.updatedAt, now) >= 1;
 
         return tasksDoneToday + 1 > 2 && !isUpdatedToday
     }

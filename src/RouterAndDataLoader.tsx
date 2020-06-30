@@ -40,10 +40,7 @@ export default memo(function RouterAndDataLoader() {
   // Refetch data every hour.
   const dataRefetchInterval = 1000 * 60 * 60;
   useInterval(
-    () =>
-      console.log(
-        `Refetching data every ${dataRefetchInterval} milliseconds...`,
-      ),
+    () => console.log(`Refetching data every hour...`),
     dataRefetchInterval,
   );
 

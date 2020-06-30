@@ -24,7 +24,7 @@ import {
   uiSelector,
 } from '../../../store/selectors';
 
-const log = debug('RandomTaskButton');
+const log = debug('RandomTaskButon');
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -80,7 +80,7 @@ export const RandomTaskButton = ({
   const isDisabled = loading || get(tasks, 'empty') || !currentTaskId;
   const linkPath = `/tasks/${
     isAppTourActive ? 'introExample' : 'active'
-  }`;
+    }`;
   log('isDisabled: ', isDisabled);
   log('linkPath: ', linkPath);
 

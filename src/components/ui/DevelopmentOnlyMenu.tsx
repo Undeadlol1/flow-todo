@@ -11,10 +11,6 @@ import nanoid from 'nanoid';
 import React, { MouseEvent, useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import {
-  calculatePointsToNextLevel,
-  calculateUserLevel,
-} from '../../services/index';
-import {
   addPoints,
   addPointsWithSideEffects,
   useTypedSelector,
@@ -22,6 +18,7 @@ import {
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
 import { Profile } from '../../store/index';
+import UserService from '../../services/user';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,8 +68,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   function levelUp() {
-    const level = calculateUserLevel(get(profile, 'points', 0));
-    const pointsToNextLevel = calculatePointsToNextLevel(level);
+    const level = UserService.calculateUserLevel(get(profile, 'points', 0));
+    const pointsToNextLevel = UserService.calculatePointsToNextLevel(level);
     addPoints(auth.uid, pointsToNextLevel);
   }
 

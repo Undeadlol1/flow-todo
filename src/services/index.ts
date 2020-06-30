@@ -157,47 +157,6 @@ export function showSnackbar(message: string) {
   );
 }
 
-export function calculateUserLevel(userPoints: number): number {
-  let pointsCalcuated = 0;
-  let functionCalledCount = 0;
-  while (pointsCalcuated <= userPoints) {
-    pointsCalcuated += calculatePointsToNextLevel(
-      functionCalledCount,
-    );
-    functionCalledCount++;
-  }
-  return functionCalledCount - 1;
-}
-
-export function calculateTotalPointsToReachALevel(
-  desiredLevel: number,
-): number {
-  let level = 0;
-  let pointsCalcuated = 0;
-  while (level <= desiredLevel) {
-    pointsCalcuated += calculatePointsToNextLevel(level);
-    level++;
-  }
-  return pointsCalcuated - calculatePointsToNextLevel(level - 1);
-}
-
-export function calculatePointsToNextLevel(level: number) {
-  const exponent = 1.1;
-  const baseXP = level <= 3 ? 30 : 10;
-  return baseXP * ((level ^ exponent) | 1);
-}
-
-export function willUserLevelUp(
-  currentPoints: number,
-  pointsAboutToAdd: number,
-): boolean {
-  const currentLevel = calculateUserLevel(currentPoints);
-  const levelAfterAddingPoints = calculateUserLevel(
-    currentPoints + pointsAboutToAdd,
-  );
-  return levelAfterAddingPoints > currentLevel;
-}
-
 export function getNewlyUnlockedReward(
   currentPoints: number,
   pointsAboutToAdd: number,

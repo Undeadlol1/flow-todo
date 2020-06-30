@@ -33,6 +33,13 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
+import sample from 'lodash/sample';
+
+// TODO i18n
+const encouragingMessages = [
+  'Не думай об этом. Просто начни действовать',
+  'Ты хочешь это сделать или ты себя заставляешь? Это большая разница.',
+];
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -77,8 +84,7 @@ export default function TaskPage(props: TaskPageProps) {
   // NOTE: Make sure snackbar is not shown when user redirects.
   useEffect(() => {
     const snackBarTimeout = setTimeout(() => {
-      // TODO i18n
-      enqueueSnackbar('Не думай об этом. Просто начни действовать', {
+      enqueueSnackbar(sample(encouragingMessages), {
         autoHideDuration: 5000,
       });
     }, 2500);

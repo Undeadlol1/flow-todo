@@ -29,6 +29,7 @@ import {
   activeTaskSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
+import UserService from '../../services/user';
 
 const log = debug('TaskPageContainer');
 
@@ -115,22 +116,22 @@ export default memo(() => {
   async function activateNextTask() {
     return nextTaskId
       ? firestoreRedux.doc('tasks/' + nextTaskId).update({
-          ...tasks.find(t => t.id === nextTaskId),
-          isCurrent: true,
-        })
+        ...tasks.find(t => t.id === nextTaskId),
+        isCurrent: true,
+      })
       : Promise.resolve();
   }
 
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
-    const isUpdatedToday =
-      differenceInDays(streak.updatedAt, now) === 0;
-    const isStreakBroken =
-      !streak.startsAt ||
-      differenceInDays(streak.updatedAt, now) >= 1;
+    const isStreakBroken = UserService.isStreakBroken(streak)
+    const shouldStreakUpdate = UserService.shouldDailyStreakUpdate({
+      tasksDoneToday,
+      streak: profile.dailyStreak,
+    })
 
-    if (tasksDoneToday + 1 > 2 && !isUpdatedToday) {
+    if (shouldStreakUpdate) {
       console.log('update is running');
       const payload = Object.assign({}, profile, {
         dailyStreak: {

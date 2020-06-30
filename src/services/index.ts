@@ -222,7 +222,7 @@ export function getNewlyUnlockedReward(
     nextReward.points <= currentPoints + pointsAboutToAdd &&
     currentRewardIndex &&
     get(rewards, `[${currentRewardIndex}].points`) !==
-      nextReward.points
+    nextReward.points
   )
     return nextReward;
 }
@@ -302,13 +302,13 @@ export function initializeI18n() {
 // TODO better name
 export function findSequenceDuplicates(
   history: History[] = [],
-): void {}
+): void { }
 
 // NOTE: this is a copy/pastej
 const debounce = (delay: number, fn: any) => {
   let timerId: any;
 
-  return function(...args: any[]) {
+  return function (...args: any[]) {
     if (timerId) {
       clearTimeout(timerId);
     }

@@ -21,6 +21,7 @@ import {
   createTask,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
+import { Profile } from '../../store/index';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,8 +76,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     addPoints(auth.uid, pointsToNextLevel);
   }
 
-  function resetPoints() {
-    firestore.doc('profiles/' + auth.uid).update({ points: 0 });
+  function resetLevel() {
+    firestore.doc('profiles/' + auth.uid).update({ points: 0, experience: 0, } as Profile);
   }
 
   function createAReward() {
@@ -105,7 +106,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
           >
             Add 50 points
           </MenuItem>
-          <MenuItem onClick={resetPoints}>Reset points</MenuItem>
+          <MenuItem onClick={resetLevel}>Reset level</MenuItem>
           <MenuItem onClick={levelUp}>Level up</MenuItem>
           <MenuItem onClick={createAReward}>Add a reward</MenuItem>
           <MenuItem onClick={addTask}>Add a task</MenuItem>

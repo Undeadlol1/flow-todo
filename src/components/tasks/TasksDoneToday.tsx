@@ -30,7 +30,6 @@ const TasksDoneToday: React.FC<{}> = () => {
   const logs = useTypedSelector(taskLogs);
   const tasksToday = useTypedSelector(tasksDoneTodaySelector);
   const tasksPerDay = useTypedSelector(tasksPerDaySelector);
-  console.log('tasksPerDay: ', tasksPerDay);
 
   if (!isLoaded(logs))
     return <Skeleton component={Box} width="100%" height="200px" />;

@@ -130,7 +130,9 @@ export default memo(() => {
     const streak = profile.dailyStreak;
     const isStreakBroken = UserService.isStreakBroken(streak);
     const shouldStreakUpdate = UserService.shouldDailyStreakUpdate({
-      tasksDoneToday,
+      // NOTE: +1 because when this function is called task
+      // update is not registred yet, thus task may look as it is nt done yet.
+      tasksDoneToday: tasksDoneToday + 1,
       streak: profile.dailyStreak,
     });
 
@@ -140,6 +142,9 @@ export default memo(() => {
         dailyStreak: {
           updatedAt: now,
           startsAt: isStreakBroken ? now : streak.startsAt,
+          // TODO instead of writing this line, find a way to
+          // properly merge deep properties.
+          perDay: tasksPerDay,
         },
       });
       streakLog('payload: ', payload);

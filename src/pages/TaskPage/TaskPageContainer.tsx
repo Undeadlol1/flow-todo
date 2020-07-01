@@ -33,7 +33,6 @@ import TaskPage from './TaskPage';
 
 const log = debug('TaskPageContainer');
 const streakLog = log.extend('dailyStreak');
-debug.enable('*:dailyStreak');
 
 export interface updateTaskParams {
   values: any;
@@ -173,8 +172,8 @@ export default memo(() => {
       pointsToAdd = 10,
       history: historyToAdd,
     }: updateTaskParams) {
+      log('updateTask is running.');
       try {
-        console.log('update task');
         enqueueSnackbar(snackbarMessage);
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
@@ -206,7 +205,7 @@ export default memo(() => {
       }
     },
     async deleteTask(options: deleteTaskArguments = {}) {
-      console.log('delete task');
+      log('deleteTask is running.');
       setRequested(true);
       try {
         await Promise.all([

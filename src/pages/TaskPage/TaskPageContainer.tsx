@@ -1,4 +1,3 @@
-import differenceInDays from 'date-fns/differenceInDays';
 import debug from 'debug';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -12,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import { getRandomTaskId, handleErrors } from '../../services';
+import UserService from '../../services/user';
 import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
@@ -30,10 +30,10 @@ import {
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import merge from 'lodash/merge';
-import UserService from '../../services/user';
 
 const log = debug('TaskPageContainer');
+const streakLog = log.extend('dailyStreak');
+debug.enable('*:dailyStreak');
 
 export interface updateTaskParams {
   values: any;
@@ -135,14 +135,14 @@ export default memo(() => {
     });
 
     if (shouldStreakUpdate) {
-      console.log('update is running');
-      const payload = merge(profile, {
+      streakLog('update is running');
+      const payload = Object.assign({}, profile, {
         dailyStreak: {
           updatedAt: now,
           startsAt: isStreakBroken ? now : streak.startsAt,
         },
       });
-      console.log('payload: ', payload);
+      streakLog('payload: ', payload);
       return firestoreRedux
         .doc('profiles/' + auth.uid)
         .update(payload);

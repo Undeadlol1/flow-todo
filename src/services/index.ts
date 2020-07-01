@@ -153,47 +153,6 @@ export function showSnackbar(message: string) {
   store.dispatch(snackbarActions.show({ message }));
 }
 
-export function calculateUserLevel(userPoints: number): number {
-  let pointsCalcuated = 0;
-  let functionCalledCount = 0;
-  while (pointsCalcuated <= userPoints) {
-    pointsCalcuated += calculatePointsToNextLevel(
-      functionCalledCount,
-    );
-    functionCalledCount++;
-  }
-  return functionCalledCount - 1;
-}
-
-export function calculateTotalPointsToReachALevel(
-  desiredLevel: number,
-): number {
-  let level = 0;
-  let pointsCalcuated = 0;
-  while (level <= desiredLevel) {
-    pointsCalcuated += calculatePointsToNextLevel(level);
-    level++;
-  }
-  return pointsCalcuated - calculatePointsToNextLevel(level - 1);
-}
-
-export function calculatePointsToNextLevel(level: number) {
-  const exponent = 1.1;
-  const baseXP = level <= 3 ? 30 : 10;
-  return baseXP * ((level ^ exponent) | 1);
-}
-
-export function willUserLevelUp(
-  currentPoints: number,
-  pointsAboutToAdd: number,
-): boolean {
-  const currentLevel = calculateUserLevel(currentPoints);
-  const levelAfterAddingPoints = calculateUserLevel(
-    currentPoints + pointsAboutToAdd,
-  );
-  return levelAfterAddingPoints > currentLevel;
-}
-
 export function getNewlyUnlockedReward(
   currentPoints: number,
   pointsAboutToAdd: number,
@@ -218,7 +177,7 @@ export function getNewlyUnlockedReward(
     nextReward.points <= currentPoints + pointsAboutToAdd &&
     currentRewardIndex &&
     get(rewards, `[${currentRewardIndex}].points`) !==
-      nextReward.points
+    nextReward.points
   )
     return nextReward;
 }
@@ -298,13 +257,13 @@ export function initializeI18n() {
 // TODO better name
 export function findSequenceDuplicates(
   history: History[] = [],
-): void {}
+): void { }
 
 // NOTE: this is a copy/pastej
 const debounce = (delay: number, fn: any) => {
   let timerId: any;
 
-  return function(...args: any[]) {
+  return function (...args: any[]) {
     if (timerId) {
       clearTimeout(timerId);
     }

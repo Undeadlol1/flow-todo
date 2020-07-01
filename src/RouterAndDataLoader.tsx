@@ -26,14 +26,24 @@ import FAQPage from './pages/FAQPage';
 import subHours from 'date-fns/subHours';
 import getHours from 'date-fns/getHours';
 import TasksPage from './pages/TasksPage';
+import useInterval from 'react-use/esm/useInterval';
+import PrivacyPage from './pages/PrivacyPage';
 
 const today = Date.now();
 const yesterday = subHours(today, getHours(today)).getTime();
 
-export default memo(function Router() {
+export default memo(function RouterAndDataLoader() {
   const user = useTypedSelector(authSelector);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
+
+  // Refetch data every hour.
+  const dataRefetchInterval = 1000 * 60 * 60;
+  useInterval(
+    () => console.log(`Refetching data every hour...`),
+    dataRefetchInterval,
+  );
+
   // Store userId in localStorage to improve loading times on startup
   const userId =
     get(user, 'uid', '') || localStorage.getItem('userId') || '';
@@ -129,6 +139,9 @@ export default memo(function Router() {
           </Route>
           <Route path="/faq">
             <FAQPage />
+          </Route>
+          <Route path="/privacy">
+            <PrivacyPage />
           </Route>
           <Route path="/web-share-target">
             <WebShareTargetPage />

@@ -22,7 +22,6 @@ import {
   handleErrors,
   initializeFirebase,
   showLevelUpAnimation,
-  willUserLevelUp,
 } from '../services/index';
 import rewardsSlice, { Reward } from './rewardsSlice';
 import {
@@ -33,6 +32,7 @@ import {
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
+import UserService from '../services/user';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -64,12 +64,12 @@ export type TaskHistory = {
   createdAt: number;
   comment?: string;
   actionType:
-    | 'postpone'
-    | 'updateName'
-    | 'updateSubtask'
-    | 'stepForward'
-    | 'leapForward'
-    | 'setDone';
+  | 'postpone'
+  | 'updateName'
+  | 'updateSubtask'
+  | 'stepForward'
+  | 'leapForward'
+  | 'setDone';
 };
 
 export type Task = {
@@ -241,7 +241,7 @@ export function addPointsWithSideEffects(
   );
   // TODO refactor
   if (nextReward) store.dispatch(toggleRewardModal());
-  if (willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
+  if (UserService.willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
 
   return addPoints(auth.uid, points);
 }

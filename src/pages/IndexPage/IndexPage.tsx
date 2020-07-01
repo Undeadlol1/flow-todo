@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -8,7 +9,6 @@ import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Unless } from 'react-if';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
-import DayliTasksStreak from '../../components/tasks/DayliTasksStreak';
 import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
@@ -18,7 +18,6 @@ import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { Task, useTypedSelector } from '../../store/index';
 import { tasksSelector, uiSelector } from '../../store/selectors';
-import Box from '@material-ui/core/Box';
 
 const log = debug('HomePage');
 const useStyles = makeStyles(theme => ({
@@ -84,7 +83,6 @@ export const IndexPage = memo(function HomePage(props: Props) {
           )}
         >
           <TasksDoneToday />
-          <DayliTasksStreak />
         </Unless>
       </Grid>
       <Grid item xs={12} sm={12} md={8} lg={6}>

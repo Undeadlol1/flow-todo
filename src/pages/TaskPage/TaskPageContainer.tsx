@@ -149,6 +149,18 @@ export default memo(() => {
     }
   }
 
+  async function deactivateActiveTasks() {
+    return Promise.all(
+      tasks
+        .filter(i => i.isCurrent)
+        .map(i =>
+          firestoreRedux
+            .doc('tasks/' + i.id)
+            .update({ isCurrent: false } as Task),
+        ),
+    );
+  }
+
   const mergedProps = {
     async updateTask({
       values,
@@ -162,22 +174,23 @@ export default memo(() => {
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
         await Promise.all([
-          await firestoreRedux.doc('tasks/' + taskId).update({
+          deactivateActiveTasks(),
+          firestoreRedux.doc('tasks/' + taskId).update({
             ...task,
             ...values,
             // TODO make sure subcollections instead of array are
             // working properly and remove this line
             history: [...get(task, 'history', []), historyToAdd],
           }),
-          await firestoreRedux.collection('taskLogs').add({
+          firestoreRedux.collection('taskLogs').add({
             ...historyToAdd,
             taskId: taskId,
             userId: task.userId,
             createdAt: Date.now(),
           }),
-          await addPointsWithSideEffects(task.userId, pointsToAdd),
-          await activateNextTask(),
-          await updateDailyStreak(),
+          addPointsWithSideEffects(task.userId, pointsToAdd),
+          activateNextTask(),
+          updateDailyStreak(),
         ]);
       } catch (error) {
         handleErrors(error);

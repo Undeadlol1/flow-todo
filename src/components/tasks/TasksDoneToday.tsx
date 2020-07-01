@@ -14,6 +14,7 @@ import {
   tasksDoneTodaySelector,
   tasksPerDaySelector,
 } from '../../store/selectors';
+import DayliTasksStreak from './DayliTasksStreak';
 
 const useStyles = makeStyles({
   progress: {
@@ -55,6 +56,7 @@ const TasksDoneToday: React.FC<{}> = () => {
               nextButton={<div />}
               backButton={<div />}
             />
+            <DayliTasksStreak mt={2} />
           </CardContent>
         </Card>
       </>

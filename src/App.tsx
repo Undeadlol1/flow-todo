@@ -8,7 +8,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import './App.css';
-import Router from './Router';
+import RouterAndDataLoader from './RouterAndDataLoader';
 import { initializeI18n, useDebouncedWindowSize } from './services';
 import store from './store';
 import { Theme } from './Theme';
@@ -49,11 +49,11 @@ function App() {
               }}
             >
               <NotistackSnackbarProver
-                autoHideDuration={3500}
                 dense={isMobile}
+                autoHideDuration={3500}
                 anchorOrigin={snachbarPosition}
               >
-                <Router />
+                <RouterAndDataLoader />
               </NotistackSnackbarProver>
             </MaterialSnackbarProvider>
           </Theme>

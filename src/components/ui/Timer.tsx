@@ -47,7 +47,9 @@ export default (props: Props) => {
         // @ts-ignore */}
         {({ start, resume, pause, stop, reset, timerState }) => {
           if (props.autoStart && !isAutoStarted) {
-            start();
+			// NOTE: timeout is used as a workaround to prevent
+			// "Warning: Cannot update during an existing state transition".
+			setTimeout(start, 100);
             setIsAutoStarted(true);
           }
           function toggleTimer() {

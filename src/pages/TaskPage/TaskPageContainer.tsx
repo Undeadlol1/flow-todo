@@ -31,6 +31,7 @@ import {
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 import merge from 'lodash/merge';
+import UserService from '../../services/user';
 
 const log = debug('TaskPageContainer');
 
@@ -127,14 +128,13 @@ export default memo(() => {
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
-    const isUpdatedToday =
-      differenceInDays(streak.updatedAt, now) === 0;
-    const isStreakBroken =
-      !streak.startsAt ||
-      differenceInDays(streak.updatedAt, now) >= 1;
+    const isStreakBroken = UserService.isStreakBroken(streak);
+    const shouldStreakUpdate = UserService.shouldDailyStreakUpdate({
+      tasksDoneToday,
+      streak: profile.dailyStreak,
+    });
 
-    // TODO
-    if (tasksDoneToday + 1 > tasksPerDay && !isUpdatedToday) {
+    if (shouldStreakUpdate) {
       console.log('update is running');
       const payload = merge(profile, {
         dailyStreak: {

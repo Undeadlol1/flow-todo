@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container';
 import { auth } from 'firebase/app';
 import get from 'lodash/get';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RewardModal from './components/rewards/RewardModal';
@@ -29,20 +29,19 @@ import TasksPage from './pages/TasksPage';
 import useInterval from 'react-use/esm/useInterval';
 import PrivacyPage from './pages/PrivacyPage';
 
-const today = Date.now();
-const yesterday = subHours(today, getHours(today)).getTime();
-
 export default memo(function RouterAndDataLoader() {
   const user = useTypedSelector(authSelector);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
+  const [today, setToday] = useState(Date.now());
+  const yesterday = subHours(today, getHours(today)).getTime();
 
   // Refetch data every hour.
   const dataRefetchInterval = 1000 * 60 * 60;
-  useInterval(
-    () => console.log(`Refetching data every hour...`),
-    dataRefetchInterval,
-  );
+  useInterval(() => {
+    console.log(`Refetching data every hour...`);
+    setToday(Date.now());
+  }, dataRefetchInterval);
 
   // Store userId in localStorage to improve loading times on startup
   const userId =

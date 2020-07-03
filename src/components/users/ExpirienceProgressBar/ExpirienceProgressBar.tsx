@@ -6,11 +6,11 @@ import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
+import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
-import UserService from '../../../services/user';
 import {
   profileSelector,
-  usersSelector,
+  usersSelector
 } from '../../../store/selectors';
 
 const log = debug('ExpirienceProgressBar');
@@ -32,12 +32,12 @@ export const ExpirienceProgressBar: React.FC<{
   );
   const profile = useTypedSelector(profileSelector);
   const userPoints = get(profile, 'experience', 0);
-  const level = UserService.calculateUserLevel(userPoints);
+  const level = LevelingService.calculateUserLevel(userPoints);
 
-  const pointsToReachPreviousLevel = UserService.calculateTotalPointsToReachALevel(
+  const pointsToReachPreviousLevel = LevelingService.calculateTotalPointsToReachALevel(
     level,
   );
-  const pointsToReachNextLevel = UserService.calculateTotalPointsToReachALevel(
+  const pointsToReachNextLevel = LevelingService.calculateTotalPointsToReachALevel(
     level + 1,
   );
   const differenceBetweenLevels =
@@ -51,7 +51,7 @@ export const ExpirienceProgressBar: React.FC<{
   log('userPoints', userPoints);
   log(
     'points to next level',
-    pointsToReachPreviousLevel + UserService.calculatePointsToNextLevel(level),
+    pointsToReachPreviousLevel + LevelingService.calculatePointsToNextLevel(level),
   );
   log('progressPercent: ', progressPercent);
 

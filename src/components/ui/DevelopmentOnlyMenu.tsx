@@ -10,15 +10,14 @@ import { loremIpsum } from 'lorem-ipsum';
 import nanoid from 'nanoid';
 import React, { MouseEvent, useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
+import LevelingService from '../../services/leveling';
 import {
   addPoints,
   addPointsWithSideEffects,
-  useTypedSelector,
-  createTask,
+
+  createTask, Profile, useTypedSelector
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
-import { Profile } from '../../store/index';
-import UserService from '../../services/user';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,8 +67,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   function levelUp() {
-    const level = UserService.calculateUserLevel(get(profile, 'points', 0));
-    const pointsToNextLevel = UserService.calculatePointsToNextLevel(level);
+    const level = LevelingService.calculateUserLevel(get(profile, 'points', 0));
+    const pointsToNextLevel = LevelingService.calculatePointsToNextLevel(level);
     addPoints(auth.uid, pointsToNextLevel);
   }
 

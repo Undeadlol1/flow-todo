@@ -19,16 +19,14 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
-  authSelector,
-  profileSelector,
-  usersSelector,
+  authSelector, profilePointsSelector, profileSelector,
+  usersSelector
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
-import { profilePointsSelector } from '../../../store/selectors';
-import UserService from '../../../services/user';
 
 const log = debug('NavBar');
 
@@ -115,7 +113,7 @@ export const LoginOrLogoutButton = memo(() => {
               // NOTE: "+1" is a quick fix
               badgeContent={
                 profile.isLoaded &&
-                Math.trunc(UserService.calculateUserLevel(experience)) + 1
+                Math.trunc(LevelingService.calculateUserLevel(experience)) + 1
               }
             >
               <If condition={hasPhoto}>

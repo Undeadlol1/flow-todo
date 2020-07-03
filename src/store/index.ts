@@ -1,7 +1,7 @@
 import {
   combineReducers,
   configureStore,
-  getDefaultMiddleware,
+  getDefaultMiddleware
 } from '@reduxjs/toolkit';
 import subDays from 'date-fns/subDays';
 import debug from 'debug';
@@ -14,25 +14,25 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
   firestoreReducer,
   getFirestore as getFirestore2,
-  reduxFirestore,
+  reduxFirestore
 } from 'redux-firestore';
 import {
   getFirestore,
   getNewlyUnlockedReward,
   handleErrors,
   initializeFirebase,
-  showLevelUpAnimation,
+  showLevelUpAnimation
 } from '../services/index';
+import LevelingService from '../services/leveling';
 import rewardsSlice, { Reward } from './rewardsSlice';
 import {
   authSelector,
   profilePointsSelector,
-  rewardsSelector,
+  rewardsSelector
 } from './selectors';
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
-import UserService from '../services/user';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -241,7 +241,7 @@ export function addPointsWithSideEffects(
   );
   // TODO refactor
   if (nextReward) store.dispatch(toggleRewardModal());
-  if (UserService.willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
+  if (LevelingService.willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
 
   return addPoints(auth.uid, points);
 }

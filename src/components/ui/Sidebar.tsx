@@ -14,6 +14,7 @@ import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useWebShare from 'react-use-web-share';
+import TelegramIcon from '@material-ui/icons/Telegram';
 import {
   handleErrors,
   toggleSidebar,
@@ -70,10 +71,7 @@ const Sidebar: React.FC<{}> = () => {
   function logoutOrRedirect() {
     toggleSidebar();
     if (isAnonymous) history.push('/signin');
-    else
-      getFirebase()
-        .logout()
-        .catch(handleErrors);
+    else getFirebase().logout().catch(handleErrors);
   }
 
   function shareMainPage() {
@@ -107,9 +105,23 @@ const Sidebar: React.FC<{}> = () => {
           }}
         >
           <ListItemIcon>
-            <HelpIcon />
+            <TelegramIcon />
           </ListItemIcon>
           <StyledListText primary={t('faq')} />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            history.push(
+              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA',
+            );
+          }}
+        >
+          <ListItemIcon>
+            <HelpIcon />
+          </ListItemIcon>
+          {/* TODO: i18n */}
+          <StyledListText primary="Группа в Телеграмме" />
         </ListItem>
         <When condition={isShareSupported}>
           <ListItem button onClick={shareMainPage}>

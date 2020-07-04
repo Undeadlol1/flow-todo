@@ -71,7 +71,10 @@ const Sidebar: React.FC<{}> = () => {
   function logoutOrRedirect() {
     toggleSidebar();
     if (isAnonymous) history.push('/signin');
-    else getFirebase().logout().catch(handleErrors);
+    else
+      getFirebase()
+        .logout()
+        .catch(handleErrors);
   }
 
   function shareMainPage() {
@@ -105,7 +108,7 @@ const Sidebar: React.FC<{}> = () => {
           }}
         >
           <ListItemIcon>
-            <TelegramIcon />
+            <HelpIcon />
           </ListItemIcon>
           <StyledListText primary={t('faq')} />
         </ListItem>
@@ -118,7 +121,7 @@ const Sidebar: React.FC<{}> = () => {
           }}
         >
           <ListItemIcon>
-            <HelpIcon />
+            <TelegramIcon />
           </ListItemIcon>
           {/* TODO: i18n */}
           <StyledListText primary="Группа в Телеграмме" />

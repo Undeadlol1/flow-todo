@@ -99,7 +99,10 @@ export const profileSelector = createSelector(
   // Add default values to profile.
   value => {
     // New object is created to avoid "no mutations" error.
-    let profile = Object.create((value || {}) as Profile);
+    let profile = Object.create((value || {
+      experience: 0,
+      points: 0,
+    }) as Profile);
     if (!profile.dailyStreak)
       profile.dailyStreak = {
         perDay: 3,

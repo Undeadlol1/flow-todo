@@ -11,18 +11,18 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import debug from 'debug';
 import get from 'lodash/get';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import {
   useFirestore,
   UserProfile as User,
 } from 'react-redux-firebase';
-import {
-  handleErrors,
-  useTypedTranslate,
-} from '../../services/index';
-import { Profile, useTypedSelector } from '../../store/index';
-import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
+import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
+import { handleErrors } from '../../services/index';
+import LevelingService from '../../services/leveling';
+import { Profile, useTypedSelector } from '../../store/index';
+import { profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -40,8 +40,9 @@ interface Props {
 
 export const ProfilePage = memo(function ProfilePage(props: Props) {
   const classes = useStyles();
-  const t = useTypedTranslate();
+  const [t] = useTranslation();
   const firestore = useFirestore();
+  const profile = useTypedSelector(profileSelector);
 
   function reset(fieldToReset: string) {
     if (props.isLoading) return;
@@ -57,6 +58,9 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   const photoUrl = props.user!.photoURL;
   const title =
     props.user!.displayName || props.user!.email || t('anonymous');
+  // TODO get rid of + 1
+  const userLevel =
+    LevelingService.calculateUserLevel(profile.experience) + 1;
   return (
     <Grid
       container
@@ -73,7 +77,10 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
           </Then>
           <Else>
             <Card>
-              <CardHeader title={title} />
+              <CardHeader
+                title={title}
+                subheader={t('level_is', { level: userLevel })}
+              />
               <CardMedia component="img" src={photoUrl} />
             </Card>
           </Else>

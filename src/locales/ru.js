@@ -114,5 +114,6 @@ export default {
     'frequently asked questions': 'Часто Задаваемые Вопросы',
     completed_tasks_today: 'Выполнено задач сегодня',
     'tasks list': 'Список задач',
+    level_is: 'Уровень: {{level}}',
   },
 };

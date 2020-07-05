@@ -111,5 +111,6 @@ export default {
     'frequently asked questions': 'Frequently Asked Questions',
     completed_tasks_today: 'Tasks completed today',
     'tasks list': 'Tasks List',
+    level_is: 'Level: {{level}}',
   },
 };

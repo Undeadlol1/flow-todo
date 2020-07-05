@@ -115,9 +115,8 @@ const Sidebar: React.FC<{}> = () => {
         <ListItem
           button
           onClick={() => {
-            history.push(
-              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA',
-            );
+            window.location.href =
+              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
           }}
         >
           <ListItemIcon>

@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "Timer",
-        "leveling"
+        "leveling",
+        "Sidebar"
     ]
 }

@@ -148,10 +148,14 @@ export default function TaskPage(props: TaskPageProps) {
                     </Typography>
                   </When>
                   <Typography variant="h5" component="h1">
+                    {/* TODO rework this */}
+                    {/* @ts-ignore */}
                     {compose(
                       defaultTo(task.name),
+                      // @ts-ignore
                       prop('name'),
                       head,
+                      // @ts-ignore
                     )(activeSubtasks)}
                   </Typography>
                 </CardContent>

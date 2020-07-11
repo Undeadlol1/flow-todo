@@ -66,6 +66,8 @@ export const IndexPage = memo(function HomePage(props: Props) {
     else return <WelcomeCard />;
   }
 
+  // DailyStreak.isBroken({ startsAt: 0 })
+
   return (
     <Grid
       container

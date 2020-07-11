@@ -1,6 +1,3 @@
-import { DayliStreak } from '../store/index';
-import differenceInDays from 'date-fns/esm/differenceInDays';
-// TODO this whole service file needs to be refactored.
 export default class UserService {
     /**
      * Get user level by points.
@@ -45,21 +42,5 @@ export default class UserService {
             currentPoints + pointsAboutToAdd,
         );
         return levelAfterAddingPoints > currentLevel;
-    }
-
-    static shouldDailyStreakUpdate({
-        tasksDoneToday,
-        streak }: { tasksDoneToday: number, streak: DayliStreak }): boolean {
-        const now = Date.now();
-        const isUpdatedToday =
-            differenceInDays(streak.updatedAt, now) === 0;
-
-        return tasksDoneToday + 1 > 2 && !isUpdatedToday
-    }
-
-    static isStreakBroken(streak: DayliStreak): boolean {
-        const now = Date.now();
-        return !streak.startsAt ||
-            differenceInDays(streak.updatedAt, now) >= 1;
     }
 }

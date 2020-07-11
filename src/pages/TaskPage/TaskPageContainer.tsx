@@ -1,4 +1,3 @@
-import differenceInDays from 'date-fns/differenceInDays';
 import debug from 'debug';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -12,24 +11,23 @@ import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import { getRandomTaskId, handleErrors } from '../../services';
+import DailyStreak from '../../services/dailyStreak';
 import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
   Task,
   TaskHistory,
-  useTypedSelector,
+  useTypedSelector
 } from '../../store/index';
 import {
-  authSelector,
+  activeTaskSelector, authSelector,
   fetchedTaskSelector,
   firestoreStatusSelector,
   profileSelector,
   tasksDoneTodaySelector,
-  tasksSelector,
-  activeTaskSelector,
+  tasksSelector
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
-import UserService from '../../services/user';
 
 const log = debug('TaskPageContainer');
 
@@ -125,8 +123,8 @@ export default memo(() => {
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
-    const isStreakBroken = UserService.isStreakBroken(streak)
-    const shouldStreakUpdate = UserService.shouldDailyStreakUpdate({
+    const isStreakBroken = DailyStreak.isBroken(streak)
+    const shouldStreakUpdate = DailyStreak.shouldUpdate({
       tasksDoneToday,
       streak: profile.dailyStreak,
     })

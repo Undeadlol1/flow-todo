@@ -1,19 +1,19 @@
 import { AuthError } from '@firebase/auth-types';
 import { UserInfo } from 'firebase/app';
+import countBy from 'lodash/countBy';
+import filter from 'lodash/filter';
 import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
+import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
+import uniq from 'lodash/uniq';
+import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { Profile, Task, RootReducer, TaskHistory } from './index';
+import { DayliStreak, Profile, RootReducer, Task, TaskHistory } from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
-import isUndefined from 'lodash/isUndefined';
-import uniq from 'lodash/uniq';
-import isEmpty from 'lodash/isEmpty';
-import countBy from 'lodash/countBy';
-import includes from 'ramda/es/includes';
-import filter from 'lodash/filter';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -102,9 +102,10 @@ export const profileSelector = createSelector(
     let profile = Object.create((value || {}) as Profile);
     if (!profile.dailyStreak)
       profile.dailyStreak = {
-        startsAt: 0,
-        updatedAt: 0,
-      };
+        perDay: 3,
+        startsAt: undefined,
+        updatedAt: undefined,
+      } as DayliStreak;
     return profile as Profile;
   },
 );

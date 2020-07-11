@@ -10,13 +10,17 @@ const DayliTasksStreak = (props: BoxProps) => {
     profileSelector,
   ).dailyStreak;
 
-  if (!startsAt) return null;
+  console.log('updatedAt: ', updatedAt);
+  console.log('startsAt: ', startsAt);
+
+  if (!startsAt || !updatedAt) return null;
 
   const daysInARow = differenceInDays(updatedAt, startsAt);
   return (
     <Typography variant="h6">
       <Box fontWeight={100} {...props}>
         {/* TODO i18n */}
+        {/* TODO proper first date logic */}
         Задачи выполнены дней подряд: {daysInARow + 1}
       </Box>
     </Typography>

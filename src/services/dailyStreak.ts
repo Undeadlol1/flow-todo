@@ -1,8 +1,8 @@
 import { DayliStreak } from '../store/index';
 import differenceInDays from 'date-fns/esm/differenceInDays';
-// TODO this whole service file needs to be refactored.
-export default class UserService {
-  static shouldDailyStreakUpdate({
+
+export default class DailyStreak {
+  static shouldUpdate({
     tasksDoneToday,
     streak,
   }: {
@@ -18,7 +18,7 @@ export default class UserService {
     return tasksDoneToday >= streak.perDay && !isUpdatedToday;
   }
 
-  static isStreakBroken(streak: DayliStreak): boolean {
+  static isBroken(streak: DayliStreak): boolean {
     const now = Date.now();
     return (
       !streak.startsAt || differenceInDays(streak.updatedAt, now) >= 1

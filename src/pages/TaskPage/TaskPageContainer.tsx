@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import { getRandomTaskId, handleErrors } from '../../services';
-import UserService from '../../services/user';
+import DailyStreak from '../../services/dailyStreak';
 import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
@@ -118,17 +118,17 @@ export default memo(() => {
   async function activateNextTask() {
     return nextTaskId
       ? firestoreRedux.doc('tasks/' + nextTaskId).update({
-          ...tasks.find(t => t.id === nextTaskId),
-          isCurrent: true,
-        })
+        ...tasks.find(t => t.id === nextTaskId),
+        isCurrent: true,
+      })
       : Promise.resolve();
   }
 
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
-    const isStreakBroken = UserService.isStreakBroken(streak);
-    const shouldStreakUpdate = UserService.shouldDailyStreakUpdate({
+    const isStreakBroken = DailyStreak.isBroken(streak);
+    const shouldStreakUpdate = DailyStreak.shouldUpdate({
       // NOTE: +1 because when this function is called task
       // update is not registred yet, thus task may look as it is nt done yet.
       tasksDoneToday: tasksDoneToday + 1,

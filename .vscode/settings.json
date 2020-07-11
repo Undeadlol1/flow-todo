@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Timer",
         "leveling",
-        "Sidebar"
+        "Sidebar",
+        "dayliStreak"
     ]
 }

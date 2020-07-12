@@ -1,5 +1,6 @@
 import { DayliStreak } from '../store/index';
 import differenceInDays from 'date-fns/esm/differenceInDays';
+import addDays from 'date-fns/addDays';
 
 export default class DailyStreak {
   static shouldUpdate({
@@ -17,20 +18,15 @@ export default class DailyStreak {
     const isUpdatedToday =
       differenceInDays(streak.updatedAt, now) === 0;
 
-    console.log('tasksDoneToday: ', tasksDoneToday);
-    console.log('streak.perDay: ', streak.perDay);
     return tasksDoneToday >= streak.perDay && !isUpdatedToday;
   }
 
   static isBroken(streak: DayliStreak): boolean {
-    if (!streak.updatedAt) {
+    if (!streak.updatedAt || !streak.startsAt) {
       return true
     }
 
-    const now = Date.now();
-    return (
-      !streak.startsAt || differenceInDays(streak.updatedAt, now) >= 1
-    );
+    return differenceInDays(streak.updatedAt, Date.now()) > 0
   }
 
   static daysInARow(streak: DayliStreak): number {

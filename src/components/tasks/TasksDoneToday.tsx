@@ -29,7 +29,6 @@ const TasksDoneToday: React.FC<{}> = () => {
   const tasksPerDay = 3;
   const logs = useSelector(taskLogs);
   const tasksToday = useSelector(tasksDoneTodaySelector);
-  console.log('tasksToday: ', tasksToday);
 
   if (!isLoaded(logs))
     return <Skeleton component={Box} width="100%" height="200px" />;
@@ -55,9 +54,7 @@ const TasksDoneToday: React.FC<{}> = () => {
               nextButton={<div />}
               backButton={<div />}
             />
-            {
-              tasksToday >= tasksPerDay ? <DayliTasksStreak mt={2} /> : null
-            }
+            <DayliTasksStreak mt={2} />
           </CardContent>
         </Card>
       </>

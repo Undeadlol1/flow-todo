@@ -1,6 +1,5 @@
 import { DayliStreak } from '../store/index';
 import differenceInDays from 'date-fns/esm/differenceInDays';
-import addDays from 'date-fns/addDays';
 
 export default class DailyStreak {
   static shouldUpdate({

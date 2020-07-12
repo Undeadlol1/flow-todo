@@ -32,4 +32,11 @@ export default class DailyStreak {
       !streak.startsAt || differenceInDays(streak.updatedAt, now) >= 1
     );
   }
+
+  static daysInARow(streak: DayliStreak): number {
+    if (!streak.updatedAt || !streak.startsAt) {
+      return 0
+    }
+    return differenceInDays(streak.updatedAt, streak.startsAt);
+  }
 }

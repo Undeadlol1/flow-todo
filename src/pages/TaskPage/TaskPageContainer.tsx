@@ -17,7 +17,7 @@ import {
   addPointsWithSideEffects,
   Task,
   TaskHistory,
-  useTypedSelector,
+  useTypedSelector
 } from '../../store/index';
 import {
   activeTaskSelector,
@@ -27,7 +27,7 @@ import {
   profileSelector,
   tasksDoneTodaySelector,
   tasksPerDaySelector,
-  tasksSelector,
+  tasksSelector
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 

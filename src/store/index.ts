@@ -39,8 +39,8 @@ const { FieldValue } = firestore;
 
 export type DayliStreak = {
   perDay: number;
-  startsAt: Date;
-  updatedAt: Date;
+  startsAt: Date | undefined;
+  updatedAt: Date | undefined;
 };
 
 export type Profile = {

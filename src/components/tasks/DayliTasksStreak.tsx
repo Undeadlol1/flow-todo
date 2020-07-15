@@ -8,8 +8,9 @@ import { profileSelector } from '../../store/selectors';
 const DayliTasksStreak = (props: BoxProps) => {
   const { dailyStreak } = useSelector(profileSelector);
   const daysInARow = DailyStreak.daysInARow(dailyStreak);
+  const daysSinceUpdate = DailyStreak.daysSinceUpdate(dailyStreak)
 
-  if (daysInARow === 0) return null;
+  if (daysInARow === 0 || daysSinceUpdate > 1) return null;
 
   return (
     <Typography variant="h6">

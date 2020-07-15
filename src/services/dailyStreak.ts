@@ -20,6 +20,7 @@ export default class DailyStreak {
     return tasksDoneToday >= streak.perDay && !isUpdatedToday;
   }
 
+  // TODO what does this name mean? What exactly is this function do?
   static isBroken(streak: DayliStreak): boolean {
     if (!streak.updatedAt || !streak.startsAt) {
       return true
@@ -33,5 +34,13 @@ export default class DailyStreak {
       return 0
     }
     return differenceInDays(streak.updatedAt, streak.startsAt);
+  }
+
+  static daysSinceUpdate(streak: DayliStreak): number {
+    // TODO: same checks in evry function
+    if (!streak.updatedAt || !streak.startsAt) {
+      return 0
+    }
+    return differenceInDays(Date.now(), streak.updatedAt);
   }
 }

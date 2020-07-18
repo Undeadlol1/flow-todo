@@ -10,7 +10,7 @@ const DayliTasksStreak = (props: BoxProps) => {
   const daysInARow = DailyStreak.daysInARow(dailyStreak);
   const daysSinceUpdate = DailyStreak.daysSinceUpdate(dailyStreak)
 
-  if (daysInARow === 0 || daysSinceUpdate > 1) return null;
+  if (daysInARow === 0 || daysSinceUpdate > 0) return null;
 
   return (
     <Typography variant="h6">

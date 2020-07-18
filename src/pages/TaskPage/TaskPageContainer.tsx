@@ -33,6 +33,7 @@ import TaskPage from './TaskPage';
 
 const log = debug('TaskPageContainer');
 const streakLog = log.extend('dailyStreak');
+debug.enable('TaskPageContainer*')
 
 export interface updateTaskParams {
   values: any;
@@ -112,8 +113,6 @@ export default memo(() => {
   const nextTaskId = getRandomTaskId(
     filter(tasks, t => t.id !== taskId),
   );
-  log('taskId: ', taskId);
-  log('nextTaskId: ', nextTaskId);
 
   async function activateNextTask() {
     return nextTaskId
@@ -127,13 +126,16 @@ export default memo(() => {
   async function updateDailyStreak() {
     const now = Date.now();
     const streak = profile.dailyStreak;
-    const isStreakBroken = DailyStreak.isBroken(streak);
+    const isStreakBroken = DailyStreak.hasEnded(streak);
     const shouldStreakUpdate = DailyStreak.shouldUpdate({
       // NOTE: +1 because when this function is called task
       // update is not registred yet, thus task may look as it is nt done yet.
       tasksDoneToday: tasksDoneToday + 1,
       streak: profile.dailyStreak,
     });
+    streakLog('streak: ', streak);
+    streakLog('isStreakBroken: ', isStreakBroken);
+    streakLog('shouldStreakUpdate: ', shouldStreakUpdate);
 
     if (shouldStreakUpdate) {
       streakLog('update is running');

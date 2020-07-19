@@ -1,10 +1,18 @@
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
-import ShareIcon from '@material-ui/icons/Share';
 import HelpIcon from '@material-ui/icons/Help';
+import ShareIcon from '@material-ui/icons/Share';
+import TelegramIcon from '@material-ui/icons/Telegram';
+import ViewListIcon from '@material-ui/icons/ViewList';
 import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
@@ -14,21 +22,13 @@ import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useWebShare from 'react-use-web-share';
-import TelegramIcon from '@material-ui/icons/Telegram';
 import {
   handleErrors,
   toggleSidebar,
-  useTypedTranslate,
+  useTypedTranslate
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
-import { authSelector, uiSelector } from '../../store/selectors';
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
+import { authSelector, tasksSelector, uiSelector } from '../../store/selectors';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -59,6 +59,7 @@ const Sidebar: React.FC<{}> = () => {
   const t = useTypedTranslate();
   const { isSidebarOpen } = useTypedSelector(uiSelector);
   const { isAnonymous } = useTypedSelector(authSelector);
+  const tasks = useTypedSelector(tasksSelector)
   log('isAnonymous: ', isAnonymous);
   log('isSidebarOpen: ', isSidebarOpen);
 
@@ -88,18 +89,20 @@ const Sidebar: React.FC<{}> = () => {
   return (
     <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/tasks');
-            toggleSidebar();
-          }}
-        >
-          <ListItemIcon>
-            <ViewListIcon />
-          </ListItemIcon>
-          <StyledListText primary={t('tasks list')} />
-        </ListItem>
+        <When condition={tasks && tasks.length > 0}>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/tasks');
+              toggleSidebar();
+            }}
+          >
+            <ListItemIcon>
+              <ViewListIcon />
+            </ListItemIcon>
+            <StyledListText primary={t('tasks list')} />
+          </ListItem>
+        </When>
         <ListItem
           button
           onClick={() => {

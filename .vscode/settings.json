@@ -3,6 +3,7 @@
         "Timer",
         "leveling",
         "Sidebar",
-        "dayliStreak"
+        "dayliStreak",
+        "TaskPage"
     ]
 }

@@ -48,6 +48,7 @@ export type Profile = {
   points: number;
   experience: number;
   dailyStreak: DayliStreak;
+  areEcouragingMessagesDisabled: boolean;
   isLoaded: boolean; // react-redux-firebase specific props
   isEmpty: boolean; // react-redux-firebase specific props;
 };

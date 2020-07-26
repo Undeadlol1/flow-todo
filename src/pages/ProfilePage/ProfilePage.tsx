@@ -15,10 +15,11 @@ import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import {
   useFirestore,
-  UserProfile as User,
+  UserProfile as User
 } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
+import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
 import { Profile, useTypedSelector } from '../../store/index';
@@ -93,6 +94,9 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         <Box mb={2}>
           <DarkOrLightThemePicker />
         </Box>
+        <Box mb={2}>
+          <ToggleEncouragingMessages />
+        </Box>
         <Card>
           <List>
             <ListItem button onClick={() => reset('points')}>
@@ -105,8 +109,8 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
                 {props.isLoading ? (
                   <Skeleton />
                 ) : (
-                  t('reset experience')
-                )}
+                    t('reset experience')
+                  )}
               </ListItemText>
             </ListItem>
           </List>

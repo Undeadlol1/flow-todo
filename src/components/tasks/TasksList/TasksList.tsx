@@ -46,12 +46,12 @@ export function TasksList({
   const classes = useStyles();
   if (loading) return null;
   if (isEmpty(tasks) || tasks.empty) return null;
+  console.log('tasks: ', tasks);
 
   return (
     <Box
       mx="auto"
       component={Paper}
-      // elevation={6}
       className={classes.paper}
     >
       <List className={classes.list}>

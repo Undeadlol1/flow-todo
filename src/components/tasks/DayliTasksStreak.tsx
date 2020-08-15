@@ -1,14 +1,16 @@
-import Box, { BoxProps } from '@material-ui/core/Box';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import React, { memo } from 'react';
-import { useSelector } from 'react-redux';
 import DailyStreak from '../../services/dailyStreak';
-import { profileSelector } from '../../store/selectors';
+import { IDayliStreak } from '../../store/index';
 
-const DayliTasksStreak = (props: BoxProps) => {
-  const { dailyStreak } = useSelector(profileSelector);
-  const daysInARow = DailyStreak.daysInARow(dailyStreak);
-  const daysSinceUpdate = DailyStreak.daysSinceUpdate(dailyStreak)
+interface Props {
+  streak: IDayliStreak
+}
+
+const DayliTasksStreak = (props: Props) => {
+  const daysInARow = DailyStreak.daysInARow(props.streak);
+  const daysSinceUpdate = DailyStreak.daysSinceUpdate(props.streak)
 
   if (daysInARow === 0 || daysSinceUpdate > 0) return null;
 

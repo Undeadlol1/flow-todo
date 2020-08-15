@@ -15,6 +15,7 @@ import {
   tasksPerDaySelector,
 } from '../../store/selectors';
 import DayliTasksStreak from './DayliTasksStreak';
+import { profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles({
   progress: {
@@ -28,8 +29,9 @@ const TasksDoneToday: React.FC<{}> = () => {
   const t = useTypedTranslate();
 
   const logs = useTypedSelector(taskLogs);
-  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
+  const profile = useTypedSelector(profileSelector);
   const tasksPerDay = useTypedSelector(tasksPerDaySelector);
+  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
 
   if (!isLoaded(logs))
     return <Skeleton component={Box} width="100%" height="200px" />;
@@ -55,7 +57,9 @@ const TasksDoneToday: React.FC<{}> = () => {
               nextButton={<div />}
               backButton={<div />}
             />
-            <DayliTasksStreak mt={2} />
+            <Box mt={2}>
+              <DayliTasksStreak streak={profile.dailyStreak} />
+            </Box>
           </CardContent>
         </Card>
       </>

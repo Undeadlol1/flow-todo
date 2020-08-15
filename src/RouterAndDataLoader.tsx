@@ -52,11 +52,13 @@ export default memo(function RouterAndDataLoader() {
 
   handleErrors(authError);
 
-  if (user.isLoaded && user.isEmpty) {
-    auth()
-      .signInAnonymously()
-      .catch(handleErrors);
-  }
+  // NOTE: anonymous login disabled until i figure out
+  // how to do analytics for anonymous users.
+  // if (user.isLoaded && user.isEmpty) {
+  //   auth()
+  //     .signInAnonymously()
+  //     .catch(handleErrors);
+  // }
 
   useFirestoreConnect([
     {

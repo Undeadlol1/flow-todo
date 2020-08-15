@@ -37,7 +37,7 @@ import userSlice from './usersSlice';
 const log = debug('store');
 const { FieldValue } = firestore;
 
-export type DayliStreak = {
+export type IDayliStreak = {
   perDay: number;
   startsAt: Date | undefined;
   updatedAt: Date | undefined;
@@ -47,7 +47,7 @@ export type Profile = {
   userId: string;
   points: number;
   experience: number;
-  dailyStreak: DayliStreak;
+  dailyStreak: IDayliStreak;
   areEcouragingMessagesDisabled: boolean;
   isLoaded: boolean; // react-redux-firebase specific props
   isEmpty: boolean; // react-redux-firebase specific props;

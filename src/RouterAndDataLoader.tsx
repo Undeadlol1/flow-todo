@@ -1,33 +1,31 @@
 import Container from '@material-ui/core/Container';
-import { auth } from 'firebase/app';
+import getHours from 'date-fns/getHours';
+import subHours from 'date-fns/subHours';
 import get from 'lodash/get';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import useInterval from 'react-use/esm/useInterval';
 import RewardModal from './components/rewards/RewardModal';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
+import FAQPage from './pages/FAQPage';
 import HomePage from './pages/IndexPage/IndexPage';
+import PrivacyPage from './pages/PrivacyPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
 import RewardsPage from './pages/RewardsPage';
 import SignInPage from './pages/SignInPage';
 import TaskPage from './pages/TaskPage';
+import TasksPage from './pages/TasksPage';
+import WebShareTargetPage from './pages/WebShareTargetPage';
+import { handleErrors } from './services/index';
 import { useTypedSelector } from './store/index';
 import {
-  authSelector,
-  uiSelector,
-  authErrorSelector,
+  authErrorSelector, authSelector,
+  uiSelector
 } from './store/selectors';
-import { handleErrors } from './services/index';
-import WebShareTargetPage from './pages/WebShareTargetPage';
-import FAQPage from './pages/FAQPage';
-import subHours from 'date-fns/subHours';
-import getHours from 'date-fns/getHours';
-import TasksPage from './pages/TasksPage';
-import useInterval from 'react-use/esm/useInterval';
-import PrivacyPage from './pages/PrivacyPage';
 
 export default memo(function RouterAndDataLoader() {
   const user = useTypedSelector(authSelector);
@@ -46,9 +44,10 @@ export default memo(function RouterAndDataLoader() {
   // Store userId in localStorage to improve loading times on startup
   const userId =
     get(user, 'uid', '') || localStorage.getItem('userId') || '';
-  useEffect(() => {
-    if (userId) localStorage.setItem('userId', userId);
-  }, [userId]);
+  // TODO: add comment
+  // useEffect(() => {
+  //   if (userId) localStorage.setItem('userId', userId);
+  // }, [userId]);
 
   handleErrors(authError);
 
@@ -60,7 +59,7 @@ export default memo(function RouterAndDataLoader() {
   //     .catch(handleErrors);
   // }
 
-  useFirestoreConnect([
+  useFirestoreConnect(userId && [
     {
       collection: 'tasks',
       where: [

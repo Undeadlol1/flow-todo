@@ -89,7 +89,7 @@ const Sidebar: React.FC<{}> = () => {
   return (
     <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
-        <When condition={tasks && tasks.length > 0}>
+        <When condition={Boolean(tasks && tasks.length > 0)}>
           <ListItem
             button
             onClick={() => {

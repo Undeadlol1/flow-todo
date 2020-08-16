@@ -15,7 +15,7 @@ import { Theme } from './Theme';
 
 initializeI18n();
 
-export function App(props: { children: JSX.Element }) {
+export function App(props: { children?: JSX.Element }) {
   const theme = React.useMemo(() => createMuiTheme(), []);
   const isMobile =
     // @ts-ignore
@@ -53,8 +53,9 @@ export function App(props: { children: JSX.Element }) {
                 autoHideDuration={3500}
                 anchorOrigin={snachbarPosition}
               >
-                <RouterAndDataLoader />
-                {props.children}
+                <RouterAndDataLoader>
+                  {props.children}
+                </RouterAndDataLoader>
               </NotistackSnackbarProver>
             </MaterialSnackbarProvider>
           </Theme>

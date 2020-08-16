@@ -29,7 +29,9 @@ import TasksPage from './pages/TasksPage';
 import useInterval from 'react-use/esm/useInterval';
 import PrivacyPage from './pages/PrivacyPage';
 
-export default memo(function RouterAndDataLoader() {
+export default memo(function RouterAndDataLoader(props: {
+  children?: JSX.Element;
+}) {
   const user = useTypedSelector(authSelector);
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
@@ -114,6 +116,7 @@ export default memo(function RouterAndDataLoader() {
 
   return (
     <BrowserRouter>
+      {props.children}
       <DevelopmentOnlyMenu />
       <NavBar />
       <ExpirienceProgressBar />

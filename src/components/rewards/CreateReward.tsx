@@ -20,8 +20,9 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {},
   input: {
     marginTop: theme.spacing(2),

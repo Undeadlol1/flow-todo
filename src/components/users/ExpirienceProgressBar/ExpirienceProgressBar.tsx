@@ -12,9 +12,10 @@ import {
   profileSelector,
   usersSelector,
 } from '../../../store/selectors';
+import { Theme } from '@material-ui/core';
 
 const log = debug('ExpirienceProgressBar');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   progress: {
     height: 10,
   },

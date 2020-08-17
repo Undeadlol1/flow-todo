@@ -10,10 +10,11 @@ import {
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
 import debug from 'debug';
+import { Theme } from '@material-ui/core';
 
 const log = debug('TagsList');
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   button: {
     paddingTop: 0,
     paddingBottom: 0,

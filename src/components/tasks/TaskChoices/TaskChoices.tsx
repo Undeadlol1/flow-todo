@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Typography, Theme } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
@@ -26,7 +26,7 @@ import {
 import { Task, Subtask } from '../../../store/index';
 import map from 'lodash/map';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     textAlign: 'center',
   },

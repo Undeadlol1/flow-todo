@@ -29,10 +29,11 @@ import {
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
+import { Theme } from '@material-ui/core';
 
 const log = debug('NavBar');
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
     // Prevent "Slide" component animation to

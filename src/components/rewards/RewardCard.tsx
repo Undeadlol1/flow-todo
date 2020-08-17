@@ -11,9 +11,10 @@ import { useTypedTranslate } from '../../services/index';
 import { Reward } from '../../store/rewardsSlice';
 import { claimReward } from '../../store';
 import CardMedia from '@material-ui/core/CardMedia';
+import { Theme } from '@material-ui/core';
 
 const log = debug('RewardCard');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
     width: '100%',
     margin: theme.spacing(2, 0),

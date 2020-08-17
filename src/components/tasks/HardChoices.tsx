@@ -18,8 +18,9 @@ import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
 import TagsForm from './TagsForm';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   form: {
     marginBottom: theme.spacing(1),
   },

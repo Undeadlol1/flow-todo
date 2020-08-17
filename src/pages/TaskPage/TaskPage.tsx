@@ -1,4 +1,4 @@
-import { Box, CardHeader } from '@material-ui/core';
+import { Box, CardHeader, Theme } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
@@ -42,7 +42,7 @@ const encouragingMessages = [
   'Прокрастинация - это боязнь действия. Чем больше думаешь, тем труднее начать действовать.',
 ];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

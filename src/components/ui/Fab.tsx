@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/styles';
 import MUIFab, { FabProps } from '@material-ui/core/Fab';
 import cx from 'clsx';
 import Zoom from '@material-ui/core/Zoom';
+import { Theme } from '@material-ui/core';
 
-export const useFabStyles = makeStyles(theme => ({
+export const useFabStyles = makeStyles((theme: Theme) => ({
   fab: {
     zIndex: 1300,
     position: 'fixed',

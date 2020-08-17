@@ -13,8 +13,9 @@ import {
   updateTaskParams,
 } from '../../pages/TaskPage/TaskPageContainer';
 import Typography from '@material-ui/core/Typography';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     textAlign: 'center',
   },

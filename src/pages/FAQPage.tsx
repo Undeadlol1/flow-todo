@@ -8,8 +8,9 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTypedTranslate } from '../services/index';
 import Box from '@material-ui/core/Box';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

@@ -9,8 +9,9 @@ import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import * as Yup from 'yup';
 import { createSubtask } from '../../../store/index';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {},
 }));
 

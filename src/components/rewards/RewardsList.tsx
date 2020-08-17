@@ -9,8 +9,9 @@ import React, { memo } from 'react';
 import { useTypedSelector } from '../../store/index';
 import { Reward } from '../../store/rewardsSlice';
 import RewardCard from './RewardCard';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
     width: '100%',
     margin: theme.spacing(2, 0),

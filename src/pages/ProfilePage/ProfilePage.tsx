@@ -24,8 +24,9 @@ import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
 import { Profile, useTypedSelector } from '../../store/index';
 import { profileSelector } from '../../store/selectors';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

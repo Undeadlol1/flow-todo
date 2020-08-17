@@ -14,8 +14,9 @@ import isEmpty from 'lodash/isEmpty';
 import Box from '@material-ui/core/Box';
 import { tasksSelector } from '../../../store/selectors';
 import { useTypedSelector, Task } from '../../../store/index';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
   return {
     list: {

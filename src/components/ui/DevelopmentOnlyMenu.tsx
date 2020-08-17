@@ -19,8 +19,9 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'fixed',
     left: theme.spacing(2),

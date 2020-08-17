@@ -11,9 +11,10 @@ import { useHistory } from 'react-router-dom';
 import AppTour from '../components/ui/AppTour';
 import { handleErrors, showSnackbar } from '../services/index';
 import { addPoints } from '../store/index';
+import { Theme } from '@material-ui/core';
 
 const log = debug('SigninPage');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     minHeight: 'calc(100vh - 64px)',
   },

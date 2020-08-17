@@ -30,8 +30,9 @@ import {
 import { deleteSubtask, Subtask } from '../../store';
 import { addPointsWithSideEffects } from '../../store/index';
 import { authSelector } from '../../store/selectors';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
   return {
     list: {

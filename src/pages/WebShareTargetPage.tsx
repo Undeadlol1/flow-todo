@@ -10,8 +10,9 @@ import { createTask } from '../store/index';
 import { authSelector } from '../store/selectors';
 import not from 'ramda/es/not';
 import queryString from 'query-string';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

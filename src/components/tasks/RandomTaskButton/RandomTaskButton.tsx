@@ -22,8 +22,9 @@ import {
   tasksSelector,
   uiSelector,
 } from '../../../store/selectors';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     color: theme.palette.secondary.contrastText,
     padding: '100px',

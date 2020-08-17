@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use-toggle';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   collapsibleTitle: {
     marginLeft: theme.spacing(1),
   },

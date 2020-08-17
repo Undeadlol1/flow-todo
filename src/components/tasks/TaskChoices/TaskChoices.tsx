@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
 import HeartIcon from '@material-ui/icons/Favorite';

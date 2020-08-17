@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography, {
   TypographyProps,
 } from '@material-ui/core/Typography';

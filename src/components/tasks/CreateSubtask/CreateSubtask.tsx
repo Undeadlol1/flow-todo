@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import get from 'lodash/get';

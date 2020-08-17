@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import get from 'lodash/get';
 import isNull from 'lodash/isNull';

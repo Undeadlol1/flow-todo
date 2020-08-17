@@ -1,8 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import {
-  ThemeProvider,
-  createMuiTheme,
-} from '@material-ui/core/styles';
+import { ThemeProvider, createMuiTheme } from '@material-ui/styles';
 import i18n from 'i18next';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
@@ -23,7 +20,7 @@ export const Theme: FunctionComponent<{
               On mobile devices snacbkar has bottom margin.
               This margin overlaps FAB and makes it unusable.
             */
-            snackbar: 0
+            snackbar: 0,
           },
           palette: {
             primary: { main: '#81D4FA' },
@@ -35,31 +32,31 @@ export const Theme: FunctionComponent<{
           },
           props: isMobile
             ? {
-              MuiSnackbar: {
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'center',
+                MuiSnackbar: {
+                  anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'center',
+                  },
                 },
-              },
-            }
+              }
             : {},
           overrides: isMobile
             ? {
-              MuiSnackbar: {
-                root: {
-                  // Prevent snackbar from overflowing FAB.
-                  marginBottom: 90,
+                MuiSnackbar: {
+                  root: {
+                    // Prevent snackbar from overflowing FAB.
+                    marginBottom: 90,
+                  },
                 },
-              },
-              MuiIconButton: {
-                sizeSmall: {
-                  // Adjust spacing to reach minimal touch target hitbox
-                  marginLeft: 4,
-                  marginRight: 4,
-                  padding: 12,
+                MuiIconButton: {
+                  sizeSmall: {
+                    // Adjust spacing to reach minimal touch target hitbox
+                    marginLeft: 4,
+                    marginRight: 4,
+                    padding: 12,
+                  },
                 },
-              },
-            }
+              }
             : {},
         },
         // @ts-ignore

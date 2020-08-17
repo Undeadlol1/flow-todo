@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import MUIFab, { FabProps } from '@material-ui/core/Fab';
 import cx from 'clsx';
 import Zoom from '@material-ui/core/Zoom';

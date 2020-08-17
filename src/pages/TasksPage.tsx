@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
 import React, { memo } from 'react';
 import { useTypedSelector } from '../store';

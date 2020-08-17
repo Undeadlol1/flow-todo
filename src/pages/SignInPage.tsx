@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
 import firebase, { auth, firestore, User } from 'firebase/app';
 import get from 'lodash/get';

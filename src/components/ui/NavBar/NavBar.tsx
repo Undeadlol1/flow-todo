@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -22,8 +22,10 @@ import { Link } from 'react-router-dom';
 import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
-  authSelector, profilePointsSelector, profileSelector,
-  usersSelector
+  authSelector,
+  profilePointsSelector,
+  profileSelector,
+  usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
@@ -113,7 +115,9 @@ export const LoginOrLogoutButton = memo(() => {
               // NOTE: "+1" is a quick fix
               badgeContent={
                 profile.isLoaded &&
-                Math.trunc(LevelingService.calculateUserLevel(experience)) + 1
+                Math.trunc(
+                  LevelingService.calculateUserLevel(experience),
+                ) + 1
               }
             >
               <If condition={hasPhoto}>

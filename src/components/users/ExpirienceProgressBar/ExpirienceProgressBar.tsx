@@ -1,5 +1,5 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import cx from 'clsx';
 import debug from 'debug';
@@ -10,7 +10,7 @@ import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
   profileSelector,
-  usersSelector
+  usersSelector,
 } from '../../../store/selectors';
 
 const log = debug('ExpirienceProgressBar');
@@ -51,7 +51,8 @@ export const ExpirienceProgressBar: React.FC<{
   log('userPoints', userPoints);
   log(
     'points to next level',
-    pointsToReachPreviousLevel + LevelingService.calculatePointsToNextLevel(level),
+    pointsToReachPreviousLevel +
+      LevelingService.calculatePointsToNextLevel(level),
   );
   log('progressPercent: ', progressPercent);
 

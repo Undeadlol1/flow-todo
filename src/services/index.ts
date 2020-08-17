@@ -12,7 +12,7 @@ import get from 'lodash/get';
 import i18n from 'i18next';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import store, { Task } from '../store';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';

@@ -3,9 +3,9 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
@@ -25,10 +25,14 @@ import useWebShare from 'react-use-web-share';
 import {
   handleErrors,
   toggleSidebar,
-  useTypedTranslate
+  useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
-import { authSelector, tasksSelector, uiSelector } from '../../store/selectors';
+import {
+  authSelector,
+  tasksSelector,
+  uiSelector,
+} from '../../store/selectors';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -59,7 +63,7 @@ const Sidebar: React.FC<{}> = () => {
   const t = useTypedTranslate();
   const { isSidebarOpen } = useTypedSelector(uiSelector);
   const { isAnonymous } = useTypedSelector(authSelector);
-  const tasks = useTypedSelector(tasksSelector)
+  const tasks = useTypedSelector(tasksSelector);
   log('isAnonymous: ', isAnonymous);
   log('isSidebarOpen: ', isSidebarOpen);
 

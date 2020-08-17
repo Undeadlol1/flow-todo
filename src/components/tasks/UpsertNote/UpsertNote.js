@@ -5,7 +5,7 @@ import useForm from 'react-hook-form';
 import { firestore, auth } from 'firebase/app';
 import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import { Box } from '@material-ui/core';

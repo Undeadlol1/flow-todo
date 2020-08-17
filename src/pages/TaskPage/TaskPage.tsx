@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import Grid, { GridProps } from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';

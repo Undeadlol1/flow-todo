@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { useTheme, makeStyles } from '@material-ui/styles';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {

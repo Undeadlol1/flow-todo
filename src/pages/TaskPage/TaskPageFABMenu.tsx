@@ -1,9 +1,5 @@
 import Backdrop from '@material-ui/core/Backdrop';
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-} from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import RestoreIcon from '@material-ui/icons/Restore';

@@ -15,7 +15,7 @@ import { Theme } from './Theme';
 
 initializeI18n();
 
-export function App(props: { children: JSX.Element }) {
+export function App(props: { children?: JSX.Element }) {
   const theme = React.useMemo(() => createMuiTheme(), []);
   const isMobile =
     // @ts-ignore

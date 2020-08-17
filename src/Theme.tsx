@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { ThemeProvider, createMuiTheme } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import i18n from 'i18next';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
 import { uiSelector } from './store/selectors';
 import { ruRU, enUS } from '@material-ui/core/locale/';
+import { createMuiTheme } from '@material-ui/core';
 
 export const Theme: FunctionComponent<{
   isMobile?: boolean;

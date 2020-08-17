@@ -12,7 +12,6 @@ import get from 'lodash/get';
 import i18n from 'i18next';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import store, { Task } from '../store';
-import { useTheme } from '@material-ui/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
@@ -31,6 +30,7 @@ import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
 import { useEffect, useState } from 'react';
+import { useTheme } from '@material-ui/core';
 
 const logger = debug('utils');
 

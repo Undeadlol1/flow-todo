@@ -33,4 +33,4 @@ jobs:
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
       - run:
           name: Chromatic Deploy
-          command: npm chromatic -a $CHROMATIC_TOKEN --exit-zero-on-changes
+          command: npx chromatic -a $CHROMATIC_TOKEN --exit-zero-on-changes

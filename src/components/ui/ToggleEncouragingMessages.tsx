@@ -4,14 +4,11 @@ import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
 import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
-import { useFirestore } from 'react-redux-firebase';
 import { Profile } from '../../store';
 import { authSelector, profileSelector } from '../../store/selectors';
-import { upsertProfile } from '../../store/index';
 
 const ToggleEncouragingMessages = memo(() => {
   const profile = useSelector(profileSelector);
-  const firestoreRedux = useFirestore();
   const auth = useSelector(authSelector);
 
   function updateProfile({

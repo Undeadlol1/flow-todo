@@ -105,8 +105,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
-    "@storybook/addon-actions": "^5.2.5",
+    "@storybook/addon-actions": "^6.0.16",
     "@storybook/addon-console": "^1.2.1",
+    "@storybook/addon-knobs": "^6.0.16",
     "@storybook/addon-links": "^5.2.5",
     "@storybook/addons": "^5.2.5",
     "@storybook/react": "^5.2.5",

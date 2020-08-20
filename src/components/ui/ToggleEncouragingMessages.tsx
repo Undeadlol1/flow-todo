@@ -7,20 +7,22 @@ import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { Profile } from '../../store';
 import { authSelector, profileSelector } from '../../store/selectors';
+import { upsertProfile } from '../../store/index';
 
-const ToggleEncouragingMessages = () => {
-  const profile = useSelector(profileSelector)
+const ToggleEncouragingMessages = memo(() => {
+  const profile = useSelector(profileSelector);
   const firestoreRedux = useFirestore();
   const auth = useSelector(authSelector);
 
-  function setTheme(
-    { target: { checked } }:
-      React.ChangeEvent<HTMLInputElement>
-  ) {
-    // TODO create "update profile" reusable function
-    return firestoreRedux
-      .doc('profiles/' + auth.uid)
-      .update({ areEcouragingMessagesDisabled: checked } as Profile);
+  function updateProfile({
+    target: { checked },
+  }: React.ChangeEvent<HTMLInputElement>) {
+    const payload = {
+      areEcouragingMessagesDisabled: checked,
+    } as Profile;
+    console.log('payload: ', payload);
+    console.log('auth.uid: ', auth.uid);
+    // return upsertProfile(auth.uid, payload);
   }
 
   return (
@@ -29,14 +31,21 @@ const ToggleEncouragingMessages = () => {
         <FormControl fullWidth>
           {/* TODO i18n */}
           <FormControlLabel
-            disabled
-            control={<Switch checked={profile.areEcouragingMessagesDisabled} onChange={setTheme} name="checkedA" />}
-            label={"Мотивационные сообщения экрана с задачей"}
+            control={
+              <Switch
+                disabled
+                // TODO
+                name="checkedA"
+                onChange={updateProfile}
+                checked={profile.areEcouragingMessagesDisabled}
+              />
+            }
+            label={'Мотивационные сообщения экрана с задачей'}
           />
         </FormControl>
       </CardContent>
-    </Card >
+    </Card>
   );
-};
+});
 
-export default memo(ToggleEncouragingMessages);
+export default ToggleEncouragingMessages;

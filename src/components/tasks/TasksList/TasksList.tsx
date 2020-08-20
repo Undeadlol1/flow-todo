@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -17,6 +17,7 @@ import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => {
+  console.log('theme.palette: ', theme.palette);
   const color = theme.palette.text.primary;
   return {
     list: {

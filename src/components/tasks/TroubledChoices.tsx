@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Slide from '@material-ui/core/Slide';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import addHours from 'date-fns/addHours';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -13,8 +13,9 @@ import {
   updateTaskParams,
 } from '../../pages/TaskPage/TaskPageContainer';
 import Typography from '@material-ui/core/Typography';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     textAlign: 'center',
   },

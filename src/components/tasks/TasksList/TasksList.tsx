@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -14,8 +14,9 @@ import isEmpty from 'lodash/isEmpty';
 import Box from '@material-ui/core/Box';
 import { tasksSelector } from '../../../store/selectors';
 import { useTypedSelector, Task } from '../../../store/index';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
   return {
     list: {
@@ -49,11 +50,7 @@ export function TasksList({
   console.log('tasks: ', tasks);
 
   return (
-    <Box
-      mx="auto"
-      component={Paper}
-      className={classes.paper}
-    >
+    <Box mx="auto" component={Paper} className={classes.paper}>
       <List className={classes.list}>
         {tasks.map((task: Task) => (
           <ListItem

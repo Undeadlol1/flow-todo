@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import get from 'lodash/get';
@@ -9,8 +9,9 @@ import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import * as Yup from 'yup';
 import { createSubtask } from '../../../store/index';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {},
 }));
 

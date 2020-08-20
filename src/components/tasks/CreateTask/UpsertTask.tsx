@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';

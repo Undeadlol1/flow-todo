@@ -1,13 +1,14 @@
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
 import React, { memo } from 'react';
 import { useTypedSelector } from '../store';
 import { tasksSelector } from '../store/selectors';
 import { TasksList } from './../components/tasks/TasksList/TasksList';
+import { Theme } from '@material-ui/core';
 
 const log = debug('RewardsPage');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),

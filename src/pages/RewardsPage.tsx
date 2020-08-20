@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import debug from 'debug';
@@ -7,9 +7,10 @@ import CreateReward from '../components/rewards/CreateReward';
 import RewardsList from '../components/rewards/RewardsList';
 import { useTypedSelector } from '../store/index';
 import { rewardsSelector } from '../store/selectors';
+import { Theme } from '@material-ui/core';
 
 const log = debug('RewardsPage');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginBottom: 0,
     marginTop: theme.spacing(4),

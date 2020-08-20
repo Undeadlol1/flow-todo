@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import debug from 'debug';
 import get from 'lodash/fp/get';
@@ -18,9 +18,10 @@ import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { Task, useTypedSelector } from '../../store/index';
 import { tasksSelector, uiSelector } from '../../store/selectors';
+import { Theme } from '@material-ui/core';
 
 const log = debug('HomePage');
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

@@ -116,6 +116,7 @@
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.13.0",
+    "chromatic": "^5.1.0",
     "concurrently": "^5.0.0",
     "customize-cra": "^1.0.0",
     "enzyme": "^3.10.0",

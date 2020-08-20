@@ -45,4 +45,6 @@ const ToggleEncouragingMessages = memo(() => {
   );
 });
 
+ToggleEncouragingMessages.displayName = 'ToggleEncouragingMessages';
+
 export default ToggleEncouragingMessages;

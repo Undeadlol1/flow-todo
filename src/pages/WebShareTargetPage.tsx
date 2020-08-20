@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import nanoid from 'nanoid';
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,8 +10,9 @@ import { createTask } from '../store/index';
 import { authSelector } from '../store/selectors';
 import not from 'ramda/es/not';
 import queryString from 'query-string';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,

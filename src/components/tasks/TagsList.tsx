@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,10 +10,11 @@ import {
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
 import debug from 'debug';
+import { Theme, useTheme } from '@material-ui/core';
 
 const log = debug('TagsList');
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   button: {
     paddingTop: 0,
     paddingBottom: 0,

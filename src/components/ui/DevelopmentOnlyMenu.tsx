@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import BuildIcon from '@material-ui/icons/Build';
 import get from 'lodash/get';
 import random from 'lodash/random';
@@ -14,12 +14,14 @@ import LevelingService from '../../services/leveling';
 import {
   addPoints,
   addPointsWithSideEffects,
-
-  createTask, Profile, useTypedSelector
+  createTask,
+  Profile,
+  useTypedSelector,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'fixed',
     left: theme.spacing(2),
@@ -67,13 +69,19 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   function levelUp() {
-    const level = LevelingService.calculateUserLevel(get(profile, 'points', 0));
-    const pointsToNextLevel = LevelingService.calculatePointsToNextLevel(level);
+    const level = LevelingService.calculateUserLevel(
+      get(profile, 'points', 0),
+    );
+    const pointsToNextLevel = LevelingService.calculatePointsToNextLevel(
+      level,
+    );
     addPoints(auth.uid, pointsToNextLevel);
   }
 
   function resetLevel() {
-    firestore.doc('profiles/' + auth.uid).update({ points: 0, experience: 0, } as Profile);
+    firestore
+      .doc('profiles/' + auth.uid)
+      .update({ points: 0, experience: 0 } as Profile);
   }
 
   function createAReward() {

@@ -7,12 +7,12 @@ import clsx from 'clsx';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use-toggle';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   collapsibleTitle: {
     marginLeft: theme.spacing(1),
   },

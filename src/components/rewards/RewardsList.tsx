@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import get from 'lodash/get';
 import isNull from 'lodash/isNull';
@@ -9,8 +9,9 @@ import React, { memo } from 'react';
 import { useTypedSelector } from '../../store/index';
 import { Reward } from '../../store/rewardsSlice';
 import RewardCard from './RewardCard';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
     width: '100%',
     margin: theme.spacing(2, 0),

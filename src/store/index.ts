@@ -53,6 +53,13 @@ export type Profile = {
   isEmpty: boolean; // react-redux-firebase specific props;
 };
 
+export interface FirebaseUserProfile {
+  uid: string;
+  email: string;
+  photoURL?: string;
+  displayName: string;
+}
+
 export type Subtask = {
   id: string;
   isDone: boolean;

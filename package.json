@@ -82,7 +82,7 @@
     "redux": "^4.0.4",
     "redux-firestore": "^0.10.0",
     "reselect": "^4.0.0",
-    "typescript": "3.6.4",
+    "typescript": "3.8.3",
     "yup": "^0.27.0"
   },
   "scripts": {
@@ -114,6 +114,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
+    "@types/classnames": "^2.2.10",
     "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "babel-eslint": "^10.0.3",

@@ -22,7 +22,11 @@ import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
-import { Profile, useTypedSelector } from '../../store/index';
+import {
+  Profile,
+  useTypedSelector,
+  FirebaseUserProfile,
+} from '../../store/index';
 import { profileSelector } from '../../store/selectors';
 import { Theme } from '@material-ui/core';
 
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  user?: User;
+  user?: User<FirebaseUserProfile>;
   profile?: Profile;
   isLoading: boolean;
 }

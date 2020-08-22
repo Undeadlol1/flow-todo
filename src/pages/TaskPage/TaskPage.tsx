@@ -1,17 +1,15 @@
-import { Box, CardHeader, Theme } from '@material-ui/core';
+import { Box, Theme } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Fab from '@material-ui/core/Fab';
 import Grid, { GridProps } from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
-import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
 import isString from 'lodash/isString';
+import sample from 'lodash/sample';
 import { useSnackbar } from 'notistack';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
@@ -27,13 +25,13 @@ import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
+import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
 import { useTypedTranslate } from '../../services/index';
 import { Task } from '../../store';
 import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import sample from 'lodash/sample';
 
 // TODO i18n
 const encouragingMessages = [
@@ -75,7 +73,7 @@ export default function TaskPage(props: TaskPageProps) {
   const { enqueueSnackbar } = useSnackbar();
   const route = useRouteMatch() || {};
   const t = useTypedTranslate();
-  const { path, url } = route;
+  const { path } = route;
   const classes = useStyles();
   const { loading, taskId, task } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
@@ -199,33 +197,7 @@ export default function TaskPage(props: TaskPageProps) {
                 </Grid>
               </When>
               <Zoom in>
-                <Box width="100%" textAlign="center">
-                  <Card className="animated pulse infinite">
-                    <CardHeader subheader={t('what do you feel')} />
-                    <CardContent>
-                      <Grid item container xs={12}>
-                        <Grid item xs>
-                          <Fab
-                            component={Link}
-                            color="secondary"
-                            to={url + '/isGood'}
-                          >
-                            <SatisfiedIcon fontSize="large" />
-                          </Fab>
-                        </Grid>
-                        <Grid item xs>
-                          <Fab
-                            component={Link}
-                            color="primary"
-                            to={url + '/isTroublesome'}
-                          >
-                            <DissatisfiedIcon fontSize="large" />
-                          </Fab>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Box>
+                <WhatDoYouFeelAboutTheTask />
               </Zoom>
             </Grid>
           </Route>

@@ -27,4 +27,4 @@ const {{pascalCase name}} = memo((props: Props) => {
 
 {{pascalCase name}}.displayName = '{{pascalCase name}}';
 
-export { {{pascalCase name}} }
+export default { {{pascalCase name}} }

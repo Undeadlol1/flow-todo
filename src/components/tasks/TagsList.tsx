@@ -10,7 +10,8 @@ import {
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
 import debug from 'debug';
-import { Theme, useTheme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 const log = debug('TagsList');
 

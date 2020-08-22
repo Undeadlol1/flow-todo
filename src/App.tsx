@@ -1,5 +1,5 @@
 import { SnackbarOrigin } from '@material-ui/core/Snackbar';
-import { createMuiTheme } from '@material-ui/core';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import firebase from 'firebase/app';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';

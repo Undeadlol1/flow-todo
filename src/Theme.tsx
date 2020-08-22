@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
 import { uiSelector } from './store/selectors';
 import { ruRU, enUS } from '@material-ui/core/locale/';
-import { createMuiTheme } from '@material-ui/core';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 export const Theme: FunctionComponent<{
   isMobile?: boolean;

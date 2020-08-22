@@ -30,7 +30,7 @@ import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
 import { useEffect, useState } from 'react';
-import { useTheme } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 const logger = debug('utils');
 

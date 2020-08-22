@@ -63,6 +63,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   // TODO get rid of + 1
   const userLevel =
     LevelingService.calculateUserLevel(profile.experience) + 1;
+
   return (
     <Grid
       container

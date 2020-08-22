@@ -3,8 +3,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
 import React, { memo, ChangeEvent } from 'react';
-import { useSelector } from 'react-redux';
-import { Profile } from '../../store';
+// import { useSelector } from 'react-redux';
+// import { Profile } from '../../store';
 // import { authSelector, profileSelector } from '../../store/selectors';
 
 interface Props {

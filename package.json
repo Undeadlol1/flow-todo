@@ -86,7 +86,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy": "npm run build && firebase deploy",
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
+    "plop": "npx plop"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -132,6 +133,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "faker": "^4.1.0",
     "jest-enzyme": "^7.1.2",
+    "plop": "^2.7.4",
     "prettier": "1.18.2",
     "react-app-rewired": "^2.1.6",
     "source-map-explorer": "^2.1.0"

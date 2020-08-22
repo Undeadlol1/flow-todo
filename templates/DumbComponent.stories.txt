@@ -1,0 +1,12 @@
+import React from 'react';
+import { sections } from '../helpers';
+import { {{pascalCase name}} } from './{{pascalCase name}}';
+
+export default {
+    component: {{ pascalCase name }},
+    title: sections.unsorted + '{{pascalCase name}}',
+};
+
+export const normal = () => (
+    <{{ pascalCase name }} />
+)

@@ -7,12 +7,8 @@ import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import LevelingService from '../../../services/leveling';
-import { useTypedSelector } from '../../../store';
-import {
-  profileSelector,
-  usersSelector,
-} from '../../../store/selectors';
 import { Theme } from '@material-ui/core';
+import { Profile } from '../../../store/index';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,15 +20,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+interface Props {}
+
 export const ExpirienceProgressBar: React.FC<{
+  profile?: Profile;
   className?: string;
+  isAnimationActive: boolean;
 }> = memo(props => {
   const classes = useStyles();
-  const { isLevelUpAnimationActive } = useTypedSelector(
-    usersSelector,
-  );
-  const profile = useTypedSelector(profileSelector);
-  const userPoints = get(profile, 'experience', 0);
+  const userPoints = get(props.profile, 'experience', 0);
   const level = LevelingService.calculateUserLevel(userPoints);
 
   const pointsToReachPreviousLevel = LevelingService.calculateTotalPointsToReachALevel(
@@ -57,7 +53,7 @@ export const ExpirienceProgressBar: React.FC<{
   );
   log('progressPercent: ', progressPercent);
 
-  if (isUndefined(profile))
+  if (isUndefined(props.profile))
     return (
       <LinearProgress
         color="secondary"
@@ -78,12 +74,12 @@ export const ExpirienceProgressBar: React.FC<{
         <LinearProgress
           color="secondary"
           value={progressPercent === 100 ? 0 : progressPercent}
-          className={cx(!profile && classes.hidden, [
+          className={cx(!props.profile && classes.hidden, [
             classes.progress,
             props.className,
           ])}
           variant={
-            isLevelUpAnimationActive ? 'indeterminate' : 'determinate'
+            props.isAnimationActive ? 'indeterminate' : 'determinate'
           }
         />
       </Tooltip>

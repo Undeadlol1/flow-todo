@@ -14,7 +14,6 @@ interface Props {
 export default (props: Props) => {
   const timerDuration = (5 * 60 * 1000) / 2;
   const [isActive, setIsActive] = useState(props.autoStart);
-  // TODO rename
   const [isAutoStarted, setIsAutoStarted] = useState(false);
   const [audio, , controls] = useAudio({ src: '/sounds/alert.ogg' });
 
@@ -47,9 +46,9 @@ export default (props: Props) => {
         // @ts-ignore */}
         {({ start, resume, pause, stop, reset, timerState }) => {
           if (props.autoStart && !isAutoStarted) {
-			// NOTE: timeout is used as a workaround to prevent
-			// "Warning: Cannot update during an existing state transition".
-			setTimeout(start, 100);
+            // NOTE: timeout is used as a workaround to prevent
+            // "Warning: Cannot update during an existing state transition".
+            setTimeout(start, 100);
             setIsAutoStarted(true);
           }
           function toggleTimer() {

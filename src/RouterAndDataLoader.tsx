@@ -19,6 +19,7 @@ import {
   authSelector,
   uiSelector,
   authErrorSelector,
+  usersSelector,
 } from './store/selectors';
 import { handleErrors } from './services/index';
 import WebShareTargetPage from './pages/WebShareTargetPage';
@@ -28,11 +29,16 @@ import getHours from 'date-fns/getHours';
 import TasksPage from './pages/TasksPage';
 import useInterval from 'react-use/esm/useInterval';
 import PrivacyPage from './pages/PrivacyPage';
+import { profileSelector } from './store/selectors';
 
 export default memo(function RouterAndDataLoader(props: {
   children?: JSX.Element;
 }) {
   const user = useTypedSelector(authSelector);
+  const profile = useTypedSelector(profileSelector);
+  const { isLevelUpAnimationActive } = useTypedSelector(
+    usersSelector,
+  );
   const authError = useTypedSelector(authErrorSelector);
   const { isRewardModalOpen } = useTypedSelector(uiSelector);
   const [today, setToday] = useState(Date.now());
@@ -119,7 +125,10 @@ export default memo(function RouterAndDataLoader(props: {
       {props.children}
       <DevelopmentOnlyMenu />
       <NavBar />
-      <ExpirienceProgressBar />
+      <ExpirienceProgressBar
+        profile={profile}
+        isAnimationActive={isLevelUpAnimationActive}
+      />
       <Sidebar />
       <RewardModal isOpen={isRewardModalOpen} />
       <Container>

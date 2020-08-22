@@ -96,7 +96,10 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
           <DarkOrLightThemePicker />
         </Box>
         <Box mb={2}>
-          <ToggleEncouragingMessages />
+          <ToggleEncouragingMessages
+            onChange={console.log}
+            value={false}
+          />
         </Box>
         <Card>
           <List>

@@ -12,10 +12,14 @@ import RouterAndDataLoader from './RouterAndDataLoader';
 import { initializeI18n, useDebouncedWindowSize } from './services';
 import store from './store';
 import { Theme } from './Theme';
+import { BrowserRouter } from 'react-router-dom';
 
 initializeI18n();
 
-export function App(props: { children?: JSX.Element }) {
+export function App(props: {
+  isStorybookEnv?: boolean;
+  children?: JSX.Element;
+}) {
   const theme = React.useMemo(() => createMuiTheme(), []);
   const isMobile =
     // @ts-ignore
@@ -39,27 +43,31 @@ export function App(props: { children?: JSX.Element }) {
   return (
     <div className="App">
       <ReduxProvider store={store}>
-        <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
-          <Theme isMobile={isMobile}>
-            {/* TODO do i even use this? Remove if not */}
-            <MaterialSnackbarProvider
-              SnackbarProps={{
-                autoHideDuration: 4000,
-                anchorOrigin: snachbarPosition,
-              }}
+        <Theme isMobile={isMobile}>
+          {/* TODO do i even use this? Remove if not */}
+          <MaterialSnackbarProvider
+            SnackbarProps={{
+              autoHideDuration: 4000,
+              anchorOrigin: snachbarPosition,
+            }}
+          >
+            <NotistackSnackbarProver
+              dense={isMobile}
+              autoHideDuration={3500}
+              anchorOrigin={snachbarPosition}
             >
-              <NotistackSnackbarProver
-                dense={isMobile}
-                autoHideDuration={3500}
-                anchorOrigin={snachbarPosition}
-              >
-                <RouterAndDataLoader>
-                  {props.children}
-                </RouterAndDataLoader>
-              </NotistackSnackbarProver>
-            </MaterialSnackbarProvider>
-          </Theme>
-        </ReactReduxFirebaseProvider>
+              {props.isStorybookEnv ? (
+                <BrowserRouter>{props.children}</BrowserRouter>
+              ) : (
+                <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
+                  <RouterAndDataLoader>
+                    {props.children}
+                  </RouterAndDataLoader>
+                </ReactReduxFirebaseProvider>
+              )}
+            </NotistackSnackbarProver>
+          </MaterialSnackbarProvider>
+        </Theme>
       </ReduxProvider>
     </div>
   );

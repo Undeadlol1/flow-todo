@@ -21,7 +21,7 @@ export const normal = () => (
     Use knobs to change: <br />
     <UserPoints
       value={number('points', 10)}
-      isLoaded={boolean('is loading', false)}
+      isLoaded={boolean('is loading', true)}
     />
   </>
 );

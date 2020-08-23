@@ -29,6 +29,7 @@ import {
 } from '../../store/index';
 import { profileSelector } from '../../store/selectors';
 import { Theme } from '@material-ui/core';
+import { upsertProfile } from '../../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -48,6 +49,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   const classes = useStyles();
   const [t] = useTranslation();
   const firestore = useFirestore();
+  const userId = props.user!.uid;
   const profile = useTypedSelector(profileSelector);
 
   function reset(fieldToReset: string) {
@@ -55,7 +57,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
     // eslint-disable-next-line no-restricted-globals
     if (confirm(t('are you sure')))
       firestore
-        .doc('profiles/' + props.user!.uid)
+        .doc('profiles/' + userId)
         .update({
           [fieldToReset]: 0,
         })
@@ -67,6 +69,14 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   // TODO get rid of + 1
   const userLevel =
     LevelingService.calculateUserLevel(profile.experience) + 1;
+
+  function updateProfile(profile: Profile) {
+    profile.userId = userId;
+    console.log('updateProfile called.', profile);
+    return upsertProfile(props.user!.uid, profile).catch(
+      handleErrors,
+    );
+  }
 
   return (
     <Grid
@@ -102,8 +112,13 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         </Box>
         <Box mb={2}>
           <ToggleEncouragingMessages
-            onChange={console.log}
-            value={false}
+            onChange={areEcouragingMessagesDisabled =>
+              updateProfile({
+                ...profile,
+                areEcouragingMessagesDisabled,
+              })
+            }
+            value={profile.areEcouragingMessagesDisabled}
           />
         </Box>
         <Card>

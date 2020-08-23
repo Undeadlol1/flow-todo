@@ -9,7 +9,7 @@ import React, { memo, ChangeEvent } from 'react';
 
 interface Props {
   value: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (checked: boolean) => void;
 }
 
 const ToggleEncouragingMessages = memo((props: Props) => {
@@ -35,10 +35,11 @@ const ToggleEncouragingMessages = memo((props: Props) => {
           <FormControlLabel
             control={
               <Switch
+                disabled
                 // TODO
                 name="checkedA"
                 checked={props.value}
-                onChange={props.onChange}
+                onChange={e => props.onChange(e.target.checked)}
               />
             }
             // TODO i18n

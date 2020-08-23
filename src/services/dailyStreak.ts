@@ -5,6 +5,11 @@ import debug from 'debug'
 const log = debug('DailyStreakService')
 
 export default class DailyStreak {
+  static getEmptyStreak(): IDayliStreak {
+    const today = new Date()
+    return { startsAt: today, perDay: 3, updatedAt: today } as IDayliStreak
+  }
+
   static shouldUpdate({
     tasksDoneToday,
     streak,

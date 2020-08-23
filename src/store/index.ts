@@ -33,6 +33,7 @@ import {
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
+import DailyStreak from '../services/dailyStreak';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -208,12 +209,13 @@ initializeFirebase();
 
 export function upsertProfile(
   userId: string,
-  values: Profile,
+  profile: Profile,
 ): Promise<void> {
-  if (!values.userId) throw Error('You must specify userId!');
+  if (!profile.userId) throw Error('You must specify userId!');
+  if (!profile.dailyStreak) profile.dailyStreak = DailyStreak.getEmptyStreak()
   return getFirestore()
-    .doc('profiles/' + values.userId)
-    .set(values, { merge: true });
+    .doc('profiles/' + profile.userId)
+    .set(profile, { merge: true });
 }
 
 export function addPoints(

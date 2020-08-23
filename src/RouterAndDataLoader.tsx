@@ -20,6 +20,7 @@ import {
   uiSelector,
   authErrorSelector,
   usersSelector,
+  tasksSelector,
 } from './store/selectors';
 import { handleErrors } from './services/index';
 import WebShareTargetPage from './pages/WebShareTargetPage';
@@ -30,17 +31,21 @@ import TasksPage from './pages/TasksPage';
 import useInterval from 'react-use/esm/useInterval';
 import PrivacyPage from './pages/PrivacyPage';
 import { profileSelector } from './store/selectors';
+import isEmpty from 'lodash/isEmpty';
 
 export default memo(function RouterAndDataLoader(props: {
   children?: JSX.Element;
 }) {
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
+  const tasks = useTypedSelector(tasksSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );
   const authError = useTypedSelector(authErrorSelector);
-  const { isRewardModalOpen } = useTypedSelector(uiSelector);
+  const { isRewardModalOpen, isSidebarOpen } = useTypedSelector(
+    uiSelector,
+  );
   const [today, setToday] = useState(Date.now());
   const yesterday = subHours(today, getHours(today)).getTime();
 
@@ -129,7 +134,11 @@ export default memo(function RouterAndDataLoader(props: {
         profile={profile}
         isAnimationActive={isLevelUpAnimationActive}
       />
-      <Sidebar />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        isTasksListEmpty={isEmpty(tasks)}
+        isAnonymous={user.isAnonymous}
+      />
       <RewardModal isOpen={isRewardModalOpen} />
       <Container>
         <Switch>

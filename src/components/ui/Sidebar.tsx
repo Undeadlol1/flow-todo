@@ -5,7 +5,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
@@ -13,6 +12,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import ShareIcon from '@material-ui/icons/Share';
 import TelegramIcon from '@material-ui/icons/Telegram';
 import ViewListIcon from '@material-ui/icons/ViewList';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
@@ -27,13 +27,6 @@ import {
   toggleSidebar,
   useTypedTranslate,
 } from '../../services/index';
-import { useTypedSelector } from '../../store/index';
-import {
-  authSelector,
-  tasksSelector,
-  uiSelector,
-} from '../../store/selectors';
-import isEmpty from 'lodash/isEmpty';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles({
@@ -58,15 +51,16 @@ const StyledListText = withStyles({
   },
 })(ListItemText);
 
-const Sidebar: React.FC<{}> = () => {
+const Sidebar: React.FC<{
+  isOpen: boolean;
+  isAnonymous: boolean;
+  isTasksListEmpty: boolean;
+}> = ({ isAnonymous, isOpen, isTasksListEmpty }) => {
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
-  const { isSidebarOpen } = useTypedSelector(uiSelector);
-  const { isAnonymous } = useTypedSelector(authSelector);
-  const tasks = useTypedSelector(tasksSelector);
   log('isAnonymous: ', isAnonymous);
-  log('isSidebarOpen: ', isSidebarOpen);
+  log('isOpen: ', isOpen);
 
   const { share, isSupported: isShareSupported } = useWebShare(
     toggleSidebar,
@@ -92,9 +86,9 @@ const Sidebar: React.FC<{}> = () => {
   }
 
   return (
-    <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
+    <Drawer open={isOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
-        <When condition={!isEmpty(tasks)}>
+        <When condition={!isTasksListEmpty}>
           <ListItem
             button
             onClick={() => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TasksDoneToday from './TasksDoneToday';
 import { sections } from '../storybookContants';
 import { TasksDoneTodayProps } from './TasksDoneToday';
@@ -17,12 +17,24 @@ const props = {
 } as TasksDoneTodayProps;
 
 export const Demos = () => {
+  const [amount, setAmount] = useState(0);
+  // Change amount completed tasks every few seconds.
+  useEffect(() => {
+    const interval = setInterval(
+      () => setAmount(i => (i < props.tasksPerDay ? ++i : 0)),
+      2000,
+    );
+    return () => clearInterval(interval);
+  });
+
   return (
     <>
       With data:
       <TasksDoneToday {...props} />
       Is loading:
       <TasksDoneToday {...props} isLoaded={false} />
+      Change animation:
+      <TasksDoneToday {...props} tasksToday={amount} />
     </>
   );
 };

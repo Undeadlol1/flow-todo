@@ -9,13 +9,20 @@ import React from 'react';
 import { useTypedTranslate } from '../../services/index';
 import DayliTasksStreak from './DayliTasksStreak';
 import { IDayliStreak } from '../../store/index';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Theme, Zoom } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   progress: {
     padding: 0,
     width: '100%',
   },
-});
+  successIcon: {
+    marginLeft: '5px',
+    verticalAlign: 'bottom',
+    color: theme.palette.secondary.main,
+  },
+}));
 
 export interface TasksDoneTodayProps {
   isLoaded?: boolean;
@@ -31,6 +38,8 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
 }) => {
   const classes = useStyles();
   const t = useTypedTranslate();
+  // TODO rename
+  const isAchieved = tasksToday >= tasksPerDay;
 
   if (!props.isLoaded)
     return <Skeleton variant="rect" height="160px" />;
@@ -40,10 +49,17 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
         <Card>
           <CardContent>
             <Box mb={2}>
-              <Typography variant="h6">
+              <Typography variant="h6" display="inline">
                 {t('completed_tasks_today') +
                   `: ${tasksToday}/${tasksPerDay}`}
               </Typography>
+              <Box display="inline" className={classes.successIcon}>
+                {isAchieved && (
+                  <Zoom in>
+                    <CheckCircleOutlineIcon />
+                  </Zoom>
+                )}
+              </Box>
             </Box>
             <MobileStepper
               steps={tasksPerDay + 1}

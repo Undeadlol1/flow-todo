@@ -10,7 +10,7 @@ export default {
 };
 
 const props = {
-  tasksToday: 1,
+  tasksToday: 3,
   tasksPerDay: 3,
   isLoaded: true,
   dailyStreak: streaks.streakIsBorken,
@@ -29,12 +29,12 @@ export const Demos = () => {
 
   return (
     <>
-      With data:
-      <TasksDoneToday {...props} />
       Is loading:
       <TasksDoneToday {...props} isLoaded={false} />
       Change animation:
       <TasksDoneToday {...props} tasksToday={amount} />
+      Is achieved:
+      <TasksDoneToday {...props} />
     </>
   );
 };

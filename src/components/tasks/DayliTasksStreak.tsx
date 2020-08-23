@@ -1,28 +1,37 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import debug from 'debug';
 import React, { memo } from 'react';
 import DailyStreak from '../../services/dailyStreak';
 import { IDayliStreak } from '../../store/index';
 
+const componentName = 'DayliTasksStreak';
+const log = debug(componentName);
+
 interface Props {
-  streak: IDayliStreak
+  streak: IDayliStreak;
 }
 
-const DayliTasksStreak = (props: Props) => {
+const DayliTasksStreak = memo((props: Props) => {
   const daysInARow = DailyStreak.daysInARow(props.streak);
-  const daysSinceUpdate = DailyStreak.daysSinceUpdate(props.streak)
+  const daysSinceUpdate = DailyStreak.daysSinceUpdate(props.streak);
+  log('props.streak: ', props.streak);
+  log('daysInARow: ', daysInARow);
+  log('daysSinceUpdate: ', daysSinceUpdate);
 
-  if (daysInARow === 0 || daysSinceUpdate > 0) return null;
+  if (daysSinceUpdate > 1) return null;
+  else
+    return (
+      <Typography variant="h6">
+        <Box fontWeight={100} {...props}>
+          {/* TODO i18n */}
+          {/* TODO proper first date logic */}
+          Задачи выполнены дней подряд: {daysInARow}
+        </Box>
+      </Typography>
+    );
+});
 
-  return (
-    <Typography variant="h6">
-      <Box fontWeight={100} {...props}>
-        {/* TODO i18n */}
-        {/* TODO proper first date logic */}
-        Задачи выполнены дней подряд: {daysInARow}
-      </Box>
-    </Typography>
-  );
-};
+DayliTasksStreak.displayName = componentName;
 
 export default memo(DayliTasksStreak);

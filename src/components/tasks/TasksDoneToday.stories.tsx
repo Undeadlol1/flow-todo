@@ -13,7 +13,7 @@ const props = {
   tasksToday: 3,
   tasksPerDay: 3,
   isLoaded: true,
-  dailyStreak: streaks.streakIsBorken,
+  dailyStreak: streaks.streakIsBroken,
 } as TasksDoneTodayProps;
 
 export const Demos = () => {

@@ -1,40 +1,25 @@
 import React from 'react';
-import DayliTasksStreak from './DayliTasksStreak';
-import { IDayliStreak } from '../../store/index';
-import addDays from 'date-fns/addDays';
-import { sections } from '../storybookContants';
 import { streaks } from '../dataMocks';
+import { sections } from '../storybookContants';
+import DayliTasksStreak from './DayliTasksStreak';
 
 export default {
   component: DayliTasksStreak,
   title: sections.tasks + 'DayliTasksStreak',
 };
 
-const today = new Date();
-
-export const doneToday = () => {
-  return <DayliTasksStreak streak={streaks.doneTasksToday} />;
-};
-
-export const doneFewDays = () => {
-  const streak = {
-    startsAt: today,
-    updatedAt: addDays(new Date(), 3),
-  } as IDayliStreak;
-
-  return <DayliTasksStreak streak={streak} />;
-};
-
-export const streakBroken = () => {
-  return <DayliTasksStreak streak={streaks.streakIsBorken} />;
-};
-
-export const initial = () => {
-  const streakSample = {
-    startsAt: undefined,
-    updatedAt: undefined,
-    perDay: 3,
-  } as IDayliStreak;
-
-  return <DayliTasksStreak streak={streakSample} />;
+export const Demos = () => {
+  return (
+    <>
+      Done yesterday: <br />
+      (meaning user is working on a streak, it is not yet broken)
+      <DayliTasksStreak streak={streaks.doneTasksYesterday} />
+      Done today:
+      <DayliTasksStreak streak={streaks.doneTasksToday} />
+      Few days:
+      <DayliTasksStreak streak={streaks.doneTasksFewDays} />
+      Noting will be shown if streak is broken:
+      <DayliTasksStreak streak={streaks.streakIsBroken} />
+    </>
+  );
 };

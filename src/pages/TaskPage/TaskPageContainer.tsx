@@ -17,7 +17,7 @@ import {
   addPointsWithSideEffects,
   Task,
   TaskHistory,
-  useTypedSelector
+  useTypedSelector,
 } from '../../store/index';
 import {
   activeTaskSelector,
@@ -27,13 +27,12 @@ import {
   profileSelector,
   tasksDoneTodaySelector,
   tasksPerDaySelector,
-  tasksSelector
+  tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 
 const log = debug('TaskPageContainer');
 const streakLog = log.extend('dailyStreak');
-debug.enable('TaskPageContainer*')
 
 export interface updateTaskParams {
   values: any;
@@ -117,9 +116,9 @@ export default memo(() => {
   async function activateNextTask() {
     return nextTaskId
       ? firestoreRedux.doc('tasks/' + nextTaskId).update({
-        ...tasks.find(t => t.id === nextTaskId),
-        isCurrent: true,
-      })
+          ...tasks.find(t => t.id === nextTaskId),
+          isCurrent: true,
+        })
       : Promise.resolve();
   }
 

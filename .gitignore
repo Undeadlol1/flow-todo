@@ -18,12 +18,7 @@
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+*.log
 
 # Firebase
 /.firebase
-ui-debug.log
-firebase-debug.log
-firestore-debug.log

@@ -2,20 +2,13 @@ import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import { isLoaded } from 'react-redux-firebase';
+import DailyStreak from '../../services/dailyStreak';
 import { useTypedTranslate } from '../../services/index';
-import { useTypedSelector } from '../../store';
-import {
-  taskLogsSelector as taskLogs,
-  tasksDoneTodaySelector,
-  tasksPerDaySelector,
-} from '../../store/selectors';
 import DayliTasksStreak from './DayliTasksStreak';
-import { profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles({
   progress: {
@@ -24,16 +17,22 @@ const useStyles = makeStyles({
   },
 });
 
-const TasksDoneToday: React.FC<{}> = () => {
+export interface TasksDoneTodayProps {
+  isLoaded?: boolean;
+  tasksPerDay: number;
+  tasksToday: number;
+  dailyStreak: DailyStreak;
+}
+
+const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
+  tasksToday,
+  tasksPerDay,
+  ...props
+}) => {
   const classes = useStyles();
   const t = useTypedTranslate();
 
-  const logs = useTypedSelector(taskLogs);
-  const profile = useTypedSelector(profileSelector);
-  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
-  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
-
-  if (!isLoaded(logs))
+  if (!props.isLoaded)
     return <Skeleton component={Box} width="100%" height="200px" />;
   else
     return (
@@ -58,7 +57,7 @@ const TasksDoneToday: React.FC<{}> = () => {
               backButton={<div />}
             />
             <Box mt={2}>
-              <DayliTasksStreak streak={profile.dailyStreak} />
+              <DayliTasksStreak streak={props.dailyStreak} />
             </Box>
           </CardContent>
         </Card>

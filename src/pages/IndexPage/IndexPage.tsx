@@ -1,3 +1,4 @@
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
@@ -8,6 +9,7 @@ import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Unless } from 'react-if';
+import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
 import { TagsList } from '../../components/tasks/TagsList';
@@ -17,8 +19,14 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { Task, useTypedSelector } from '../../store/index';
-import { tasksSelector, uiSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
+import {
+  profileSelector,
+  taskLogsSelector as taskLogs,
+  tasksDoneTodaySelector,
+  tasksPerDaySelector,
+  tasksSelector,
+  uiSelector,
+} from '../../store/selectors';
 
 const log = debug('HomePage');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -45,6 +53,10 @@ interface Props {
 export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
+  const logs = useTypedSelector(taskLogs);
+  const streak = useTypedSelector(profileSelector).dailyStreak;
+  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
+  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
 
   const {
     isLoading,
@@ -83,7 +95,12 @@ export const IndexPage = memo(function HomePage(props: Props) {
             isEmpty(createdAtleastOneTask) || isAppTourActive,
           )}
         >
-          <TasksDoneToday />
+          <TasksDoneToday
+            dailyStreak={streak}
+            tasksPerDay={tasksPerDay}
+            tasksToday={tasksToday}
+            isLoaded={isLoaded(logs)}
+          />
         </Unless>
       </Grid>
       <Grid item xs={12} sm={12} md={8} lg={6}>

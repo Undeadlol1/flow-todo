@@ -4,6 +4,7 @@ import { IDayliStreak } from '../../store/index';
 import addDays from 'date-fns/addDays';
 import subDays from 'date-fns/subDays';
 import { sections } from '../storybookContants';
+import { streaks } from '../dataMocks';
 
 export default {
   component: DayliTasksStreak,
@@ -11,16 +12,10 @@ export default {
 };
 
 const today = new Date();
-// const tomorrow = addDays(today, 1)
 const yesterday = subDays(today, 1);
 
 export const doneToday = () => {
-  const streak = {
-    startsAt: today,
-    updatedAt: today,
-  } as IDayliStreak;
-
-  return <DayliTasksStreak streak={streak} />;
+  return <DayliTasksStreak streak={streaks.doneTasksToday} />;
 };
 
 export const doneFewDays = () => {

@@ -13,10 +13,6 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Theme, Zoom } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  progress: {
-    padding: 0,
-    width: '100%',
-  },
   successIcon: {
     marginLeft: '5px',
     verticalAlign: 'bottom',
@@ -26,6 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const StyledMobileStepper = withStyles({
   progress: {
+    padding: 0,
+    width: '100%',
     height: '6px',
   },
 })(MobileStepper);
@@ -71,7 +69,6 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
               steps={tasksPerDay + 1}
               variant="progress"
               position="static"
-              classes={classes}
               activeStep={
                 tasksToday > tasksPerDay ? tasksPerDay : tasksToday
               }

@@ -33,4 +33,4 @@ jobs:
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
       - run:
           name: Chromatic Deploy
-          command: npx chromatic -t "$CHROMATIC_TOKEN"
+          command: npx chromatic -t "$CHROMATIC_TOKEN" --debug

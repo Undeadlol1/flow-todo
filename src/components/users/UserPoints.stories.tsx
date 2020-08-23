@@ -11,6 +11,9 @@ export default {
 
 export const normal = () => (
   <>
+    Loading: <br />
+    <UserPoints isLoaded={false} value={10} />
+    Variants: <br />
     <UserPoints value={10} /> <br />
     <UserPoints value={100} /> <br />
     <UserPoints value={1000} /> <br />

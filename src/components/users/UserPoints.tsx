@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import CountUp from 'react-countup';
 import usePrevious from 'react-use/lib/usePrevious';
 import debug from 'debug';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const logger = debug('UserPoints');
 
@@ -20,19 +21,23 @@ const UserPoints = memo(
     logger('nextPoints', nextPoints);
     logger('difference', difference);
     logger('isLoaded', isLoaded);
-    return (
-      <Chip
-        color="secondary"
-        label={
-          isLoaded && (
-            <CountUp
-              end={nextPoints}
-              start={previousPoints && nextPoints - difference}
-            />
-          )
-        }
-      />
-    );
+
+    if (isLoaded)
+      return (
+        <Chip
+          color="secondary"
+          label={
+            isLoaded && (
+              <CountUp
+                end={nextPoints}
+                start={previousPoints && nextPoints - difference}
+              />
+            )
+          }
+        />
+      );
+    else
+      return <Skeleton variant="circle" width="33px" height="33px" />;
   },
   function(previousProps, nextProps) {
     logger('nextProps: ', nextProps);

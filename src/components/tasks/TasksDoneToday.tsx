@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   successIcon: {
     marginLeft: '5px',
     verticalAlign: 'bottom',
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
   },
 }));
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import useToggle from 'react-use/lib/useToggle';
 import ToggleEncouragingMessages from './ToggleEncouragingMessages';
+import { sections } from '../storybookContants';
 
 export default {
-  title: 'ToggleEncouragingMessages',
+  title: sections.users + 'ToggleEncouragingMessages',
   component: ToggleEncouragingMessages,
 };
 

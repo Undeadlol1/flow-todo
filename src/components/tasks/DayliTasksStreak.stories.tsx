@@ -3,10 +3,11 @@ import DayliTasksStreak from './DayliTasksStreak';
 import { IDayliStreak } from '../../store/index';
 import addDays from 'date-fns/addDays';
 import subDays from 'date-fns/subDays';
+import { sections } from '../storybookContants';
 
 export default {
   component: DayliTasksStreak,
-  title: 'DayliTasksStreak',
+  title: sections.tasks + 'DayliTasksStreak',
 };
 
 const today = new Date();

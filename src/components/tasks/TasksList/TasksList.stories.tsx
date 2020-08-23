@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { TasksList } from './TasksList';
 import { addDecorator } from '@storybook/react';
+import { sections } from '../../storybookContants';
 
 type DecoratorFunction = Parameters<typeof addDecorator>[0];
 
@@ -14,7 +15,7 @@ export interface StoryMetadata {
 
 const metaData: StoryMetadata = {
   component: TasksList,
-  title: 'TasksList',
+  title: sections.tasks + 'TasksList',
   decorators: [storyFn => <Router>{storyFn()}</Router>],
 };
 

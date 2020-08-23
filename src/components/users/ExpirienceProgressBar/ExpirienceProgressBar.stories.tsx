@@ -5,7 +5,7 @@ import { Profile } from '../../../store/index';
 
 export default {
   component: ExpirienceProgressBar,
-  title: sections.unsorted + 'ExpirienceProgressBar',
+  title: sections.users + 'ExpirienceProgressBar',
 };
 
 export const Normal = () => {

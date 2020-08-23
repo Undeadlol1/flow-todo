@@ -4,7 +4,7 @@ import { sections } from '../storybookContants';
 
 export default {
   component: Timer,
-  title: sections.unsorted + 'Timer',
+  title: sections.ui + 'Timer',
 };
 
 export const Normal = () => {

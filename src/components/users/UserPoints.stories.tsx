@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import UserPoints from './UserPoints';
 import { number } from '@storybook/addon-knobs';
 import add from 'ramda/es/add';
+import { sections } from '../storybookContants';
 
 export default {
-  title: 'UserPoints',
+  title: sections.users + 'UserPoints',
   component: UserPoints,
 };
 

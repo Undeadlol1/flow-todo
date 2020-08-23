@@ -10,21 +10,18 @@ jobs:
     steps:
       - checkout
       # Download and cache dependencies
-      # - restore_cache:
-      #     name: Restore Yarn Package Cache
-      #     keys:
-      #       - yarn-packages-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore NPM Package Cache
+          keys:
+            - npm-packages-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
-          # NOTE yarn warnings do not allow to properly cache dependencies.
           command: npm install -q
-          # TODO try to use this to fix caching problems
-          # yarn install 2> >(grep -v warning 1>&2)
-      # - save_cache:
-      #     name: Save Yarn Package Cache
-      #     key: yarn-packages-{{ checksum "yarn.lock" }}
-      #     paths:
-      #       - ~/.cache/yarn
+      - save_cache:
+          name: Save NPM Package Cache
+          key: npm-packages-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.cache/npm
       - run:
           name: Build
           command: npm run build

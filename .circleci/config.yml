@@ -9,7 +9,6 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # Download and cache dependencies
       - restore_cache:
           name: Restore NPM Package Cache
           keys:
@@ -30,4 +29,4 @@ jobs:
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
       - run:
           name: Chromatic Deploy
-          command: npx chromatic --allow-console-errors -t "$CHROMATIC_TOKEN"
+          command: npx chromatic -t "$CHROMATIC_TOKEN" --exit-zero-on-changes

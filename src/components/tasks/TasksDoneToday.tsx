@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import DailyStreak from '../../services/dailyStreak';
 import { useTypedTranslate } from '../../services/index';
 import DayliTasksStreak from './DayliTasksStreak';
+import { IDayliStreak } from '../../store/index';
 
 const useStyles = makeStyles({
   progress: {
@@ -21,7 +21,7 @@ export interface TasksDoneTodayProps {
   isLoaded?: boolean;
   tasksPerDay: number;
   tasksToday: number;
-  dailyStreak: DailyStreak;
+  dailyStreak: IDayliStreak;
 }
 
 const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
@@ -33,7 +33,7 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
   const t = useTypedTranslate();
 
   if (!props.isLoaded)
-    return <Skeleton component={Box} width="100%" height="200px" />;
+    return <Skeleton variant="rect" height="160px" />;
   else
     return (
       <>

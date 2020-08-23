@@ -19,7 +19,7 @@ const props = {
 export const Demos = () => {
   return (
     <>
-      Some:
+      With data:
       <TasksDoneToday {...props} />
       Is loading:
       <TasksDoneToday {...props} isLoaded={false} />

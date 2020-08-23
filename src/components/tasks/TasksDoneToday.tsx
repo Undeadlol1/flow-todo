@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import React from 'react';
 import { useTypedTranslate } from '../../services/index';
 import DayliTasksStreak from './DayliTasksStreak';
@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
   },
 }));
+
+const StyledMobileStepper = withStyles({
+  progress: {
+    height: '6px',
+  },
+})(MobileStepper);
 
 export interface TasksDoneTodayProps {
   isLoaded?: boolean;
@@ -61,7 +67,7 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
                 )}
               </Box>
             </Box>
-            <MobileStepper
+            <StyledMobileStepper
               steps={tasksPerDay + 1}
               variant="progress"
               position="static"

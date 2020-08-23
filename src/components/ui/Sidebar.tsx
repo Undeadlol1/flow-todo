@@ -94,7 +94,7 @@ const Sidebar: React.FC<{}> = () => {
   return (
     <Drawer open={isSidebarOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
-        <When condition={isEmpty(tasks)}>
+        <When condition={!isEmpty(tasks)}>
           <ListItem
             button
             onClick={() => {

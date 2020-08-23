@@ -18,7 +18,7 @@ export const normal = () => (
     <UserPoints value={100} /> <br />
     <UserPoints value={1000} /> <br />
     <UserPoints value={10000} /> <br />
-    Custom: <br />
+    Use knobs to change: <br />
     <UserPoints value={number('points', 10)} />
   </>
 );

@@ -1,24 +1,29 @@
 import { IDayliStreak } from "../store"
 import subDays from "date-fns/esm/subDays";
 
-const today = new Date()
-const yesterday = subDays(today, 1);
+const perDay = 3
+const today = new Date().getTime()
+const yesterday = subDays(today, 1).getTime();
 
 export const streaks = {
     doneTasksYesterday: {
+        perDay,
         startsAt: yesterday,
         updatedAt: yesterday,
     } as IDayliStreak,
     doneTasksToday: {
+        perDay,
         startsAt: today,
         updatedAt: today,
     } as IDayliStreak,
     doneTasksFewDays: {
-        startsAt: subDays(today, 4),
+        perDay,
+        startsAt: subDays(today, 4).getTime(),
         updatedAt: today
     } as IDayliStreak,
     streakIsBroken: {
-        startsAt: subDays(today, 5),
-        updatedAt: subDays(today, 3),
+        perDay,
+        startsAt: subDays(today, 5).getTime(),
+        updatedAt: subDays(today, 3).getTime(),
     } as IDayliStreak,
 }

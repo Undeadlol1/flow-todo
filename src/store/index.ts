@@ -40,8 +40,8 @@ const { FieldValue } = firestore;
 
 export type IDayliStreak = {
   perDay: number;
-  startsAt: Date | undefined;
-  updatedAt: Date | undefined;
+  startsAt: number | null;
+  updatedAt: number | null;
 };
 
 export type Profile = {
@@ -211,6 +211,9 @@ export function upsertProfile(
   userId: string,
   profile: Profile,
 ): Promise<void> {
+  const emptyStreak = DailyStreak.getEmptyStreak()
+  console.log('profile: ', profile);
+  console.log('emptyStreak: ', emptyStreak);
   if (!profile.userId) throw Error('You must specify userId!');
   if (!profile.dailyStreak) profile.dailyStreak = DailyStreak.getEmptyStreak()
   return getFirestore()

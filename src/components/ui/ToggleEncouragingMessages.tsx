@@ -10,6 +10,7 @@ interface Props {
 }
 
 const ToggleEncouragingMessages = memo((props: Props) => {
+  console.log('props.value: ', props.value);
   return (
     <Card>
       <CardContent>
@@ -21,7 +22,7 @@ const ToggleEncouragingMessages = memo((props: Props) => {
                 disabled
                 // TODO
                 name="checkedA"
-                checked={props.value}
+                checked={Boolean(props.value)}
                 onChange={e => props.onChange(e.target.checked)}
               />
             }
@@ -33,7 +34,5 @@ const ToggleEncouragingMessages = memo((props: Props) => {
     </Card>
   );
 });
-
-ToggleEncouragingMessages.displayName = 'ToggleEncouragingMessages';
 
 export default ToggleEncouragingMessages;

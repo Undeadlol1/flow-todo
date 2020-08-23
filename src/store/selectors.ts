@@ -106,8 +106,8 @@ export const profileSelector = createSelector(
     if (!profile.dailyStreak)
       profile.dailyStreak = {
         perDay: 3,
-        startsAt: undefined,
-        updatedAt: undefined,
+        startsAt: null,
+        updatedAt: null,
       } as IDayliStreak;
     return profile as Profile;
   },

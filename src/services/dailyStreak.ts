@@ -6,7 +6,7 @@ const log = debug('DailyStreakService')
 
 export default class DailyStreak {
   static getEmptyStreak(): IDayliStreak {
-    const today = new Date()
+    const today = new Date().getTime()
     return { startsAt: today, perDay: 3, updatedAt: today } as IDayliStreak
   }
 

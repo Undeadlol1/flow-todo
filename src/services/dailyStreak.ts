@@ -10,27 +10,36 @@ export default class DailyStreak {
     return { startsAt: today, perDay: 3, updatedAt: today } as IDayliStreak
   }
 
+  /**
+   * Streak should only update if goal is reached
+   * and streak was not updated today.
+   */
   static shouldUpdate({
-    tasksDoneToday,
+    tasksDoneToday = 0,
     streak,
   }: {
     tasksDoneToday: number;
     streak: IDayliStreak;
   }): boolean {
-    log('.shouldUpdate is called.')
-    if (!streak.updatedAt) {
-      return true
-    }
+    const isTaskGoalReached = tasksDoneToday >= streak.perDay
+    const isUpdatedToday = isSameDay(streak?.updatedAt || 0, Date.now())
 
-    const isUpdatedToday = isSameDay(streak.updatedAt, Date.now())
+    log('.shouldUpdate is called.')
+    log('isTaskGoalReached: ', isTaskGoalReached);
     log('isUpdatedToday: ', isUpdatedToday);
 
-    return tasksDoneToday >= streak.perDay && !isUpdatedToday;
+    if (!isTaskGoalReached) {
+      return false
+    }
+
+    return isTaskGoalReached && !isUpdatedToday;
+
   }
 
+  // TODO rename or add comments.
   // TODO what does this name mean? What exactly is this function do?
   static hasEnded(streak: IDayliStreak): boolean {
-    log('.hasEnded is called.')
+    log('.hasEnded is called. %O', streak)
     if (!streak.updatedAt || !streak.startsAt) {
       return true
     }

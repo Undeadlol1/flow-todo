@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Timer from 'react-compound-timer';
+import ReactTimer from 'react-compound-timer';
 import { useAudio, useTimeoutFn } from 'react-use';
 import Fab from './Fab';
 
@@ -11,7 +11,7 @@ interface Props {
   className?: string;
 }
 
-export default (props: Props) => {
+export default function Timer(props: Props) {
   const timerDuration = (5 * 60 * 1000) / 2;
   const [isActive, setIsActive] = useState(props.autoStart);
   const [isAutoStarted, setIsAutoStarted] = useState(false);
@@ -27,7 +27,7 @@ export default (props: Props) => {
   return (
     <>
       {audio}
-      <Timer
+      <ReactTimer
         // @ts-ignore
         formatValue={val => {
           // Timer returns '0' seconds by default'.
@@ -62,12 +62,12 @@ export default (props: Props) => {
               onClick={toggleTimer}
               className={props.className}
             >
-              <Timer.Minutes />:
-              <Timer.Seconds />
+              <ReactTimer.Minutes />:
+              <ReactTimer.Seconds />
             </Fab>
           );
         }}
-      </Timer>
+      </ReactTimer>
     </>
   );
-};
+}

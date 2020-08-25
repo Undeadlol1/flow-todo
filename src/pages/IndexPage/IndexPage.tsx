@@ -14,11 +14,15 @@ import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
-import PinnedTask from '../../components/tasks/TasksList/PinnedTask';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
-import { Task, useTypedSelector } from '../../store/index';
+import {
+  Task,
+  useTypedSelector,
+  TaskHistory,
+  IDayliStreak,
+} from '../../store/index';
 import {
   profileSelector,
   taskLogsSelector as taskLogs,
@@ -44,6 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
+  logs: TaskHistory[];
+  streak: IDayliStreak;
+  tasksPerDay: number;
+  tasksToday: number;
   activeTasks?: Task[];
   isLoading?: boolean;
   isAppTourActive?: boolean;
@@ -53,10 +61,6 @@ interface Props {
 export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
-  const logs = useTypedSelector(taskLogs);
-  const streak = useTypedSelector(profileSelector).dailyStreak;
-  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
-  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
 
   const {
     isLoading,
@@ -67,7 +71,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
   log('isLoading: ', isLoading);
   log('activeTasks: ', activeTasks);
   log('isAppTourActive: ', isAppTourActive);
-  log('createdAtleastOneTask: ', createdAtleastOneTask);
+  log('createdAtleastOneTask: ', !isEmpty(createdAtleastOneTask));
 
   function renderButtonOrWelcomeCard() {
     if (
@@ -96,15 +100,12 @@ export const IndexPage = memo(function HomePage(props: Props) {
           )}
         >
           <TasksDoneToday
-            dailyStreak={streak}
-            tasksPerDay={tasksPerDay}
-            tasksToday={tasksToday}
-            isLoaded={isLoaded(logs)}
+            dailyStreak={props.streak}
+            tasksPerDay={props.tasksPerDay}
+            tasksToday={props.tasksToday}
+            isLoaded={isLoaded(props.logs)}
           />
         </Unless>
-      </Grid>
-      <Grid item xs={12} sm={12} md={8} lg={6}>
-        <PinnedTask />
       </Grid>
       <Grid
         item
@@ -134,6 +135,10 @@ export const IndexPage = memo(function HomePage(props: Props) {
 });
 
 export default memo(function HomePageContainer(props) {
+  const logs = useTypedSelector(taskLogs);
+  const streak = useTypedSelector(profileSelector).dailyStreak;
+  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
+  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
   const activeTasks = useTypedSelector(tasksSelector);
   const { createdAtleastOneTask } = useTypedSelector(
     get('firestore.ordered'),
@@ -141,9 +146,14 @@ export default memo(function HomePageContainer(props) {
   const { isAppTourActive } = useTypedSelector(uiSelector);
   const isLoading =
     isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
+
   return (
     <IndexPage
       {...{
+        logs,
+        streak,
+        tasksPerDay,
+        tasksToday,
         isLoading,
         activeTasks,
         isAppTourActive,

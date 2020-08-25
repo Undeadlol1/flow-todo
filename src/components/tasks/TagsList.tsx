@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const TagsList: React.FC<{}> = () => {
+const TagsList: React.FC<{}> = memo(() => {
   const cx = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -58,6 +58,10 @@ export const TagsList: React.FC<{}> = () => {
         })}
       </Box>
     );
-};
+});
+
+TagsList.displayName = 'TagsList';
+
+export { TagsList };
 
 export default memo(TagsList);

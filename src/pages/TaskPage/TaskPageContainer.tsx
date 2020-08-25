@@ -31,7 +31,8 @@ import {
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 
-const log = debug('TaskPageContainer');
+const componentName = 'TaskPageContainer';
+const log = debug(componentName);
 const streakLog = log.extend('dailyStreak');
 
 export interface updateTaskParams {
@@ -46,7 +47,7 @@ export interface deleteTaskArguments {
   snackbarMessage?: string;
 }
 
-export default memo(() => {
+const Container = memo(() => {
   const [t] = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -246,3 +247,7 @@ export default memo(() => {
   };
   return <TaskPage {...mergedProps} />;
 });
+
+Container.displayName = componentName;
+
+export default Container;

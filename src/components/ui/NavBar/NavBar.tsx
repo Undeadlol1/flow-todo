@@ -143,7 +143,7 @@ export const LoginOrLogoutButton = memo(() => {
   );
 });
 
-export default memo(() => {
+const NavBar = memo(() => {
   const classes = useStyles();
   const dispatch = useDispatch();
   return (
@@ -174,3 +174,7 @@ export default memo(() => {
     </div>
   );
 });
+
+NavBar.displayName = 'NavBar';
+
+export default NavBar;

@@ -17,9 +17,7 @@ const UserPoints = memo(
   }) => {
     const previousPoints = usePrevious(nextPoints) || 0;
     const difference = nextPoints - previousPoints;
-    logger('previousPoints', previousPoints);
-    logger('nextPoints', nextPoints);
-    logger('difference', difference);
+    logger('nextPoints - previousPoints', difference);
     logger('isLoaded', isLoaded);
 
     if (isLoaded)
@@ -40,8 +38,6 @@ const UserPoints = memo(
       return <Skeleton variant="circle" width="33px" height="33px" />;
   },
   function(previousProps, nextProps) {
-    logger('nextProps: ', nextProps);
-    logger('previousProps: ', previousProps);
     if (previousProps.isLoaded !== nextProps.isLoaded) return false;
     // There is a strange bug where on window resize
     // state resets and value is 0. Then it data is fetched again.

@@ -86,4 +86,6 @@ export const ExpirienceProgressBar: React.FC<{
     );
 });
 
+ExpirienceProgressBar.displayName = 'ExpirienceProgressBar';
+
 export default ExpirienceProgressBar;

@@ -7,7 +7,6 @@ import { IDayliStreak } from '../../store/index';
 
 const componentName = 'DayliTasksStreak';
 const log = debug(componentName);
-debug.enable('*');
 
 interface Props {
   streak: IDayliStreak;

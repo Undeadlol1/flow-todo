@@ -60,11 +60,12 @@ export const TaskPageGridWidth: GridProps = {
   md: 6,
 };
 
-interface TaskPageProps {
+export interface TaskPageProps {
   task: Task;
   taskId: string;
   loading: boolean;
   isAppIntroMode: boolean;
+  shouldDisplayEncouragements: boolean;
   deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
@@ -83,12 +84,14 @@ export default function TaskPage(props: TaskPageProps) {
   // NOTE: Make sure snackbar is not shown when user redirects.
   useEffect(() => {
     const snackBarTimeout = setTimeout(() => {
-      enqueueSnackbar(sample(encouragingMessages), {
-        autoHideDuration: 5000,
-      });
+      if (props.shouldDisplayEncouragements) {
+        enqueueSnackbar(sample(encouragingMessages), {
+          autoHideDuration: 5000,
+        });
+      }
     }, 2500);
     return () => clearTimeout(snackBarTimeout);
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
 
   if (loading) {
     return (

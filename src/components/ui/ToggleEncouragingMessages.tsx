@@ -10,7 +10,6 @@ interface Props {
 }
 
 const ToggleEncouragingMessages = memo((props: Props) => {
-  console.log('props.value: ', props.value);
   return (
     <Card>
       <CardContent>
@@ -19,7 +18,6 @@ const ToggleEncouragingMessages = memo((props: Props) => {
           <FormControlLabel
             control={
               <Switch
-                disabled
                 // TODO
                 name="checkedA"
                 checked={Boolean(props.value)}

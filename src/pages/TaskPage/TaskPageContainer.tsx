@@ -30,6 +30,7 @@ import {
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
+import { TaskPageProps } from './TaskPage';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -244,7 +245,8 @@ const Container = memo(() => {
     loading: isEmpty(task) || isRequested,
     taskId,
     isAppIntroMode,
-  };
+    shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
+  } as TaskPageProps;
   return <TaskPage {...mergedProps} />;
 });
 

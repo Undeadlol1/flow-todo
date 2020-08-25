@@ -31,6 +31,8 @@ import { profileSelector } from '../../store/selectors';
 import { Theme } from '@material-ui/core';
 import { upsertProfile } from '../../store/index';
 
+    const log = debug('ProfilePage');
+
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
@@ -72,7 +74,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
 
   function updateProfile(profile: Profile) {
     profile.userId = userId;
-    console.log('updateProfile called.', profile);
+    log('updateProfile called.', profile);
     return upsertProfile(props.user!.uid, profile).catch(
       handleErrors,
     );
@@ -146,7 +148,6 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
 
 export const ProfilePageContainer = memo(
   function ProfilePageContainer(props) {
-    const log = debug('ProfilePage');
     const user = useTypedSelector(s => get(s, 'firebase.auth'));
     const profile = useTypedSelector(s => get(s, 'firebase.profile'));
     const isLoading = !(user.isLoaded && profile.isLoaded);

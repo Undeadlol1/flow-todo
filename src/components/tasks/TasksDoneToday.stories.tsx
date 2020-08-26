@@ -24,12 +24,12 @@ export const Demos = () => {
 
   return (
     <>
-      Is loading:
-      <TasksDoneToday {...props} isLoaded={false} />
       Change animation:
       <TasksDoneToday {...props} tasksToday={amount} />
       Is achieved:
       <TasksDoneToday {...props} />
+      Is loading:
+      <TasksDoneToday {...props} isLoaded={false} />
     </>
   );
 };

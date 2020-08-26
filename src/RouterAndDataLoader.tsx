@@ -1,5 +1,4 @@
 import Container from '@material-ui/core/Container';
-import { auth } from 'firebase/app';
 import get from 'lodash/get';
 import React, { memo, useEffect, useState } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
@@ -64,12 +63,6 @@ export default memo(function RouterAndDataLoader(props: {
   }, [userId]);
 
   handleErrors(authError);
-
-  if (user.isLoaded && user.isEmpty) {
-    auth()
-      .signInAnonymously()
-      .catch(handleErrors);
-  }
 
   useFirestoreConnect(
     userId && [

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import TasksDoneToday from './TasksDoneToday';
+import React, { useEffect, useState } from 'react';
+import { TasksDoneTodaySampleProps } from '../dataMocks';
 import { sections } from '../storybookContants';
-import { TasksDoneTodayProps } from './TasksDoneToday';
-import { streaks, TasksDoneTodaySampleProps } from '../dataMocks';
+import TasksDoneToday from './TasksDoneToday';
 
 export default {
   component: TasksDoneToday,

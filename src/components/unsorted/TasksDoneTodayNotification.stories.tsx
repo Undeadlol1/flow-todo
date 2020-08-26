@@ -1,9 +1,9 @@
 import React from 'react';
 import { sections } from '../storybookContants';
 import { TasksDoneTodayNotification } from './TasksDoneTodayNotification';
-import { TasksDoneTodaySampleProps } from '../tasks/TasksDoneToday.stories';
 import useToggle from 'react-use/lib/useToggle';
 import { Button } from '@material-ui/core';
+import { TasksDoneTodaySampleProps } from '../dataMocks';
 
 export default {
   component: TasksDoneTodayNotification,

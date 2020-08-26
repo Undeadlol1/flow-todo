@@ -1,5 +1,6 @@
 import { IDayliStreak } from "../store"
 import subDays from "date-fns/esm/subDays";
+import { TasksDoneTodayProps } from './tasks/TasksDoneToday';
 
 const perDay = 3
 const today = new Date().getTime()
@@ -27,3 +28,14 @@ export const streaks = {
         updatedAt: subDays(today, 3).getTime(),
     } as IDayliStreak,
 }
+/**
+ * NOTE: placed here because if this is placed
+ * inside a story, the story book we break
+ * because all exports are stories.
+ */
+export const TasksDoneTodaySampleProps = {
+    tasksToday: 3,
+    tasksPerDay: 3,
+    isLoaded: true,
+    dailyStreak: streaks.streakIsBroken,
+} as TasksDoneTodayProps;

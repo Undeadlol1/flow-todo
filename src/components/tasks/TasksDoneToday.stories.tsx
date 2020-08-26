@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react';
 import TasksDoneToday from './TasksDoneToday';
 import { sections } from '../storybookContants';
 import { TasksDoneTodayProps } from './TasksDoneToday';
-import { streaks } from '../dataMocks';
+import { streaks, TasksDoneTodaySampleProps } from '../dataMocks';
 
 export default {
   component: TasksDoneToday,
   title: sections.users + 'TasksDoneToday',
 };
-
-export const TasksDoneTodaySampleProps = {
-  tasksToday: 3,
-  tasksPerDay: 3,
-  isLoaded: true,
-  dailyStreak: streaks.streakIsBroken,
-} as TasksDoneTodayProps;
 
 const props = TasksDoneTodaySampleProps;
 

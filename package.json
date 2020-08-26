@@ -88,7 +88,7 @@
   },
   "scripts": {
     "start:nofirebase": "react-app-rewired start",
-    "start": "concurrently \"npx cross-env PORT=3001 react-app-rewired start\" \"firebase emulators:start --only firestore\"",
+    "start": "concurrently \"npx cross-env DEBUG_HIDE_DATE=true PORT=3001 react-app-rewired start\" \"firebase emulators:start --only firestore\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

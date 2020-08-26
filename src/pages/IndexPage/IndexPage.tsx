@@ -134,6 +134,8 @@ export const IndexPage = memo(function HomePage(props: Props) {
   );
 });
 
+IndexPage.displayName = 'IndexPage';
+
 export default memo(function HomePageContainer(props) {
   const logs = useTypedSelector(taskLogs);
   const streak = useTypedSelector(profileSelector).dailyStreak;

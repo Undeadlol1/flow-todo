@@ -15,9 +15,8 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import debug from 'debug';
 import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import { Unless, When } from 'react-if';
+import { When } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
@@ -53,13 +52,13 @@ const StyledListText = withStyles({
 
 const Sidebar: React.FC<{
   isOpen: boolean;
-  isAnonymous: boolean;
+  isLoggedIn: boolean;
   isTasksListEmpty: boolean;
-}> = ({ isAnonymous, isOpen, isTasksListEmpty }) => {
+}> = ({ isLoggedIn, isOpen, isTasksListEmpty }) => {
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
-  log('isAnonymous: ', isAnonymous);
+  log('isLoggedIn: ', isLoggedIn);
   log('isOpen: ', isOpen);
 
   const { share, isSupported: isShareSupported } = useWebShare(
@@ -70,11 +69,13 @@ const Sidebar: React.FC<{
 
   function logoutOrRedirect() {
     toggleSidebar();
-    if (isAnonymous) history.push('/signin');
-    else
+    if (!isLoggedIn) history.push('/signin');
+    else {
+      localStorage.removeItem('userId');
       getFirebase()
         .logout()
         .catch(handleErrors);
+    }
   }
 
   function shareMainPage() {
@@ -143,16 +144,14 @@ const Sidebar: React.FC<{
             <StyledListText primary={t('feedback')} />
           </ListItem>
         </MailTo>
-        <Unless condition={isUndefined(isAnonymous)}>
-          <ListItem button onClick={logoutOrRedirect}>
-            <ListItemIcon>
-              {isAnonymous ? <AccountBoxIcon /> : <ExitIcon />}
-            </ListItemIcon>
-            <StyledListText
-              primary={t(isAnonymous ? 'log in' : 'log out')}
-            />
-          </ListItem>
-        </Unless>
+        <ListItem button onClick={logoutOrRedirect}>
+          <ListItemIcon>
+            {isLoggedIn ? <AccountBoxIcon /> : <ExitIcon />}
+          </ListItemIcon>
+          <StyledListText
+            primary={t(isLoggedIn ? 'log out' : 'log in')}
+          />
+        </ListItem>
       </List>
     </Drawer>
   );

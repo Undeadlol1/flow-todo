@@ -8,5 +8,5 @@ export default {
 };
 
 export const Normal = () => {
-  return <Sidebar isOpen isAnonymous={false} isTasksListEmpty />;
+  return <Sidebar isOpen isLoggedIn isTasksListEmpty />;
 };

@@ -71,59 +71,61 @@ export default memo(function RouterAndDataLoader(props: {
       .catch(handleErrors);
   }
 
-  useFirestoreConnect([
-    {
-      collection: 'tasks',
-      where: [
-        ['userId', '==', userId],
-        ['isDone', '==', false],
-        ['dueAt', '<', today],
-      ],
-      limit: 100,
-    },
-    {
-      doc: userId,
-      collection: 'profiles',
-      storeAs: 'profile',
-    },
-    // TODO: make sure this is never used and remove it
-    {
-      collection: 'tasks',
-      where: [
-        ['userId', '==', userId],
-        ['isDone', '==', false],
-        ['dueAt', '<', today],
-      ],
-      storeAs: 'activeTasks',
-      limit: 100,
-    },
-    {
-      collection: 'taskLogs',
-      where: [
-        ['userId', '==', userId],
-        ['createdAt', '>', yesterday],
-      ],
-      limit: 100,
-    },
-    {
-      collection: 'tasks',
-      where: [['userId', '==', userId], ['isPinned', '==', true]],
-      storeAs: 'pinnedTask',
-      limit: 1,
-    },
-    {
-      collection: 'tasks',
-      where: [['userId', '==', userId]],
-      storeAs: 'createdAtleastOneTask',
-      limit: 1,
-    },
-    {
-      collection: 'rewards',
-      where: [['userId', '==', userId]],
-      orderBy: ['points', 'asc'],
-      limit: 100,
-    },
-  ]);
+  useFirestoreConnect(
+    userId && [
+      {
+        collection: 'tasks',
+        where: [
+          ['userId', '==', userId],
+          ['isDone', '==', false],
+          ['dueAt', '<', today],
+        ],
+        limit: 100,
+      },
+      {
+        doc: userId,
+        collection: 'profiles',
+        storeAs: 'profile',
+      },
+      // TODO: make sure this is never used and remove it
+      {
+        collection: 'tasks',
+        where: [
+          ['userId', '==', userId],
+          ['isDone', '==', false],
+          ['dueAt', '<', today],
+        ],
+        storeAs: 'activeTasks',
+        limit: 100,
+      },
+      {
+        collection: 'taskLogs',
+        where: [
+          ['userId', '==', userId],
+          ['createdAt', '>', yesterday],
+        ],
+        limit: 100,
+      },
+      {
+        collection: 'tasks',
+        where: [['userId', '==', userId], ['isPinned', '==', true]],
+        storeAs: 'pinnedTask',
+        limit: 1,
+      },
+      {
+        collection: 'tasks',
+        where: [['userId', '==', userId]],
+        storeAs: 'createdAtleastOneTask',
+        limit: 1,
+      },
+      {
+        collection: 'rewards',
+        where: [['userId', '==', userId]],
+        orderBy: ['points', 'asc'],
+        limit: 100,
+      },
+    ],
+  );
 
   return (
     <BrowserRouter>
@@ -136,8 +138,8 @@ export default memo(function RouterAndDataLoader(props: {
       />
       <Sidebar
         isOpen={isSidebarOpen}
+        isLoggedIn={!isEmpty(user)}
         isTasksListEmpty={isEmpty(tasks)}
-        isAnonymous={user.isAnonymous}
       />
       <RewardModal isOpen={isRewardModalOpen} />
       <Container>

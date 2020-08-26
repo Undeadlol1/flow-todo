@@ -32,6 +32,10 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
+import {
+  TasksDoneTodayNotification,
+  TasksDoneTodayNotificationProps,
+} from '../../components/unsorted/TasksDoneTodayNotification';
 
 // TODO i18n
 const encouragingMessages = [
@@ -66,6 +70,8 @@ export interface TaskPageProps {
   loading: boolean;
   isAppIntroMode: boolean;
   shouldDisplayEncouragements: boolean;
+  // TODO this feels wrong.
+  tasksDoneTodayNotificationProps: TasksDoneTodayNotificationProps;
   deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
@@ -119,6 +125,9 @@ export default function TaskPage(props: TaskPageProps) {
       alignContent="center"
       className={classes.pageContainer}
     >
+      <TasksDoneTodayNotification
+        {...props.tasksDoneTodayNotificationProps}
+      />
       <When condition={props.isAppIntroMode}>
         <AppTour step={2} />
       </When>

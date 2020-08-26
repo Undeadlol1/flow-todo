@@ -31,6 +31,8 @@ import {
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
 import { TaskPageProps } from './TaskPage';
+import { uiSelector } from '../../store/selectors';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -66,6 +68,7 @@ const Container = memo(() => {
   }
 
   const isAppIntroMode = taskId === 'introExample';
+  const uiState = useTypedSelector(uiSelector)
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
@@ -125,6 +128,8 @@ const Container = memo(() => {
   }
 
   async function updateDailyStreak() {
+    dispatch(toggleTasksDoneTodayNotification())
+    setTimeout(() => dispatch(toggleTasksDoneTodayNotification()), 2500)
     const now = Date.now();
     const streak = profile.dailyStreak;
     const isStreakBroken = DailyStreak.hasEnded(streak);
@@ -246,10 +251,17 @@ const Container = memo(() => {
     taskId,
     isAppIntroMode,
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
+    tasksDoneTodayNotificationProps: {
+      isLoaded: true,
+      tasksToday: tasksDoneToday,
+      dailyStreak: profile.dailyStreak,
+      tasksPerDay: profile.dailyStreak?.perDay,
+      toggleVisibility: toggleTasksDoneTodayNotification,
+      isVisible: uiState.isTasksDoneTodayNotificationOpen,
+    }
   } as TaskPageProps;
   return <TaskPage {...mergedProps} />;
 });
 
-Container.displayName = componentName;
 
 export default Container;

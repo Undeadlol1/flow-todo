@@ -31,7 +31,7 @@ import { profileSelector } from '../../store/selectors';
 import { Theme } from '@material-ui/core';
 import { upsertProfile } from '../../store/index';
 
-    const log = debug('ProfilePage');
+const log = debug('ProfilePage');
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -114,6 +114,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         </Box>
         <Box mb={2}>
           <ToggleEncouragingMessages
+            isLoading={props.isLoading}
             onChange={areEcouragingMessagesDisabled =>
               updateProfile({
                 ...profile,

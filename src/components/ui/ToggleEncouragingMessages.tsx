@@ -6,6 +6,7 @@ import React, { memo } from 'react';
 
 interface Props {
   value: boolean;
+  isLoading?: boolean;
   onChange: (checked: boolean) => void;
 }
 
@@ -20,8 +21,9 @@ const ToggleEncouragingMessages = memo((props: Props) => {
               <Switch
                 // TODO
                 name="checkedA"
-                checked={Boolean(props.value)}
-                onChange={e => props.onChange(e.target.checked)}
+                disabled={props.isLoading}
+                checked={!props.value}
+                onChange={e => props.onChange(!e.target.checked)}
               />
             }
             // TODO i18n

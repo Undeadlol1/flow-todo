@@ -9,12 +9,14 @@ export default {
   title: sections.users + 'TasksDoneToday',
 };
 
-const props = {
+export const TasksDoneTodaySampleProps = {
   tasksToday: 3,
   tasksPerDay: 3,
   isLoaded: true,
   dailyStreak: streaks.streakIsBroken,
 } as TasksDoneTodayProps;
+
+const props = TasksDoneTodaySampleProps;
 
 export const Demos = () => {
   const [amount, setAmount] = useState(0);

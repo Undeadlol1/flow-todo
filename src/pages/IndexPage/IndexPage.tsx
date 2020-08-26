@@ -32,7 +32,7 @@ import {
   uiSelector,
 } from '../../store/selectors';
 
-const log = debug('HomePage');
+const log = debug('IndexPage');
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
     marginTop: 0,
@@ -69,7 +69,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
     createdAtleastOneTask,
   } = props;
   log('isLoading: ', isLoading);
-  log('activeTasks: ', activeTasks);
+  log('activeTasks: %O', activeTasks);
   log('isAppTourActive: ', isAppTourActive);
   log('createdAtleastOneTask: ', !isEmpty(createdAtleastOneTask));
 

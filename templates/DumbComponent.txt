@@ -6,9 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 
 const log = debug('{{pascalCase name}}');
 
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {},
-}));
+const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
 interface Props {
     className?: string
@@ -27,4 +25,4 @@ const {{pascalCase name}} = memo((props: Props) => {
 
 {{pascalCase name}}.displayName = '{{pascalCase name}}';
 
-export default { {{pascalCase name}} }
+export { {{pascalCase name}} }

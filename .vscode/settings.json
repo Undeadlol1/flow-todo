@@ -5,6 +5,7 @@
         "Sidebar",
         "dayliStreak",
         "TaskPage",
-        "Profile"
+        "Profile",
+        "templates"
     ]
 }

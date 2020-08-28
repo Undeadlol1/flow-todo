@@ -67,7 +67,6 @@ const Container = memo(() => {
     taskId = currentTaskId as string;
   }
 
-  const isAppIntroMode = taskId === 'introExample';
   const uiState = useTypedSelector(uiSelector)
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
@@ -83,7 +82,6 @@ const Container = memo(() => {
   // Fetch task if needed
   useEffect(() => {
     if (
-      !isAppIntroMode &&
       get(firestoreStatus, 'requested.activeTasks') &&
       get(task, 'id') !== taskId &&
       !isRequested
@@ -103,16 +101,10 @@ const Container = memo(() => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [task, isRequested, firestoreStatus, isAppIntroMode, taskId]);
+  }, [task, isRequested, firestoreStatus,  taskId]);
 
   // TODO find out how to get errors from redux-firestore
   // if (taskError) once(() => handleErrors(taskError))();
-
-  if (isAppIntroMode) {
-    task = {
-      name: t('exampleTask'),
-    } as Task;
-  }
 
   const nextTaskId = getRandomTaskId(
     filter(tasks, t => t.id !== taskId),
@@ -249,7 +241,6 @@ const Container = memo(() => {
     task: task || {},
     loading: isEmpty(task) || isRequested,
     taskId,
-    isAppIntroMode,
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     tasksDoneTodayNotificationProps: {
       isLoaded: true,

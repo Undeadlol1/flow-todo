@@ -22,7 +22,6 @@ import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
-import AppTour from '../../components/ui/AppTour';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
 import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
@@ -68,7 +67,6 @@ export interface TaskPageProps {
   task: Task;
   taskId: string;
   loading: boolean;
-  isAppIntroMode: boolean;
   shouldDisplayEncouragements: boolean;
   // TODO this feels wrong.
   tasksDoneTodayNotificationProps: TasksDoneTodayNotificationProps;
@@ -128,9 +126,6 @@ export default function TaskPage(props: TaskPageProps) {
       <TasksDoneTodayNotification
         {...props.tasksDoneTodayNotificationProps}
       />
-      <When condition={props.isAppIntroMode}>
-        <AppTour step={2} />
-      </When>
       <Timer
         onEnd={() => {
           // TODO i18n

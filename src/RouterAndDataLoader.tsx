@@ -58,6 +58,7 @@ export default memo(function RouterAndDataLoader(props: {
   // Store userId in localStorage to improve loading times on startup
   const userId =
     get(user, 'uid', '') || localStorage.getItem('userId') || '';
+  console.log('userId: ', userId);
   useEffect(() => {
     if (userId) localStorage.setItem('userId', userId);
   }, [userId]);

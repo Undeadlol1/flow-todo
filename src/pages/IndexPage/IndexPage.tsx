@@ -17,6 +17,7 @@ import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
+import { authSelector } from '../../store/selectors';
 import {
   Task,
   useTypedSelector,
@@ -29,7 +30,6 @@ import {
   tasksDoneTodaySelector,
   tasksPerDaySelector,
   tasksSelector,
-  uiSelector,
 } from '../../store/selectors';
 
 const log = debug('IndexPage');
@@ -54,31 +54,20 @@ interface Props {
   tasksToday: number;
   activeTasks?: Task[];
   isLoading?: boolean;
-  isAppTourActive?: boolean;
-  createdAtleastOneTask?: Task[];
+  createdAtleastOneTask: boolean;
 }
 
 export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
 
-  const {
-    isLoading,
-    activeTasks,
-    isAppTourActive,
-    createdAtleastOneTask,
-  } = props;
+  const { isLoading, activeTasks, createdAtleastOneTask } = props;
   log('isLoading: ', isLoading);
   log('activeTasks: %O', activeTasks);
-  log('isAppTourActive: ', isAppTourActive);
-  log('createdAtleastOneTask: ', !isEmpty(createdAtleastOneTask));
+  log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderButtonOrWelcomeCard() {
-    if (
-      isLoading ||
-      isAppTourActive ||
-      !isEmpty(createdAtleastOneTask)
-    )
+    if (isLoading || createdAtleastOneTask)
       return <GetRandomTask className={'IntroHandle__taskButton'} />;
     else return <WelcomeCard />;
   }
@@ -94,11 +83,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={12} md={8} lg={6}>
-        <Unless
-          condition={Boolean(
-            isEmpty(createdAtleastOneTask) || isAppTourActive,
-          )}
-        >
+        <Unless condition={!createdAtleastOneTask}>
           <TasksDoneToday
             dailyStreak={props.streak}
             tasksPerDay={props.tasksPerDay}
@@ -137,6 +122,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
 IndexPage.displayName = 'IndexPage';
 
 export default memo(function HomePageContainer(props) {
+  const auth = useTypedSelector(authSelector);
   const logs = useTypedSelector(taskLogs);
   const streak = useTypedSelector(profileSelector).dailyStreak;
   const tasksPerDay = useTypedSelector(tasksPerDaySelector);
@@ -145,9 +131,9 @@ export default memo(function HomePageContainer(props) {
   const { createdAtleastOneTask } = useTypedSelector(
     get('firestore.ordered'),
   );
-  const { isAppTourActive } = useTypedSelector(uiSelector);
-  const isLoading =
+  let isLoading =
     isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
+  if (auth.isEmpty) isLoading = false;
 
   return (
     <IndexPage
@@ -158,8 +144,7 @@ export default memo(function HomePageContainer(props) {
         tasksToday,
         isLoading,
         activeTasks,
-        isAppTourActive,
-        createdAtleastOneTask,
+        createdAtleastOneTask: !isEmpty(createdAtleastOneTask),
       }}
     />
   );

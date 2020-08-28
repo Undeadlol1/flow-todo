@@ -131,9 +131,11 @@ export default memo(function HomePageContainer(props) {
   const { createdAtleastOneTask } = useTypedSelector(
     get('firestore.ordered'),
   );
+
   let isLoading =
     isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   if (auth.isEmpty) isLoading = false;
+  if (!auth.isLoaded) isLoading = true;
 
   return (
     <IndexPage

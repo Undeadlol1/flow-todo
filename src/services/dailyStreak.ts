@@ -5,9 +5,11 @@ import debug from 'debug'
 const log = debug('DailyStreakService')
 
 export default class DailyStreak {
+
+  static today = Date.now()
+
   static getEmptyStreak(): IDayliStreak {
-    const today = new Date().getTime()
-    return { startsAt: today, perDay: 3, updatedAt: today } as IDayliStreak
+    return { startsAt: null, updatedAt: null, perDay: 3, } as IDayliStreak
   }
 
   /**
@@ -22,18 +24,14 @@ export default class DailyStreak {
     streak: IDayliStreak;
   }): boolean {
     const isTaskGoalReached = tasksDoneToday >= streak.perDay
-    const isUpdatedToday = isSameDay(streak?.updatedAt || 0, Date.now())
+    const isUpdatedToday = isSameDay(streak?.updatedAt || 0, this.today)
 
     log('.shouldUpdate is called.')
     log('isTaskGoalReached: ', isTaskGoalReached);
     log('isUpdatedToday: ', isUpdatedToday);
 
-    if (!isTaskGoalReached) {
-      return false
-    }
-
-    return isTaskGoalReached && !isUpdatedToday;
-
+    if (!isTaskGoalReached) return false
+    else return isTaskGoalReached && !isUpdatedToday;
   }
 
   // TODO rename or add comments.
@@ -44,21 +42,16 @@ export default class DailyStreak {
       return true
     }
 
-    return differenceInDays(Date.now(), streak.updatedAt) > 0
+    return differenceInDays(this.today, streak.updatedAt) > 0
   }
 
-  static daysInARow(streak: IDayliStreak): number {
-    if (!streak.updatedAt || !streak.startsAt) {
-      return 0
-    }
-    return differenceInDays(streak.updatedAt, streak.startsAt) + 1;
+  static daysInARow({ startsAt, updatedAt }: IDayliStreak): number {
+    if (!updatedAt || !startsAt) return 0
+    return differenceInDays(updatedAt, startsAt) + 1;
   }
 
   static daysSinceUpdate(streak: IDayliStreak): number {
-    // TODO: same checks in evry function
-    if (!streak.updatedAt || !streak.startsAt) {
-      return 0
-    }
-    return differenceInDays(Date.now(), streak.updatedAt);
+    return differenceInDays(this.today, streak.updatedAt || this.today);
   }
+
 }

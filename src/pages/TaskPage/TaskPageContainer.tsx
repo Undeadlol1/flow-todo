@@ -165,9 +165,9 @@ const Container = memo(() => {
     return Promise.all(
       tasks
         .filter(i => i.isCurrent)
-        .map(i =>
+        .map(({id}) =>
           firestoreRedux
-            .doc('tasks/' + i.id)
+            .doc('tasks/' + id)
             .update({ isCurrent: false } as Task),
         ),
     );

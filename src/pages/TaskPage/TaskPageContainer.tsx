@@ -33,10 +33,10 @@ import TaskPage from './TaskPage';
 import { TaskPageProps } from './TaskPage';
 import { uiSelector } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import { upsertProfile } from '../../store/index';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
-const streakLog = log.extend('dailyStreak');
 
 export interface updateTaskParams {
   values: any;
@@ -51,6 +51,8 @@ export interface deleteTaskArguments {
 }
 
 const Container = memo(() => {
+  const now = Date.now();
+
   const [t] = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -67,7 +69,7 @@ const Container = memo(() => {
     taskId = currentTaskId as string;
   }
 
-  const uiState = useTypedSelector(uiSelector)
+  const uiState = useTypedSelector(uiSelector);
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
@@ -101,7 +103,7 @@ const Container = memo(() => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [task, isRequested, firestoreStatus,  taskId]);
+  }, [task, isRequested, firestoreStatus, taskId]);
 
   // TODO find out how to get errors from redux-firestore
   // if (taskError) once(() => handleErrors(taskError))();
@@ -120,44 +122,23 @@ const Container = memo(() => {
   }
 
   async function updateDailyStreak() {
-    dispatch(toggleTasksDoneTodayNotification())
-    setTimeout(() => dispatch(toggleTasksDoneTodayNotification()), 2500)
-    const now = Date.now();
-    const streak = profile.dailyStreak;
-    const isStreakBroken = DailyStreak.hasEnded(streak);
-    const shouldStreakUpdate = DailyStreak.shouldUpdate({
-      // NOTE: +1 because when this function is called task
-      // update is not registred yet, thus task may look as it is nt done yet.
-      tasksDoneToday: tasksDoneToday + 1,
-      streak: profile.dailyStreak,
+    return upsertProfile(auth.uid, {
+      ...profile,
+      userId: auth.uid,
+      dailyStreak: DailyStreak.getUpdatedStreak({
+        streak: profile.dailyStreak,
+        // NOTE: +1 because when this function is called task
+        // update is not registred yet, thus task may look as it is nt done yet.
+        tasksDoneToday: tasksDoneToday + 1,
+      }),
     });
-    streakLog('streak: ', streak);
-    streakLog('isStreakBroken: ', isStreakBroken);
-    streakLog('shouldStreakUpdate: ', shouldStreakUpdate);
-
-    if (shouldStreakUpdate) {
-      streakLog('update is running');
-      const payload = Object.assign({}, profile, {
-        dailyStreak: {
-          updatedAt: now,
-          startsAt: isStreakBroken ? now : streak.startsAt,
-          // TODO instead of writing this line, find a way to
-          // properly merge deep properties.
-          perDay: tasksPerDay,
-        },
-      });
-      streakLog('payload: ', payload);
-      return firestoreRedux
-        .doc('profiles/' + auth.uid)
-        .update(payload);
-    }
   }
 
   async function deactivateActiveTasks() {
     return Promise.all(
       tasks
         .filter(i => i.isCurrent)
-        .map(({id}) =>
+        .map(({ id }) =>
           firestoreRedux
             .doc('tasks/' + id)
             .update({ isCurrent: false } as Task),
@@ -166,6 +147,7 @@ const Container = memo(() => {
   }
 
   const mergedProps = {
+    taskId,
     async updateTask({
       values,
       snackbarMessage,
@@ -174,8 +156,13 @@ const Container = memo(() => {
     }: updateTaskParams) {
       log('updateTask is running.');
       try {
-        enqueueSnackbar(snackbarMessage);
         history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
+
+        dispatch(toggleTasksDoneTodayNotification());
+        setTimeout(() => {
+          dispatch(toggleTasksDoneTodayNotification());
+          enqueueSnackbar(snackbarMessage);
+        }, 2500);
 
         await Promise.all([
           deactivateActiveTasks(),
@@ -190,7 +177,7 @@ const Container = memo(() => {
             ...historyToAdd,
             taskId: taskId,
             userId: task.userId,
-            createdAt: Date.now(),
+            createdAt: now,
           }),
           addPointsWithSideEffects(task.userId, pointsToAdd),
           activateNextTask(),
@@ -240,19 +227,17 @@ const Container = memo(() => {
     },
     task: task || {},
     loading: isEmpty(task) || isRequested,
-    taskId,
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     tasksDoneTodayNotificationProps: {
+      tasksPerDay,
       isLoaded: true,
       tasksToday: tasksDoneToday,
       dailyStreak: profile.dailyStreak,
-      tasksPerDay: profile.dailyStreak?.perDay,
       toggleVisibility: toggleTasksDoneTodayNotification,
       isVisible: uiState.isTasksDoneTodayNotificationOpen,
-    }
+    },
   } as TaskPageProps;
   return <TaskPage {...mergedProps} />;
 });
-
 
 export default Container;

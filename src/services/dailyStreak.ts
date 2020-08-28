@@ -2,14 +2,38 @@ import { IDayliStreak } from '../store/index';
 import differenceInDays from 'date-fns/esm/differenceInDays';
 import isSameDay from 'date-fns/esm/isSameDay';
 import debug from 'debug'
+import format from 'date-fns/esm/format';
+
 const log = debug('DailyStreakService')
+debug.enable('DailyStreakService')
 
 export default class DailyStreak {
 
   static today = Date.now()
 
-  static getEmptyStreak(): IDayliStreak {
-    return { startsAt: null, updatedAt: null, perDay: 3, } as IDayliStreak
+  static getUpdatedStreak({ streak, tasksDoneToday }: {
+    streak: IDayliStreak;
+    tasksDoneToday: number;
+  }): IDayliStreak {
+    const shouldStreakUpdate = this.shouldUpdate({
+      streak,
+      tasksDoneToday
+    });
+
+    if (shouldStreakUpdate) {
+      const isStreakBroken = this.hasEnded(streak);
+      this.logStreak(streak)
+      const payload = {
+        ...streak,
+        updatedAt: this.today,
+        startsAt: isStreakBroken ? this.today : streak.startsAt,
+      }
+      log('Returning updated streak');
+      this.logStreak(streak)
+      return payload
+    }
+    log('Returning streak without update.')
+    return streak
   }
 
   /**
@@ -26,7 +50,6 @@ export default class DailyStreak {
     const isTaskGoalReached = tasksDoneToday >= streak.perDay
     const isUpdatedToday = isSameDay(streak?.updatedAt || 0, this.today)
 
-    log('.shouldUpdate is called.')
     log('isTaskGoalReached: ', isTaskGoalReached);
     log('isUpdatedToday: ', isUpdatedToday);
 
@@ -37,12 +60,15 @@ export default class DailyStreak {
   // TODO rename or add comments.
   // TODO what does this name mean? What exactly is this function do?
   static hasEnded(streak: IDayliStreak): boolean {
-    log('.hasEnded is called. %O', streak)
     if (!streak.updatedAt || !streak.startsAt) {
+      log('One of streak values are undefined. Consider it broken.')
       return true
     }
 
-    return differenceInDays(this.today, streak.updatedAt) > 0
+    const difference = differenceInDays(this.today, streak.updatedAt)
+    log(`Streak updated ${difference} days ago.`)
+    log('Streak is broken: ', difference > 0)
+    return difference > 0
   }
 
   static daysInARow({ startsAt, updatedAt }: IDayliStreak): number {
@@ -52,6 +78,16 @@ export default class DailyStreak {
 
   static daysSinceUpdate(streak: IDayliStreak): number {
     return differenceInDays(this.today, streak.updatedAt || this.today);
+  }
+
+  static getEmptyStreak(): IDayliStreak {
+    return { startsAt: null, updatedAt: null, perDay: 3, } as IDayliStreak
+  }
+
+  static logStreak(streak: IDayliStreak) {
+    const pattern = 'dd/MM'
+    log('startsAt', format(streak.startsAt || 0, pattern))
+    log('updatedAt', format(streak.updatedAt || 0, pattern))
   }
 
 }

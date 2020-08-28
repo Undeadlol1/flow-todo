@@ -208,12 +208,10 @@ export function changeTags(taskId: string, tags: string[]) {
 initializeFirebase();
 
 export function upsertProfile(
+  // TODO delete this argument
   userId: string,
   profile: Profile,
 ): Promise<void> {
-  const emptyStreak = DailyStreak.getEmptyStreak()
-  console.log('profile: ', profile);
-  console.log('emptyStreak: ', emptyStreak);
   if (!profile.userId) throw Error('You must specify userId!');
   if (!profile.dailyStreak) profile.dailyStreak = DailyStreak.getEmptyStreak()
   return getFirestore()

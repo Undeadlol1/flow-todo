@@ -132,7 +132,7 @@ export default memo(function RouterAndDataLoader(props: {
       />
       <Sidebar
         isOpen={isSidebarOpen}
-        isLoggedIn={!isEmpty(user)}
+        isLoggedIn={!user.isEmpty}
         isTasksListEmpty={isEmpty(tasks)}
       />
       <RewardModal isOpen={isRewardModalOpen} />

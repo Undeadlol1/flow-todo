@@ -48,8 +48,10 @@ export default function Timer(props: Props) {
           if (props.autoStart && !isAutoStarted) {
             // NOTE: timeout is used as a workaround to prevent
             // "Warning: Cannot update during an existing state transition".
-            setTimeout(start, 100);
-            setIsAutoStarted(true);
+            setTimeout(() => {
+              start();
+              setIsAutoStarted(true);
+            }, 100);
           }
           function toggleTimer() {
             audioIntervalReset();

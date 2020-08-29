@@ -39,9 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 0,
     minHeight: 'calc(100vh - 74px)',
   },
-  randomButtonContainer: {
-    margin: '0 auto',
-  },
+  randomButtonContainer: {},
   fullWidth: {
     width: '100%',
   },

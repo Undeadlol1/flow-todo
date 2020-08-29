@@ -15,7 +15,6 @@ import { Else, If, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
-import { useScreenIsNarrow } from '../../../services/index';
 import { Task, useTypedSelector } from '../../../store/index';
 import {
   activeTaskSelector,
@@ -53,7 +52,6 @@ export const RandomTaskButton = ({
   isAppTourActive,
 }: Props) => {
   const classes = useStyles();
-  const isScreenNarrow = useScreenIsNarrow();
 
   const docs = tasks || [];
   const firestore = useFirestore();
@@ -83,22 +81,16 @@ export const RandomTaskButton = ({
   return (
     <Button
       to={linkPath}
-      // color="primary"
       disabled={isDisabled}
       component={isDisabled ? 'div' : Link}
       classes={{ root: classes.buttonRoot }}
-      className={clsx([
-        'RandomTaskButton',
+      className={clsx(
         className,
-        isScreenNarrow && classes.fullWidth,
-      ])}
+        classes.fullWidth,
+        'RandomTaskButton',
+      )}
     >
-      <Paper
-        // elevation={6}
-        className={clsx(classes.paper, {
-          [classes.fullWidth]: isScreenNarrow,
-        })}
-      >
+      <Paper className={clsx(classes.paper, classes.fullWidth)}>
         <If condition={loading}>
           <Then>
             <CircularProgress />

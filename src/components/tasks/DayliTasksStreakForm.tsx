@@ -18,7 +18,7 @@ function DayliTasksStreakForm() {
     const number = Number(e.target.value || 0);
     if (!number) return;
     if (number === tasksPerDay) return;
-    console.log('number: ', number);
+
     await upsertProfile(userId, {
       ...profile,
       userId,
@@ -36,6 +36,7 @@ function DayliTasksStreakForm() {
           fullWidth
           type="number"
           name="perDay"
+          disabled={!profile?.userId}
           // variant="outlined"
           autoComplete="off"
           // className={cx.input}

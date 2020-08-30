@@ -26,7 +26,6 @@ import {
   firestoreStatusSelector,
   profileSelector,
   tasksDoneTodaySelector,
-  tasksPerDaySelector,
   tasksSelector,
 } from '../../store/selectors';
 import TaskPage from './TaskPage';
@@ -52,33 +51,31 @@ export interface deleteTaskArguments {
 
 const Container = memo(() => {
   const now = Date.now();
-
+  // Services.
   const [t] = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
   const { enqueueSnackbar } = useSnackbar();
-
+  // Data.
   let { taskId = '' } = useParams();
   const currentTaskId = get(
     useTypedSelector(activeTaskSelector),
     'id',
   );
-  // TODO refactor
-  if (taskId === 'active') {
-    taskId = currentTaskId as string;
-  }
-
+  const { uid: userId } = useTypedSelector(authSelector);
   const uiState = useTypedSelector(uiSelector);
   const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
-  const auth = useTypedSelector(authSelector);
-  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
   const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
-
   const tasks = useTypedSelector(tasksSelector) || [];
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
+
+  // TODO refactor
+  if (taskId === 'active') {
+    taskId = currentTaskId as string;
+  }
   let task = find(tasks, ['id', taskId]) || fetchedTask;
 
   // Fetch task if needed
@@ -122,9 +119,9 @@ const Container = memo(() => {
   }
 
   async function updateDailyStreak() {
-    return upsertProfile(auth.uid, {
+    return upsertProfile(userId, {
       ...profile,
-      userId: auth.uid,
+      userId,
       dailyStreak: DailyStreak.getUpdatedStreak({
         streak: profile.dailyStreak,
         // NOTE: +1 because when this function is called task
@@ -148,6 +145,9 @@ const Container = memo(() => {
 
   const mergedProps = {
     taskId,
+    task: task || {},
+    loading: isEmpty(task) || isRequested,
+    shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     async updateTask({
       values,
       snackbarMessage,
@@ -175,11 +175,11 @@ const Container = memo(() => {
           }),
           firestoreRedux.collection('taskLogs').add({
             ...historyToAdd,
-            taskId: taskId,
-            userId: task.userId,
+            taskId,
+            userId,
             createdAt: now,
           }),
-          addPointsWithSideEffects(task.userId, pointsToAdd),
+          addPointsWithSideEffects(userId, pointsToAdd),
           activateNextTask(),
           updateDailyStreak(),
         ]);
@@ -197,7 +197,7 @@ const Container = memo(() => {
       try {
         await Promise.all([
           deleteTask(taskId),
-          addPointsWithSideEffects(task.userId, 10),
+          addPointsWithSideEffects(userId, 10),
           activateNextTask(),
         ]);
         dispatch(
@@ -209,7 +209,7 @@ const Container = memo(() => {
               await Promise.all([
                 firestoreRedux.doc('tasks/' + taskId).set(task),
                 addPointsWithSideEffects(
-                  task.userId,
+                  userId,
                   options.pointsToAdd || -10,
                 ),
               ]);
@@ -225,14 +225,11 @@ const Container = memo(() => {
         setRequested(false);
       }
     },
-    task: task || {},
-    loading: isEmpty(task) || isRequested,
-    shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     tasksDoneTodayNotificationProps: {
-      tasksPerDay,
       isLoaded: true,
       tasksToday: tasksDoneToday,
       dailyStreak: profile.dailyStreak,
+      tasksPerDay: profile.dailyStreak.perDay,
       toggleVisibility: toggleTasksDoneTodayNotification,
       isVisible: uiState.isTasksDoneTodayNotificationOpen,
     },

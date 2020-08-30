@@ -113,11 +113,6 @@ export const profileSelector = createSelector(
   },
 );
 
-export const tasksPerDaySelector = createSelector(
-  profileSelector,
-  value => value.dailyStreak.perDay || 3,
-);
-
 export const profilePointsSelector = createSelector(
   profileSelector,
   getOr(0, 'points'),

@@ -28,7 +28,6 @@ import {
   profileSelector,
   taskLogsSelector as taskLogs,
   tasksDoneTodaySelector,
-  tasksPerDaySelector,
   tasksSelector,
 } from '../../store/selectors';
 
@@ -123,7 +122,6 @@ export default memo(function HomePageContainer(props) {
   const auth = useTypedSelector(authSelector);
   const logs = useTypedSelector(taskLogs);
   const streak = useTypedSelector(profileSelector).dailyStreak;
-  const tasksPerDay = useTypedSelector(tasksPerDaySelector);
   const tasksToday = useTypedSelector(tasksDoneTodaySelector);
   const activeTasks = useTypedSelector(tasksSelector);
   const { createdAtleastOneTask } = useTypedSelector(
@@ -140,10 +138,10 @@ export default memo(function HomePageContainer(props) {
       {...{
         logs,
         streak,
-        tasksPerDay,
         tasksToday,
         isLoading,
         activeTasks,
+        tasksPerDay: streak?.perDay,
         createdAtleastOneTask: !isEmpty(createdAtleastOneTask),
       }}
     />

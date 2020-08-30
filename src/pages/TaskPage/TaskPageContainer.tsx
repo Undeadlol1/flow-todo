@@ -12,7 +12,7 @@ import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import { getRandomTaskId, handleErrors } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
-import { deleteTask } from '../../store';
+import { deleteTask, Task } from '../../store';
 import {
   addPointsWithSideEffects,
   TaskHistory,
@@ -31,7 +31,7 @@ import TaskPage from './TaskPage';
 import { TaskPageProps } from './TaskPage';
 import { uiSelector } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
-import { upsertProfile } from '../../store/index';
+import { upsertProfile, upsertTask } from '../../store/index';
 import TaskService from '../../services/TaskService';
 
 const componentName = 'TaskPageContainer';
@@ -50,8 +50,7 @@ export interface deleteTaskArguments {
 }
 
 const Container = memo(() => {
-  // Contants and state.
-  const today = Date.now();
+  // States.
   const [isLoading, toggleLoading] = useToggle(false);
   // Services.
   const [t] = useTranslation();
@@ -76,20 +75,24 @@ const Container = memo(() => {
   const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
 
+  function goHome() {
+    return history.push('/');
+  }
+
   // If url is '/active' take taskId from active task.
   if (taskId === 'active') {
     taskId = currentTaskId as string;
   }
   let task = find(tasks, ['id', taskId]) || fetchedTask;
 
-  // Fetch task if needed
+  // Fetch task if needed.
   useEffect(() => {
     if (
       get(firestoreStatus, 'requested.activeTasks') &&
       get(task, 'id') !== taskId &&
       !isLoading
     ) {
-      log('task fetching is in progress');
+      log('Task fetching in progress.');
       toggleLoading(true);
       firestoreRedux
         .get({
@@ -100,7 +103,7 @@ const Container = memo(() => {
         .then(() => toggleLoading(false))
         .catch(error => {
           handleErrors(error);
-          history.push('/');
+          goHome();
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,6 +119,23 @@ const Container = memo(() => {
         tasksDoneToday: tasksDoneToday + 1,
       }),
     });
+  }
+
+  async function undoTaskDeletion({
+    deletedTask,
+    pointsToRemoveFromUser,
+  }: {
+    deletedTask: Task;
+    pointsToRemoveFromUser: number;
+  }) {
+    await Promise.all([
+      upsertTask(deletedTask, deletedTask.id),
+      addPointsWithSideEffects(
+        deletedTask.userId,
+        pointsToRemoveFromUser * -1,
+      ),
+    ]);
+    history.push(`/tasks/${deletedTask.id}`);
   }
 
   const mergedProps = {
@@ -141,18 +161,19 @@ const Container = memo(() => {
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),
-          firestoreRedux.doc('tasks/' + taskId).update({
-            ...task,
-            ...values,
-            // TODO make sure subcollections instead of array are
-            // working properly and remove this line
-            history: [...get(task, 'history', []), historyToAdd],
-          }),
+          upsertTask(
+            {
+              ...task,
+              ...values,
+              history: [...get(task, 'history', []), historyToAdd],
+            },
+            task.id,
+          ),
           firestoreRedux.collection('taskLogs').add({
             ...historyToAdd,
             taskId,
             userId,
-            createdAt: today,
+            createdAt: Date.now(),
           }),
           addPointsWithSideEffects(userId, pointsToAdd),
           TaskService.activateNextTask({
@@ -164,7 +185,7 @@ const Container = memo(() => {
       } catch (error) {
         handleErrors(error);
         if (error.message.includes('Null value error.')) {
-          return history.push('/');
+          return goHome();
         }
         history.push('/tasks/active');
       }
@@ -183,18 +204,14 @@ const Container = memo(() => {
         ]);
         dispatch(
           snackbarActions.show({
+            action: t('undo'),
             message:
               options.snackbarMessage || t('successfullyDeleted'),
-            action: t('undo'),
-            async handleAction() {
-              await Promise.all([
-                firestoreRedux.doc('tasks/' + taskId).set(task),
-                addPointsWithSideEffects(
-                  userId,
-                  options.pointsToAdd || -10,
-                ),
-              ]);
-              history.push(`/tasks/${taskId}`);
+            handleAction: async () => {
+              return undoTaskDeletion({
+                deletedTask: task,
+                pointsToRemoveFromUser: options.pointsToAdd || 10,
+              });
             },
           }),
         );

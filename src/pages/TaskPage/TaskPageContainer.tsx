@@ -15,7 +15,6 @@ import DailyStreak from '../../services/dailyStreak';
 import { deleteTask } from '../../store';
 import {
   addPointsWithSideEffects,
-  Task,
   TaskHistory,
   useTypedSelector,
 } from '../../store/index';
@@ -108,9 +107,8 @@ const Container = memo(() => {
   }, [task, isLoading, firestoreStatus, taskId]);
 
   async function updateDailyStreak() {
-    return upsertProfile(userId, {
+    return upsertProfile({
       ...profile,
-      userId,
       dailyStreak: DailyStreak.getUpdatedStreak({
         streak: profile.dailyStreak,
         // NOTE: +1 because when this function is called task

@@ -2,11 +2,10 @@ import { Card, CardContent, TextField } from '@material-ui/core';
 import React, { ChangeEvent, memo } from 'react';
 import { useTypedSelector } from '../../store';
 import { upsertProfile } from '../../store/index';
-import { profileSelector, userIdSelector } from '../../store/selectors';
+import { profileSelector } from '../../store/selectors';
 
 function DayliTasksStreakForm() {
   // const [t] = useTranslation();
-  const userId = useTypedSelector(userIdSelector);
   const profile = useTypedSelector(profileSelector);
   const tasksPerDay = profile?.dailyStreak?.perDay
 
@@ -15,9 +14,8 @@ function DayliTasksStreakForm() {
     if (!selectedNumber) return;
     if (selectedNumber === tasksPerDay) return;
 
-    await upsertProfile(userId, {
+    await upsertProfile({
       ...profile,
-      userId,
       dailyStreak: {
         ...profile.dailyStreak,
         perDay: selectedNumber,

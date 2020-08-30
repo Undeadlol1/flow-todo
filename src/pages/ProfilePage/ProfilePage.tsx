@@ -75,9 +75,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   function updateProfile(profile: Profile) {
     profile.userId = userId;
     log('updateProfile called.', profile);
-    return upsertProfile(props.user!.uid, profile).catch(
-      handleErrors,
-    );
+    return upsertProfile(profile).catch(handleErrors);
   }
 
   return (

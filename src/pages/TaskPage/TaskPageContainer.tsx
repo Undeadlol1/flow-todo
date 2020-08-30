@@ -33,6 +33,7 @@ import { TaskPageProps } from './TaskPage';
 import { uiSelector } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import { upsertProfile } from '../../store/index';
+import TaskService from '../../services/TaskService';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -106,15 +107,6 @@ const Container = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task, isLoading, firestoreStatus, taskId]);
 
-  async function activateNextTask() {
-    return nextTaskId
-      ? firestoreRedux.doc('tasks/' + nextTaskId).update({
-          ...tasks.find(t => t.id === nextTaskId),
-          isCurrent: true,
-        })
-      : Promise.resolve();
-  }
-
   async function updateDailyStreak() {
     return upsertProfile(userId, {
       ...profile,
@@ -126,18 +118,6 @@ const Container = memo(() => {
         tasksDoneToday: tasksDoneToday + 1,
       }),
     });
-  }
-
-  async function deactivateActiveTasks() {
-    return Promise.all(
-      tasks
-        .filter(i => i.isCurrent)
-        .map(({ id }) =>
-          firestoreRedux
-            .doc('tasks/' + id)
-            .update({ isCurrent: false } as Task),
-        ),
-    );
   }
 
   const mergedProps = {
@@ -162,7 +142,7 @@ const Container = memo(() => {
         }, 2500);
 
         await Promise.all([
-          deactivateActiveTasks(),
+          TaskService.deactivateActiveTasks(tasks),
           firestoreRedux.doc('tasks/' + taskId).update({
             ...task,
             ...values,
@@ -177,7 +157,10 @@ const Container = memo(() => {
             createdAt: today,
           }),
           addPointsWithSideEffects(userId, pointsToAdd),
-          activateNextTask(),
+          TaskService.activateNextTask({
+            nextTaskId,
+            currentTasks: tasks,
+          }),
           updateDailyStreak(),
         ]);
       } catch (error) {
@@ -195,7 +178,10 @@ const Container = memo(() => {
         await Promise.all([
           deleteTask(taskId),
           addPointsWithSideEffects(userId, 10),
-          activateNextTask(),
+          TaskService.activateNextTask({
+            nextTaskId,
+            currentTasks: tasks,
+          }),
         ]);
         dispatch(
           snackbarActions.show({

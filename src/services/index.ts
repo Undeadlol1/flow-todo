@@ -97,6 +97,7 @@ export function initializeFirebase() {
     appId: '1:772125171665:web:3fffadc4031335de290af0',
     measurementId: 'G-DLFD2VSSK1',
   });
+
   if (process.env.NODE_ENV === 'production') {
     firebase.analytics();
     firebase.performance();
@@ -120,6 +121,7 @@ export function initializeFirebase() {
       host: 'localhost:8080',
     });
   }
+
   return firebase;
 }
 

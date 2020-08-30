@@ -44,7 +44,6 @@ export function App(props: {
     <div className="App">
       <ReduxProvider store={store}>
         <Theme isMobile={isMobile}>
-          {/* TODO do i even use this? Remove if not */}
           <MaterialSnackbarProvider
             SnackbarProps={{
               autoHideDuration: 4000,

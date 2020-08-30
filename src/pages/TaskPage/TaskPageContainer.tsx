@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import { useSnackbar } from 'notistack';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState as useToggle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
@@ -50,7 +50,9 @@ export interface deleteTaskArguments {
 }
 
 const Container = memo(() => {
-  const now = Date.now();
+  // Contants and state.
+  const today = Date.now();
+  const [isLoading, toggleLoading] = useToggle(false);
   // Services.
   const [t] = useTranslation();
   const history = useHistory();
@@ -59,20 +61,22 @@ const Container = memo(() => {
   const { enqueueSnackbar } = useSnackbar();
   // Data.
   let { taskId = '' } = useParams();
+  const tasks = useTypedSelector(tasksSelector) || [];
   const currentTaskId = get(
     useTypedSelector(activeTaskSelector),
     'id',
   );
+  const nextTaskId = getRandomTaskId(
+    filter(tasks, t => t.id !== taskId),
+  );
   const { uid: userId } = useTypedSelector(authSelector);
   const uiState = useTypedSelector(uiSelector);
-  const [isRequested, setRequested] = useState(false);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
   const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
-  const tasks = useTypedSelector(tasksSelector) || [];
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
 
-  // TODO refactor
+  // If url is '/active' take taskId from active task.
   if (taskId === 'active') {
     taskId = currentTaskId as string;
   }
@@ -83,31 +87,24 @@ const Container = memo(() => {
     if (
       get(firestoreStatus, 'requested.activeTasks') &&
       get(task, 'id') !== taskId &&
-      !isRequested
+      !isLoading
     ) {
       log('task fetching is in progress');
-      setRequested(true);
+      toggleLoading(true);
       firestoreRedux
         .get({
           doc: taskId,
           collection: 'tasks',
           storeAs: 'currentTask',
         })
-        .then(() => setRequested(false))
+        .then(() => toggleLoading(false))
         .catch(error => {
           handleErrors(error);
           history.push('/');
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [task, isRequested, firestoreStatus, taskId]);
-
-  // TODO find out how to get errors from redux-firestore
-  // if (taskError) once(() => handleErrors(taskError))();
-
-  const nextTaskId = getRandomTaskId(
-    filter(tasks, t => t.id !== taskId),
-  );
+  }, [task, isLoading, firestoreStatus, taskId]);
 
   async function activateNextTask() {
     return nextTaskId
@@ -146,7 +143,7 @@ const Container = memo(() => {
   const mergedProps = {
     taskId,
     task: task || {},
-    loading: isEmpty(task) || isRequested,
+    loading: isEmpty(task) || isLoading,
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     async updateTask({
       values,
@@ -177,7 +174,7 @@ const Container = memo(() => {
             ...historyToAdd,
             taskId,
             userId,
-            createdAt: now,
+            createdAt: today,
           }),
           addPointsWithSideEffects(userId, pointsToAdd),
           activateNextTask(),
@@ -193,7 +190,7 @@ const Container = memo(() => {
     },
     async deleteTask(options: deleteTaskArguments = {}) {
       log('deleteTask is running.');
-      setRequested(true);
+      toggleLoading(true);
       try {
         await Promise.all([
           deleteTask(taskId),
@@ -222,7 +219,7 @@ const Container = memo(() => {
         handleErrors(error);
         history.push(`/tasks/active`);
       } finally {
-        setRequested(false);
+        toggleLoading(false);
       }
     },
     tasksDoneTodayNotificationProps: {

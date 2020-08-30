@@ -121,21 +121,33 @@ const Container = memo(() => {
     });
   }
 
-  async function undoTaskDeletion({
+  function showSnackbarAfterTaskDelete({
     deletedTask,
     pointsToRemoveFromUser,
+    message,
   }: {
     deletedTask: Task;
+    message: string;
     pointsToRemoveFromUser: number;
   }) {
-    await Promise.all([
-      upsertTask(deletedTask, deletedTask.id),
-      addPointsWithSideEffects(
-        deletedTask.userId,
-        pointsToRemoveFromUser * -1,
-      ),
-    ]);
-    history.push(`/tasks/${deletedTask.id}`);
+    async function undoTaskDeletion() {
+      await Promise.all([
+        upsertTask(deletedTask, deletedTask.id),
+        addPointsWithSideEffects(
+          deletedTask.userId,
+          pointsToRemoveFromUser * -1,
+        ),
+      ]);
+      history.push(`/tasks/${deletedTask.id}`);
+    }
+
+    dispatch(
+      snackbarActions.show({
+        message,
+        action: t('undo'),
+        handleAction: () => undoTaskDeletion(),
+      }),
+    );
   }
 
   const mergedProps = {
@@ -202,19 +214,12 @@ const Container = memo(() => {
             currentTasks: tasks,
           }),
         ]);
-        dispatch(
-          snackbarActions.show({
-            action: t('undo'),
-            message:
-              options.snackbarMessage || t('successfullyDeleted'),
-            handleAction: async () => {
-              return undoTaskDeletion({
-                deletedTask: task,
-                pointsToRemoveFromUser: options.pointsToAdd || 10,
-              });
-            },
-          }),
-        );
+        showSnackbarAfterTaskDelete({
+          deletedTask: task,
+          pointsToRemoveFromUser: options.pointsToAdd || 10,
+          message:
+            options.snackbarMessage || t('successfullyDeleted'),
+        });
         history.push(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);

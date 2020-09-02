@@ -112,6 +112,7 @@ const Container = memo(() => {
   async function updateDailyStreak() {
     return upsertProfile({
       ...profile,
+      userId,
       dailyStreak: DailyStreak.getUpdatedStreak({
         streak: profile.dailyStreak,
         // NOTE: +1 because when this function is called task

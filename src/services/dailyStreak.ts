@@ -1,11 +1,11 @@
-import { IDayliStreak } from '../store/index';
 import differenceInDays from 'date-fns/esm/differenceInDays';
 import isSameDay from 'date-fns/esm/isSameDay';
 import debug from 'debug'
 import format from 'date-fns/esm/format';
+import { IDayliStreak } from '../store/types';
+import { isYesterday } from 'date-fns';
 
 const log = debug('DailyStreakService')
-debug.enable('DailyStreakService')
 
 export default class DailyStreak {
 
@@ -21,7 +21,7 @@ export default class DailyStreak {
     });
 
     if (shouldStreakUpdate) {
-      const isStreakBroken = this.hasEnded(streak);
+      const isStreakBroken = this.isBroken(streak);
       this.logStreak(streak)
       const payload = {
         ...streak,
@@ -35,7 +35,6 @@ export default class DailyStreak {
     log('Returning streak without update.')
     return streak
   }
-
   /**
    * Streak should only update if goal is reached
    * and streak was not updated today.
@@ -57,12 +56,15 @@ export default class DailyStreak {
     else return isTaskGoalReached && !isUpdatedToday;
   }
 
-  // TODO rename or add comments.
-  // TODO what does this name mean? What exactly is this function do?
-  static hasEnded(streak: IDayliStreak): boolean {
+  static isBroken(streak: IDayliStreak): boolean {
     if (!streak.updatedAt || !streak.startsAt) {
       log('One of streak values are undefined. Consider it broken.')
       return true
+    }
+    // TODO add comments
+    // TODO test tommorows values
+    else if (isYesterday(streak.startsAt) && isYesterday(streak.updatedAt)) {
+      return false
     }
 
     const difference = differenceInDays(this.today, streak.updatedAt)

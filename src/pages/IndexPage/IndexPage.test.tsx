@@ -11,13 +11,6 @@ describe('<HomePage />', () => {
     expect(wrapper.find(WelcomeCard)).toHaveLength(1);
   });
 
-  test('displays RandomTaskButton if user created atleast one task', () => {
-    const wrapper = shallow(
-      <IndexPage createdAtleastOneTask={[{} as Task]} />,
-    );
-    expect(wrapper.find(RandomTaskButton)).toHaveLength(1);
-  });
-
   describe('"add task" button', () => {
     test('is hidden during loading', () => {
       const wrapper = shallow(<IndexPage isLoading={true} />);

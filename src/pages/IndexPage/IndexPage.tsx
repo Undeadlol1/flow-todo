@@ -11,7 +11,6 @@ import React, { memo } from 'react';
 import { Unless } from 'react-if';
 import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
-import GetRandomTask from '../../components/tasks/RandomTaskButton/RandomTaskButton';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import AppTour from '../../components/ui/AppTour';
@@ -30,6 +29,7 @@ import {
   tasksDoneTodaySelector,
   tasksSelector,
 } from '../../store/selectors';
+import { TasksList } from '../../components/tasks/TasksList/TasksList';
 
 const log = debug('IndexPage');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -58,14 +58,14 @@ export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
 
-  const { isLoading, activeTasks, createdAtleastOneTask } = props;
+  const { isLoading, activeTasks = [], createdAtleastOneTask } = props;
   log('isLoading: ', isLoading);
   log('activeTasks: %O', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
-  function renderButtonOrWelcomeCard() {
+  function renderWelcomeCardOrContent() {
     if (isLoading || createdAtleastOneTask)
-      return <GetRandomTask className={'IntroHandle__taskButton'} />;
+      return <TasksList tasks={activeTasks} />;
     else return <WelcomeCard />;
   }
 
@@ -100,7 +100,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
           isScreeenNarrow && classes.fullWidth,
         )}
       >
-        {renderButtonOrWelcomeCard()}
+        {renderWelcomeCardOrContent()}
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={6}>
         <Box mt={2}>

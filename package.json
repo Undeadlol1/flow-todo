@@ -114,6 +114,11 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!date-fns/esm|ramda/es)"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@types/enzyme": "^3.10.3",

@@ -1,7 +1,5 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import RandomTaskButton from '../../components/tasks/RandomTaskButton/RandomTaskButton';
-import { Task } from '../../store';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { IndexPage } from './IndexPage';
 

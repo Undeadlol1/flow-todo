@@ -3,7 +3,6 @@ import isSameDay from 'date-fns/esm/isSameDay';
 import debug from 'debug'
 import format from 'date-fns/esm/format';
 import { IDayliStreak } from '../store/types';
-import isYesterday from 'date-fns/esm/isYesterday';
 
 const log = debug('DailyStreakService')
 

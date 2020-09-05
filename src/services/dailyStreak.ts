@@ -10,29 +10,23 @@ export default class DailyStreak {
 
   static today = Date.now()
 
-  static getUpdatedStreak({ streak, tasksDoneToday }: {
+  static getUpdatedStreak({ streak: currentStreak, tasksDoneToday }: {
     streak: IDayliStreak;
     tasksDoneToday: number;
   }): IDayliStreak {
+    const isStreakBroken = this.isBroken(currentStreak);
     const shouldStreakUpdate = this.shouldUpdate({
-      streak,
+      streak: currentStreak,
       tasksDoneToday
     });
-
-    if (shouldStreakUpdate) {
-      const isStreakBroken = this.isBroken(streak);
-      this.logStreak(streak)
-      const payload = {
-        ...streak,
-        updatedAt: this.today,
-        startsAt: isStreakBroken ? this.today : streak.startsAt,
-      }
-      log('Returning updated streak.');
-      this.logStreak(streak)
-      return payload
+    const updatedStreak = {
+      ...currentStreak,
+      updatedAt: this.today,
+      startsAt: isStreakBroken ? this.today : currentStreak.startsAt,
     }
-    log('Returning streak without update.')
-    return streak
+
+    log('Returning updated streak: ', shouldStreakUpdate);
+    return shouldStreakUpdate ? updatedStreak : currentStreak
   }
   /**
    * Streak should only update if goal is reached
@@ -81,7 +75,7 @@ export default class DailyStreak {
     return { startsAt: null, updatedAt: null, perDay: 3, } as IDayliStreak
   }
 
-  static logStreak(streak: IDayliStreak) {
+  static log(streak: IDayliStreak) {
     const pattern = 'dd/MM'
     log('startsAt', format(streak.startsAt || 0, pattern))
     log('updatedAt', format(streak.updatedAt || 0, pattern))

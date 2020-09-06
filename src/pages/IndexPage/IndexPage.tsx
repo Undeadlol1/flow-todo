@@ -1,6 +1,7 @@
 import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import Grid, { GridProps } from '@material-ui/core/Grid';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import debug from 'debug';
@@ -8,28 +9,26 @@ import get from 'lodash/fp/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import { Unless } from 'react-if';
+import { When } from 'react-if';
 import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
+import { TasksList } from '../../components/tasks/TasksList/TasksList';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
-import { authSelector } from '../../store/selectors';
 import {
-  Task,
-  useTypedSelector,
-  TaskHistory,
-  IDayliStreak,
+  IDayliStreak, Task,
+
+  TaskHistory, useTypedSelector
 } from '../../store/index';
 import {
-  profileSelector,
+  authSelector, profileSelector,
   taskLogsSelector as taskLogs,
   tasksDoneTodaySelector,
-  tasksSelector,
+  tasksSelector
 } from '../../store/selectors';
-import { TasksList } from '../../components/tasks/TasksList/TasksList';
 
 const log = debug('IndexPage');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -54,6 +53,10 @@ interface Props {
   createdAtleastOneTask: boolean;
 }
 
+const sectionProps = {
+  item: true, xs: 12, sm: 12, md: 8, lg: 6,
+} as GridProps
+
 export const IndexPage = memo(function HomePage(props: Props) {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
@@ -69,6 +72,22 @@ export const IndexPage = memo(function HomePage(props: Props) {
     else return <WelcomeCard />;
   }
 
+  if (isLoading) return   (
+    <Grid
+      container
+      spacing={2}
+      justify="center"
+      direction="column"
+      alignItems="stretch"
+      alignContent="center"
+      className={classes.pageContainer}
+    >
+        <Skeleton height="200px"  width="100%" variant="rect">
+          <Grid {...sectionProps} />
+      </Skeleton>
+    </Grid>
+  )
+
   return (
     <Grid
       container
@@ -79,22 +98,19 @@ export const IndexPage = memo(function HomePage(props: Props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-      <Grid item xs={12} sm={12} md={8} lg={6}>
-        <Unless condition={!createdAtleastOneTask}>
+      <Grid {...sectionProps}>
+        <When condition={!!createdAtleastOneTask}>
           <TasksDoneToday
             dailyStreak={props.streak}
             tasksPerDay={props.tasksPerDay}
             tasksToday={props.tasksToday}
             isLoaded={isLoaded(props.logs)}
           />
-        </Unless>
+        </When>
       </Grid>
       <Grid
         item
-        xs={12}
-        sm={12}
-        md={8}
-        lg={6}
+        {...sectionProps}
         className={clsx(
           classes.randomButtonContainer,
           isScreeenNarrow && classes.fullWidth,
@@ -102,7 +118,7 @@ export const IndexPage = memo(function HomePage(props: Props) {
       >
         {renderWelcomeCardOrContent()}
       </Grid>
-      <Grid item xs={12} sm={8} md={8} lg={6}>
+      <Grid {...sectionProps}>
         <Box mt={2}>
           <TagsList />
         </Box>

@@ -14,5 +14,28 @@ export const ForUnauthorizedUser = () => (
     tasksToday={0}
     tasksPerDay={3}
     streak={streaks.streakIsBroken}
+    createdAtleastOneTask={false}
+  />
+);
+
+export const Loading = () => (
+  <IndexPage
+    isLoading
+    logs={[]}
+    tasksToday={0}
+    tasksPerDay={3}
+    streak={streaks.streakIsBroken}
+    createdAtleastOneTask={true}
+  />
+);
+
+export const userNeverCreatedAnyTasks = () => (
+  <IndexPage
+    logs={[]}
+    tasksToday={0}
+    tasksPerDay={3}
+    isLoading={false}
+    streak={streaks.streakIsBroken}
+    createdAtleastOneTask={false}
   />
 );

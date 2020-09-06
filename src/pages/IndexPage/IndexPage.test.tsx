@@ -13,7 +13,7 @@ describe('<HomePage />', () => {
     test('is hidden during loading', () => {
       const wrapper = shallow(<IndexPage isLoading={true} />);
       const Fab = wrapper.find('.IntroHandle__createTask');
-      expect(Fab.prop('isHidden')).toBeTruthy();
+      expect(Fab.isEmpty()).toBeTruthy();
     });
 
     test('is visible after loading', () => {

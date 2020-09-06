@@ -7,6 +7,7 @@ import { IDayliStreak } from '../../store/index';
 
 const componentName = 'DayliTasksStreak';
 const log = debug(componentName);
+debug.enable(componentName)
 
 interface Props {
   streak: IDayliStreak;
@@ -18,9 +19,12 @@ const DayliTasksStreak = memo((props: Props) => {
   log('streak.startsAt: ',new Date(props.streak?.startsAt as number));
   log('streak.updatedAt: ', new Date(props.streak?.updatedAt as number));
   log('daysInARow: ', daysInARow);
-  log('daysSinceUpdate: ', daysSinceUpdate);
 
-  if (daysSinceUpdate > 1) return null;
+  if (daysSinceUpdate > 1) {
+    log('daysSinceUpdate: ', daysSinceUpdate);
+    log('Hiding this component.')
+    return null;
+  }
   else
     return (
       <Typography variant="h6">

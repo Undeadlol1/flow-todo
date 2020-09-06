@@ -62,11 +62,40 @@ describe('DailyStreak', () => {
         expect(result).toEqual(true);
     });
 
-    it('Returns proper streak if streak was created yesterday. ', () => {
+    it('Specific case: if started two days ago, don\'t reset.', () => {
+        DailyStreak.today = today
+        const result = DailyStreak.shouldUpdate({
+            tasksDoneToday: 5,
+            streak: {
+                perDay: 3,
+                startsAt: twoDaysAgo,
+                updatedAt: yesterday,
+            }
+        })
+        expect(result).toEqual(true);
+    });
+
+    it('Returns proper streak if streak was created yesterday.', () => {
         const yesterdaysStreak = {
             perDay: 3,
             updatedAt: yesterday,
             startsAt: yesterday,
+        }
+        const result = DailyStreak.getUpdatedStreak({
+            tasksDoneToday: 3,
+            streak: yesterdaysStreak,
+        })
+
+        expect(result.startsAt).toEqual(yesterdaysStreak.startsAt)
+        expect(result.updatedAt !== yesterdaysStreak.updatedAt).toBeTruthy()
+        expect(isSameDay(result.updatedAt as number, today)).toBeTruthy()
+    });
+
+    it('Returns proper streak if streak was created two days ago.', () => {
+        const yesterdaysStreak = {
+            perDay: 3,
+            updatedAt: yesterday,
+            startsAt: twoDaysAgo,
         }
         const result = DailyStreak.getUpdatedStreak({
             tasksDoneToday: 3,

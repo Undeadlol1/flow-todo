@@ -15,9 +15,11 @@ import Box from '@material-ui/core/Box';
 import { tasksSelector } from '../../../store/selectors';
 import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
+import debug from 'debug';
+
+const log = debug('TasksList');
 
 const useStyles = makeStyles((theme: Theme) => {
-  console.log('theme.palette: ', theme.palette);
   const color = theme.palette.text.primary;
   return {
     list: {
@@ -48,7 +50,7 @@ export function TasksList({
   const classes = useStyles();
   if (loading) return null;
   if (isEmpty(tasks) || tasks.empty) return null;
-  console.log('tasks: ', tasks);
+  log('tasks: ', tasks);
 
   return (
     <Box mx="auto" component={Paper} className={classes.paper}>

@@ -1,38 +1,38 @@
 import debug from 'debug';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
 import get from 'lodash/get';
+import find from 'lodash/find';
+import TaskPage from './TaskPage';
+import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
-import { snackbarActions } from 'material-ui-snackbar-redux';
 import { useSnackbar } from 'notistack';
-import React, { memo, useEffect, useState as useToggle } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { useFirestore } from 'react-redux-firebase';
-import { useHistory, useParams } from 'react-router-dom';
-import { getRandomTaskId, handleErrors } from '../../services';
-import DailyStreak from '../../services/dailyStreak';
+import { TaskPageProps } from './TaskPage';
+import { useTranslation } from 'react-i18next';
 import { deleteTask, Task } from '../../store';
+import { uiSelector } from '../../store/selectors';
+import { useFirestore } from 'react-redux-firebase';
+import DailyStreak from '../../services/dailyStreak';
+import TaskService from '../../services/TaskService';
+import { useHistory, useParams } from 'react-router-dom';
+import { snackbarActions } from 'material-ui-snackbar-redux';
+import { upsertProfile, upsertTask } from '../../store/index';
+import { getRandomTaskId, handleErrors } from '../../services';
+import React, { memo, useEffect, useState as useToggle } from 'react';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import {
-  addPointsWithSideEffects,
   TaskHistory,
   useTypedSelector,
+  addPointsWithSideEffects,
 } from '../../store/index';
 import {
-  activeTaskSelector,
   authSelector,
-  fetchedTaskSelector,
-  firestoreStatusSelector,
-  profileSelector,
-  tasksDoneTodaySelector,
   tasksSelector,
+  profileSelector,
+  activeTaskSelector,
+  fetchedTaskSelector,
+  tasksDoneTodaySelector,
+  firestoreStatusSelector,
 } from '../../store/selectors';
-import TaskPage from './TaskPage';
-import { TaskPageProps } from './TaskPage';
-import { uiSelector } from '../../store/selectors';
-import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
-import { upsertProfile, upsertTask } from '../../store/index';
-import TaskService from '../../services/TaskService';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -40,8 +40,8 @@ const log = debug(componentName);
 export interface updateTaskParams {
   values: any;
   pointsToAdd?: number;
-  snackbarMessage: string;
   history: TaskHistory;
+  snackbarMessage: string;
 }
 
 export interface deleteTaskArguments {
@@ -76,7 +76,7 @@ const Container = memo(() => {
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
 
   function goHome() {
-    return history.push('/');
+    return history.replace('/');
   }
 
   // If url is '/active' take taskId from active task.
@@ -139,7 +139,7 @@ const Container = memo(() => {
           pointsToRemoveFromUser * -1,
         ),
       ]);
-      history.push(`/tasks/${deletedTask.id}`);
+      history.replace(`/tasks/${deletedTask.id}`);
     }
 
     dispatch(
@@ -164,7 +164,7 @@ const Container = memo(() => {
     }: updateTaskParams) {
       log('updateTask is running.');
       try {
-        history.push(nextTaskId ? '/tasks/' + nextTaskId : '/');
+        history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
         dispatch(toggleTasksDoneTodayNotification());
         setTimeout(() => {
@@ -200,7 +200,7 @@ const Container = memo(() => {
         if (error.message.includes('Null value error.')) {
           return goHome();
         }
-        history.push('/tasks/active');
+        history.replace('/tasks/active');
       }
     },
     async deleteTask(options: deleteTaskArguments = {}) {
@@ -221,10 +221,10 @@ const Container = memo(() => {
           message:
             options.snackbarMessage || t('successfullyDeleted'),
         });
-        history.push(nextTaskId ? '/tasks/active' : '/');
+        history.replace(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);
-        history.push(`/tasks/active`);
+        history.replace(`/tasks/active`);
       } finally {
         toggleLoading(false);
       }

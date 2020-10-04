@@ -67,8 +67,9 @@ export default class DailyStreak {
     return differenceInDays(updatedAt, startsAt) + 1;
   }
 
-  static daysSinceUpdate(streak: IDayliStreak): number {
-    return differenceInDays(this.today, streak.updatedAt || this.today);
+  static daysSinceUpdate(streak: IDayliStreak): number | undefined {
+    if (!streak.updatedAt) return undefined
+    return differenceInDays(this.today, streak.updatedAt)
   }
 
   static getEmptyStreak(): IDayliStreak {

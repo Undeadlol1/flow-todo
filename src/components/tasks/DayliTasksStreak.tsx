@@ -13,30 +13,26 @@ interface Props {
   streak: IDayliStreak;
 }
 
-const DayliTasksStreak = memo((props: Props) => {
-  const daysInARow = DailyStreak.daysInARow(props.streak);
-  const daysSinceUpdate = DailyStreak.daysSinceUpdate(props.streak);
-  log('streak.startsAt: ',new Date(props.streak?.startsAt as number));
-  log('streak.updatedAt: ', new Date(props.streak?.updatedAt as number));
+const DayliTasksStreak = memo(({streak}: Props) => {
+  let daysInARow = DailyStreak.daysInARow(streak) + 1
+  const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
+  log('streak.startsAt: ',new Date(streak?.startsAt as number));
+  log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
   log('daysInARow: ', daysInARow);
+  log('daysSinceUpdate: ', daysSinceUpdate);
 
-  if (daysSinceUpdate > 1) {
-    log('daysSinceUpdate: ', daysSinceUpdate);
-    log('Hiding this component.')
-    return null;
+  if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
+    daysInARow = 0
   }
-  else
-    return (
-      <Typography variant="h6">
-        <Box fontWeight={100} {...props}>
-          {/* TODO i18n */}
-          {/* TODO proper first date logic */}
-          Задачи выполнены дней подряд: {daysInARow}
-        </Box>
-      </Typography>
-    );
+  return (
+    <Typography variant="h6">
+      <Box fontWeight={100} >
+        {/* TODO i18n */}
+        Задачи выполнены дней подряд: {daysInARow}
+      </Box>
+    </Typography>
+  );
 });
 
-DayliTasksStreak.displayName = componentName;
 
 export default memo(DayliTasksStreak);

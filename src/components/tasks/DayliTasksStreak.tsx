@@ -2,6 +2,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import debug from 'debug';
 import React, { memo } from 'react';
+import { useTypedTranslate } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
 import { IDayliStreak } from '../../store/index';
 
@@ -14,8 +15,11 @@ interface Props {
 }
 
 const DayliTasksStreak = memo(({streak}: Props) => {
+  const t = useTypedTranslate();
+
   let daysInARow = DailyStreak.daysInARow(streak) + 1
   const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
+
   log('streak.startsAt: ',new Date(streak?.startsAt as number));
   log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
   log('daysInARow: ', daysInARow);
@@ -27,8 +31,7 @@ const DayliTasksStreak = memo(({streak}: Props) => {
   return (
     <Typography variant="h6">
       <Box fontWeight={100} >
-        {/* TODO i18n */}
-        Задачи выполнены дней подряд: {daysInARow}
+        {t('won_days_in_a_row')}: {daysInARow}
       </Box>
     </Typography>
   );

@@ -72,7 +72,8 @@ export const IndexPage = memo(function HomePage(props: Props) {
     else return <WelcomeCard />;
   }
 
-  if (isLoading) return   (
+  if (isLoading) {
+    return (
     <Grid
       container
       spacing={2}
@@ -82,11 +83,12 @@ export const IndexPage = memo(function HomePage(props: Props) {
       alignContent="center"
       className={classes.pageContainer}
     >
-        <Skeleton height="200px"  width="100%" variant="rect">
-          <Grid {...sectionProps} />
-      </Skeleton>
+        <Grid {...sectionProps} >
+          <Skeleton height="200px"  width="350px" variant="rect" />
+        </Grid>
     </Grid>
   )
+    }
 
   return (
     <Grid

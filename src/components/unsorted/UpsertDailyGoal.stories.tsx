@@ -3,10 +3,8 @@ import { sections } from '../storybookContants';
 import { UpsertDailyGoal } from './UpsertDailyGoal';
 
 export default {
-    component: UpsertDailyGoal,
-    title: sections.unsorted + 'UpsertDailyGoal',
+  component: UpsertDailyGoal,
+  title: sections.streaks + 'UpsertDailyGoal',
 };
 
-export const Normal = () => (
-    <UpsertDailyGoal />
-)
+export const Normal = () => <UpsertDailyGoal />;

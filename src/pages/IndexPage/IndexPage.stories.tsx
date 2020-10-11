@@ -5,7 +5,7 @@ import { sections } from '../../components/storybookContants';
 
 export default {
   component: IndexPage,
-  title: sections.unsorted + 'IndexPage',
+  title: sections.pages + 'IndexPage',
 };
 
 export const ForUnauthorizedUser = () => (

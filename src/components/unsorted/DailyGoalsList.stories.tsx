@@ -8,7 +8,7 @@ import { DailyGoal } from '../../store/types';
 
 export default {
   component: DayliGoalsList,
-  title: sections.unsorted + 'DayliGoalsList',
+  title: sections.streaks + 'DayliGoalsList',
 };
 
 const goals = [

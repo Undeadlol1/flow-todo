@@ -7,5 +7,6 @@
         "TaskPage",
         "Profile",
         "templates"
-    ]
+    ],
+    "eslint.enable": true
 }

@@ -31,6 +31,7 @@ import useInterval from 'react-use/esm/useInterval';
 import PrivacyPage from './pages/PrivacyPage';
 import { profileSelector } from './store/selectors';
 import isEmpty from 'lodash/isEmpty';
+import { StreaksPage } from './pages/StreaksPage';
 
 export default memo(function RouterAndDataLoader(props: {
   children?: JSX.Element;
@@ -142,6 +143,9 @@ export default memo(function RouterAndDataLoader(props: {
           </Route>
           <Route path="/tasks">
             <TasksPage />
+          </Route>
+          <Route path="/streaks">
+            <StreaksPage />
           </Route>
           <Route path="/rewards">
             <RewardsPage />

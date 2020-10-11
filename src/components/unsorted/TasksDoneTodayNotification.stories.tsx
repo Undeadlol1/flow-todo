@@ -7,7 +7,7 @@ import { TasksDoneTodaySampleProps } from '../dataMocks';
 
 export default {
   component: TasksDoneTodayNotification,
-  title: sections.unsorted + 'TasksDoneTodayNotification',
+  title: sections.tasks + 'TasksDoneTodayNotification',
 };
 
 export const Normal = () => {

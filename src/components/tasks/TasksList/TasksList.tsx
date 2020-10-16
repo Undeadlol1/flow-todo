@@ -20,7 +20,7 @@ import Pagination from '@material-ui/lab/Pagination';
 
 const log = debug('TasksList');
 // TODO rename
-const paginationCount = 10;
+const tasksPerPage = 10;
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -65,7 +65,7 @@ export function TasksList({
     <Box mx="auto" component={Paper} className={classes.paper}>
       <List className={classes.list}>
         {tasks.map((task, index) => {
-          if (index >= paginationCount) return null;
+          if (index >= tasksPerPage) return null;
           return (
             <ListItem
               key={task.id}
@@ -93,9 +93,12 @@ export function TasksList({
           );
         })}
       </List>
-      <When condition={tasks.length > 10}>
+      <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
-          <Pagination count={paginationCount} disabled />
+          <Pagination
+            disabled
+            count={Number((tasks.length / tasksPerPage).toFixed())}
+          />
         </Box>
       </When>
     </Box>

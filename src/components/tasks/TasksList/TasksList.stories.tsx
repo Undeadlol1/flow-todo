@@ -27,7 +27,7 @@ const props = {
   deleteTask() {
     console.log('"deleteTask" clicked');
   },
-  tasks: Array(20)
+  tasks: Array(25)
     .fill('')
     .map(
       () =>

@@ -16,8 +16,11 @@ import { tasksSelector } from '../../../store/selectors';
 import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
 import debug from 'debug';
+import Pagination from '@material-ui/lab/Pagination';
 
 const log = debug('TasksList');
+// TODO rename
+const paginationCount = 10;
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -46,40 +49,55 @@ export function TasksList({
   tasks,
   canDelete,
   deleteTask,
-}: any) {
+}: {
+  tasks: Task[];
+  loading: boolean;
+  canDelete?: boolean;
+  deleteTask?: (id: string) => void;
+}) {
   const classes = useStyles();
   if (loading) return null;
+  // @ts-ignore
   if (isEmpty(tasks) || tasks.empty) return null;
   log('tasks: ', tasks);
 
   return (
     <Box mx="auto" component={Paper} className={classes.paper}>
       <List className={classes.list}>
-        {tasks.map((task: Task) => (
-          <ListItem
-            key={task.id}
-            component={Link}
-            className={classes.link}
-            to={`/tasks/${task.id}`}
-          >
-            <ListItemText
-              className={classes.text}
-              primary={task.name}
-            />
-            <When condition={canDelete}>
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="Delete"
-                  onClick={() => deleteTask(task.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </When>
-          </ListItem>
-        ))}
+        {tasks.map((task, index) => {
+          if (index >= paginationCount) return null;
+          return (
+            <ListItem
+              key={task.id}
+              component={Link}
+              className={classes.link}
+              to={`/tasks/${task.id}`}
+            >
+              <ListItemText
+                className={classes.text}
+                primary={task.name}
+              />
+              <When condition={!!canDelete}>
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="Delete"
+                    // @ts-ignore
+                    onClick={() => deleteTask(task.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </When>
+            </ListItem>
+          );
+        })}
       </List>
+      <When condition={tasks.length > 10}>
+        <Box display="flex" justifyContent="center">
+          <Pagination count={paginationCount} disabled />
+        </Box>
+      </When>
     </Box>
   );
 }

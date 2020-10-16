@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +17,7 @@ import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
 import debug from 'debug';
 import Pagination from '@material-ui/lab/Pagination';
+import { slice } from 'lodash';
 
 const log = debug('TasksList');
 // TODO rename
@@ -56,16 +57,23 @@ export function TasksList({
   deleteTask?: (id: string) => void;
 }) {
   const classes = useStyles();
+  const [page, setPage] = useState(1);
   if (loading) return null;
   // @ts-ignore
   if (isEmpty(tasks) || tasks.empty) return null;
-  log('tasks: ', tasks);
+
+  log('tasks: %O', tasks);
+  log('page: ', page);
+  log('tasksPerPage * page: ', tasksPerPage * page);
 
   return (
     <Box mx="auto" component={Paper} className={classes.paper}>
       <List className={classes.list}>
-        {tasks.map((task, index) => {
-          if (index >= tasksPerPage) return null;
+        {slice(
+          tasks,
+          tasksPerPage * (page - 1), // Start from.
+          tasksPerPage * page, // End at.
+        ).map((task, index) => {
           return (
             <ListItem
               key={task.id}
@@ -96,7 +104,7 @@ export function TasksList({
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
           <Pagination
-            disabled
+            onChange={(e, pageNumber) => setPage(pageNumber)}
             count={Number((tasks.length / tasksPerPage).toFixed())}
           />
         </Box>

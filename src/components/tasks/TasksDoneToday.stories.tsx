@@ -5,7 +5,7 @@ import TasksDoneToday from './TasksDoneToday';
 
 export default {
   component: TasksDoneToday,
-  title: sections.users + 'TasksDoneToday',
+  title: sections.tasks + 'TasksDoneToday',
 };
 
 const props = TasksDoneTodaySampleProps;
@@ -29,6 +29,8 @@ export const Demos = () => {
       <TasksDoneToday {...props} />
       Is loading:
       <TasksDoneToday {...props} isLoaded={false} />
+      If done more than necessary:
+      <TasksDoneToday {...props} tasksToday={5} />
     </>
   );
 };

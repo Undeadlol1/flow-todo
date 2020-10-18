@@ -11,12 +11,16 @@ import DayliTasksStreak from './DayliTasksStreak';
 import { IDayliStreak } from '../../store/index';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Theme, Zoom } from '@material-ui/core';
+import classNames from 'classnames';
 
 const useStyles = makeStyles((theme: Theme) => ({
   successIcon: {
     marginLeft: '5px',
     verticalAlign: 'bottom',
     color: theme.palette.primary.main,
+  },
+  boldText: {
+    fontWeight: 800,
   },
 }));
 
@@ -35,15 +39,18 @@ export interface TasksDoneTodayProps {
   dailyStreak: IDayliStreak;
 }
 
-const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
+function TasksDoneToday({
   tasksToday,
   tasksPerDay,
   ...props
-}) => {
+}: TasksDoneTodayProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
-  // TODO rename
+
   const isAchieved = tasksToday >= tasksPerDay;
+  const completedTasksInpercentages = Number(
+    (100 * (tasksToday / tasksPerDay)).toFixed(),
+  );
 
   if (!props.isLoaded)
     return <Skeleton variant="rect" height="160px" />;
@@ -54,8 +61,17 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
           <CardContent>
             <Box mb={2}>
               <Typography variant="h6" display="inline">
-                {t('completed_tasks_today') +
-                  `: ${tasksToday}/${tasksPerDay}`}
+                {t('completed_tasks_today') + `: `}
+                <span
+                  className={classNames({
+                    [classes.boldText]:
+                      completedTasksInpercentages > 100,
+                  })}
+                >
+                  {`${completedTasksInpercentages}${
+                    completedTasksInpercentages > 0 ? '%' : ''
+                  }`}
+                </span>
               </Typography>
               <Box display="inline" className={classes.successIcon}>
                 {isAchieved && (
@@ -66,14 +82,14 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
               </Box>
             </Box>
             <StyledMobileStepper
-              steps={tasksPerDay + 1}
-              variant="progress"
               position="static"
+              variant="progress"
+              nextButton={<div />}
+              backButton={<div />}
+              steps={tasksPerDay + 1}
               activeStep={
                 tasksToday > tasksPerDay ? tasksPerDay : tasksToday
               }
-              nextButton={<div />}
-              backButton={<div />}
             />
             <Box mt={2}>
               <DayliTasksStreak streak={props.dailyStreak} />
@@ -82,6 +98,6 @@ const TasksDoneToday: React.FC<TasksDoneTodayProps> = ({
         </Card>
       </>
     );
-};
+}
 
 export default React.memo(TasksDoneToday);

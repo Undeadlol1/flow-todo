@@ -106,19 +106,12 @@ export function initializeFirebase() {
       .enablePersistence({
         synchronizeTabs: true,
       })
-      .catch(e => console.error(e));
-    // TODO: test to see if this is needed
-    // https://firebase.google.com/docs/firestore/manage-data/enable-offline#disable_and_enable_network_access
-    // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events#Example
-    // (function listenForConnectivity() {
-    //   window.addEventListener('online', firestore.enableNetwork());
-    //   window.addEventListener('offline', firestore.disableNetwork());
-    // }());
+      .catch(console.error);
   } else {
     // Use Firestore emulator for local development
     firebase.firestore().settings({
-      ssl: false,
-      host: 'localhost:8080',
+      // ssl: false,
+      // host: 'localhost:8080',
     });
   }
 
@@ -179,7 +172,7 @@ export function getNewlyUnlockedReward(
     nextReward.points <= currentPoints + pointsAboutToAdd &&
     currentRewardIndex &&
     get(rewards, `[${currentRewardIndex}].points`) !==
-    nextReward.points
+      nextReward.points
   )
     return nextReward;
 }
@@ -259,13 +252,13 @@ export function initializeI18n() {
 // TODO better name
 export function findSequenceDuplicates(
   history: History[] = [],
-): void { }
+): void {}
 
 // NOTE: this is a copy/pastej
 const debounce = (delay: number, fn: any) => {
   let timerId: any;
 
-  return function (...args: any[]) {
+  return function(...args: any[]) {
     if (timerId) {
       clearTimeout(timerId);
     }

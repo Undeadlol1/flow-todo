@@ -17,11 +17,12 @@ import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
 import debug from 'debug';
 import Pagination from '@material-ui/lab/Pagination';
-import { slice } from 'lodash';
+import slice from 'lodash/slice';
+import get from 'lodash/get';
 
 const log = debug('TasksList');
-// TODO rename
-const tasksPerPage = 10;
+
+const tasksPerPage = 7;
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -44,7 +45,6 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-// TODO add props types
 export function TasksList({
   loading,
   tasks,
@@ -59,8 +59,7 @@ export function TasksList({
   const classes = useStyles();
   const [page, setPage] = useState(1);
   if (loading) return null;
-  // @ts-ignore
-  if (isEmpty(tasks) || tasks.empty) return null;
+  if (isEmpty(tasks) || get(tasks, 'empty')) return null;
 
   log('tasks: %O', tasks);
   log('page: ', page);

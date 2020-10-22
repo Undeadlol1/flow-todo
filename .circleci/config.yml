@@ -21,6 +21,7 @@ jobs:
           key: npm-packages-{{ checksum "package-lock.json" }}
           paths:
             - ~/.cache/npm
+            - $HOME/.npm
       - run:
           name: Build
           command: npm run build

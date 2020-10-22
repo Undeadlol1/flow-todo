@@ -166,11 +166,12 @@ const Container = memo(() => {
       try {
         history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
-        dispatch(toggleTasksDoneTodayNotification());
-        setTimeout(() => {
+        const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
-          enqueueSnackbar(snackbarMessage);
-        }, 2500);
+
+        toggleTaskDoneNotification();
+        setTimeout(toggleTaskDoneNotification, 3500);
+        setTimeout(() => enqueueSnackbar(snackbarMessage), 4000);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),

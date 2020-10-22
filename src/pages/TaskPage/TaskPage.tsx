@@ -88,7 +88,7 @@ export default function TaskPage(props: TaskPageProps) {
     loading,
     tasksDoneTodayNotificationProps,
   } = props;
-  const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
+  const activeSubtasks = filter(task.subtasks, i => !i.isDone);
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
@@ -97,15 +97,12 @@ export default function TaskPage(props: TaskPageProps) {
       if (!props.shouldDisplayEncouragements) return;
       if (tasksDoneTodayNotificationProps.isVisible) return;
       enqueueSnackbar(sample(encouragingMessages), {
-        autoHideDuration: 5000,
+        autoHideDuration: 4500,
       });
-    }, 2500);
+    }, 3500);
     return () => clearTimeout(snackBarTimeout);
-  }, [
-    enqueueSnackbar,
-    props.shouldDisplayEncouragements,
-    tasksDoneTodayNotificationProps.isVisible,
-  ]);
+    // eslint-disable-next-line
+  }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
 
   if (loading) {
     return (

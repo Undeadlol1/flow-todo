@@ -53,8 +53,7 @@ const StyledListText = withStyles({
 const Sidebar: React.FC<{
   isOpen: boolean;
   isLoggedIn: boolean;
-  isTasksListEmpty: boolean;
-}> = ({ isLoggedIn, isOpen, isTasksListEmpty }) => {
+}> = ({ isLoggedIn, isOpen }) => {
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
@@ -72,9 +71,7 @@ const Sidebar: React.FC<{
     if (!isLoggedIn) history.push('/signin');
     else {
       localStorage.removeItem('userId');
-      getFirebase()
-        .logout()
-        .catch(handleErrors);
+      getFirebase().logout().catch(handleErrors);
     }
   }
 
@@ -86,30 +83,17 @@ const Sidebar: React.FC<{
     });
   }
 
+  function redirectAndCloseSidebar(url: string) {
+    return () => {
+      history.push(url);
+      toggleSidebar();
+    };
+  }
+
   return (
     <Drawer open={isOpen} onClose={toggleSidebar}>
       <List className={cx.list}>
-        <When condition={!isTasksListEmpty}>
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/tasks');
-              toggleSidebar();
-            }}
-          >
-            <ListItemIcon>
-              <ViewListIcon />
-            </ListItemIcon>
-            <StyledListText primary={t('tasks list')} />
-          </ListItem>
-        </When>
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/faq');
-            toggleSidebar();
-          }}
-        >
+        <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>

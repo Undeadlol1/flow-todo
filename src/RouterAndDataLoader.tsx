@@ -102,7 +102,10 @@ export default memo(function RouterAndDataLoader(props: {
       },
       {
         collection: 'tasks',
-        where: [['userId', '==', userId], ['isPinned', '==', true]],
+        where: [
+          ['userId', '==', userId],
+          ['isPinned', '==', true],
+        ],
         storeAs: 'pinnedTask',
         limit: 1,
       },
@@ -130,11 +133,7 @@ export default memo(function RouterAndDataLoader(props: {
         profile={profile}
         isAnimationActive={isLevelUpAnimationActive}
       />
-      <Sidebar
-        isOpen={isSidebarOpen}
-        isLoggedIn={!user.isEmpty}
-        isTasksListEmpty={isEmpty(tasks)}
-      />
+      <Sidebar isOpen={isSidebarOpen} isLoggedIn={!user.isEmpty} />
       <RewardModal isOpen={isRewardModalOpen} />
       <Container>
         <Switch>

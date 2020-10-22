@@ -33,6 +33,7 @@ import {
   tasksDoneTodaySelector,
   firestoreStatusSelector,
 } from '../../store/selectors';
+import delay from 'lodash/delay';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -166,11 +167,12 @@ const Container = memo(() => {
       try {
         history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
 
-        dispatch(toggleTasksDoneTodayNotification());
-        setTimeout(() => {
+        const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
-          enqueueSnackbar(snackbarMessage);
-        }, 2500);
+
+        toggleTaskDoneNotification();
+        delay(toggleTaskDoneNotification, 3500);
+        delay(enqueueSnackbar, 3500, snackbarMessage);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),

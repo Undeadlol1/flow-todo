@@ -101,7 +101,11 @@ export default function TaskPage(props: TaskPageProps) {
       });
     }, 2500);
     return () => clearTimeout(snackBarTimeout);
-  }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
+  }, [
+    enqueueSnackbar,
+    props.shouldDisplayEncouragements,
+    tasksDoneTodayNotificationProps.isVisible,
+  ]);
 
   if (loading) {
     return (

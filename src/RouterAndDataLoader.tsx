@@ -1,44 +1,41 @@
 import Container from '@material-ui/core/Container';
+import getHours from 'date-fns/getHours';
+import subHours from 'date-fns/subHours';
 import get from 'lodash/get';
 import React, { memo, useEffect, useState } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import useInterval from 'react-use/esm/useInterval';
 import RewardModal from './components/rewards/RewardModal';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
+import FAQPage from './pages/FAQPage';
 import HomePage from './pages/IndexPage/IndexPage';
+import PrivacyPage from './pages/PrivacyPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
 import RewardsPage from './pages/RewardsPage';
 import SignInPage from './pages/SignInPage';
+import { StreaksPage } from './pages/StreaksPage';
 import TaskPage from './pages/TaskPage';
+import TasksPage from './pages/TasksPage';
+import WebShareTargetPage from './pages/WebShareTargetPage';
+import { handleErrors } from './services/index';
 import { useTypedSelector } from './store/index';
 import {
-  authSelector,
-  uiSelector,
   authErrorSelector,
+  authSelector,
+  profileSelector,
+  uiSelector,
   usersSelector,
-  tasksSelector,
 } from './store/selectors';
-import { handleErrors } from './services/index';
-import WebShareTargetPage from './pages/WebShareTargetPage';
-import FAQPage from './pages/FAQPage';
-import subHours from 'date-fns/subHours';
-import getHours from 'date-fns/getHours';
-import TasksPage from './pages/TasksPage';
-import useInterval from 'react-use/esm/useInterval';
-import PrivacyPage from './pages/PrivacyPage';
-import { profileSelector } from './store/selectors';
-import isEmpty from 'lodash/isEmpty';
-import { StreaksPage } from './pages/StreaksPage';
 
 export default memo(function RouterAndDataLoader(props: {
   children?: JSX.Element;
 }) {
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
-  const tasks = useTypedSelector(tasksSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );

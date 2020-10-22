@@ -11,7 +11,6 @@ import ExitIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import ShareIcon from '@material-ui/icons/Share';
 import TelegramIcon from '@material-ui/icons/Telegram';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import debug from 'debug';
 import get from 'lodash/get';

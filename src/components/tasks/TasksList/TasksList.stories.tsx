@@ -17,7 +17,7 @@ export interface StoryMetadata {
 const metaData: StoryMetadata = {
   component: TasksList,
   title: sections.tasks + 'TasksList',
-  decorators: [storyFn => <Router>{storyFn()}</Router>],
+  decorators: [(storyFn) => <Router>{storyFn()}</Router>],
 };
 
 export default metaData;
@@ -30,10 +30,10 @@ const props = {
   tasks: Array(25)
     .fill('')
     .map(
-      () =>
+      (i, index) =>
         ({
           id: random.uuid(),
-          name: random.word(),
+          name: random.boolean() ? random.word() : random.words(10),
         } as Task),
     ),
 };

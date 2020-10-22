@@ -34,10 +34,16 @@ const useStyles = makeStyles((theme: Theme) => {
       color,
       textDecoration: 'none',
     },
-    text: {
+    textWrapper: {
       overflow: 'hidden',
-      // whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
+      [theme.breakpoints.down('sm')]: {
+        whiteSpace: 'nowrap',
+        maxWidth: '100%',
+      },
+    },
+    text: {
+      display: 'inline',
     },
     paper: {
       padding: theme.spacing(1),
@@ -58,12 +64,17 @@ export function TasksList({
 }) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
+  const numberOfPAges = Number(
+    (tasks.length / tasksPerPage).toFixed(),
+  );
+
   if (loading) return null;
   if (isEmpty(tasks) || get(tasks, 'empty')) return null;
 
   log('tasks: %O', tasks);
   log('page: ', page);
   log('tasksPerPage * page: ', tasksPerPage * page);
+  log('numberOfPAges: ', numberOfPAges);
 
   return (
     <Box mx="auto" component={Paper} className={classes.paper}>
@@ -81,8 +92,11 @@ export function TasksList({
               to={`/tasks/${task.id}`}
             >
               <ListItemText
-                className={classes.text}
                 primary={task.name}
+                classes={{
+                  primary: classes.text,
+                  root: classes.textWrapper,
+                }}
               />
               <When condition={!!canDelete}>
                 <ListItemSecondaryAction>
@@ -103,8 +117,8 @@ export function TasksList({
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
           <Pagination
+            count={numberOfPAges}
             onChange={(e, pageNumber) => setPage(pageNumber)}
-            count={Number((tasks.length / tasksPerPage).toFixed())}
           />
         </Box>
       </When>

@@ -8,34 +8,32 @@ import { IDayliStreak } from '../../store/index';
 
 const componentName = 'DayliTasksStreak';
 const log = debug(componentName);
-debug.enable(componentName)
 
 interface Props {
   streak: IDayliStreak;
 }
 
-const DayliTasksStreak = memo(({streak}: Props) => {
+const DayliTasksStreak = memo(({ streak }: Props) => {
   const t = useTypedTranslate();
 
-  let daysInARow = DailyStreak.daysInARow(streak) + 1
+  let daysInARow = DailyStreak.daysInARow(streak) + 1;
   const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
 
-  log('streak.startsAt: ',new Date(streak?.startsAt as number));
+  log('streak.startsAt: ', new Date(streak?.startsAt as number));
   log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
   log('daysInARow: ', daysInARow);
   log('daysSinceUpdate: ', daysSinceUpdate);
 
   if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
-    daysInARow = 0
+    daysInARow = 0;
   }
   return (
     <Typography variant="h6">
-      <Box fontWeight={100} >
+      <Box fontWeight={100}>
         {t('won_days_in_a_row')}: {daysInARow}
       </Box>
     </Typography>
   );
 });
-
 
 export default memo(DayliTasksStreak);

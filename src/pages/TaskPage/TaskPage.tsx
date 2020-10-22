@@ -35,6 +35,7 @@ import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
+import isEmpty from 'lodash/isEmpty';
 
 // TODO i18n
 const encouragingMessages = [
@@ -75,24 +76,29 @@ export interface TaskPageProps {
 }
 
 export default function TaskPage(props: TaskPageProps) {
-  const { enqueueSnackbar } = useSnackbar();
-  const route = useRouteMatch() || {};
-  const t = useTypedTranslate();
-  const { path } = route;
   const classes = useStyles();
-  const { loading, taskId, task } = props;
-  const activeSubtasks = filter(task.subtasks, i => !i.isDone);
-  const hasSubtasks = Boolean(activeSubtasks.length);
+  const t = useTypedTranslate();
+  const route = useRouteMatch() || {};
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { path } = route;
+  const {
+    task,
+    taskId,
+    loading,
+    tasksDoneTodayNotificationProps,
+  } = props;
+  const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
   useEffect(() => {
     const snackBarTimeout = setTimeout(() => {
-      if (props.shouldDisplayEncouragements) {
-        enqueueSnackbar(sample(encouragingMessages), {
-          autoHideDuration: 5000,
-        });
-      }
+      if (!props.shouldDisplayEncouragements) return;
+      if (tasksDoneTodayNotificationProps.isVisible) return;
+      enqueueSnackbar(sample(encouragingMessages), {
+        autoHideDuration: 5000,
+      });
     }, 2500);
     return () => clearTimeout(snackBarTimeout);
   }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
@@ -124,7 +130,7 @@ export default function TaskPage(props: TaskPageProps) {
       className={classes.pageContainer}
     >
       <TasksDoneTodayNotification
-        {...props.tasksDoneTodayNotificationProps}
+        {...tasksDoneTodayNotificationProps}
       />
       <Timer
         onEnd={() => {
@@ -148,7 +154,7 @@ export default function TaskPage(props: TaskPageProps) {
             <Card>
               <MuiLink component={Link} to={`/tasks/${taskId}`}>
                 <CardContent>
-                  <When condition={hasSubtasks}>
+                  <When condition={!isEmpty(activeSubtasks)}>
                     <Typography color="textSecondary" gutterBottom>
                       {task.name}
                     </Typography>

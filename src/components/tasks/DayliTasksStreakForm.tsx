@@ -7,10 +7,11 @@ import { profileSelector } from '../../store/selectors';
 function DayliTasksStreakForm() {
   // const [t] = useTranslation();
   const profile = useTypedSelector(profileSelector);
-  const tasksPerDay = profile?.dailyStreak?.perDay
+  const tasksPerDay = profile?.dailyStreak?.perDay;
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const selectedNumber = Number(e.target.value || 0);
+
     if (!selectedNumber) return;
     if (selectedNumber === tasksPerDay) return;
 
@@ -30,10 +31,8 @@ function DayliTasksStreakForm() {
           fullWidth
           type="number"
           name="perDay"
-          disabled={!profile?.userId}
-          // variant="outlined"
           autoComplete="off"
-          // className={cx.input}
+          disabled={!profile?.userId}
           // TODO i18n
           label="Задач в день"
           // label={t('')}

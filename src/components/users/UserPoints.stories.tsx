@@ -34,5 +34,5 @@ export const Animation = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <UserPoints value={points} />;
+  return <UserPoints value={points} isLoaded={true} />;
 };

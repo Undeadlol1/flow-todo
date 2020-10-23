@@ -1,9 +1,8 @@
 import Chip from '@material-ui/core/Chip';
-import React, { memo } from 'react';
-import CountUp from 'react-countup';
-import usePrevious from 'react-use/lib/usePrevious';
-import debug from 'debug';
 import Skeleton from '@material-ui/lab/Skeleton';
+import debug from 'debug';
+import React, { memo } from 'react';
+import { NumbersAnimatedOnUpdate } from '../unsorted/NumbersAnimatedOnUpdate';
 
 const logger = debug('UserPoints');
 
@@ -15,9 +14,6 @@ const UserPoints = memo(
     value: number;
     isLoaded?: boolean;
   }) => {
-    const previousPoints = usePrevious(nextPoints) || 0;
-    const difference = nextPoints - previousPoints;
-    logger('nextPoints - previousPoints', difference);
     logger('isLoaded', isLoaded);
 
     if (isLoaded)
@@ -25,12 +21,7 @@ const UserPoints = memo(
         <Chip
           color="secondary"
           label={
-            isLoaded && (
-              <CountUp
-                end={nextPoints}
-                start={previousPoints && nextPoints - difference}
-              />
-            )
+            isLoaded && <NumbersAnimatedOnUpdate value={nextPoints} />
           }
         />
       );

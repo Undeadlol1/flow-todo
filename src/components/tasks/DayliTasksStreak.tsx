@@ -5,6 +5,7 @@ import React, { memo } from 'react';
 import { useTypedTranslate } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
 import { IDayliStreak } from '../../store/index';
+import { NumbersAnimatedOnUpdate } from '../unsorted/NumbersAnimatedOnUpdate';
 
 const componentName = 'DayliTasksStreak';
 const log = debug(componentName);
@@ -30,7 +31,7 @@ const DayliTasksStreak = memo(({ streak }: Props) => {
   return (
     <Typography variant="h6">
       <Box fontWeight={100}>
-        {t('won_days_in_a_row')}: {daysInARow}
+        {t('won_days_in_a_row')}: <NumbersAnimatedOnUpdate value={daysInARow} />
       </Box>
     </Typography>
   );

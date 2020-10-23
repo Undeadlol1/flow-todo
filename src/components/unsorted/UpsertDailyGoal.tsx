@@ -1,14 +1,14 @@
 import {
   Box,
-  Button,
   Grid,
   Theme,
+  Button,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
-import { Field, Form, Formik } from 'formik';
 import React, { memo } from 'react';
+import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
@@ -27,7 +27,8 @@ const UpsertDailyGoal = memo((props: Props) => {
         validate={values => {
           const errors: Partial<{ title: string }> = {};
           if (!values.title?.trim()) {
-            errors.title = 'Required';
+            // TODO i18n
+            errors.title = 'Обязательно';
           }
           return errors;
         }}

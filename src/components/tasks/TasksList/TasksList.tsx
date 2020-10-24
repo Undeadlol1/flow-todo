@@ -92,7 +92,7 @@ export function TasksList({
               to={`/tasks/${task.id}`}
             >
               <ListItemText
-                primary={task.name}
+                primary={get(task, 'subtasks[0].name', task.name)}
                 classes={{
                   primary: classes.text,
                   root: classes.textWrapper,

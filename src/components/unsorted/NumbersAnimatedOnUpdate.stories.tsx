@@ -1,7 +1,6 @@
 import { add } from 'ramda';
 import React, { useEffect, useState } from 'react';
 import { sections } from '../storybookContants';
-import UserPoints from '../users/UserPoints';
 import { NumbersAnimatedOnUpdate } from './NumbersAnimatedOnUpdate';
 
 export default {

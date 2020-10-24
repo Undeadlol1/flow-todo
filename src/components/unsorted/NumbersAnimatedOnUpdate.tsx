@@ -13,7 +13,9 @@ const NumbersAnimatedOnUpdate = memo(
   ({ value: nextPoints }: Props) => {
     const previousPoints = usePrevious(nextPoints) || 0;
     const difference = nextPoints - previousPoints;
-    log('nextPoints - previousPoints', difference);
+    log('nextPoints: ', nextPoints);
+    log('previousPoints: ', previousPoints);
+    log('difference: ', difference);
 
     return (
       <CountUp

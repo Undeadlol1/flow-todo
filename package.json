@@ -24,7 +24,7 @@
     "@types/jest": "^24.0.22",
     "@types/lodash": "^4.14.146",
     "@types/nanoid": "^2.1.0",
-    "@types/node": "^12.12.7",
+    "@types/node": "^14.14.2",
     "@types/prettier": "1.18.2",
     "@types/prop-types": "^15.7.3",
     "@types/ramda": "^0.26.34",

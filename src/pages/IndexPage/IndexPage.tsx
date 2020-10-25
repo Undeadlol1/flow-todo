@@ -111,7 +111,6 @@ export const IndexPage = memo(function HomePage(props: Props) {
         </When>
       </Grid>
       <Grid
-        item
         {...sectionProps}
         className={clsx(
           classes.randomButtonContainer,

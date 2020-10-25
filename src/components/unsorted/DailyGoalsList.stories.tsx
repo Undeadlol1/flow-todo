@@ -29,4 +29,5 @@ const goals = [
   },
 ] as DailyGoal[];
 
-export const Normal = () => <DayliGoalsList goals={goals} />;
+export const Demo = args => <DayliGoalsList {...args} />;
+Demo.args = { goals };

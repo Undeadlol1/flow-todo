@@ -1,6 +1,9 @@
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { makeStyles } from '@material-ui/styles';
+import debug from 'debug';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,9 +12,6 @@ import {
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
-import debug from 'debug';
-import { Theme } from '@material-ui/core';
-import useTheme from '@material-ui/core/styles/useTheme';
 
 const log = debug('TagsList');
 

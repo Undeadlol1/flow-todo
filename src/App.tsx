@@ -25,21 +25,6 @@ export function App(props: {
     // @ts-ignore
     useDebouncedWindowSize(500).width < theme.breakpoints.values.sm;
 
-  const reduxFirebaseProps = {
-    firebase,
-    config: {
-      userProfile: 'profiles',
-      useFirestoreForProfile: true,
-    },
-    dispatch: store.dispatch,
-    createFirestoreInstance,
-  };
-
-  const snachbarPosition: SnackbarOrigin = {
-    vertical: 'bottom',
-    horizontal: 'center',
-  };
-
   return (
     <div className="App">
       <ReduxProvider store={store}>
@@ -71,5 +56,20 @@ export function App(props: {
     </div>
   );
 }
+
+const reduxFirebaseProps = {
+  firebase,
+  config: {
+    userProfile: 'profiles',
+    useFirestoreForProfile: true,
+  },
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+};
+
+const snachbarPosition: SnackbarOrigin = {
+  vertical: 'bottom',
+  horizontal: 'center',
+};
 
 export default memo(App);

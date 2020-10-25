@@ -1,14 +1,14 @@
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
 import React, { memo } from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useTypedTranslate } from '../services/index';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import Accordion from '@material-ui/core/Accordion';
+import Typography from '@material-ui/core/Typography';
+import { useTypedTranslate } from '../services/index';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -44,11 +44,6 @@ const data = [
     'Куда пропадают мои задачи?',
     'После того как вы поработали над задачей, она будет отложена. Программа использует увеличивающиеся интервальные повторения чтобы расчитать когда вам будет наиболее комфортно вернуться к задаче вновь.',
   ],
-  [
-    'Что значит "аноним"? Зачем регистрироваться?',
-    'Аноним - анонимный пользователь. По-умолчанию все пользователи анонимны. Это позволяет вам пользоваться приложением без регистрации.',
-    'ВНИМАНИЕ: если вы не зарегистрируетесь то в будущем ваши данные будут потеряны.',
-  ],
 ];
 
 const FAQPage = memo(function FAQPage() {
@@ -72,8 +67,8 @@ const FAQPage = memo(function FAQPage() {
         </Box>
         {/* TODO: i18n */}
         {data.map(([question, ...answerParagpraphs], index) => (
-          <ExpansionPanel key={index}>
-            <ExpansionPanelSummary
+          <Accordion key={index}>
+            <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
@@ -81,8 +76,8 @@ const FAQPage = memo(function FAQPage() {
               <Typography variant="subtitle1" component="h2">
                 {question}
               </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Box key={index}>
                 {answerParagpraphs.map(answer => (
                   <Typography paragraph key={answer}>
@@ -90,8 +85,8 @@ const FAQPage = memo(function FAQPage() {
                   </Typography>
                 ))}
               </Box>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </Grid>
     </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,6 +19,7 @@ import debug from 'debug';
 import Pagination from '@material-ui/lab/Pagination';
 import slice from 'lodash/slice';
 import get from 'lodash/get';
+import shuffle from 'lodash/shuffle';
 
 const log = debug('TasksList');
 
@@ -67,6 +68,7 @@ export function TasksList({
   const numberOfPAges = Number(
     (tasks.length / tasksPerPage).toFixed(),
   );
+  const randomizedTasks = useMemo(() => shuffle(tasks), [tasks]);
 
   if (loading) return null;
   if (isEmpty(tasks) || get(tasks, 'empty')) return null;
@@ -80,7 +82,7 @@ export function TasksList({
     <Box mx="auto" component={Paper} className={classes.paper}>
       <List className={classes.list}>
         {slice(
-          tasks,
+          randomizedTasks,
           tasksPerPage * (page - 1), // Start from.
           tasksPerPage * page, // End at.
         ).map((task, index) => {
@@ -92,7 +94,7 @@ export function TasksList({
               to={`/tasks/${task.id}`}
             >
               <ListItemText
-                primary={task.name}
+                primary={get(task, 'subtasks[0].name', task.name)}
                 classes={{
                   primary: classes.text,
                   root: classes.textWrapper,

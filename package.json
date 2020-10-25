@@ -38,7 +38,7 @@
     "@types/react-test-renderer": "^16.9.1",
     "@types/yup": "^0.26.24",
     "array-move": "^2.2.1",
-    "chromatic": "^5.1.0",
+    "chromatic": "^5.2.0",
     "classnames": "^2.2.6",
     "clsx": "^1.0.4",
     "date-fns": "^2.6.0",

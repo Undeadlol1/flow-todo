@@ -1,9 +1,6 @@
-import debug from 'debug';
 import React, { memo } from 'react';
 import { Box, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-
-const log = debug('{{pascalCase name}}');
 
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 

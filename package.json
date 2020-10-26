@@ -36,7 +36,7 @@
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.2",
     "@types/react-test-renderer": "^16.9.1",
-    "@types/yup": "^0.26.24",
+    "@types/yup": "^0.29.8",
     "array-move": "^2.2.1",
     "chromatic": "^5.2.0",
     "classnames": "^2.2.6",

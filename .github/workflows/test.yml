@@ -20,7 +20,7 @@ jobs:
           ${{ runner.os }}-node-
 
     - name: Install Dependencies
-      run: npm ci
+      run: npm ci --no-optional
 
     - name: Test
       run: npm test

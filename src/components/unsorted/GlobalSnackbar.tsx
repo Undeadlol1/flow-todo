@@ -1,12 +1,12 @@
 import { Snackbar } from '@material-ui/core';
 import { delay, uniq } from 'lodash';
-import React, { memo, useEffect, useState } from 'react';
-import useToggle from 'react-use/lib/useToggle';
-import { useTypedSelector } from '../../store';
-import isEmpty from 'lodash/isEmpty';
-import { useDispatch } from 'react-redux';
-import { setSnackbars } from '../../store/snackbarsSlice';
 import filter from 'lodash/filter';
+import isEmpty from 'lodash/isEmpty';
+import React, { memo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import useToggle from 'react-use/lib/useToggle';
+import SnackbarService from '../../services/Snackbar';
+import { snackbarsSelector } from '../../store/selectors';
 
 export interface GlobalSnackbarProps {
   _isOpenForDevPurposes?: boolean;
@@ -14,10 +14,7 @@ export interface GlobalSnackbarProps {
 
 const GlobalSnackbar = memo(
   ({ _isOpenForDevPurposes = false }: GlobalSnackbarProps) => {
-    const snackbarsInQueue = useTypedSelector(
-      state => state.snackbars.snackbars,
-    );
-    const dispatch = useDispatch();
+    const snackbarsInQueue = useSelector(snackbarsSelector).queue;
     const [isDialogOpen, toggleDialog] = useToggle(
       _isOpenForDevPurposes,
     );
@@ -27,20 +24,20 @@ const GlobalSnackbar = memo(
       if (isDialogOpen || isEmpty(snackbarsInQueue)) {
         return;
       }
+
       const snackbarToActivate = snackbarsInQueue[0];
+      const snackbarsWithoutActiveOne = filter(
+        uniq(snackbarsInQueue),
+        i => snackbarToActivate !== i,
+      );
 
       setSnackbarMessage(snackbarToActivate);
       toggleDialog(true);
       delay(() => {
-        const snackbarsAfterFiltering = filter(
-          uniq(snackbarsInQueue),
-          i => {
-            return snackbarToActivate !== i;
-          },
-        );
         toggleDialog(false);
         delay(
-          () => dispatch(setSnackbars(snackbarsAfterFiltering)),
+          () =>
+            SnackbarService.updateQueue(snackbarsWithoutActiveOne),
           500,
         );
       }, 3500);
@@ -64,7 +61,5 @@ const GlobalSnackbar = memo(
     );
   },
 );
-
-GlobalSnackbar.displayName = 'GlobalSnackbar';
 
 export { GlobalSnackbar };

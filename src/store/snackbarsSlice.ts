@@ -1,31 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type UiState = {
-  snackbars: string[];
+export type SnackbarsState = {
+  queue: string[];
 };
 
-const initialState: UiState = {
-  snackbars: [],
+const initialState: SnackbarsState = {
+  queue: [],
 };
 
 const snackbarsSlice = createSlice({
-  name: 'snackbars',
   initialState,
+  name: 'snackbars',
   reducers: {
-    // TODO rename
-    setSnackbars(state, { payload }: PayloadAction<string[]>) {
-      state.snackbars = payload;
+    updateSnackbarsQueue(
+      state,
+      { payload }: PayloadAction<string[]>,
+    ) {
+      state.queue = payload;
     },
-    // TODO rename? Rework?
     addSnackbarToQueue(state, { payload }: PayloadAction<string>) {
-      state.snackbars.push(payload);
+      state.queue.push(payload);
     },
   },
 });
 
 export const {
   addSnackbarToQueue,
-  setSnackbars,
+  updateSnackbarsQueue,
 } = snackbarsSlice.actions;
 
 export default snackbarsSlice.reducer;

@@ -30,6 +30,7 @@ import {
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
 import { Theme } from '@material-ui/core';
+import classNames from 'classnames';
 
 const log = debug('NavBar');
 
@@ -62,7 +63,41 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const LoginOrLogoutButton = memo(() => {
+const NavBar = memo(() => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" color="transparent">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => dispatch(toggleSidebar())}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Fade in timeout={1500}>
+            <Link
+              to="/"
+              className={classNames(classes.link, classes.title)}
+            >
+              <Typography variant="h6" color="textPrimary">
+                Долгий Ящик
+              </Typography>
+            </Link>
+          </Fade>
+          <LoginOrLogoutButton />
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+});
+
+NavBar.displayName = 'NavBar';
+
+export function LoginOrLogoutButton() {
   const classes = useStyles();
 
   const user = useTypedSelector(authSelector);
@@ -76,8 +111,6 @@ export const LoginOrLogoutButton = memo(() => {
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
   const hasPhoto = !!photoUrl;
   log('profile: ', profile);
-  // TODO: find out how to handle auth errors in redux-firebase
-  // handleErrors(userError);
 
   if (!user.isLoaded) {
     return (
@@ -141,40 +174,6 @@ export const LoginOrLogoutButton = memo(() => {
       </Slide>
     </>
   );
-});
-
-const NavBar = memo(() => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => dispatch(toggleSidebar())}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Fade in timeout={1500}>
-            <Typography
-              variant="h6"
-              className={clsx([classes.title])}
-            >
-              <Link className={classes.link} to="/">
-                Долгий Ящик
-              </Link>
-            </Typography>
-          </Fade>
-          <LoginOrLogoutButton />
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-});
-
-NavBar.displayName = 'NavBar';
+}
 
 export default NavBar;

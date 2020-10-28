@@ -7,13 +7,17 @@ import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import LevelingService from '../../../services/leveling';
-import { Theme } from '@material-ui/core';
+import { Box, Theme } from '@material-ui/core';
 import { Profile } from '../../../store/index';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles((theme: Theme) => ({
   progress: {
+    left: 0,
+    bottom: 0,
     height: 10,
+    width: '100%',
+    position: 'fixed',
   },
   hidden: {
     opacity: 0,
@@ -71,17 +75,21 @@ export const ExpirienceProgressBar: React.FC<{
           (pointsToReachNextLevel - pointsToReachPreviousLevel)
         }
       >
-        <LinearProgress
-          color="secondary"
-          value={progressPercent === 100 ? 0 : progressPercent}
-          className={cx(!props.profile && classes.hidden, [
-            classes.progress,
-            props.className,
-          ])}
-          variant={
-            props.isAnimationActive ? 'indeterminate' : 'determinate'
-          }
-        />
+        <Box>
+          <LinearProgress
+            color="secondary"
+            value={progressPercent === 100 ? 0 : progressPercent}
+            className={cx(!props.profile && classes.hidden, [
+              classes.progress,
+              props.className,
+            ])}
+            variant={
+              props.isAnimationActive
+                ? 'indeterminate'
+                : 'determinate'
+            }
+          />
+        </Box>
       </Tooltip>
     );
 });

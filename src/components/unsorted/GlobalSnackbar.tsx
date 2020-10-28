@@ -44,12 +44,15 @@ const GlobalSnackbar = memo(
           'snackbarsAfterFiltering: ',
           snackbarsAfterFiltering,
         );
-        toggleDialog();
+        toggleDialog(false);
         dispatch(setSnackbars(snackbarsAfterFiltering));
       }, 3500);
     }
 
-    useEffect(displayFirstSnackbarInQueue, [snackbarsInQueue]);
+    useEffect(displayFirstSnackbarInQueue, [
+      snackbarsInQueue,
+      isDialogOpen,
+    ]);
 
     return (
       <Snackbar

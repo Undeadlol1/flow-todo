@@ -25,6 +25,8 @@ import {
 } from '../../../services/index';
 import { Task, Subtask } from '../../../store/index';
 import map from 'lodash/map';
+import { useDispatch } from 'react-redux';
+import { addSnackbarToQueue } from '../../../store/uiSlice';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -43,6 +45,7 @@ interface Props {
 
 const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const activeSubtasks =
     filter(props.task.subtasks, i => !i.isDone) || [];
@@ -80,13 +83,15 @@ const TaskChoices = (props: Props) => {
     });
     setTimeout(
       () =>
-        showSnackbar(
-          t('you will see task again in', {
-            date: distanceBetweenDates(
-              nextRepetition.dueAt,
-              new Date(),
-            ),
-          }),
+        dispatch(
+          addSnackbarToQueue(
+            t('you will see task again in', {
+              date: distanceBetweenDates(
+                nextRepetition.dueAt,
+                new Date(),
+              ),
+            }),
+          ),
         ),
       4000,
     );

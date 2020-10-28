@@ -18,7 +18,10 @@ import { snackbarActions } from 'material-ui-snackbar-redux';
 import { upsertProfile, upsertTask } from '../../store/index';
 import { getRandomTaskId, handleErrors } from '../../services';
 import React, { memo, useEffect, useState as useToggle } from 'react';
-import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import {
+  addSnackbarToQueue,
+  toggleTasksDoneTodayNotification,
+} from '../../store/uiSlice';
 import {
   TaskHistory,
   useTypedSelector,
@@ -172,7 +175,8 @@ const Container = memo(() => {
 
         toggleTaskDoneNotification();
         delay(toggleTaskDoneNotification, 3500);
-        delay(enqueueSnackbar, 3500, snackbarMessage);
+        dispatch(addSnackbarToQueue(snackbarMessage));
+        // delay(enqueueSnackbar, 3500, snackbarMessage);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),

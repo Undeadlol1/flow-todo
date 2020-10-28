@@ -1,11 +1,12 @@
 import { Snackbar } from '@material-ui/core';
-import { delay } from 'lodash';
+import { delay, uniq } from 'lodash';
 import React, { memo, useEffect, useState } from 'react';
 import useToggle from 'react-use/lib/useToggle';
 import { useTypedSelector } from '../../store';
 import isEmpty from 'lodash/isEmpty';
 import { useDispatch } from 'react-redux';
 import { setSnackbars } from '../../store/uiSlice';
+import filter from 'lodash/filter';
 
 export interface GlobalSnackbarProps {
   _isOpenForDevPurposes?: boolean;
@@ -16,7 +17,6 @@ const GlobalSnackbar = memo(
     const snackbarsInQueue = useTypedSelector(
       state => state.ui.snackbars,
     );
-    console.log('snackbarsInQueue: ', snackbarsInQueue);
     const dispatch = useDispatch();
     const [isDialogOpen, toggleDialog] = useToggle(
       _isOpenForDevPurposes,
@@ -30,14 +30,22 @@ const GlobalSnackbar = memo(
       const snackbarToActivate = snackbarsInQueue[0];
 
       setSnackbarMessage(snackbarToActivate);
-      toggleDialog();
+      toggleDialog(true);
       delay(() => {
-        toggleDialog();
-        dispatch(
-          setSnackbars(
-            snackbarsInQueue.filter(i => i !== snackbarToActivate),
-          ),
+        const snackbarsAfterFiltering = filter(
+          uniq(snackbarsInQueue),
+          i => {
+            return snackbarToActivate !== i;
+          },
         );
+        console.log('snackbarsInQueue: ', snackbarsInQueue);
+        console.log('snackbarToActivate: ', snackbarToActivate);
+        console.log(
+          'snackbarsAfterFiltering: ',
+          snackbarsAfterFiltering,
+        );
+        toggleDialog();
+        dispatch(setSnackbars(snackbarsAfterFiltering));
       }, 3500);
     }
 
@@ -51,7 +59,6 @@ const GlobalSnackbar = memo(
         }}
         open={isDialogOpen}
         onClose={toggleDialog}
-        // autoHideDuration={6000}
         message={snackbarMessage}
       />
     );

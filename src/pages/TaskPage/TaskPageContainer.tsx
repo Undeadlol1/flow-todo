@@ -37,6 +37,7 @@ import {
   firestoreStatusSelector,
 } from '../../store/selectors';
 import delay from 'lodash/delay';
+import Snackbar from '../../services/Snackbar';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -174,9 +175,10 @@ const Container = memo(() => {
           dispatch(toggleTasksDoneTodayNotification());
 
         toggleTaskDoneNotification();
-        delay(toggleTaskDoneNotification, 3500);
-        dispatch(addSnackbarToQueue(snackbarMessage));
-        // delay(enqueueSnackbar, 3500, snackbarMessage);
+        delay(() => {
+          toggleTaskDoneNotification();
+          Snackbar.addToQueue(snackbarMessage);
+        }, 3500);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),

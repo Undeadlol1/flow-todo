@@ -83,7 +83,7 @@ const NavBar = memo(() => {
               to="/"
               className={classNames(classes.link, classes.title)}
             >
-              <Typography variant="h6" color="textPrimary">
+              <Typography variant="h6" color="secondary">
                 Долгий Ящик
               </Typography>
             </Link>

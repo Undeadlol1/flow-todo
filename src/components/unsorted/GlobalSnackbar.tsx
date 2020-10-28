@@ -38,14 +38,11 @@ const GlobalSnackbar = memo(
             return snackbarToActivate !== i;
           },
         );
-        console.log('snackbarsInQueue: ', snackbarsInQueue);
-        console.log('snackbarToActivate: ', snackbarToActivate);
-        console.log(
-          'snackbarsAfterFiltering: ',
-          snackbarsAfterFiltering,
-        );
         toggleDialog(false);
-        dispatch(setSnackbars(snackbarsAfterFiltering));
+        delay(
+          () => dispatch(setSnackbars(snackbarsAfterFiltering)),
+          500,
+        );
       }, 3500);
     }
 

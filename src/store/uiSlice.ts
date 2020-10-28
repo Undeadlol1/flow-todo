@@ -4,7 +4,6 @@ export type UiColorScheme = 'light' | 'dark';
 
 export type UiState = {
   loading: boolean;
-  snackbars: string[];
   isSidebarOpen: boolean;
   isAppTourActive: boolean;
   isRewardModalOpen: boolean;
@@ -17,7 +16,6 @@ const prereferedColorScheme = localStorage.getItem(
 ) as UiColorScheme | null;
 
 const initialState: UiState = {
-  snackbars: [],
   loading: true,
   isSidebarOpen: false,
   isAppTourActive: false,
@@ -48,14 +46,6 @@ const uiSlice = createSlice({
       state.preferedColorScheme = payload;
       localStorage.setItem('prereferedColorScheme', payload);
     },
-    // TODO rename
-    setSnackbars(state, { payload }: PayloadAction<string[]>) {
-      state.snackbars = payload;
-    },
-    // TODO rename? Rework?
-    addSnackbarToQueue(state, { payload }: PayloadAction<string>) {
-      state.snackbars.push(payload);
-    },
   },
 });
 
@@ -65,8 +55,6 @@ export const {
   toggleRewardModal,
   toggleTasksDoneTodayNotification,
   setColorScheme,
-  addSnackbarToQueue,
-  setSnackbars,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

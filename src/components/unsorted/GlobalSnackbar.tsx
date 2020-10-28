@@ -5,7 +5,7 @@ import useToggle from 'react-use/lib/useToggle';
 import { useTypedSelector } from '../../store';
 import isEmpty from 'lodash/isEmpty';
 import { useDispatch } from 'react-redux';
-import { setSnackbars } from '../../store/uiSlice';
+import { setSnackbars } from '../../store/snackbarsSlice';
 import filter from 'lodash/filter';
 
 export interface GlobalSnackbarProps {
@@ -15,7 +15,7 @@ export interface GlobalSnackbarProps {
 const GlobalSnackbar = memo(
   ({ _isOpenForDevPurposes = false }: GlobalSnackbarProps) => {
     const snackbarsInQueue = useTypedSelector(
-      state => state.ui.snackbars,
+      state => state.snackbars.snackbars,
     );
     const dispatch = useDispatch();
     const [isDialogOpen, toggleDialog] = useToggle(

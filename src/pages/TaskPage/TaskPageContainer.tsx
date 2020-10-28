@@ -18,10 +18,7 @@ import { snackbarActions } from 'material-ui-snackbar-redux';
 import { upsertProfile, upsertTask } from '../../store/index';
 import { getRandomTaskId, handleErrors } from '../../services';
 import React, { memo, useEffect, useState as useToggle } from 'react';
-import {
-  addSnackbarToQueue,
-  toggleTasksDoneTodayNotification,
-} from '../../store/uiSlice';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import {
   TaskHistory,
   useTypedSelector,

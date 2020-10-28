@@ -26,7 +26,7 @@ import {
 import { Task, Subtask } from '../../../store/index';
 import map from 'lodash/map';
 import { useDispatch } from 'react-redux';
-import { addSnackbarToQueue } from '../../../store/uiSlice';
+import { addSnackbarToQueue } from '../../../store/snackbarsSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

@@ -37,7 +37,7 @@ import {
 } from '../../components/unsorted/TasksDoneTodayNotification';
 import isEmpty from 'lodash/isEmpty';
 import { useDispatch } from 'react-redux';
-import { addSnackbarToQueue } from '../../store/uiSlice';
+import { addSnackbarToQueue } from '../../store/snackbarsSlice';
 
 // TODO i18n
 const encouragingMessages = [

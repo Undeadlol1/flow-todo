@@ -6,7 +6,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useToggle from 'react-use/lib/useToggle';
 import SnackbarService from '../../services/Snackbar';
-import { snackbarsSelector } from '../../store/selectors';
+import { snackbarsSelector, uiSelector } from '../../store/selectors';
 
 export interface GlobalSnackbarProps {
   _isOpenForDevPurposes?: boolean;
@@ -14,14 +14,22 @@ export interface GlobalSnackbarProps {
 
 const GlobalSnackbar = memo(
   ({ _isOpenForDevPurposes = false }: GlobalSnackbarProps) => {
+    const { isTasksDoneTodayNotificationOpen } = useSelector(
+      uiSelector,
+    );
     const snackbarsInQueue = useSelector(snackbarsSelector).queue;
+    console.log('snackbarsInQueue: ', snackbarsInQueue);
     const [isDialogOpen, toggleDialog] = useToggle(
       _isOpenForDevPurposes,
     );
     const [snackbarMessage, setSnackbarMessage] = useState('');
 
     function displayFirstSnackbarInQueue() {
-      if (isDialogOpen || isEmpty(snackbarsInQueue)) {
+      if (
+        isDialogOpen ||
+        isEmpty(snackbarsInQueue) ||
+        isTasksDoneTodayNotificationOpen
+      ) {
         return;
       }
 
@@ -44,8 +52,9 @@ const GlobalSnackbar = memo(
     }
 
     useEffect(displayFirstSnackbarInQueue, [
-      snackbarsInQueue,
       isDialogOpen,
+      snackbarsInQueue,
+      isTasksDoneTodayNotificationOpen,
     ]);
 
     return (

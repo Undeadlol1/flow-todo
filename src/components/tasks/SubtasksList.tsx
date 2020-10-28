@@ -31,6 +31,7 @@ import { deleteSubtask, Subtask } from '../../store';
 import { addPointsWithSideEffects } from '../../store/index';
 import { authSelector } from '../../store/selectors';
 import { Theme } from '@material-ui/core';
+import Snackbar from '../../services/Snackbar';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -70,7 +71,7 @@ const SortableItem = SortableElement(
     }
 
     function setDone() {
-      showSnackbar(t('goodJobPointsRecieved', { points: 10 }));
+      Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
       Promise.all([
         remove(),
         addPointsWithSideEffects(auth.uid, 10),

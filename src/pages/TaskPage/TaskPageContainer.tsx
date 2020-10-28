@@ -171,6 +171,7 @@ const Container = memo(() => {
         const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
 
+        console.log('snackbarMessage: ', snackbarMessage);
         toggleTaskDoneNotification();
         delay(() => {
           toggleTaskDoneNotification();

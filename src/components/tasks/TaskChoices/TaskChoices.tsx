@@ -26,7 +26,8 @@ import {
 import { Task, Subtask } from '../../../store/index';
 import map from 'lodash/map';
 import { useDispatch } from 'react-redux';
-import { addSnackbarToQueue } from '../../../store/snackbarsSlice'
+import { addSnackbarToQueue } from '../../../store/snackbarsSlice';
+import Snackbar from '../../../services/Snackbar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -67,35 +68,34 @@ const TaskChoices = (props: Props) => {
       props.task,
       confidence,
     );
-    props.updateTask({
-      values: {
-        isCurrent: false,
-        ...nextRepetition,
-      },
-      history: {
-        createdAt: Date.now(),
-        // @ts-ignore
-        actionType:
-          confidence === 'normal' ? 'stepForward' : 'leapForward',
-      },
-      pointsToAdd: confidence === 'normal' ? 10 : 20,
-      snackbarMessage: t('important to step forward'),
-    });
-    setTimeout(
-      () =>
-        dispatch(
-          addSnackbarToQueue(
-            t('you will see task again in', {
-              date: distanceBetweenDates(
-                nextRepetition.dueAt,
-                new Date(),
-              ),
-            }),
-          ),
-        ),
-      4000,
-    );
+    props
+      .updateTask({
+        values: {
+          isCurrent: false,
+          ...nextRepetition,
+        },
+        history: {
+          createdAt: Date.now(),
+          // @ts-ignore
+          actionType:
+            confidence === 'normal' ? 'stepForward' : 'leapForward',
+        },
+        pointsToAdd: confidence === 'normal' ? 10 : 20,
+        snackbarMessage: t('important to step forward'),
+      })
+      .then(() => {
+        console.log('Then');
+        Snackbar.addToQueue(
+          t('you will see task again in', {
+            date: distanceBetweenDates(
+              nextRepetition.dueAt,
+              new Date(),
+            ),
+          }),
+        );
+      });
   }
+
   function doneTask() {
     const rewardPerSubtask = 10;
     const repetitionLevel = get(props, 'task.repetitionLevel') || 1;

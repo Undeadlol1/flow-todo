@@ -99,10 +99,7 @@ export default memo(function RouterAndDataLoader(props: {
       },
       {
         collection: 'tasks',
-        where: [
-          ['userId', '==', userId],
-          ['isPinned', '==', true],
-        ],
+        where: [['userId', '==', userId], ['isPinned', '==', true]],
         storeAs: 'pinnedTask',
         limit: 1,
       },

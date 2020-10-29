@@ -1,7 +1,16 @@
 name: npm test
 
-on: push
-
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - ready_for_review
+      - reopened
+      - unlocked
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +19,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache node modules
+      id: npm-cache
       uses: actions/cache@v2
       env:
         cache-name: cache-node-modules
@@ -20,6 +30,7 @@ jobs:
           ${{ runner.os }}-node-
 
     - name: Install Dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm ci --no-optional
 
     - name: Test

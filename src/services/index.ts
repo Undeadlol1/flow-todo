@@ -31,6 +31,7 @@ import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
 import { useEffect, useState } from 'react';
 import useTheme from '@material-ui/core/styles/useTheme';
+import Snackbar from './Snackbar';
 
 const logger = debug('utils');
 
@@ -145,7 +146,7 @@ export function handleErrors(
 }
 
 export function showSnackbar(message: string) {
-  store.dispatch(snackbarActions.show({ message }));
+  Snackbar.addToQueue(message);
 }
 
 export function getNewlyUnlockedReward(

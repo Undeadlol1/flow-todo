@@ -1,20 +1,20 @@
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
-import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';
 import isUndefined from 'lodash/isUndefined';
-import { useSnackbar } from 'notistack';
 import React from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import {
-  useTypedTranslate,
   handleErrors,
+  useTypedTranslate,
 } from '../../../services/index';
+import Snackbar from '../../../services/Snackbar';
 import {
   addPointsWithSideEffects,
   upsertTask,
@@ -112,7 +112,6 @@ function UpsertTaskContainer({
 }: ContainerProps) {
   const [t] = useTranslation();
   const translate = useTypedTranslate();
-  const { enqueueSnackbar } = useSnackbar();
   const userId = useSelector(authSelector).uid;
 
   async function createDocumentAndReset(
@@ -132,7 +131,7 @@ function UpsertTaskContainer({
       invoke(props, 'callback');
       if (resetFormOnSuccess) reset();
       if (showSnackbarOnSuccess) {
-        enqueueSnackbar(
+        Snackbar.addToQueue(
           pointsToAdd
             ? translate('Successfully saved') +
                 '. ' +
@@ -141,7 +140,7 @@ function UpsertTaskContainer({
         );
       }
     } catch (error) {
-      enqueueSnackbar(t('Something went wrong'));
+      Snackbar.addToQueue(t('Something went wrong'));
       setTimeout(() => handleErrors(error), 4000);
     }
   }

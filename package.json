@@ -84,7 +84,7 @@
     "redux": "^4.0.4",
     "redux-firestore": "^0.10.0",
     "reselect": "^4.0.0",
-    "typescript": "3.8.3",
+    "typescript": "4.0.5",
     "yup": "^0.29.3"
   },
   "scripts": {

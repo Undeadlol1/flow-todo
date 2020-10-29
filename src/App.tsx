@@ -16,6 +16,21 @@ import { Theme } from './Theme';
 
 initializeI18n();
 
+const reduxFirebaseProps = {
+  firebase,
+  config: {
+    userProfile: 'profiles',
+    useFirestoreForProfile: true,
+  },
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+};
+
+const snachbarPosition: SnackbarOrigin = {
+  vertical: 'bottom',
+  horizontal: 'center',
+};
+
 export function App(props: {
   isStorybookEnv?: boolean;
   children?: JSX.Element;
@@ -56,20 +71,5 @@ export function App(props: {
     </div>
   );
 }
-
-const reduxFirebaseProps = {
-  firebase,
-  config: {
-    userProfile: 'profiles',
-    useFirestoreForProfile: true,
-  },
-  dispatch: store.dispatch,
-  createFirestoreInstance,
-};
-
-const snachbarPosition: SnackbarOrigin = {
-  vertical: 'bottom',
-  horizontal: 'center',
-};
 
 export default memo(App);

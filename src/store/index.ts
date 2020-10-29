@@ -1,7 +1,7 @@
 import {
   combineReducers,
   configureStore,
-  getDefaultMiddleware
+  getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import subDays from 'date-fns/subDays';
 import debug from 'debug';
@@ -14,21 +14,21 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
   firestoreReducer,
   getFirestore as getFirestore2,
-  reduxFirestore
+  reduxFirestore,
 } from 'redux-firestore';
 import {
   getFirestore,
   getNewlyUnlockedReward,
   handleErrors,
   initializeFirebase,
-  showLevelUpAnimation
+  showLevelUpAnimation,
 } from '../services/index';
 import LevelingService from '../services/leveling';
 import rewardsSlice, { Reward } from './rewardsSlice';
 import {
   authSelector,
   profilePointsSelector,
-  rewardsSelector
+  rewardsSelector,
 } from './selectors';
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
@@ -73,12 +73,12 @@ export type TaskHistory = {
   createdAt: number;
   comment?: string;
   actionType:
-  | 'postpone'
-  | 'updateName'
-  | 'updateSubtask'
-  | 'stepForward'
-  | 'leapForward'
-  | 'setDone';
+    | 'postpone'
+    | 'updateName'
+    | 'updateSubtask'
+    | 'stepForward'
+    | 'leapForward'
+    | 'setDone';
 };
 
 export type Task = {
@@ -209,7 +209,8 @@ initializeFirebase();
 
 export function upsertProfile(profile: Profile) {
   if (!profile.userId) throw Error('You must specify userId!');
-  if (!profile.dailyStreak) profile.dailyStreak = DailyStreak.getEmptyStreak()
+  if (!profile.dailyStreak)
+    profile.dailyStreak = DailyStreak.getEmptyStreak();
   return getFirestore()
     .doc('profiles/' + profile.userId)
     .set(profile, { merge: true });
@@ -234,6 +235,31 @@ export function addPoints(
     .catch(handleErrors);
 }
 
+const rootReducer = combineReducers({
+  ui: uiSlice,
+  users: userSlice,
+  tasks: tasksSlice,
+  rewards: rewardsSlice,
+  snackbar: snackbarReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
+});
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [
+    ...getDefaultMiddleware({
+      // Firebase.auth onlogin error fix.
+      // https://github.com/prescottprue/react-redux-firebase/issues/761
+      serializableCheck: {
+        ignoredActions: [actionTypes.LOGIN],
+      },
+    }),
+  ],
+  devTools: process.env.NODE_ENV !== 'test',
+  enhancers: [reduxFirestore(firebase)],
+});
+
 export function addPointsWithSideEffects(
   userId: string,
   points: number,
@@ -248,7 +274,8 @@ export function addPointsWithSideEffects(
   );
   // TODO refactor
   if (nextReward) store.dispatch(toggleRewardModal());
-  if (LevelingService.willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
+  if (LevelingService.willUserLevelUp(profilePoints, points))
+    showLevelUpAnimation();
 
   return addPoints(auth.uid, points);
 }
@@ -265,32 +292,7 @@ export function claimReward(reward: Reward) {
   }
 }
 
-const rootReducer = combineReducers({
-  ui: uiSlice,
-  users: userSlice,
-  tasks: tasksSlice,
-  rewards: rewardsSlice,
-  snackbar: snackbarReducer,
-  firebase: firebaseReducer,
-  firestore: firestoreReducer,
-});
-
 export type RootReducer = ReturnType<typeof rootReducer>;
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: [
-    ...getDefaultMiddleware({
-      // Firebase.auth onlogin error fix.
-      // https://github.com/prescottprue/react-redux-firebase/issues/761
-      serializableCheck: {
-        ignoredActions: [actionTypes.LOGIN],
-      },
-    }),
-  ],
-  devTools: process.env.NODE_ENV !== 'test',
-  enhancers: [reduxFirestore(firebase)],
-});
 
 export const useTypedSelector: TypedUseSelectorHook<
   ReturnType<typeof rootReducer>

@@ -107,7 +107,8 @@ export function LoginOrLogoutButton() {
   );
   const points = useTypedSelector(profilePointsSelector);
   const experience = get(profile, 'experience', 0);
-  const photoUrl = get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
+  const photoUrl =
+    get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
   const hasPhoto = !!photoUrl;
   log('profile: ', profile);
 
@@ -147,8 +148,8 @@ export function LoginOrLogoutButton() {
               color="secondary"
               // NOTE: "+1" is a quick fix
               badgeContent={
-                profile.isLoaded
-                && Math.trunc(
+                profile.isLoaded &&
+                Math.trunc(
                   LevelingService.calculateUserLevel(experience),
                 ) + 1
               }

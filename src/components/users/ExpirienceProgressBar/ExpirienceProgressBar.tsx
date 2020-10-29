@@ -24,8 +24,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface Props {}
-
 export const ExpirienceProgressBar: React.FC<{
   profile?: Profile;
   className?: string;
@@ -41,54 +39,52 @@ export const ExpirienceProgressBar: React.FC<{
   const pointsToReachNextLevel = LevelingService.calculateTotalPointsToReachALevel(
     level + 1,
   );
-  const differenceBetweenLevels = pointsToReachNextLevel - pointsToReachPreviousLevel;
-  const userProgressInPoints = userPoints - pointsToReachPreviousLevel;
-  const progressPercent = (userProgressInPoints * 100) / differenceBetweenLevels;
+  const differenceBetweenLevels =
+    pointsToReachNextLevel - pointsToReachPreviousLevel;
+  const userProgressInPoints =
+    userPoints - pointsToReachPreviousLevel;
+  const progressPercent =
+    (userProgressInPoints * 100) / differenceBetweenLevels;
 
   log('level', level);
   log('userPoints', userPoints);
   log(
     'points to next level',
-    pointsToReachPreviousLevel
-      + LevelingService.calculatePointsToNextLevel(level),
+    pointsToReachPreviousLevel +
+      LevelingService.calculatePointsToNextLevel(level),
   );
   log('progressPercent: ', progressPercent);
 
   if (isUndefined(props.profile)) {
- return (
-   <LinearProgress
-     color="secondary"
-     className={cx([classes.progress, props.className])}
-   />
+    return (
+      <LinearProgress
+        color="secondary"
+        className={cx([classes.progress, props.className])}
+      />
     );
-}
+  }
   return (
     <Tooltip
       arrow
-      title={
-          `${userPoints
-          - pointsToReachPreviousLevel
-          }/${
-          pointsToReachNextLevel - pointsToReachPreviousLevel}`
-        }
+      title={`${userPoints -
+        pointsToReachPreviousLevel}/${pointsToReachNextLevel -
+        pointsToReachPreviousLevel}`}
     >
       <Box>
         <LinearProgress
           color="secondary"
           value={progressPercent === 100 ? 0 : progressPercent}
           className={cx(!props.profile && classes.hidden, [
-              classes.progress,
-              props.className,
-            ])}
+            classes.progress,
+            props.className,
+          ])}
           variant={
-              props.isAnimationActive
-                ? 'indeterminate'
-                : 'determinate'
-            }
+            props.isAnimationActive ? 'indeterminate' : 'determinate'
+          }
         />
       </Box>
     </Tooltip>
-    );
+  );
 });
 
 ExpirienceProgressBar.displayName = 'ExpirienceProgressBar';

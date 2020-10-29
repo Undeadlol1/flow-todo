@@ -15,7 +15,7 @@ export const Demos = () => {
   // Change amount completed tasks every few seconds.
   useEffect(() => {
     const interval = setInterval(
-      () => setAmount(i => (i < props.tasksPerDay ? ++i : 0)),
+      () => setAmount(i => (i < props.tasksPerDay ? i + 1 : 0)),
       2000,
     );
     return () => clearInterval(interval);

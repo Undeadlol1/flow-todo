@@ -5,8 +5,8 @@ import Fab from './Fab';
 
 interface Props {
   // Run function on timer stop.
-  onEnd?: Function;
-  onStart?: Function;
+  onEnd?: () => any;
+  onStart?: () => any;
   autoStart?: boolean;
   className?: string;
 }
@@ -44,9 +44,7 @@ export default function Timer(props: Props) {
       >
         {/*
         // @ts-ignore */}
-        {({
- start, resume, pause, stop, reset, timerState,
-}) => {
+        {({ start, resume, pause, stop, reset, timerState }) => {
           if (props.autoStart && !isAutoStarted) {
             // NOTE: timeout is used as a workaround to prevent
             // "Warning: Cannot update during an existing state transition".

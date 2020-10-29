@@ -11,16 +11,19 @@ import { useHistory, useParams } from 'react-router-dom';
 import { snackbarActions } from 'material-ui-snackbar-redux';
 import React, { memo, useEffect, useState as useToggle } from 'react';
 import delay from 'lodash/delay';
-import TaskPage from './TaskPage';
-import { TaskPageProps } from './TaskPage';
+import TaskPage, { TaskPageProps } from './TaskPage';
+
 import {
- deleteTask, Task, upsertProfile, upsertTask,
+  deleteTask,
+  Task,
+  upsertProfile,
+  upsertTask,
   TaskHistory,
   useTypedSelector,
   addPointsWithSideEffects,
 } from '../../store';
 import {
- uiSelector,
+  uiSelector,
   authSelector,
   tasksSelector,
   profileSelector,
@@ -34,7 +37,6 @@ import TaskService from '../../services/TaskService';
 
 import { getRandomTaskId, handleErrors } from '../../services';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
-
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -91,9 +93,9 @@ const Container = memo(() => {
   // Fetch task if needed.
   useEffect(() => {
     if (
-      get(firestoreStatus, 'requested.activeTasks')
-      && get(task, 'id') !== taskId
-      && !isLoading
+      get(firestoreStatus, 'requested.activeTasks') &&
+      get(task, 'id') !== taskId &&
+      !isLoading
     ) {
       log('Task fetching in progress.');
       toggleLoading(true);
@@ -169,7 +171,8 @@ const Container = memo(() => {
       try {
         history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
-        const toggleTaskDoneNotification = () => dispatch(toggleTasksDoneTodayNotification());
+        const toggleTaskDoneNotification = () =>
+          dispatch(toggleTasksDoneTodayNotification());
 
         toggleTaskDoneNotification();
         delay(toggleTaskDoneNotification, 3500);

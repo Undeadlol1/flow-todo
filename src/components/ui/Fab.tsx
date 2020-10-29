@@ -10,15 +10,15 @@ export const useFabStyles = makeStyles((theme: Theme) => ({
     zIndex: 1300,
     position: 'fixed',
     [theme.breakpoints.down('sm')]: {
-      bottom: theme.spacing(2),
+      bottom: theme.spacing(3),
       right: theme.spacing(2),
     },
     [theme.breakpoints.up('md')]: {
-      bottom: theme.spacing(4),
+      bottom: theme.spacing(5),
       right: theme.spacing(4),
     },
     [theme.breakpoints.up('lg')]: {
-      bottom: theme.spacing(6),
+      bottom: theme.spacing(7),
       right: theme.spacing(8),
     },
   },
@@ -40,7 +40,7 @@ const Fab = ({ isHidden, ...props }: Props) => {
         className={cx([classes.fab, props.className])}
       />
     </Zoom>
-    );
+  );
 };
 
 export default memo(Fab);

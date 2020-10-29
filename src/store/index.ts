@@ -1,7 +1,7 @@
 import {
   combineReducers,
   configureStore,
-  getDefaultMiddleware
+  getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import subDays from 'date-fns/subDays';
 import debug from 'debug';
@@ -14,26 +14,27 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
   firestoreReducer,
   getFirestore as getFirestore2,
-  reduxFirestore
+  reduxFirestore,
 } from 'redux-firestore';
 import {
   getFirestore,
   getNewlyUnlockedReward,
   handleErrors,
   initializeFirebase,
-  showLevelUpAnimation
+  showLevelUpAnimation,
 } from '../services/index';
 import LevelingService from '../services/leveling';
 import rewardsSlice, { Reward } from './rewardsSlice';
 import {
   authSelector,
   profilePointsSelector,
-  rewardsSelector
+  rewardsSelector,
 } from './selectors';
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import DailyStreak from '../services/dailyStreak';
+import snackbarsSlice from './snackbarsSlice';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -73,12 +74,12 @@ export type TaskHistory = {
   createdAt: number;
   comment?: string;
   actionType:
-  | 'postpone'
-  | 'updateName'
-  | 'updateSubtask'
-  | 'stepForward'
-  | 'leapForward'
-  | 'setDone';
+    | 'postpone'
+    | 'updateName'
+    | 'updateSubtask'
+    | 'stepForward'
+    | 'leapForward'
+    | 'setDone';
 };
 
 export type Task = {
@@ -209,7 +210,8 @@ initializeFirebase();
 
 export function upsertProfile(profile: Profile) {
   if (!profile.userId) throw Error('You must specify userId!');
-  if (!profile.dailyStreak) profile.dailyStreak = DailyStreak.getEmptyStreak()
+  if (!profile.dailyStreak)
+    profile.dailyStreak = DailyStreak.getEmptyStreak();
   return getFirestore()
     .doc('profiles/' + profile.userId)
     .set(profile, { merge: true });
@@ -248,7 +250,8 @@ export function addPointsWithSideEffects(
   );
   // TODO refactor
   if (nextReward) store.dispatch(toggleRewardModal());
-  if (LevelingService.willUserLevelUp(profilePoints, points)) showLevelUpAnimation();
+  if (LevelingService.willUserLevelUp(profilePoints, points))
+    showLevelUpAnimation();
 
   return addPoints(auth.uid, points);
 }
@@ -270,6 +273,7 @@ const rootReducer = combineReducers({
   users: userSlice,
   tasks: tasksSlice,
   rewards: rewardsSlice,
+  snackbars: snackbarsSlice,
   snackbar: snackbarReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,

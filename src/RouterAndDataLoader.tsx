@@ -10,6 +10,7 @@ import RewardModal from './components/rewards/RewardModal';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
+import { GlobalSnackbar } from './components/unsorted/GlobalSnackbar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 import FAQPage from './pages/FAQPage';
 import HomePage from './pages/IndexPage/IndexPage';
@@ -129,6 +130,7 @@ export default memo(function RouterAndDataLoader(props: {
       />
       <Sidebar isOpen={isSidebarOpen} isLoggedIn={!user.isEmpty} />
       <RewardModal isOpen={isRewardModalOpen} />
+      <GlobalSnackbar />
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">

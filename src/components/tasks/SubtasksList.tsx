@@ -1,3 +1,4 @@
+import { Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,10 +7,10 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import { makeStyles } from '@material-ui/styles';
 import arrayMove from 'array-move';
 import firebase from 'firebase/app';
 import isEmpty from 'lodash/isEmpty';
@@ -24,13 +25,12 @@ import {
 import { getFirestore } from 'redux-firestore';
 import {
   handleErrors,
-  showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
+import Snackbar from '../../services/Snackbar';
 import { deleteSubtask, Subtask } from '../../store';
 import { addPointsWithSideEffects } from '../../store/index';
 import { authSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -70,7 +70,7 @@ const SortableItem = SortableElement(
     }
 
     function setDone() {
-      showSnackbar(t('goodJobPointsRecieved', { points: 10 }));
+      Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
       Promise.all([
         remove(),
         addPointsWithSideEffects(auth.uid, 10),

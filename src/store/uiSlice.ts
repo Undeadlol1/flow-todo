@@ -7,7 +7,7 @@ export type UiState = {
   isSidebarOpen: boolean;
   isAppTourActive: boolean;
   isRewardModalOpen: boolean;
-  isTasksDoneTodayNotificationOpen: boolean,
+  isTasksDoneTodayNotificationOpen: boolean;
   preferedColorScheme: UiColorScheme;
 };
 

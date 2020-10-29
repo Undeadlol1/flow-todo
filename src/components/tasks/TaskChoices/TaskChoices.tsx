@@ -1,14 +1,15 @@
-import { Typography, Theme } from '@material-ui/core';
+import { Theme, Typography } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/styles';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
+import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
+import map from 'lodash/map';
 import head from 'ramda/es/head';
 import React from 'react';
 import { When } from 'react-if';
@@ -20,14 +21,10 @@ import {
 } from '../../../services';
 import {
   distanceBetweenDates,
-  showSnackbar,
   useTypedTranslate,
 } from '../../../services/index';
-import { Task, Subtask } from '../../../store/index';
-import map from 'lodash/map';
-import { useDispatch } from 'react-redux';
-import { addSnackbarToQueue } from '../../../store/snackbarsSlice';
 import Snackbar from '../../../services/Snackbar';
+import { Subtask, Task } from '../../../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -46,7 +43,6 @@ interface Props {
 
 const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
-  const dispatch = useDispatch();
   const classes = useStyles();
   const activeSubtasks =
     filter(props.task.subtasks, i => !i.isDone) || [];

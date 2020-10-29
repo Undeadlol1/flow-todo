@@ -1,40 +1,40 @@
 import debug from 'debug';
-import get from 'lodash/get';
-import find from 'lodash/find';
-import TaskPage from './TaskPage';
+import delay from 'lodash/delay';
 import filter from 'lodash/filter';
+import find from 'lodash/find';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
-import { TaskPageProps } from './TaskPage';
-import { useTranslation } from 'react-i18next';
-import { deleteTask, Task } from '../../store';
-import { uiSelector } from '../../store/selectors';
-import { useFirestore } from 'react-redux-firebase';
-import DailyStreak from '../../services/dailyStreak';
-import TaskService from '../../services/TaskService';
-import { useHistory, useParams } from 'react-router-dom';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { upsertProfile, upsertTask } from '../../store/index';
+import React, { memo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
+import { useHistory, useParams } from 'react-router-dom';
+import useToggle from 'react-use/lib/useToggle';
 import { getRandomTaskId, handleErrors } from '../../services';
-import React, { memo, useEffect, useState as useToggle } from 'react';
-import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import DailyStreak from '../../services/dailyStreak';
+import Snackbar from '../../services/Snackbar';
+import TaskService from '../../services/TaskService';
+import { deleteTask, Task } from '../../store';
 import {
-  TaskHistory,
-  useTypedSelector,
   addPointsWithSideEffects,
+  TaskHistory,
+  upsertProfile,
+  upsertTask,
+  useTypedSelector,
 } from '../../store/index';
 import {
-  authSelector,
-  tasksSelector,
-  profileSelector,
   activeTaskSelector,
+  authSelector,
   fetchedTaskSelector,
-  tasksDoneTodaySelector,
   firestoreStatusSelector,
+  profileSelector,
+  tasksDoneTodaySelector,
+  tasksSelector,
+  uiSelector,
 } from '../../store/selectors';
-import delay from 'lodash/delay';
-import Snackbar from '../../services/Snackbar';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import TaskPage, { TaskPageProps } from './TaskPage';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -59,7 +59,6 @@ const Container = memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
-  const { enqueueSnackbar } = useSnackbar();
   // Data.
   let { taskId = '' } = useParams();
   const tasks = useTypedSelector(tasksSelector) || [];

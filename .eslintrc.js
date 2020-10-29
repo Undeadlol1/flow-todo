@@ -8,11 +8,14 @@ module.exports = {
     // "plugin:prettier/recommended",
     'airbnb',
     'plugin:import/errors',
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  parser:  '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -26,6 +29,9 @@ module.exports = {
     // 'prettier',
   ],
   settings: {
+    react:  {
+      version:  'detect',
+    },
     'import/resolver': {
       node: {
         moduleDirectory: ['node_modules', 'src/'],
@@ -36,11 +42,15 @@ module.exports = {
   rules: {
     indent: [0, 'never'], // prettier is responsible for indent
     semicolon: [0, 'never'],
+    'linebreak-style': 0,
     // "prettier/prettier": ["error"],
     'react/jsx-filename-extension': [
       1,
       { extensions: ['.js', '.jsx', '.tsx'] },
     ],
+    // https://stackoverflow.com/a/64024916/4380989
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
     'react/destructuring-assignment': [0, 'never'],
     'react/jsx-props-no-spreading': [0, 'never'],
     'import/no-named-as-default': [0, 'never'],

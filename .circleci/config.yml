@@ -37,4 +37,4 @@ workflows:
         branches:
           only:
             - master
-      deploy
+      - deploy

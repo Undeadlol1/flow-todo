@@ -9,7 +9,7 @@ import React from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import * as Yup from 'yup';
+import { object as YupObject, string as YupString } from 'yup';
 import {
   handleErrors,
   useTypedTranslate,
@@ -45,8 +45,8 @@ export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
   const form = useForm<{ name: string }>({
-    validationSchema: Yup.object({
-      name: Yup.string()
+    validationSchema: YupObject({
+      name: YupString()
         .min(3, t('validation.atleast3Symbols'))
         .max(100, t('validation.textIsTooLong'))
         .required(t('validation.required')),

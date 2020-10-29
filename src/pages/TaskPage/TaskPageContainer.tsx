@@ -60,6 +60,7 @@ const Container = memo(() => {
   const firestoreRedux = useFirestore();
   const { enqueueSnackbar } = useSnackbar();
   // Data.
+  // @ts-ignore
   let { taskId = '' } = useParams();
   const tasks = useTypedSelector(tasksSelector) || [];
   const currentTaskId = get(

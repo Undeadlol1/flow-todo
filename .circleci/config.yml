@@ -1,4 +1,3 @@
-version: 2
 jobs:
   build:
     branches:
@@ -25,16 +24,17 @@ jobs:
       - run:
           name: Build
           command: npm run build
+
+  deploy:
+    requires:
+      - build
       - run:
           name: Firebase Deploy
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
-      # - run:
-      #     name: Chromatic Deploy
-      #     command: npx chromatic -t "$CHROMATIC_TOKEN" --exit-zero-on-changes
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build
-      # - test
+      - deploy

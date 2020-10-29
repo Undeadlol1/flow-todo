@@ -6,7 +6,8 @@
         "dayliStreak",
         "TaskPage",
         "Profile",
-        "templates"
+        "templates",
+        "eslint"
     ],
     "eslint.enable": true
 }

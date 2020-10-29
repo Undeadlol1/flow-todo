@@ -4,7 +4,7 @@ import { WhatDoYouFeelAboutTheTask } from './WhatDoYouFeelAboutTheTask';
 
 export default {
   component: WhatDoYouFeelAboutTheTask,
-  title: sections.tasks + 'WhatDoYouFeelAboutTheTask',
+  title: `${sections.tasks}WhatDoYouFeelAboutTheTask`,
 };
 
 export const Normal = () => <WhatDoYouFeelAboutTheTask />;

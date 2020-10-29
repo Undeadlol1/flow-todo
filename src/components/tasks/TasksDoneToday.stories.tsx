@@ -5,7 +5,7 @@ import TasksDoneToday from './TasksDoneToday';
 
 export default {
   component: TasksDoneToday,
-  title: sections.tasks + 'TasksDoneToday',
+  title: `${sections.tasks}TasksDoneToday`,
 };
 
 const props = TasksDoneTodaySampleProps;

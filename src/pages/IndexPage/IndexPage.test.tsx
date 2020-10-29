@@ -11,7 +11,7 @@ describe('<HomePage />', () => {
 
   describe('"add task" button', () => {
     test('is hidden during loading', () => {
-      const wrapper = shallow(<IndexPage isLoading={true} />);
+      const wrapper = shallow(<IndexPage isLoading />);
       const Fab = wrapper.find('.IntroHandle__createTask');
       // expect(Fab.exists()).toBeTruthy();
     });

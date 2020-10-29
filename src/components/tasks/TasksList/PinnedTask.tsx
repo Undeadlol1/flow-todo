@@ -10,6 +10,9 @@ import isEmpty from 'lodash/isEmpty';
 import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import {
   handleErrors,
   showSnackbar,
@@ -22,18 +25,15 @@ import {
 } from '../../../store/selectors';
 import CreateSubtask from '../CreateSubtask/CreateSubtask';
 import SubtasksList from '../SubtasksList';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip';
 
 let taskId = '';
 const log = debug('Pinnedtask');
 
-export default memo(function PinnedTask() {
+export default memo(() => {
   const t = useTypedTranslate();
   const auth = useSelector(authSelector);
   const task = useSelector(pinnedTaskSelector);
-  const taskRef = useFirestore().doc('tasks/' + task.id || taskId);
+  const taskRef = useFirestore().doc(`tasks/${task.id}` || taskId);
   log('task: ', task);
   log('taskId: ', taskId);
   if (isEmpty(task)) return null;
@@ -62,7 +62,7 @@ export default memo(function PinnedTask() {
 
   return (
     <Card>
-      <Link component={RouterLink} to={'tasks/' + taskId}>
+      <Link component={RouterLink} to={`tasks/${taskId}`}>
         <CardHeader title={task.name} />
       </Link>
       <CardContent>

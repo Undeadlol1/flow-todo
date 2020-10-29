@@ -5,7 +5,7 @@ import { NumbersAnimatedOnUpdate } from './NumbersAnimatedOnUpdate';
 
 export default {
   component: NumbersAnimatedOnUpdate,
-  title: sections.ui + 'NumbersAnimatedOnUpdate',
+  title: `${sections.ui}NumbersAnimatedOnUpdate`,
 };
 
 export const Demo = () => {

@@ -132,7 +132,7 @@
     "concurrently": "^5.0.0",
     "customize-cra": "^1.0.0",
     "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",

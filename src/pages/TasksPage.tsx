@@ -2,10 +2,10 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
 import React, { memo } from 'react';
+import { Theme } from '@material-ui/core';
 import { useTypedSelector } from '../store';
 import { tasksSelector } from '../store/selectors';
-import { TasksList } from './../components/tasks/TasksList/TasksList';
-import { Theme } from '@material-ui/core';
+import { TasksList } from '../components/tasks/TasksList/TasksList';
 
 const log = debug('RewardsPage');
 const useStyles = makeStyles((theme: Theme) => ({

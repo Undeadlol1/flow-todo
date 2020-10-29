@@ -64,9 +64,7 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        onSubmit={form.handleSubmit((values: any) =>
-          props.onSubmit(values, form.reset),
-        )}
+        onSubmit={form.handleSubmit((values: any) => props.onSubmit(values, form.reset))}
       >
         <TextField
           fullWidth
@@ -134,9 +132,9 @@ function UpsertTaskContainer({
       if (showSnackbarOnSuccess) {
         enqueueSnackbar(
           pointsToAdd
-            ? translate('Successfully saved') +
-                '. ' +
-                translate('points added', { points: pointsToAdd })
+            ? `${translate('Successfully saved')
+                }. ${
+                translate('points added', { points: pointsToAdd })}`
             : translate('Successfully saved'),
         );
       }

@@ -12,14 +12,14 @@ import Paper from '@material-ui/core/Paper';
 import { When } from 'react-if';
 import isEmpty from 'lodash/isEmpty';
 import Box from '@material-ui/core/Box';
-import { tasksSelector } from '../../../store/selectors';
-import { useTypedSelector, Task } from '../../../store/index';
 import { Theme } from '@material-ui/core';
 import debug from 'debug';
 import Pagination from '@material-ui/lab/Pagination';
 import slice from 'lodash/slice';
 import get from 'lodash/get';
 import shuffle from 'lodash/shuffle';
+import { useTypedSelector, Task } from '../../../store/index';
+import { tasksSelector } from '../../../store/selectors';
 
 const log = debug('TasksList');
 
@@ -85,36 +85,34 @@ export function TasksList({
           randomizedTasks,
           tasksPerPage * (page - 1), // Start from.
           tasksPerPage * page, // End at.
-        ).map((task, index) => {
-          return (
-            <ListItem
-              key={task.id}
-              component={Link}
-              className={classes.link}
-              to={`/tasks/${task.id}`}
-            >
-              <ListItemText
-                primary={get(task, 'subtasks[0].name', task.name)}
-                classes={{
+        ).map((task, index) => (
+          <ListItem
+            key={task.id}
+            component={Link}
+            className={classes.link}
+            to={`/tasks/${task.id}`}
+          >
+            <ListItemText
+              primary={get(task, 'subtasks[0].name', task.name)}
+              classes={{
                   primary: classes.text,
                   root: classes.textWrapper,
                 }}
-              />
-              <When condition={!!canDelete}>
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="Delete"
+            />
+            <When condition={!!canDelete}>
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="Delete"
                     // @ts-ignore
-                    onClick={() => deleteTask(task.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </When>
-            </ListItem>
-          );
-        })}
+                  onClick={() => deleteTask(task.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </When>
+          </ListItem>
+          ))}
       </List>
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">

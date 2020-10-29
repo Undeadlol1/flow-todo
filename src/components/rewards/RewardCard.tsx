@@ -7,11 +7,11 @@ import clsx from 'clsx';
 import debug from 'debug';
 import React, { memo } from 'react';
 import { When } from 'react-if';
+import CardMedia from '@material-ui/core/CardMedia';
+import { Theme } from '@material-ui/core';
 import { useTypedTranslate } from '../../services/index';
 import { Reward } from '../../store/rewardsSlice';
 import { claimReward } from '../../store';
-import CardMedia from '@material-ui/core/CardMedia';
-import { Theme } from '@material-ui/core';
 
 const log = debug('RewardCard');
 const useStyles = makeStyles((theme: Theme) => ({

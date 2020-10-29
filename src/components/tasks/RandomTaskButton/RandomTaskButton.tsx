@@ -15,13 +15,13 @@ import { Else, If, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
+import { Theme } from '@material-ui/core';
 import { Task, useTypedSelector } from '../../../store/index';
 import {
   activeTaskSelector,
   tasksSelector,
   uiSelector,
 } from '../../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -62,13 +62,13 @@ export const RandomTaskButton = ({
   const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);
   // TODO: move logic into a service?
   if (
-    !isEmpty(docs) &&
-    !currentTaskId &&
-    !isAppTourActive &&
-    randomTaskId
+    !isEmpty(docs)
+    && !currentTaskId
+    && !isAppTourActive
+    && randomTaskId
   ) {
     firestore
-      .doc('tasks/' + randomTaskId)
+      .doc(`tasks/${randomTaskId}`)
       .update({ isCurrent: true });
   }
 
@@ -111,9 +111,9 @@ interface ContainerProps {
   tasks?: firestore.QuerySnapshot;
 }
 
-export default memo(function RandomTaskButtonContainer(
+export default memo((
   props: ContainerProps,
-) {
+) => {
   const tasks = useSelector(tasksSelector);
   const { isAppTourActive } = useTypedSelector(uiSelector);
 
@@ -122,7 +122,7 @@ export default memo(function RandomTaskButtonContainer(
       {...{
         ...props,
         isAppTourActive,
-        tasks: tasks,
+        tasks,
         loading: isUndefined(tasks),
       }}
     />

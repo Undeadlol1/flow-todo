@@ -101,8 +101,7 @@ const Sidebar: React.FC<{
         <ListItem
           button
           onClick={() => {
-            window.location.href =
-              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
+            window.location.href = 'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
           }}
         >
           <ListItemIcon>
@@ -119,7 +118,7 @@ const Sidebar: React.FC<{
             <StyledListText primary={t('share')} />
           </ListItem>
         </When>
-        <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
+        <MailTo secure className={cx.mailto} to="paleyblog@gmail.com">
           <ListItem button>
             <ListItemIcon>
               <EmailIcon />

@@ -19,6 +19,8 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Theme } from '@material-ui/core';
+import classNames from 'classnames';
 import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
@@ -29,8 +31,6 @@ import {
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
-import { Theme } from '@material-ui/core';
-import classNames from 'classnames';
 
 const log = debug('NavBar');
 
@@ -107,8 +107,7 @@ export function LoginOrLogoutButton() {
   );
   const points = useTypedSelector(profilePointsSelector);
   const experience = get(profile, 'experience', 0);
-  const photoUrl =
-    get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
+  const photoUrl = get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
   const hasPhoto = !!photoUrl;
   log('profile: ', profile);
 
@@ -148,8 +147,8 @@ export function LoginOrLogoutButton() {
               color="secondary"
               // NOTE: "+1" is a quick fix
               badgeContent={
-                profile.isLoaded &&
-                Math.trunc(
+                profile.isLoaded
+                && Math.trunc(
                   LevelingService.calculateUserLevel(experience),
                 ) + 1
               }

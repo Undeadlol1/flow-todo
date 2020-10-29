@@ -17,7 +17,10 @@ import head from 'ramda/es/head';
 import prop from 'ramda/es/prop';
 import React, { useEffect } from 'react';
 import { When } from 'react-if';
-import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import {
+ Link, Route, Switch, useRouteMatch,
+} from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
@@ -35,7 +38,6 @@ import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
-import isEmpty from 'lodash/isEmpty';
 
 // TODO i18n
 const encouragingMessages = [
@@ -134,6 +136,7 @@ export default function TaskPage(props: TaskPageProps) {
         {...tasksDoneTodayNotificationProps}
       />
       <Timer
+        autoStart
         onEnd={() => {
           // TODO i18n
           enqueueSnackbar(
@@ -143,7 +146,6 @@ export default function TaskPage(props: TaskPageProps) {
             },
           );
         }}
-        autoStart
       />
       <Grid item xs={12}>
         <Grid
@@ -156,7 +158,7 @@ export default function TaskPage(props: TaskPageProps) {
               <MuiLink component={Link} to={`/tasks/${taskId}`}>
                 <CardContent>
                   <When condition={!isEmpty(activeSubtasks)}>
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography gutterBottom color="textSecondary">
                       {task.name}
                     </Typography>
                   </When>
@@ -177,7 +179,7 @@ export default function TaskPage(props: TaskPageProps) {
           </Zoom>
         </Grid>
       </Grid>
-      <Grid container justify="center" item xs={12}>
+      <Grid container item justify="center" xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome/isHard`}>
             <HardChoices {...props} />
@@ -185,7 +187,7 @@ export default function TaskPage(props: TaskPageProps) {
           <Route path={`${path}/isTroublesome`}>
             <TroublesChoices {...props} />
           </Route>
-          <Route path={path + '/isGood'}>
+          <Route path={`${path}/isGood`}>
             <TaskChoices
               className="IntroHandle__choices"
               {...props}

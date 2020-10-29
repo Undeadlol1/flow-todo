@@ -1,7 +1,7 @@
 import { Card, CardContent, TextField } from '@material-ui/core';
 import React, { ChangeEvent, memo } from 'react';
-import { useTypedSelector } from '../../store';
-import { upsertProfile } from '../../store/index';
+import { useTypedSelector, upsertProfile } from '../../store';
+
 import { profileSelector } from '../../store/selectors';
 
 function DayliTasksStreakForm() {

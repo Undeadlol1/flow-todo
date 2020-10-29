@@ -10,6 +10,7 @@ import { loremIpsum } from 'lorem-ipsum';
 import nanoid from 'nanoid';
 import React, { MouseEvent, useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
+import { Theme } from '@material-ui/core';
 import LevelingService from '../../services/leveling';
 import {
   addPoints,
@@ -19,7 +20,6 @@ import {
   useTypedSelector,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -80,7 +80,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
 
   function resetLevel() {
     firestore
-      .doc('profiles/' + auth.uid)
+      .doc(`profiles/${auth.uid}`)
       .update({ points: 0, experience: 0 } as Profile);
   }
 
@@ -93,29 +93,28 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   if (process.env.NODE_ENV !== 'development') return null;
-  else
-    return (
-      <Box>
-        <Fab onClick={toggleMenu} className={cx.root}>
-          <BuildIcon />
-        </Fab>
-        <Menu
-          keepMounted
-          onClose={toggleMenu}
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
+  return (
+    <Box>
+      <Fab className={cx.root} onClick={toggleMenu}>
+        <BuildIcon />
+      </Fab>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={toggleMenu}
+      >
+        <MenuItem
+          onClick={() => addPointsWithSideEffects(auth.uid, 50)}
         >
-          <MenuItem
-            onClick={() => addPointsWithSideEffects(auth.uid, 50)}
-          >
-            Add 50 points
-          </MenuItem>
-          <MenuItem onClick={resetLevel}>Reset level</MenuItem>
-          <MenuItem onClick={levelUp}>Level up</MenuItem>
-          <MenuItem onClick={createAReward}>Add a reward</MenuItem>
-          <MenuItem onClick={addTask}>Add a task</MenuItem>
-        </Menu>
-      </Box>
+          Add 50 points
+        </MenuItem>
+        <MenuItem onClick={resetLevel}>Reset level</MenuItem>
+        <MenuItem onClick={levelUp}>Level up</MenuItem>
+        <MenuItem onClick={createAReward}>Add a reward</MenuItem>
+        <MenuItem onClick={addTask}>Add a task</MenuItem>
+      </Menu>
+    </Box>
     );
 };
 

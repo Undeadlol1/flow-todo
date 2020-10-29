@@ -15,12 +15,12 @@ import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
+import { Theme } from '@material-ui/core';
 import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {},

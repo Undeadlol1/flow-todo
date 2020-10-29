@@ -39,7 +39,7 @@ const WhatDoYouFeelAboutTheTask = memo((props: Props) => {
               <Fab
                 component={Link}
                 color="secondary"
-                to={url + '/isGood'}
+                to={`${url}/isGood`}
               >
                 <SatisfiedIcon fontSize="large" />
               </Fab>
@@ -48,7 +48,7 @@ const WhatDoYouFeelAboutTheTask = memo((props: Props) => {
               <Fab
                 component={Link}
                 color="primary"
-                to={url + '/isTroublesome'}
+                to={`${url}/isTroublesome`}
               >
                 <DissatisfiedIcon fontSize="large" />
               </Fab>

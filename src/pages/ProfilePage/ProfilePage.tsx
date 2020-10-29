@@ -17,6 +17,7 @@ import {
   useFirestore,
   UserProfile as User,
 } from 'react-redux-firebase';
+import { Theme } from '@material-ui/core';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
@@ -26,10 +27,9 @@ import {
   Profile,
   useTypedSelector,
   FirebaseUserProfile,
+ upsertProfile,
 } from '../../store/index';
 import { profileSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
-import { upsertProfile } from '../../store/index';
 
 const log = debug('ProfilePage');
 
@@ -47,7 +47,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export const ProfilePage = memo(function ProfilePage(props: Props) {
+export const ProfilePage = memo((props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
   const firestore = useFirestore();
@@ -57,20 +57,19 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
   function reset(fieldToReset: string) {
     if (props.isLoading) return;
     // eslint-disable-next-line no-restricted-globals
-    if (confirm(t('are you sure')))
-      firestore
-        .doc('profiles/' + userId)
+    if (confirm(t('are you sure'))) {
+ firestore
+        .doc(`profiles/${userId}`)
         .update({
           [fieldToReset]: 0,
         })
         .catch(handleErrors);
+}
   }
   const photoUrl = props.user!.photoURL;
-  const title =
-    props.user!.displayName || props.user!.email || t('anonymous');
+  const title = props.user!.displayName || props.user!.email || t('anonymous');
   // TODO get rid of + 1
-  const userLevel =
-    LevelingService.calculateUserLevel(profile.experience) + 1;
+  const userLevel = LevelingService.calculateUserLevel(profile.experience) + 1;
 
   function updateProfile(profile: Profile) {
     profile.userId = userId;
@@ -113,13 +112,11 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
         <Box mb={2}>
           <ToggleEncouragingMessages
             isLoading={props.isLoading}
-            onChange={areEcouragingMessagesDisabled =>
-              updateProfile({
+            value={profile.areEcouragingMessagesDisabled}
+            onChange={areEcouragingMessagesDisabled => updateProfile({
                 ...profile,
                 areEcouragingMessagesDisabled,
-              })
-            }
-            value={profile.areEcouragingMessagesDisabled}
+              })}
           />
         </Box>
         <Card>
@@ -146,7 +143,7 @@ export const ProfilePage = memo(function ProfilePage(props: Props) {
 });
 
 export const ProfilePageContainer = memo(
-  function ProfilePageContainer(props) {
+  (props) => {
     const user = useTypedSelector(s => get(s, 'firebase.auth'));
     const profile = useTypedSelector(s => get(s, 'firebase.profile'));
     const isLoading = !(user.isLoaded && profile.isLoaded);

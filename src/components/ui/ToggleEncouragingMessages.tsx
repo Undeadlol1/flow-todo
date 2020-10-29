@@ -10,29 +10,27 @@ interface Props {
   onChange: (checked: boolean) => void;
 }
 
-const ToggleEncouragingMessages = memo((props: Props) => {
-  return (
-    <Card>
-      <CardContent>
-        <FormControl fullWidth>
-          {/* TODO i18n */}
-          <FormControlLabel
-            control={
-              <Switch
+const ToggleEncouragingMessages = memo((props: Props) => (
+  <Card>
+    <CardContent>
+      <FormControl fullWidth>
+        {/* TODO i18n */}
+        <FormControlLabel
+          control={(
+            <Switch
                 // TODO
-                name="checkedA"
-                disabled={props.isLoading}
-                checked={!props.value}
-                onChange={e => props.onChange(!e.target.checked)}
-              />
-            }
+              name="checkedA"
+              disabled={props.isLoading}
+              checked={!props.value}
+              onChange={e => props.onChange(!e.target.checked)}
+            />
+            )}
             // TODO i18n
-            label={'Мотивационные сообщения экрана с задачей'}
-          />
-        </FormControl>
-      </CardContent>
-    </Card>
-  );
-});
+          label="Мотивационные сообщения экрана с задачей"
+        />
+      </FormControl>
+    </CardContent>
+  </Card>
+  ));
 
 export default ToggleEncouragingMessages;

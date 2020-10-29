@@ -32,15 +32,14 @@ const Fab = ({ isHidden, ...props }: Props) => {
   const classes = useFabStyles();
 
   if (isHidden) return null;
-  else
-    return (
-      <Zoom in>
-        <MUIFab
-          color="primary"
-          {...props}
-          className={cx([classes.fab, props.className])}
-        />
-      </Zoom>
+  return (
+    <Zoom in>
+      <MUIFab
+        color="primary"
+        {...props}
+        className={cx([classes.fab, props.className])}
+      />
+    </Zoom>
     );
 };
 

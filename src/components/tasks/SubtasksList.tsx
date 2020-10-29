@@ -22,15 +22,15 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc';
 import { getFirestore } from 'redux-firestore';
+import { Theme } from '@material-ui/core';
 import {
   handleErrors,
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { deleteSubtask, Subtask } from '../../store';
-import { addPointsWithSideEffects } from '../../store/index';
+import { deleteSubtask, Subtask, addPointsWithSideEffects } from '../../store';
+
 import { authSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -90,7 +90,7 @@ const SortableItem = SortableElement(
           className={classes.link}
         />
         <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={remove} aria-label="Delete">
+          <IconButton edge="end" aria-label="Delete" onClick={remove}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>
@@ -128,7 +128,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
     const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
     setSubtasksStub(updatedSubtasks);
     firestore
-      .doc('tasks/' + taskId)
+      .doc(`tasks/${taskId}`)
       .update({ subtasks: updatedSubtasks })
       .catch(handleErrors);
   };
@@ -136,10 +136,10 @@ export default function SubtasksList({ documents, ...props }: Props) {
   return (
     <Paper elevation={6} className={classes.paper}>
       <SortableListContainer
+        useDragHandle
         lockAxis="y"
-        onSortEnd={onSortEnd}
-        useDragHandle={true}
         items={subtasksStub || documents}
+        onSortEnd={onSortEnd}
       />
     </Paper>
   );

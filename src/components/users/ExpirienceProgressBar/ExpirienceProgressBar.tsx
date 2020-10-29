@@ -6,8 +6,8 @@ import debug from 'debug';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
-import LevelingService from '../../../services/leveling';
 import { Box, Theme } from '@material-ui/core';
+import LevelingService from '../../../services/leveling';
 import { Profile } from '../../../store/index';
 
 const log = debug('ExpirienceProgressBar');
@@ -41,56 +41,53 @@ export const ExpirienceProgressBar: React.FC<{
   const pointsToReachNextLevel = LevelingService.calculateTotalPointsToReachALevel(
     level + 1,
   );
-  const differenceBetweenLevels =
-    pointsToReachNextLevel - pointsToReachPreviousLevel;
-  const userProgressInPoints =
-    userPoints - pointsToReachPreviousLevel;
-  const progressPercent =
-    (userProgressInPoints * 100) / differenceBetweenLevels;
+  const differenceBetweenLevels = pointsToReachNextLevel - pointsToReachPreviousLevel;
+  const userProgressInPoints = userPoints - pointsToReachPreviousLevel;
+  const progressPercent = (userProgressInPoints * 100) / differenceBetweenLevels;
 
   log('level', level);
   log('userPoints', userPoints);
   log(
     'points to next level',
-    pointsToReachPreviousLevel +
-      LevelingService.calculatePointsToNextLevel(level),
+    pointsToReachPreviousLevel
+      + LevelingService.calculatePointsToNextLevel(level),
   );
   log('progressPercent: ', progressPercent);
 
-  if (isUndefined(props.profile))
-    return (
-      <LinearProgress
-        color="secondary"
-        className={cx([classes.progress, props.className])}
-      />
+  if (isUndefined(props.profile)) {
+ return (
+   <LinearProgress
+     color="secondary"
+     className={cx([classes.progress, props.className])}
+   />
     );
-  else
-    return (
-      <Tooltip
-        arrow
-        title={
-          userPoints -
-          pointsToReachPreviousLevel +
-          '/' +
-          (pointsToReachNextLevel - pointsToReachPreviousLevel)
+}
+  return (
+    <Tooltip
+      arrow
+      title={
+          `${userPoints
+          - pointsToReachPreviousLevel
+          }/${
+          pointsToReachNextLevel - pointsToReachPreviousLevel}`
         }
-      >
-        <Box>
-          <LinearProgress
-            color="secondary"
-            value={progressPercent === 100 ? 0 : progressPercent}
-            className={cx(!props.profile && classes.hidden, [
+    >
+      <Box>
+        <LinearProgress
+          color="secondary"
+          value={progressPercent === 100 ? 0 : progressPercent}
+          className={cx(!props.profile && classes.hidden, [
               classes.progress,
               props.className,
             ])}
-            variant={
+          variant={
               props.isAnimationActive
                 ? 'indeterminate'
                 : 'determinate'
             }
-          />
-        </Box>
-      </Tooltip>
+        />
+      </Box>
+    </Tooltip>
     );
 });
 

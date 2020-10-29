@@ -9,8 +9,8 @@ import findLast from 'ramda/es/findLast';
 import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTypedTranslate } from '../../services/index';
-import { Profile, useTypedSelector } from '../../store';
-import { claimReward } from '../../store/index';
+import { Profile, useTypedSelector, claimReward } from '../../store';
+
 import { Reward } from '../../store/rewardsSlice';
 import { toggleRewardModal } from '../../store/uiSlice';
 import RewardCard from './RewardCard';
@@ -47,22 +47,23 @@ const RewardModal: React.FC<Props> = props => {
   return (
     <Dialog
       open={props.isOpen}
-      onClose={toggleModal}
       aria-labelledby="alert-dialog-title"
       className={clsx(props.className)}
       aria-describedby="alert-dialog-title"
+      onClose={toggleModal}
     >
       <DialogTitle id="alert-dialog-title">
-        {t('you unlocked a reward')}!
+        {t('you unlocked a reward')}
+        !
       </DialogTitle>
       <DialogContent>
-        <RewardCard reward={unlockedReward} isRaised />
+        <RewardCard isRaised reward={unlockedReward} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={takeReward} color="primary">
+        <Button color="primary" onClick={takeReward}>
           {t('take')}
         </Button>
-        <Button onClick={toggleModal} color="primary" autoFocus>
+        <Button autoFocus color="primary" onClick={toggleModal}>
           {t('keep earning')}
         </Button>
       </DialogActions>

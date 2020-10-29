@@ -26,9 +26,9 @@ const GlobalSnackbar = memo(
           horizontal: 'center',
         }}
         open={isDialogOpen}
-        onClose={toggleDialog}
-        // autoHideDuration={6000}
         message="Note archived"
+        // autoHideDuration={6000}
+        onClose={toggleDialog}
       />
     );
   },

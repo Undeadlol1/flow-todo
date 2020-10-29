@@ -16,19 +16,19 @@ const UserPoints = memo(
   }) => {
     logger('isLoaded', isLoaded);
 
-    if (isLoaded)
-      return (
-        <Chip
-          color="secondary"
-          label={
+    if (isLoaded) {
+ return (
+   <Chip
+     color="secondary"
+     label={
             isLoaded && <NumbersAnimatedOnUpdate value={nextPoints} />
           }
-        />
+   />
       );
-    else
-      return <Skeleton variant="circle" width="33px" height="33px" />;
+}
+    return <Skeleton variant="circle" width="33px" height="33px" />;
   },
-  function(previousProps, nextProps) {
+  (previousProps, nextProps) => {
     if (previousProps.isLoaded !== nextProps.isLoaded) return false;
     // There is a strange bug where on window resize
     // state resets and value is 0. Then it data is fetched again.

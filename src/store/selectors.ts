@@ -10,7 +10,13 @@ import uniq from 'lodash/uniq';
 import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { IDayliStreak, Profile, RootReducer, Task, TaskHistory } from './index';
+import {
+  IDayliStreak,
+  Profile,
+  RootReducer,
+  Task,
+  TaskHistory,
+} from './index';
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
@@ -99,16 +105,17 @@ export const profileSelector = createSelector(
   // Add default values to profile.
   value => {
     // New object is created to avoid "no mutations" error.
-    let profile = Object.create((value || {
+    const profile = Object.create((value || {
       experience: 0,
       points: 0,
     }) as Profile);
-    if (!profile.dailyStreak)
+    if (!profile.dailyStreak) {
       profile.dailyStreak = {
         perDay: 3,
         startsAt: null,
         updatedAt: null,
       } as IDayliStreak;
+    }
     return profile as Profile;
   },
 );

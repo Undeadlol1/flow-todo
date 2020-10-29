@@ -8,8 +8,8 @@ import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import * as Yup from 'yup';
-import { createSubtask } from '../../../store/index';
 import { Theme } from '@material-ui/core';
+import { createSubtask } from '../../../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {},
@@ -25,7 +25,9 @@ const CreateSubtask = (props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
   const [isLocked, toggleLock] = useToggle(false);
-  const { register, handleSubmit, errors, reset, setError } = useForm(
+  const {
+ register, handleSubmit, errors, reset, setError,
+} = useForm(
     {
       validationSchema: Yup.object({
         name: Yup.string()

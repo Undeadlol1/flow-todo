@@ -1,30 +1,26 @@
 import debug from 'debug';
 import get from 'lodash/get';
 import find from 'lodash/find';
-import TaskPage from './TaskPage';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
-import { TaskPageProps } from './TaskPage';
 import { useTranslation } from 'react-i18next';
-import { deleteTask, Task } from '../../store';
-import { uiSelector } from '../../store/selectors';
 import { useFirestore } from 'react-redux-firebase';
-import DailyStreak from '../../services/dailyStreak';
-import TaskService from '../../services/TaskService';
 import { useHistory, useParams } from 'react-router-dom';
 import { snackbarActions } from 'material-ui-snackbar-redux';
-import { upsertProfile, upsertTask } from '../../store/index';
-import { getRandomTaskId, handleErrors } from '../../services';
 import React, { memo, useEffect, useState as useToggle } from 'react';
-import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import delay from 'lodash/delay';
+import TaskPage from './TaskPage';
+import { TaskPageProps } from './TaskPage';
 import {
+ deleteTask, Task, upsertProfile, upsertTask,
   TaskHistory,
   useTypedSelector,
   addPointsWithSideEffects,
-} from '../../store/index';
+} from '../../store';
 import {
+ uiSelector,
   authSelector,
   tasksSelector,
   profileSelector,
@@ -33,7 +29,12 @@ import {
   tasksDoneTodaySelector,
   firestoreStatusSelector,
 } from '../../store/selectors';
-import delay from 'lodash/delay';
+import DailyStreak from '../../services/dailyStreak';
+import TaskService from '../../services/TaskService';
+
+import { getRandomTaskId, handleErrors } from '../../services';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -85,14 +86,14 @@ const Container = memo(() => {
   if (taskId === 'active') {
     taskId = currentTaskId as string;
   }
-  let task = find(tasks, ['id', taskId]) || fetchedTask;
+  const task = find(tasks, ['id', taskId]) || fetchedTask;
 
   // Fetch task if needed.
   useEffect(() => {
     if (
-      get(firestoreStatus, 'requested.activeTasks') &&
-      get(task, 'id') !== taskId &&
-      !isLoading
+      get(firestoreStatus, 'requested.activeTasks')
+      && get(task, 'id') !== taskId
+      && !isLoading
     ) {
       log('Task fetching in progress.');
       toggleLoading(true);
@@ -166,10 +167,9 @@ const Container = memo(() => {
     }: updateTaskParams) {
       log('updateTask is running.');
       try {
-        history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
+        history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
-        const toggleTaskDoneNotification = () =>
-          dispatch(toggleTasksDoneTodayNotification());
+        const toggleTaskDoneNotification = () => dispatch(toggleTasksDoneTodayNotification());
 
         toggleTaskDoneNotification();
         delay(toggleTaskDoneNotification, 3500);
@@ -227,7 +227,7 @@ const Container = memo(() => {
         history.replace(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);
-        history.replace(`/tasks/active`);
+        history.replace('/tasks/active');
       } finally {
         toggleLoading(false);
       }

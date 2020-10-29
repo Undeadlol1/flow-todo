@@ -7,7 +7,7 @@ import {
 
 export default {
   component: GlobalSnackbar,
-  title: sections.unsorted + 'GlobalSnackbar',
+  title: `${sections.unsorted}GlobalSnackbar`,
 };
 
 const props = {

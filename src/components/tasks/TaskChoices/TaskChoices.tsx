@@ -12,19 +12,19 @@ import get from 'lodash/get';
 import head from 'ramda/es/head';
 import React from 'react';
 import { When } from 'react-if';
+import map from 'lodash/map';
 import { TaskPageGridWidth } from '../../../pages/TaskPage';
 import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 import {
   calculateNextRepetition,
   Confidence,
-} from '../../../services';
-import {
+
   distanceBetweenDates,
   showSnackbar,
   useTypedTranslate,
-} from '../../../services/index';
+} from '../../../services';
+
 import { Task, Subtask } from '../../../store/index';
-import map from 'lodash/map';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -44,8 +44,7 @@ interface Props {
 const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
   const classes = useStyles();
-  const activeSubtasks =
-    filter(props.task.subtasks, i => !i.isDone) || [];
+  const activeSubtasks = filter(props.task.subtasks, i => !i.isDone) || [];
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
     fullWidth: true,
@@ -79,8 +78,7 @@ const TaskChoices = (props: Props) => {
       snackbarMessage: t('important to step forward'),
     });
     setTimeout(
-      () =>
-        showSnackbar(
+      () => showSnackbar(
           t('you will see task again in', {
             date: distanceBetweenDates(
               nextRepetition.dueAt,
@@ -94,8 +92,7 @@ const TaskChoices = (props: Props) => {
   function doneTask() {
     const rewardPerSubtask = 10;
     const repetitionLevel = get(props, 'task.repetitionLevel') || 1;
-    const pointsToAdd =
-      20 * repetitionLevel + activeSubtasks.length * rewardPerSubtask;
+    const pointsToAdd = 20 * repetitionLevel + activeSubtasks.length * rewardPerSubtask;
     props.updateTask({
       pointsToAdd,
       values: {
@@ -121,10 +118,9 @@ const TaskChoices = (props: Props) => {
         ...calculateNextRepetition(props.task, 'normal'),
         subtasks: map(props.task!.subtasks, (t: Subtask) =>
           // @ts-ignore
-          t.id === head(activeSubtasks || []).id
+          (t.id === head(activeSubtasks || []).id
             ? { ...t, isDone: true, doneAt: Date.now() }
-            : t,
-        ),
+            : t)),
         isCurrent: false,
       },
       history: {

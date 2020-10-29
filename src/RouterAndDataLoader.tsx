@@ -31,9 +31,9 @@ import {
   usersSelector,
 } from './store/selectors';
 
-export default memo(function RouterAndDataLoader(props: {
+export default memo((props: {
   children?: JSX.Element;
-}) {
+}) => {
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
@@ -49,13 +49,12 @@ export default memo(function RouterAndDataLoader(props: {
   // Refetch data every hour.
   const dataRefetchInterval = 1000 * 60 * 60;
   useInterval(() => {
-    console.log(`Refetching data every hour...`);
+    console.log('Refetching data every hour...');
     setToday(Date.now());
   }, dataRefetchInterval);
 
   // Store userId in localStorage to improve loading times on startup
-  const userId =
-    get(user, 'uid', '') || localStorage.getItem('userId') || '';
+  const userId = get(user, 'uid', '') || localStorage.getItem('userId') || '';
   useEffect(() => {
     if (userId) localStorage.setItem('userId', userId);
   }, [userId]);

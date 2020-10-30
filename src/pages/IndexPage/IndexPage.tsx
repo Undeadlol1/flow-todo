@@ -18,10 +18,10 @@ import { TasksList } from '../../components/tasks/TasksList/TasksList';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
+import { useSelector } from 'react-redux';
 import {
   IDayliStreak, Task,
-
-  TaskHistory, useTypedSelector,
+  TaskHistory,
 } from '../../store/index';
 import {
   authSelector, profileSelector,
@@ -135,12 +135,12 @@ export const IndexPage = memo((props: Props) => {
 IndexPage.displayName = 'IndexPage';
 
 export default memo((props) => {
-  const auth = useTypedSelector(authSelector);
-  const logs = useTypedSelector(taskLogs);
-  const streak = useTypedSelector(profileSelector).dailyStreak;
-  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
-  const activeTasks = useTypedSelector(tasksSelector);
-  const { createdAtleastOneTask } = useTypedSelector(
+  const auth = useSelector(authSelector);
+  const logs = useSelector(taskLogs);
+  const streak = useSelector(profileSelector).dailyStreak;
+  const tasksToday = useSelector(tasksDoneTodaySelector);
+  const activeTasks = useSelector(tasksSelector);
+  const { createdAtleastOneTask } = useSelector(
     get('firestore.ordered'),
   );
 

@@ -22,7 +22,7 @@ const reduxFirebaseProps = {
     userProfile: 'profiles',
     useFirestoreForProfile: true,
   },
-  dispatch: store.dispatch,
+  dispatch: store?.dispatch,
   createFirestoreInstance,
 };
 

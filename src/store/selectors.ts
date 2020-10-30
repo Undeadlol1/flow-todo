@@ -106,7 +106,7 @@ export const profileSelector = createSelector(
   // Add default values to profile.
   value => {
     // New object is created to avoid "no mutations" error.
-    const profile = Object.create((value || {
+    const profile = Object.assign({}, (value || {
       experience: 0,
       points: 0,
     }) as Profile);

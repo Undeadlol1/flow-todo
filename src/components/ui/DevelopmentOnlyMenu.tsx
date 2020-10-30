@@ -1,23 +1,23 @@
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/styles';
 import BuildIcon from '@material-ui/icons/Build';
+import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
 import nanoid from 'nanoid';
-import React, { MouseEvent, useState } from 'react';
+import React, { memo, MouseEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
-import { Theme } from '@material-ui/core';
 import LevelingService from '../../services/leveling';
 import {
   addPoints,
   addPointsWithSideEffects,
   createTask,
   Profile,
-  useTypedSelector,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DevelopmentOnlyMenu: React.FC<{}> = () => {
+function DevelopmentOnlyMenu() {
   const cx = useStyles();
   const firestore = useFirestore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,8 +37,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   };
 
-  const auth = useTypedSelector(authSelector);
-  const profile = useTypedSelector(profileSelector);
+  const auth = useSelector(authSelector);
+  const profile = useSelector(profileSelector);
 
   function addTask() {
     const taskId = nanoid();
@@ -115,7 +115,9 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
         <MenuItem onClick={addTask}>Add a task</MenuItem>
       </Menu>
     </Box>
-    );
-};
+  );
+}
 
-export default React.memo(DevelopmentOnlyMenu);
+DevelopmentOnlyMenu.displayName = 'DevelopmentOnlyMenu';
+
+export default memo(DevelopmentOnlyMenu);

@@ -8,6 +8,9 @@ import { useSelector } from 'react-redux';
 import useToggle from 'react-use/lib/useToggle';
 import SnackbarService from '../../services/Snackbar';
 import { snackbarsSelector, uiSelector } from '../../store/selectors';
+import debug from 'debug';
+
+const log = debug('GlobalSnackbar');
 
 export interface GlobalSnackbarProps {
   _isOpenForDevPurposes?: boolean;
@@ -19,11 +22,11 @@ const GlobalSnackbar = memo(
       uiSelector,
     );
     const snackbarsInQueue = useSelector(snackbarsSelector).queue;
-    console.log('snackbarsInQueue: ', snackbarsInQueue);
     const [isDialogOpen, toggleDialog] = useToggle(
       _isOpenForDevPurposes,
     );
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    log('snackbarsInQueue: ', snackbarsInQueue);
 
     function displayFirstSnackbarInQueue() {
       if (

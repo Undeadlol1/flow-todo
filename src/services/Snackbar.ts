@@ -5,7 +5,7 @@ import {
 } from '../store/snackbarsSlice';
 
 export default class Snackbar {
-  private static dispatch = store.dispatch;
+  private static dispatch = store?.dispatch;
 
   public static addToQueue(snackbarMesssage: string) {
     this.dispatch(addSnackbarToQueue(snackbarMesssage));

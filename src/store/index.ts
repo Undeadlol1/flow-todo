@@ -34,6 +34,7 @@ import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import DailyStreak from '../services/dailyStreak';
+import snackbarsSlice from './snackbarsSlice';
 
 const log = debug('store');
 const { FieldValue } = firestore;
@@ -207,7 +208,7 @@ export function changeTags(taskId: string, tags: string[]) {
 
 initializeFirebase();
 
-export function upsertProfile(profile: Profile) {
+export async function upsertProfile(profile: Profile) {
   if (!profile.userId) throw Error('You must specify userId!');
   if (!profile.dailyStreak)
     profile.dailyStreak = DailyStreak.getEmptyStreak();
@@ -240,6 +241,7 @@ const rootReducer = combineReducers({
   users: userSlice,
   tasks: tasksSlice,
   rewards: rewardsSlice,
+  snackbars: snackbarsSlice,
   snackbar: snackbarReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,

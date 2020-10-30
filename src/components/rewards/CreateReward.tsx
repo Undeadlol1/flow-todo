@@ -14,8 +14,13 @@ import invoke from 'lodash/invoke';
 import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import * as Yup from 'yup';
 import { Theme } from '@material-ui/core';
+import {
+  object as YupObject,
+  string as YupString,
+  boolean as YupBoolean,
+  number as YupNumber,
+} from 'yup';
 import {
   handleErrors,
   useTypedTranslate,
@@ -53,17 +58,17 @@ const CreateReward = (props: Props) => {
     reset,
     setError,
   } = useForm({
-    validationSchema: Yup.object({
-      name: Yup.string()
+    validationSchema: YupObject({
+      name: YupString()
         .min(3, t('validation.atleast3Symbols'))
         .max(100, t('validation.textIsTooLong'))
         .required(t('validation.required')),
-      points: Yup.number()
+      points: YupNumber()
         .min(1, t('validation.minimumValue', { value: 1 }))
         .max(10000, t('validation.maximumValue', { value: 10000 }))
         .required(t('validation.required')),
-      image: Yup.string().url(t('validation.invalidURL')),
-      isReccuring: Yup.boolean(),
+      image: YupString().url(t('validation.invalidURL')),
+      isReccuring: YupBoolean(),
     }),
   });
   const error = get(errors, 'name.message');

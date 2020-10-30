@@ -1,4 +1,5 @@
 const plugins = [
+  "lodash",
   [
     'babel-plugin-import',
     {

@@ -17,9 +17,7 @@ import head from 'ramda/es/head';
 import prop from 'ramda/es/prop';
 import React, { useEffect } from 'react';
 import { When } from 'react-if';
-import {
- Link, Route, Switch, useRouteMatch,
-} from 'react-router-dom';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
@@ -38,6 +36,8 @@ import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
+import { useDispatch } from 'react-redux';
+import { addSnackbarToQueue } from '../../store/snackbarsSlice';
 
 // TODO i18n
 const encouragingMessages = [
@@ -91,6 +91,7 @@ export default function TaskPage(props: TaskPageProps) {
     tasksDoneTodayNotificationProps,
   } = props;
   const activeSubtasks = filter(task.subtasks, i => !i.isDone);
+  const dispatch = useDispatch();
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
@@ -98,9 +99,12 @@ export default function TaskPage(props: TaskPageProps) {
     const snackBarTimeout = setTimeout(() => {
       if (!props.shouldDisplayEncouragements) return;
       if (tasksDoneTodayNotificationProps.isVisible) return;
-      enqueueSnackbar(sample(encouragingMessages), {
-        autoHideDuration: 4500,
-      });
+      dispatch(
+        addSnackbarToQueue(sample(encouragingMessages) as string),
+      );
+      // enqueueSnackbar(sample(encouragingMessages), {
+      //   autoHideDuration: 4500,
+      // });
     }, 3500);
     return () => clearTimeout(snackBarTimeout);
     // eslint-disable-next-line

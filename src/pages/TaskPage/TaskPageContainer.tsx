@@ -1,42 +1,40 @@
 import debug from 'debug';
-import get from 'lodash/get';
-import find from 'lodash/find';
+import delay from 'lodash/delay';
 import filter from 'lodash/filter';
+import find from 'lodash/find';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
+import { snackbarActions } from 'material-ui-snackbar-redux';
+import React, { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
-import { snackbarActions } from 'material-ui-snackbar-redux';
-import React, { memo, useEffect, useState as useToggle } from 'react';
-import delay from 'lodash/delay';
-import TaskPage, { TaskPageProps } from './TaskPage';
-
+import useToggle from 'react-use/lib/useToggle';
+import { getRandomTaskId, handleErrors } from '../../services';
+import DailyStreak from '../../services/dailyStreak';
+import Snackbar from '../../services/Snackbar';
+import TaskService from '../../services/TaskService';
+import { deleteTask, Task } from '../../store';
 import {
-  deleteTask,
-  Task,
+  addPointsWithSideEffects,
+  TaskHistory,
   upsertProfile,
   upsertTask,
-  TaskHistory,
   useTypedSelector,
-  addPointsWithSideEffects,
-} from '../../store';
+} from '../../store/index';
 import {
-  uiSelector,
-  authSelector,
-  tasksSelector,
-  profileSelector,
   activeTaskSelector,
+  authSelector,
   fetchedTaskSelector,
-  tasksDoneTodaySelector,
   firestoreStatusSelector,
+  profileSelector,
+  tasksDoneTodaySelector,
+  tasksSelector,
+  uiSelector,
 } from '../../store/selectors';
-import DailyStreak from '../../services/dailyStreak';
-import TaskService from '../../services/TaskService';
-
-import { getRandomTaskId, handleErrors } from '../../services';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import TaskPage, { TaskPageProps } from './TaskPage';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -61,7 +59,6 @@ const Container = memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
-  const { enqueueSnackbar } = useSnackbar();
   // Data.
   // @ts-ignore
   let { taskId = '' } = useParams();
@@ -174,9 +171,12 @@ const Container = memo(() => {
         const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
 
+        console.log('snackbarMessage: ', snackbarMessage);
         toggleTaskDoneNotification();
-        delay(toggleTaskDoneNotification, 3500);
-        delay(enqueueSnackbar, 3500, snackbarMessage);
+        delay(() => {
+          toggleTaskDoneNotification();
+          Snackbar.addToQueue(snackbarMessage);
+        }, 3500);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),

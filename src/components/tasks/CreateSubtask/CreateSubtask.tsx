@@ -1,5 +1,6 @@
-import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';
@@ -7,8 +8,7 @@ import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
-import * as Yup from 'yup';
-import { Theme } from '@material-ui/core';
+import { object as YupObject, string as YupString } from 'yup';
 import { createSubtask } from '../../../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -25,12 +25,10 @@ const CreateSubtask = (props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
   const [isLocked, toggleLock] = useToggle(false);
-  const {
- register, handleSubmit, errors, reset, setError,
-} = useForm(
+  const { register, handleSubmit, errors, reset, setError } = useForm(
     {
-      validationSchema: Yup.object({
-        name: Yup.string()
+      validationSchema: YupObject({
+        name: YupString()
           .min(3, t('validation.atleast3Symbols'))
           .max(100, t('validation.textIsTooLong'))
           .required(t('validation.required')),

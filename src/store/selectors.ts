@@ -20,6 +20,7 @@ import {
 import { Reward } from './rewardsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
+import { SnackbarsState } from './snackbarsSlice';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -146,6 +147,11 @@ export const uiSelector = createSelector(
 export const usersSelector = createSelector(
   get('users'),
   users => users as UsersState,
+);
+
+export const snackbarsSelector = createSelector(
+  get('snackbars'),
+  i => i as SnackbarsState,
 );
 
 export const userIdSelector = get('firebase.auth.uid');

@@ -8,10 +8,10 @@ import React, { memo, useMemo } from 'react';
 import FirebaseUIAuth from 'react-firebaseui-localized';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { Theme } from '@material-ui/core';
 import AppTour from '../components/ui/AppTour';
 import { handleErrors, showSnackbar } from '../services/index';
 import { addPoints } from '../store/index';
-import { Theme } from '@material-ui/core';
 
 const log = debug('SigninPage');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -45,7 +45,7 @@ export default memo(() => {
 
       const anonymousUser = auth().currentUser as User;
       const anonymousUserProfile = await db
-        .doc('profiles/' + anonymousUser.uid)
+        .doc(`profiles/${anonymousUser.uid}`)
         .get();
       const anonymousUserTasks = await db
         .collection('tasks')

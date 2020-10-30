@@ -208,7 +208,7 @@ export function changeTags(taskId: string, tags: string[]) {
 
 initializeFirebase();
 
-export function upsertProfile(profile: Profile) {
+export async function upsertProfile(profile: Profile) {
   if (!profile.userId) throw Error('You must specify userId!');
   if (!profile.dailyStreak)
     profile.dailyStreak = DailyStreak.getEmptyStreak();
@@ -235,6 +235,32 @@ export function addPoints(
     )
     .catch(handleErrors);
 }
+
+const rootReducer = combineReducers({
+  ui: uiSlice,
+  users: userSlice,
+  tasks: tasksSlice,
+  rewards: rewardsSlice,
+  snackbars: snackbarsSlice,
+  snackbar: snackbarReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
+});
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [
+    ...getDefaultMiddleware({
+      // Firebase.auth onlogin error fix.
+      // https://github.com/prescottprue/react-redux-firebase/issues/761
+      serializableCheck: {
+        ignoredActions: [actionTypes.LOGIN],
+      },
+    }),
+  ],
+  devTools: process.env.NODE_ENV !== 'test',
+  enhancers: [reduxFirestore(firebase)],
+});
 
 export function addPointsWithSideEffects(
   userId: string,
@@ -268,33 +294,7 @@ export function claimReward(reward: Reward) {
   }
 }
 
-const rootReducer = combineReducers({
-  ui: uiSlice,
-  users: userSlice,
-  tasks: tasksSlice,
-  rewards: rewardsSlice,
-  snackbars: snackbarsSlice,
-  snackbar: snackbarReducer,
-  firebase: firebaseReducer,
-  firestore: firestoreReducer,
-});
-
 export type RootReducer = ReturnType<typeof rootReducer>;
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: [
-    ...getDefaultMiddleware({
-      // Firebase.auth onlogin error fix.
-      // https://github.com/prescottprue/react-redux-firebase/issues/761
-      serializableCheck: {
-        ignoredActions: [actionTypes.LOGIN],
-      },
-    }),
-  ],
-  devTools: process.env.NODE_ENV !== 'test',
-  enhancers: [reduxFirestore(firebase)],
-});
 
 export const useTypedSelector: TypedUseSelectorHook<
   ReturnType<typeof rootReducer>

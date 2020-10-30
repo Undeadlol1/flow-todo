@@ -1,14 +1,14 @@
 import React from 'react';
+import nanoid from 'nanoid';
 import { sections } from '../storybookContants';
 import { DayliGoalsList } from './DayliGoalsList';
 import DailyStreak from '../../services/dailyStreak';
-import nanoid from 'nanoid';
 import { streaks } from '../dataMocks';
 import { DailyGoal } from '../../store/types';
 
 export default {
   component: DayliGoalsList,
-  title: sections.streaks + 'DayliGoalsList',
+  title: `${sections.streaks}DayliGoalsList`,
 };
 
 const goals = [

@@ -36,10 +36,9 @@ const TagsList: React.FC<{}> = memo(() => {
   log('exludedTags: ', exludedTags);
 
   if (!tasks) return null;
-  else
-    return (
-      <Box textAlign="center">
-        {uniqueTags.map(tag => {
+  return (
+    <Box textAlign="center">
+      {uniqueTags.map(tag => {
           const isActive = !exludedTags.includes(tag);
           const color = isActive
             ? 'inherit'
@@ -56,7 +55,7 @@ const TagsList: React.FC<{}> = memo(() => {
             </Button>
           );
         })}
-      </Box>
+    </Box>
     );
 });
 

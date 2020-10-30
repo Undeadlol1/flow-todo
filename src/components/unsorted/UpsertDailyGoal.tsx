@@ -32,18 +32,20 @@ const UpsertDailyGoal = memo((props: Props) => {
           }, 400);
         }}
       >
-        {({ values, handleChange, handleBlur, handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              name="title"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.title}
-              variant="outlined"
-              label={'Title'}
-            />
-          </form>
+        {({
+ values, handleChange, handleBlur, handleSubmit,
+}) => (
+  <form onSubmit={handleSubmit}>
+    <TextField
+      fullWidth
+      name="title"
+      value={values.title}
+      variant="outlined"
+      label="Title"
+      onChange={handleChange}
+      onBlur={handleBlur}
+    />
+  </form>
         )}
       </Formik>
     </Box>

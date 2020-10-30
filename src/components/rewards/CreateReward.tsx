@@ -14,6 +14,7 @@ import invoke from 'lodash/invoke';
 import React, { memo } from 'react';
 import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Theme } from '@material-ui/core';
 import {
   object as YupObject,
   string as YupString,
@@ -25,7 +26,6 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import { useTypedSelector } from '../../store/index';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {},

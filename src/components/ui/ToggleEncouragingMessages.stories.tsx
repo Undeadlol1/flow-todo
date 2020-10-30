@@ -4,7 +4,7 @@ import ToggleEncouragingMessages from './ToggleEncouragingMessages';
 import { sections } from '../storybookContants';
 
 export default {
-  title: sections.users + 'ToggleEncouragingMessages',
+  title: `${sections.users}ToggleEncouragingMessages`,
   component: ToggleEncouragingMessages,
 };
 

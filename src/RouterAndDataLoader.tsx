@@ -3,6 +3,7 @@ import getHours from 'date-fns/getHours';
 import subHours from 'date-fns/subHours';
 import get from 'lodash/get';
 import React, { memo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import useInterval from 'react-use/esm/useInterval';
@@ -23,7 +24,6 @@ import TaskPage from './pages/TaskPage';
 import TasksPage from './pages/TasksPage';
 import WebShareTargetPage from './pages/WebShareTargetPage';
 import { handleErrors } from './services/index';
-import { useTypedSelector } from './store/index';
 import {
   authErrorSelector,
   authSelector,
@@ -32,16 +32,12 @@ import {
   usersSelector,
 } from './store/selectors';
 
-export default memo(function RouterAndDataLoader(props: {
-  children?: JSX.Element;
-}) {
-  const user = useTypedSelector(authSelector);
-  const profile = useTypedSelector(profileSelector);
-  const { isLevelUpAnimationActive } = useTypedSelector(
-    usersSelector,
-  );
-  const authError = useTypedSelector(authErrorSelector);
-  const { isRewardModalOpen, isSidebarOpen } = useTypedSelector(
+export default memo((props: { children?: JSX.Element }) => {
+  const user = useSelector(authSelector);
+  const profile = useSelector(profileSelector);
+  const { isLevelUpAnimationActive } = useSelector(usersSelector);
+  const authError = useSelector(authErrorSelector);
+  const { isRewardModalOpen, isSidebarOpen } = useSelector(
     uiSelector,
   );
   const [today, setToday] = useState(Date.now());
@@ -50,7 +46,7 @@ export default memo(function RouterAndDataLoader(props: {
   // Refetch data every hour.
   const dataRefetchInterval = 1000 * 60 * 60;
   useInterval(() => {
-    console.log(`Refetching data every hour...`);
+    console.log('Refetching data every hour...');
     setToday(Date.now());
   }, dataRefetchInterval);
 

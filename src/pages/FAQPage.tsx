@@ -5,10 +5,10 @@ import { Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import Accordion from '@material-ui/core/Accordion';
 import Typography from '@material-ui/core/Typography';
-import { useTypedTranslate } from '../services/index';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import { useTypedTranslate } from '../services/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -46,7 +46,7 @@ const data = [
   ],
 ];
 
-const FAQPage = memo(function FAQPage() {
+const FAQPage = memo(() => {
   const t = useTypedTranslate();
   const classes = useStyles();
 
@@ -80,7 +80,7 @@ const FAQPage = memo(function FAQPage() {
             <AccordionDetails>
               <Box key={index}>
                 {answerParagpraphs.map(answer => (
-                  <Typography paragraph key={answer}>
+                  <Typography key={answer} paragraph>
                     {answer}
                   </Typography>
                 ))}

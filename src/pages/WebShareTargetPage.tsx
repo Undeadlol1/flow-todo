@@ -6,11 +6,11 @@ import nanoid from 'nanoid';
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { createTask } from '../store/index';
-import { authSelector } from '../store/selectors';
 import not from 'ramda/es/not';
 import queryString from 'query-string';
 import { Theme } from '@material-ui/core';
+import { authSelector } from '../store/selectors';
+import { createTask } from '../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -39,7 +39,7 @@ const WebShareTargetPage = memo(() => {
         name,
         userId: auth.uid,
         note: (url || note) as string,
-      }).then(() => history.push('/tasks/' + id));
+      }).then(() => history.push(`/tasks/${id}`));
     }
   }, [auth, inProgress, history, query]);
 

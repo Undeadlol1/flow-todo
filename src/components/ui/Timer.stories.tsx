@@ -4,9 +4,7 @@ import { sections } from '../storybookContants';
 
 export default {
   component: Timer,
-  title: sections.ui + 'Timer',
+  title: `${sections.ui}Timer`,
 };
 
-export const Normal = () => {
-  return <Timer />;
-};
+export const Normal = () => <Timer />;

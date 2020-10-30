@@ -21,9 +21,7 @@ const initialState: UiState = {
   isAppTourActive: false,
   isRewardModalOpen: false,
   isTasksDoneTodayNotificationOpen: false,
-  preferedColorScheme: prereferedColorScheme
-    ? prereferedColorScheme
-    : 'light',
+  preferedColorScheme: prereferedColorScheme || 'light',
 };
 
 const uiSlice = createSlice({

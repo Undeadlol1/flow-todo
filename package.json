@@ -75,7 +75,7 @@
     "react-redux": "^7.2.2",
     "react-redux-firebase": "^3.0.5",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
+    "react-scripts": "4.0.0",
     "react-sortable-hoc": "^1.10.1",
     "react-test-renderer": "^16.12.0",
     "react-use": "^13.9.0",
@@ -84,12 +84,12 @@
     "redux": "^4.0.4",
     "redux-firestore": "^0.10.0",
     "reselect": "^4.0.0",
-    "typescript": "3.8.3",
+    "typescript": "4.0.5",
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start:nofirebase": "react-app-rewired start",
-    "start": "concurrently \"npx cross-env DEBUG_HIDE_DATE=true PORT=3001 react-app-rewired start\" \"firebase emulators:start --only firestore\"",
+    "start:nofirebase": "react-scripts start",
+    "start": "concurrently \"npx cross-env DEBUG_HIDE_DATE=true PORT=3001 react-scripts start\" \"firebase emulators:start --only firestore\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -98,7 +98,8 @@
     "deploy": "npm run build && firebase deploy",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "plop": "npx plop",
-    "chromatic": "npx chromatic --allow-console-errors -t '$CHROMATIC_TOKEN'"
+    "chromatic": "npx chromatic --allow-console-errors -t '$CHROMATIC_TOKEN'",
+    "lint": "eslint --fix --ext .js,.jsx ./"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -126,6 +127,8 @@
     "@storybook/preset-create-react-app": "^3.1.4",
     "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.13.1",
@@ -137,6 +140,7 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",
+    "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.2",
     "eslint-plugin-jsx-a11y": "^6.3.1",

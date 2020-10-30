@@ -26,7 +26,7 @@ const AppTour: React.FC<TourProps> = props => {
     {
       disableBeacon: true,
       target: '.IntroHandle__createTask',
-      content: `Добавьте задачу в копилку`,
+      content: 'Добавьте задачу в копилку',
     },
     {
       target: '.IntroHandle__taskButton',
@@ -48,7 +48,7 @@ const AppTour: React.FC<TourProps> = props => {
     }
     if (action === 'next' && lifecycle === 'complete')
       // @ts-ignore
-      setStep(step + 1);
+      { setStep(step + 1); }
     if (index === 2) {
       return history.push('/tasks/introExample');
     }

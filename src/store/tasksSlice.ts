@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Task } from './index';
 import xor from 'lodash/xor';
+import { Task } from './index';
 
 // TODO remove unused properties
 interface TasksState {

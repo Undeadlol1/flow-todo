@@ -5,7 +5,7 @@ import { sections } from '../../components/storybookContants';
 
 export default {
   component: IndexPage,
-  title: sections.pages + 'IndexPage',
+  title: `${sections.pages}IndexPage`,
 };
 
 export const ForUnauthorizedUser = () => (
@@ -21,11 +21,11 @@ export const ForUnauthorizedUser = () => (
 export const Loading = () => (
   <IndexPage
     isLoading
+    createdAtleastOneTask
     logs={[]}
     tasksToday={0}
     tasksPerDay={3}
     streak={streaks.streakIsBroken}
-    createdAtleastOneTask={true}
   />
 );
 

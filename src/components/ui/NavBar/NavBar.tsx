@@ -19,6 +19,8 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Theme } from '@material-ui/core';
+import classNames from 'classnames';
 import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
@@ -29,8 +31,6 @@ import {
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
 import UserPoints from '../../users/UserPoints';
-import { Theme } from '@material-ui/core';
-import classNames from 'classnames';
 
 const log = debug('NavBar');
 

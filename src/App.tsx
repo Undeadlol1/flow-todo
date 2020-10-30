@@ -3,24 +3,39 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import firebase from 'firebase/app';
 import { SnackbarProvider as MaterialSnackbarProvider } from 'material-ui-snackbar-redux';
 import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
-import React, { memo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import './App.css';
+import { BrowserRouter } from 'react-router-dom';
 import RouterAndDataLoader from './RouterAndDataLoader';
 import { initializeI18n, useDebouncedWindowSize } from './services';
 import store from './store';
 import { Theme } from './Theme';
-import { BrowserRouter } from 'react-router-dom';
 
 initializeI18n();
+
+const reduxFirebaseProps = {
+  firebase,
+  config: {
+    userProfile: 'profiles',
+    useFirestoreForProfile: true,
+  },
+  dispatch: store?.dispatch,
+  createFirestoreInstance,
+};
+
+const snachbarPosition: SnackbarOrigin = {
+  vertical: 'bottom',
+  horizontal: 'center',
+};
 
 export function App(props: {
   isStorybookEnv?: boolean;
   children?: JSX.Element;
 }) {
-  const theme = React.useMemo(() => createMuiTheme(), []);
+  const theme = useMemo(() => createMuiTheme(), []);
   const isMobile =
     // @ts-ignore
     useDebouncedWindowSize(500).width < theme.breakpoints.values.sm;
@@ -56,20 +71,5 @@ export function App(props: {
     </div>
   );
 }
-
-const reduxFirebaseProps = {
-  firebase,
-  config: {
-    userProfile: 'profiles',
-    useFirestoreForProfile: true,
-  },
-  dispatch: store.dispatch,
-  createFirestoreInstance,
-};
-
-const snachbarPosition: SnackbarOrigin = {
-  vertical: 'bottom',
-  horizontal: 'center',
-};
 
 export default memo(App);

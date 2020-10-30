@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';

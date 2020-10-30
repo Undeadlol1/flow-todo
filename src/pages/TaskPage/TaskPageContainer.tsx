@@ -85,7 +85,7 @@ const Container = memo(() => {
   if (taskId === 'active') {
     taskId = currentTaskId as string;
   }
-  let task = find(tasks, ['id', taskId]) || fetchedTask;
+  const task = find(tasks, ['id', taskId]) || fetchedTask;
 
   // Fetch task if needed.
   useEffect(() => {
@@ -166,7 +166,7 @@ const Container = memo(() => {
     }: updateTaskParams) {
       log('updateTask is running.');
       try {
-        history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
+        history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
         const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
@@ -230,7 +230,7 @@ const Container = memo(() => {
         history.replace(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);
-        history.replace(`/tasks/active`);
+        history.replace('/tasks/active');
       } finally {
         toggleLoading(false);
       }

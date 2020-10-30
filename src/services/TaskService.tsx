@@ -6,11 +6,9 @@ export default class TaskService {
     return Promise.all(
       tasks
         .filter(i => i.isCurrent)
-        .map(({ id }) =>
-          getFirestore()
-            .doc('tasks/' + id)
-            .update({ isCurrent: false } as Task),
-        ),
+        .map(({ id }) => getFirestore()
+            .doc(`tasks/${id}`)
+            .update({ isCurrent: false } as Task)),
     );
   }
 
@@ -23,7 +21,7 @@ export default class TaskService {
   }) {
     return nextTaskId
       ? getFirestore()
-          .doc('tasks/' + nextTaskId)
+          .doc(`tasks/${nextTaskId}`)
           .update({
             ...currentTasks.find(({ id }) => id === nextTaskId),
             isCurrent: true,

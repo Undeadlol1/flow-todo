@@ -1,5 +1,6 @@
-import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';
@@ -9,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import { object as YupObject, string as YupString } from 'yup';
 import { createSubtask } from '../../../store/index';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {},

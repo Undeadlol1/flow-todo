@@ -18,8 +18,6 @@ import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 import {
   calculateNextRepetition,
   Confidence,
-} from '../../../services';
-import {
   distanceBetweenDates,
   useTypedTranslate,
 } from '../../../services/index';
@@ -80,7 +78,6 @@ const TaskChoices = (props: Props) => {
         snackbarMessage: t('important to step forward'),
       })
       .then(() => {
-        console.log('Then');
         Snackbar.addToQueue(
           t('you will see task again in', {
             date: distanceBetweenDates(

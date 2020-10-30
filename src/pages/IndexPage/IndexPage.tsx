@@ -18,16 +18,16 @@ import { TasksList } from '../../components/tasks/TasksList/TasksList';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
+import { useSelector } from 'react-redux';
 import {
   IDayliStreak, Task,
-
-  TaskHistory, useTypedSelector
+  TaskHistory,
 } from '../../store/index';
 import {
   authSelector, profileSelector,
   taskLogsSelector as taskLogs,
   tasksDoneTodaySelector,
-  tasksSelector
+  tasksSelector,
 } from '../../store/selectors';
 
 const log = debug('IndexPage');
@@ -55,9 +55,9 @@ interface Props {
 
 const sectionProps = {
   item: true, xs: 12, sm: 12, md: 8, lg: 6,
-} as GridProps
+} as GridProps;
 
-export const IndexPage = memo(function HomePage(props: Props) {
+export const IndexPage = memo((props: Props) => {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
 
@@ -67,27 +67,26 @@ export const IndexPage = memo(function HomePage(props: Props) {
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderWelcomeCardOrContent() {
-    if (isLoading || createdAtleastOneTask)
-      return <TasksList tasks={activeTasks} />;
-    else return <WelcomeCard />;
+    if (isLoading || createdAtleastOneTask) return <TasksList tasks={activeTasks} />;
+    return <WelcomeCard />;
   }
 
   if (isLoading) {
     return (
-    <Grid
-      container
-      spacing={2}
-      justify="center"
-      direction="column"
-      alignItems="stretch"
-      alignContent="center"
-      className={classes.pageContainer}
-    >
-        <Grid {...sectionProps} >
-          <Skeleton height="200px"  width="350px" variant="rect" />
+      <Grid
+        container
+        spacing={2}
+        justify="center"
+        direction="column"
+        alignItems="stretch"
+        alignContent="center"
+        className={classes.pageContainer}
+      >
+        <Grid {...sectionProps}>
+          <Skeleton height="200px" width="350px" variant="rect" />
         </Grid>
-    </Grid>
-  )
+      </Grid>
+  );
     }
 
   return (
@@ -135,18 +134,17 @@ export const IndexPage = memo(function HomePage(props: Props) {
 
 IndexPage.displayName = 'IndexPage';
 
-export default memo(function HomePageContainer(props) {
-  const auth = useTypedSelector(authSelector);
-  const logs = useTypedSelector(taskLogs);
-  const streak = useTypedSelector(profileSelector).dailyStreak;
-  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
-  const activeTasks = useTypedSelector(tasksSelector);
-  const { createdAtleastOneTask } = useTypedSelector(
+export default memo((props) => {
+  const auth = useSelector(authSelector);
+  const logs = useSelector(taskLogs);
+  const streak = useSelector(profileSelector).dailyStreak;
+  const tasksToday = useSelector(tasksDoneTodaySelector);
+  const activeTasks = useSelector(tasksSelector);
+  const { createdAtleastOneTask } = useSelector(
     get('firestore.ordered'),
   );
 
-  let isLoading =
-    isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
+  let isLoading = isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   if (auth.isEmpty) isLoading = false;
   if (!auth.isLoaded) isLoading = true;
 

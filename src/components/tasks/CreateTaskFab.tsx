@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import UpsertTask from './CreateTask/UpsertTask';
 import isEmpty from 'lodash/isEmpty';
-import Fab from '../ui/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import cx from 'clsx';
+import Fab from '../ui/Fab';
+import UpsertTask from './CreateTask/UpsertTask';
 
 interface Props {
   isHidden?: boolean;
@@ -24,8 +24,8 @@ export const CreateTaskFab: React.FC<Props> = props => {
     <>
       <Dialog
         open={isDialogOpen}
-        onClose={toggleDialog}
         aria-labelledby="form-dialog-title"
+        onClose={toggleDialog}
       >
         <DialogContent>
           <UpsertTask
@@ -36,7 +36,6 @@ export const CreateTaskFab: React.FC<Props> = props => {
         </DialogContent>
       </Dialog>
       <Fab
-        onClick={toggleDialog}
         aria-label={t('createTask')}
         className={cx([
           props.className,
@@ -44,6 +43,7 @@ export const CreateTaskFab: React.FC<Props> = props => {
           !createdTasksBefore && 'animated pulse infinite',
         ])}
         isHidden={props.isHidden}
+        onClick={toggleDialog}
       >
         {createdTasksBefore && isEmpty(props.activeTasks) ? (
           '+10'

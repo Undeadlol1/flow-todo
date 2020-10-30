@@ -1,14 +1,16 @@
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/styles';
 import BuildIcon from '@material-ui/icons/Build';
+import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
 import nanoid from 'nanoid';
-import React, { MouseEvent, useState } from 'react';
+import React, { memo, MouseEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import LevelingService from '../../services/leveling';
 import {
@@ -16,10 +18,8 @@ import {
   addPointsWithSideEffects,
   createTask,
   Profile,
-  useTypedSelector,
 } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DevelopmentOnlyMenu: React.FC<{}> = () => {
+function DevelopmentOnlyMenu() {
   const cx = useStyles();
   const firestore = useFirestore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,8 +37,8 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
     setAnchorEl(anchorEl ? null : event!.currentTarget);
   };
 
-  const auth = useTypedSelector(authSelector);
-  const profile = useTypedSelector(profileSelector);
+  const auth = useSelector(authSelector);
+  const profile = useSelector(profileSelector);
 
   function addTask() {
     const taskId = nanoid();
@@ -80,7 +80,7 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
 
   function resetLevel() {
     firestore
-      .doc('profiles/' + auth.uid)
+      .doc(`profiles/${auth.uid}`)
       .update({ points: 0, experience: 0 } as Profile);
   }
 
@@ -93,30 +93,31 @@ const DevelopmentOnlyMenu: React.FC<{}> = () => {
   }
 
   if (process.env.NODE_ENV !== 'development') return null;
-  else
-    return (
-      <Box>
-        <Fab onClick={toggleMenu} className={cx.root}>
-          <BuildIcon />
-        </Fab>
-        <Menu
-          keepMounted
-          onClose={toggleMenu}
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
+  return (
+    <Box>
+      <Fab className={cx.root} onClick={toggleMenu}>
+        <BuildIcon />
+      </Fab>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={toggleMenu}
+      >
+        <MenuItem
+          onClick={() => addPointsWithSideEffects(auth.uid, 50)}
         >
-          <MenuItem
-            onClick={() => addPointsWithSideEffects(auth.uid, 50)}
-          >
-            Add 50 points
-          </MenuItem>
-          <MenuItem onClick={resetLevel}>Reset level</MenuItem>
-          <MenuItem onClick={levelUp}>Level up</MenuItem>
-          <MenuItem onClick={createAReward}>Add a reward</MenuItem>
-          <MenuItem onClick={addTask}>Add a task</MenuItem>
-        </Menu>
-      </Box>
-    );
-};
+          Add 50 points
+        </MenuItem>
+        <MenuItem onClick={resetLevel}>Reset level</MenuItem>
+        <MenuItem onClick={levelUp}>Level up</MenuItem>
+        <MenuItem onClick={createAReward}>Add a reward</MenuItem>
+        <MenuItem onClick={addTask}>Add a task</MenuItem>
+      </Menu>
+    </Box>
+  );
+}
 
-export default React.memo(DevelopmentOnlyMenu);
+DevelopmentOnlyMenu.displayName = 'DevelopmentOnlyMenu';
+
+export default memo(DevelopmentOnlyMenu);

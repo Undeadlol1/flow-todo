@@ -4,9 +4,7 @@ import { sections } from '../storybookContants';
 
 export default {
   component: Sidebar,
-  title: sections.ui + 'Sidebar',
+  title: `${sections.ui}Sidebar`,
 };
 
-export const Normal = () => {
-  return <Sidebar isOpen isLoggedIn isTasksListEmpty />;
-};
+export const Normal = () => <Sidebar isOpen isLoggedIn isTasksListEmpty />;

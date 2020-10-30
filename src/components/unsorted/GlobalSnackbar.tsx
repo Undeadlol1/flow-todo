@@ -1,7 +1,8 @@
 import { Snackbar } from '@material-ui/core';
-import { delay, uniq } from 'lodash';
+import delay from 'lodash/delay';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
+import uniq from 'lodash/uniq';
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useToggle from 'react-use/lib/useToggle';

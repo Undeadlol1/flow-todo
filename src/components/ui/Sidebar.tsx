@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: 'inherit',
     textDecoration: 'none',
   },
-  list: {
-    width: '250px',
-  },
   mailto: {
     color: 'inherit',
     textDecoration: 'none',
@@ -98,10 +95,11 @@ const Sidebar: React.FC<{
   return (
     <Drawer
       open={isOpen}
+      anchor="bottom"
       classes={{ paper: cx.backgroundColor }}
       onClose={toggleSidebar}
     >
-      <List className={cx.list}>
+      <List>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>
             <HelpIcon />
@@ -118,8 +116,7 @@ const Sidebar: React.FC<{
           <ListItemIcon>
             <TelegramIcon />
           </ListItemIcon>
-          {/* TODO: i18n */}
-          <StyledListText primary="Группа в Телеграмме" />
+          <StyledListText primary={t('telegram_group')} />
         </ListItem>
         <When condition={isShareSupported}>
           <ListItem button onClick={shareMainPage}>

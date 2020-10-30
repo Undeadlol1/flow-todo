@@ -110,6 +110,7 @@ export default {
     select_theme: 'Выберите тему',
     select_theme_dark: 'Тëмная',
     select_theme_light: 'Светлая',
+    telegram_group: 'Группа в Телеграмме',
     faq: 'ЧаВо',
     'frequently asked questions': 'Часто Задаваемые Вопросы',
     completed_tasks_today: 'Побед сегодня',

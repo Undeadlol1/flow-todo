@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Theme,
 } from '@material-ui/core';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
@@ -27,7 +28,7 @@ import {
 } from '../../services/index';
 
 const log = debug('Sidebar');
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   link: {
     width: '100%',
     color: 'inherit',
@@ -40,7 +41,10 @@ const useStyles = makeStyles({
     color: 'inherit',
     textDecoration: 'none',
   },
-});
+  backgroundColor: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+}));
 
 const StyledListText = withStyles({
   root: {
@@ -70,7 +74,9 @@ const Sidebar: React.FC<{
     if (!isLoggedIn) history.push('/signin');
     else {
       localStorage.removeItem('userId');
-      getFirebase().logout().catch(handleErrors);
+      getFirebase()
+        .logout()
+        .catch(handleErrors);
     }
   }
 
@@ -90,7 +96,11 @@ const Sidebar: React.FC<{
   }
 
   return (
-    <Drawer open={isOpen} onClose={toggleSidebar}>
+    <Drawer
+      open={isOpen}
+      classes={{ paper: cx.backgroundColor }}
+      onClose={toggleSidebar}
+    >
       <List className={cx.list}>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>
@@ -101,7 +111,8 @@ const Sidebar: React.FC<{
         <ListItem
           button
           onClick={() => {
-            window.location.href = 'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
+            window.location.href =
+              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
           }}
         >
           <ListItemIcon>

@@ -69,7 +69,7 @@
     "react-firebaseui-localized": "^1.0.8",
     "react-hook-form": "^3.26.2",
     "react-i18next": "^11.7.3",
-    "react-if": "^3.4.3",
+    "react-if": "^4.0.1",
     "react-joyride": "^2.1.1",
     "react-mailto.js": "^2.1.0",
     "react-redux": "^7.2.2",

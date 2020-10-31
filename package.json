@@ -150,7 +150,7 @@
     "faker": "^5.1.0",
     "jest-enzyme": "^7.1.2",
     "plop": "^2.7.4",
-    "prettier": "1.18.2",
+    "prettier": "2.1.2",
     "react-app-rewired": "^2.1.6",
     "source-map-explorer": "^2.1.0"
   }

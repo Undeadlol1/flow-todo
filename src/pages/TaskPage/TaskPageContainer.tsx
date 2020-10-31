@@ -129,26 +129,27 @@ const Container = memo(() => {
     pointsToRemoveFromUser,
     message,
   }: {
-    deletedTask: Task;
     message: string;
+    deletedTask: Task;
     pointsToRemoveFromUser: number;
   }) {
-    async function undoTaskDeletion() {
-      await Promise.all([
+    function undoTaskDeletion() {
+      return Promise.all([
         upsertTask(deletedTask, deletedTask.id),
         addPointsWithSideEffects(
           deletedTask.userId,
           pointsToRemoveFromUser * -1,
         ),
-      ]);
-      history.replace(`/tasks/${deletedTask.id}`);
+      ])
+        .then(() => history.replace(`/tasks/${deletedTask.id}`))
+        .catch(handleErrors);
     }
 
     dispatch(
       snackbarActions.show({
         message,
         action: t('undo'),
-        handleAction: () => undoTaskDeletion(),
+        handleAction: undoTaskDeletion,
       }),
     );
   }

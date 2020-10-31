@@ -276,8 +276,9 @@ export function addPointsWithSideEffects(
   );
   // TODO refactor
   if (nextReward) store.dispatch(toggleRewardModal());
-  if (LevelingService.willUserLevelUp(profilePoints, points))
+  if (LevelingService.willUserLevelUp(profilePoints, points)) {
     showLevelUpAnimation();
+  }
 
   return addPoints(auth.uid, points);
 }

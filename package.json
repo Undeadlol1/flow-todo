@@ -101,6 +101,9 @@
     "chromatic": "npx chromatic --allow-console-errors -t '$CHROMATIC_TOKEN'",
     "lint": "eslint --fix --ext .js,.jsx ./"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

@@ -67,7 +67,7 @@
     "react-dom": "^16.11.0",
     "react-firebase-hooks": "^2.1.0",
     "react-firebaseui-localized": "^1.0.8",
-    "react-hook-form": "^3.26.2",
+    "react-hook-form": "^6.10.0",
     "react-i18next": "^11.7.3",
     "react-if": "^4.0.1",
     "react-joyride": "^2.1.1",

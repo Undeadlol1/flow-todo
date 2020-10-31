@@ -2,7 +2,7 @@ import { Task } from '../store';
 import { getFirestore } from './index';
 
 export default class TaskService {
-  static async deactivateActiveTasks(tasks: Task[]) {
+  static async deactivateActiveTasks(tasks: Task[] = []) {
     return Promise.all(
       tasks
         .filter(i => i.isCurrent)
@@ -13,8 +13,8 @@ export default class TaskService {
   }
 
   static async activateNextTask({
-    nextTaskId,
-    currentTasks,
+    nextTaskId = '',
+    currentTasks = [],
   }: {
     nextTaskId: string;
     currentTasks: Task[];

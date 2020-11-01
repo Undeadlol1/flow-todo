@@ -1,27 +1,30 @@
-import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { Badge, Theme } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import { When } from 'react-if';
-import isEmpty from 'lodash/isEmpty';
-import Box from '@material-ui/core/Box';
-import { Theme } from '@material-ui/core';
-import debug from 'debug';
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Pagination from '@material-ui/lab/Pagination';
-import slice from 'lodash/slice';
+import debug from 'debug';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import shuffle from 'lodash/shuffle';
-import { useTypedSelector, Task } from '../../../store/index';
+import slice from 'lodash/slice';
+import PropTypes from 'prop-types';
+import React, { useMemo, useState } from 'react';
+import { When } from 'react-if';
+import { Link } from 'react-router-dom';
+import TaskService from '../../../services/TaskService';
+import { Task, useTypedSelector } from '../../../store/index';
 import { tasksSelector } from '../../../store/selectors';
 
 const log = debug('TasksList');
+// TODO: remove this line.
+debug.enable('TasksList');
 
 const tasksPerPage = 7;
 
@@ -66,7 +69,7 @@ export function TasksList({
   const classes = useStyles();
   const [page, setPage] = useState(1);
   const numberOfPAges = Number(
-    (tasks.length / tasksPerPage).toFixed(),
+    (tasks?.length / tasksPerPage).toFixed(),
   );
   const randomizedTasks = useMemo(() => shuffle(tasks), [tasks]);
 
@@ -85,36 +88,50 @@ export function TasksList({
           randomizedTasks,
           tasksPerPage * (page - 1), // Start from.
           tasksPerPage * page, // End at.
-        ).map((task, index) => (
-          <ListItem
-            key={task.id}
-            component={Link}
-            className={classes.link}
-            to={`/tasks/${task.id}`}
-          >
-            <ListItemText
-              primary={get(task, 'subtasks[0].name', task.name)}
-              classes={{
-                  primary: classes.text,
-                  root: classes.textWrapper,
+        ).map((task) => {
+          const isStale = TaskService.isStale(task);
+          return (
+            <ListItem
+              key={task.id}
+              component={Link}
+              className={classes.link}
+              to={`/tasks/${task.id}`}
+            >
+              <Badge
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
                 }}
-            />
-            <When condition={!!canDelete}>
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="Delete"
+                overlap="rectangle"
+                color="primary"
+                // TODO: i18n
+                badgeContent="Stale"
+              >
+                <ListItemText
+                  primary={get(task, 'subtasks[0].name', task.name)}
+                  classes={{
+                    primary: classes.text,
+                    root: classes.textWrapper,
+                  }}
+                />
+              </Badge>
+              <When condition={!!canDelete}>
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="Delete"
                     // @ts-ignore
-                  onClick={() => deleteTask(task.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </When>
-          </ListItem>
-          ))}
+                    onClick={() => deleteTask(task.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </When>
+            </ListItem>
+          );
+        })}
       </List>
-      <When condition={tasks.length > tasksPerPage}>
+      <When condition={tasks?.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
           <Pagination
             count={numberOfPAges}

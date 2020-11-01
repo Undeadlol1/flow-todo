@@ -1,3 +1,4 @@
+import { last, isEmpty } from 'lodash';
 import { Task } from '../store';
 import { getFirestore } from './index';
 
@@ -5,10 +6,12 @@ export default class TaskService {
   static async deactivateActiveTasks(tasks: Task[] = []) {
     return Promise.all(
       tasks
-        .filter(i => i.isCurrent)
-        .map(({ id }) => getFirestore()
+        .filter((i) => i.isCurrent)
+        .map(({ id }) =>
+          getFirestore()
             .doc(`tasks/${id}`)
-            .update({ isCurrent: false } as Task)),
+            .update({ isCurrent: false } as Task),
+        ),
     );
   }
 
@@ -27,5 +30,9 @@ export default class TaskService {
             isCurrent: true,
           })
       : Promise.resolve();
+  }
+
+  static isStale(task: Task): boolean {
+    return isEmpty(task.history);
   }
 }

@@ -113,8 +113,8 @@ export function initializeFirebase() {
   } else {
     // Use Firestore emulator for local development
     firebase.firestore().settings({
-      ssl: false,
-      host: 'localhost:8080',
+      // ssl: false,
+      // host: 'localhost:8080',
     });
   }
 
@@ -125,7 +125,7 @@ export function normalizeQueryResponse(
   snapshot: firestore.QuerySnapshot,
 ) {
   if (snapshot.empty) return [];
-  return snapshot.docs.map(document => ({
+  return snapshot.docs.map((document: any) => ({
     id: document.id,
     ...document.data(),
   }));
@@ -158,11 +158,11 @@ export function getNewlyUnlockedReward(
 ): Reward | undefined {
   const sortedRewards = sort((a, b) => a.points - b.points, rewards);
   const currentRewardIndex = findLastIndex(
-    i => i.points <= currentPoints,
+    (i) => i.points <= currentPoints,
     rewards,
   );
   const nextRewardIndex = findLastIndex(
-    i => i.points <= currentPoints + pointsAboutToAdd,
+    (i) => i.points <= currentPoints + pointsAboutToAdd,
     rewards,
   );
   const nextReward = rewards[nextRewardIndex];
@@ -264,7 +264,7 @@ export function findSequenceDuplicates(
 const debounce = (delay: number, fn: any) => {
   let timerId: any;
 
-  return function(...args: any[]) {
+  return function (...args: any[]) {
     if (timerId) {
       clearTimeout(timerId);
     }

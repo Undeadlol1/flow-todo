@@ -64,7 +64,7 @@
     "react": "^16.14.0",
     "react-compound-timer": "^1.1.15",
     "react-countup": "^4.2.3",
-    "react-dom": "^16.11.0",
+    "react-dom": "^16.14.0",
     "react-firebase-hooks": "^2.1.0",
     "react-firebaseui-localized": "^1.0.8",
     "react-hook-form": "^3.26.2",

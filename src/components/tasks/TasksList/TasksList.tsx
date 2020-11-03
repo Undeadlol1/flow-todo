@@ -65,9 +65,8 @@ export function TasksList({
 }) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
-  const numberOfPAges = Number(
-    (tasks.length / tasksPerPage).toFixed(),
-  );
+  const numberOfPAges =
+    Number((tasks.length / tasksPerPage).toFixed()) + 1;
   const randomizedTasks = useMemo(() => shuffle(tasks), [tasks]);
 
   if (loading) return null;
@@ -95,16 +94,16 @@ export function TasksList({
             <ListItemText
               primary={get(task, 'subtasks[0].name', task.name)}
               classes={{
-                  primary: classes.text,
-                  root: classes.textWrapper,
-                }}
+                primary: classes.text,
+                root: classes.textWrapper,
+              }}
             />
             <When condition={!!canDelete}>
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
                   aria-label="Delete"
-                    // @ts-ignore
+                  // @ts-ignore
                   onClick={() => deleteTask(task.id)}
                 >
                   <DeleteIcon />
@@ -112,7 +111,7 @@ export function TasksList({
               </ListItemSecondaryAction>
             </When>
           </ListItem>
-          ))}
+        ))}
       </List>
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">

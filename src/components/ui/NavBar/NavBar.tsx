@@ -1,3 +1,4 @@
+import { ButtonBase, Theme } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
@@ -7,11 +8,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import { makeStyles } from '@material-ui/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 import clsx from 'clsx';
 import debug from 'debug';
 import get from 'lodash/get';
@@ -19,18 +21,15 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ButtonBase, Theme } from '@material-ui/core';
-import classNames from 'classnames';
 import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
 import {
   authSelector,
-  profilePointsSelector,
   profileSelector,
   usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
-import UserPoints from '../../users/UserPoints';
+import { MyUserPoints } from '../../unsorted/MyUserPoints';
 
 const log = debug('NavBar');
 
@@ -111,7 +110,6 @@ export function LoginOrLogoutButton() {
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );
-  const points = useTypedSelector(profilePointsSelector);
   const experience = get(profile, 'experience', 0);
   const photoUrl =
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
@@ -137,7 +135,7 @@ export function LoginOrLogoutButton() {
               isLevelUpAnimationActive && 'animated pulse infinite',
             )}
           >
-            <UserPoints value={points} isLoaded={profile.isLoaded} />
+            <MyUserPoints />
           </Button>
           <Button
             component={Link}

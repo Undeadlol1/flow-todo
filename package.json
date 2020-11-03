@@ -102,7 +102,7 @@
     "build-storybook": "build-storybook",
     "deploy": "npm run build && firebase deploy",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "plop": "npx plop",
+    "component": "npx plop",
     "chromatic": "npx chromatic --allow-console-errors -t '$CHROMATIC_TOKEN'",
     "find_ts_errors": "npx typescript",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/**"

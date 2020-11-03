@@ -24,7 +24,7 @@ export const useFabStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props extends FabProps {
-  isHidden?: any;
+  isHidden?: boolean;
 }
 
 const Fab = ({ isHidden, ...props }: Props) => {

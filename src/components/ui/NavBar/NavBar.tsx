@@ -5,7 +5,6 @@ import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -79,18 +78,16 @@ const NavBar = memo(() => {
           >
             <MenuIcon />
           </IconButton>
-          <Fade in timeout={1500}>
-            <ButtonBase>
-              <Link
-                to="/"
-                className={classNames(classes.link, classes.title)}
-              >
-                <Typography variant="h6" color="textPrimary">
-                  Долгий Ящик
-                </Typography>
-              </Link>
-            </ButtonBase>
-          </Fade>
+          <ButtonBase>
+            <Link
+              to="/"
+              className={classNames(classes.link, classes.title)}
+            >
+              <Typography variant="h6" color="textPrimary">
+                Долгий Ящик
+              </Typography>
+            </Link>
+          </ButtonBase>
           <Box className={classes.flexGrow} />
           <LoginOrLogoutButton />
         </Toolbar>

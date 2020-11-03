@@ -65,25 +65,23 @@ export function TasksList({
 }) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
+
+  const sliceTasksTo = tasksPerPage * page;
+  const sliceTasksFrom = tasksPerPage * (page - 1);
   const numberOfPAges =
     Number((tasks.length / tasksPerPage).toFixed()) + 1;
-
-  if (loading) return null;
-  if (isEmpty(tasks) || get(tasks, 'empty')) return null;
 
   log('tasks: %O', tasks);
   log('page: ', page);
   log('tasksPerPage * page: ', tasksPerPage * page);
   log('numberOfPAges: ', numberOfPAges);
 
+  if (loading) return null;
+  if (isEmpty(tasks) || get(tasks, 'empty')) return null;
   return (
     <Paper className={classes.paper}>
       <List className={classes.list}>
-        {slice(
-          tasks,
-          tasksPerPage * (page - 1), // Start from.
-          tasksPerPage * page, // End at.
-        ).map((task) => (
+        {slice(tasks, sliceTasksFrom, sliceTasksTo).map((task) => (
           <ListItem
             key={task.id}
             component={Link}

@@ -53,7 +53,8 @@ function TasksDoneToday({
     (100 * (tasksToday / tasksPerDay)).toFixed(),
   );
 
-  if (!props.isLoaded) return <Skeleton variant="rect" height="160px" />;
+  if (!props.isLoaded)
+    return <Skeleton variant="rect" height="160px" />;
   return (
     <Card>
       <CardContent>
@@ -62,9 +63,8 @@ function TasksDoneToday({
             {`${t('completed_tasks_today')}: `}
             <span
               className={classNames({
-                  [classes.boldText]:
-                    completedTasksInpercentages > 100,
-                })}
+                [classes.boldText]: completedTasksInpercentages > 100,
+              })}
             >
               <NumbersAnimatedOnUpdate
                 value={completedTasksInpercentages}
@@ -74,10 +74,10 @@ function TasksDoneToday({
           </Typography>
           <Box display="inline" className={classes.successIcon}>
             {isAchieved && (
-            <Zoom in>
-              <CheckCircleOutlineIcon />
-            </Zoom>
-              )}
+              <Zoom in>
+                <CheckCircleOutlineIcon />
+              </Zoom>
+            )}
           </Box>
         </Box>
         <StyledMobileStepper
@@ -87,15 +87,15 @@ function TasksDoneToday({
           backButton={<div />}
           steps={tasksPerDay + 1}
           activeStep={
-              tasksToday > tasksPerDay ? tasksPerDay : tasksToday
-            }
+            tasksToday > tasksPerDay ? tasksPerDay : tasksToday
+          }
         />
         <Box mt={2}>
           <DayliTasksStreak streak={props.dailyStreak} />
         </Box>
       </CardContent>
     </Card>
-    );
+  );
 }
 
 export default React.memo(TasksDoneToday);

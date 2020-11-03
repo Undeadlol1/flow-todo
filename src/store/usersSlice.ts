@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfo } from 'firebase';
+import firebase from 'firebase';
 
 export interface UsersState {
-  current: UserInfo;
+  current: firebase.UserInfo;
   isLevelUpAnimationActive: boolean;
 }
 
@@ -25,7 +25,7 @@ const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    login(state, action: PayloadAction<UserInfo>) {
+    login(state, action: PayloadAction<firebase.UserInfo>) {
       state.current = action.payload;
     },
     logout(state, payload) {

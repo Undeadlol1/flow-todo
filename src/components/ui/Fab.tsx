@@ -1,9 +1,8 @@
-import React, { memo } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import MUIFab, { FabProps } from '@material-ui/core/Fab';
-import cx from 'clsx';
-import Zoom from '@material-ui/core/Zoom';
 import { Theme } from '@material-ui/core';
+import MUIFab, { FabProps } from '@material-ui/core/Fab';
+import { makeStyles } from '@material-ui/styles';
+import cx from 'clsx';
+import React, { memo } from 'react';
 
 export const useFabStyles = makeStyles((theme: Theme) => ({
   fab: {
@@ -33,13 +32,11 @@ const Fab = ({ isHidden, ...props }: Props) => {
 
   if (isHidden) return null;
   return (
-    <Zoom in>
-      <MUIFab
-        color="primary"
-        {...props}
-        className={cx([classes.fab, props.className])}
-      />
-    </Zoom>
+    <MUIFab
+      color="primary"
+      {...props}
+      className={cx([classes.fab, props.className])}
+    />
   );
 };
 

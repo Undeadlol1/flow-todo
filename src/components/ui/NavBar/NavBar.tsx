@@ -19,7 +19,7 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Theme } from '@material-ui/core';
+import { ButtonBase, Theme } from '@material-ui/core';
 import classNames from 'classnames';
 import LevelingService from '../../../services/leveling';
 import { useTypedSelector } from '../../../store';
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
   },
   title: {
-    flexGrow: 1,
+    padding: theme.spacing(0, 1),
   },
   link: {
     textDecoration: 'none',
@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up('lg')]: {
       marginRight: theme.spacing(3),
     },
+  },
+  flexGrow: {
+    flexGrow: 1,
   },
 }));
 
@@ -79,15 +82,18 @@ const NavBar = memo(() => {
             <MenuIcon />
           </IconButton>
           <Fade in timeout={1500}>
-            <Link
-              to="/"
-              className={classNames(classes.link, classes.title)}
-            >
-              <Typography variant="h6" color="textPrimary">
-                Долгий Ящик
-              </Typography>
-            </Link>
+            <ButtonBase>
+              <Link
+                to="/"
+                className={classNames(classes.link, classes.title)}
+              >
+                <Typography variant="h6" color="textPrimary">
+                  Долгий Ящик
+                </Typography>
+              </Link>
+            </ButtonBase>
           </Fade>
+          <Box className={classes.flexGrow} />
           <LoginOrLogoutButton />
         </Toolbar>
       </AppBar>

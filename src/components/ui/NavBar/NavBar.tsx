@@ -29,7 +29,6 @@ import {
   usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
-import { MyUserPoints } from '../../unsorted/MyUserPoints';
 
 const log = debug('NavBar');
 
@@ -129,14 +128,6 @@ export function LoginOrLogoutButton() {
     <>
       <Slide in timeout={500} direction="left">
         <Box mr={0.5}>
-          <Button
-            className={clsx(
-              classes.link,
-              isLevelUpAnimationActive && 'animated pulse infinite',
-            )}
-          >
-            <MyUserPoints />
-          </Button>
           <Button
             component={Link}
             to="/profile"

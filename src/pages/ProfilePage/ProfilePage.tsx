@@ -19,6 +19,7 @@ import { FirebaseReducer, useFirestore } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
+import { MyUserPoints } from '../../components/unsorted/MyUserPoints';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
 import { Profile, upsertProfile } from '../../store/index';
@@ -90,7 +91,20 @@ export const ProfilePage = memo((props: Props) => {
             <Card>
               <CardHeader
                 title={title}
-                subheader={t('level_is', { level: userLevel })}
+                subheader={
+                  <>
+                    <Grid container justify="space-between">
+                      <Grid item xs={6}>
+                        {t('level_is', { level: userLevel })}{' '}
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box textAlign="right">
+                          {t('points')}: <MyUserPoints />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </>
+                }
               />
               <CardMedia component="img" src={photoUrl as string} />
             </Card>

@@ -25,8 +25,6 @@ import { Profile, upsertProfile } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const log = debug('ProfilePage');
-// TODO: remove this line.
-debug.enable('ProfilePage');
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {

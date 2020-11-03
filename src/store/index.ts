@@ -7,7 +7,6 @@ import subDays from 'date-fns/subDays';
 import debug from 'debug';
 import firebase from 'firebase/app';
 import extend from 'lodash/extend';
-import { snackbarReducer } from 'material-ui-snackbar-redux';
 import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
@@ -243,7 +242,6 @@ const rootReducer = combineReducers({
   tasks: tasksSlice,
   rewards: rewardsSlice,
   snackbars: snackbarsSlice,
-  snackbar: snackbarReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });

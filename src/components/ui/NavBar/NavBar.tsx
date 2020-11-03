@@ -126,8 +126,6 @@ export function LoginOrLogoutButton() {
       <Slide in timeout={500} direction="left">
         <Box mr={0.5}>
           <Button
-            // component={Link}
-            // to="/rewards"
             className={clsx(
               classes.link,
               isLevelUpAnimationActive && 'animated pulse infinite',

@@ -19,12 +19,10 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { useSelector } from 'react-redux';
+import { IDayliStreak, Task, TaskHistory } from '../../store/index';
 import {
-  IDayliStreak, Task,
-  TaskHistory,
-} from '../../store/index';
-import {
-  authSelector, profileSelector,
+  authSelector,
+  profileSelector,
   taskLogsSelector as taskLogs,
   tasksDoneTodaySelector,
   tasksSelector,
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface Props {
+export interface IndexPageProps {
   logs: TaskHistory[];
   streak: IDayliStreak;
   tasksPerDay: number;
@@ -54,20 +52,29 @@ interface Props {
 }
 
 const sectionProps = {
-  item: true, xs: 12, sm: 12, md: 8, lg: 6,
+  item: true,
+  xs: 12,
+  sm: 12,
+  md: 8,
+  lg: 6,
 } as GridProps;
 
-export const IndexPage = memo((props: Props) => {
+export const IndexPage = memo((props: IndexPageProps) => {
   const classes = useStyles();
   const isScreeenNarrow = useScreenIsNarrow();
 
-  const { isLoading, activeTasks = [], createdAtleastOneTask } = props;
+  const {
+    isLoading,
+    activeTasks = [],
+    createdAtleastOneTask,
+  } = props;
   log('isLoading: ', isLoading);
   log('activeTasks: %O', activeTasks);
   log('createdAtleastOneTask: ', createdAtleastOneTask);
 
   function renderWelcomeCardOrContent() {
-    if (isLoading || createdAtleastOneTask) return <TasksList tasks={activeTasks} />;
+    if (isLoading || createdAtleastOneTask)
+      return <TasksList tasks={activeTasks} />;
     return <WelcomeCard />;
   }
 
@@ -86,8 +93,8 @@ export const IndexPage = memo((props: Props) => {
           <Skeleton height="200px" width="350px" variant="rect" />
         </Grid>
       </Grid>
-  );
-    }
+    );
+  }
 
   return (
     <Grid
@@ -144,7 +151,8 @@ export default memo((props) => {
     get('firestore.ordered'),
   );
 
-  let isLoading = isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
+  let isLoading =
+    isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
   if (auth.isEmpty) isLoading = false;
   if (!auth.isLoaded) isLoading = true;
 

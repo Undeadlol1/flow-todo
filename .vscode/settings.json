@@ -8,7 +8,8 @@
         "Profile",
         "templates",
         "eslint",
-        "storybook"
+        "storybook",
+        "firebase"
     ],
     "eslint.enable": true
 }

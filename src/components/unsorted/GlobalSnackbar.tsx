@@ -21,7 +21,7 @@ const GlobalSnackbar = memo(
     const {
       isSnackbarShown,
       snackbarMessage,
-      toggleSnackbar: toggleDialog,
+      toggleSnackbar,
     } = useSnackbars({ _isOpenForDevPurposes });
     return (
       <Snackbar
@@ -31,7 +31,7 @@ const GlobalSnackbar = memo(
         }}
         open={isSnackbarShown}
         message={snackbarMessage}
-        onClose={() => toggleDialog()}
+        onClose={() => toggleSnackbar()}
       />
     );
   },
@@ -47,7 +47,7 @@ function useSnackbars({
   isSnackbarShown: boolean;
   toggleSnackbar: (boolean?: boolean) => void;
 } {
-  const [isDialogOpen, toggleDialog] = useToggle(
+  const [isDialogOpen, toggleSnackbar] = useToggle(
     _isOpenForDevPurposes,
   );
   const { isTasksDoneTodayNotificationOpen } = useSelector(
@@ -73,9 +73,9 @@ function useSnackbars({
     );
 
     setSnackbarMessage(snackbarToActivate);
-    toggleDialog(true);
+    toggleSnackbar(true);
     delay(() => {
-      toggleDialog(false);
+      toggleSnackbar(false);
       delay(
         () => SnackbarService.updateQueue(snackbarsWithoutActiveOne),
         500,
@@ -85,12 +85,12 @@ function useSnackbars({
 
   useEffect(displayFirstSnackbarInQueue, [
     isDialogOpen,
+    toggleSnackbar,
     snackbarsInQueue,
     isTasksDoneTodayNotificationOpen,
-    toggleDialog,
   ]);
   return {
-    toggleSnackbar: toggleDialog,
+    toggleSnackbar,
     snackbarQueue: [],
     snackbarMessage: snackbarMessage,
     isSnackbarShown: isDialogOpen,

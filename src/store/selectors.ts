@@ -1,5 +1,6 @@
 import { AuthError } from '@firebase/auth-types';
 import firebase from 'firebase/app';
+import { shuffle } from 'lodash';
 import countBy from 'lodash/countBy';
 import filter from 'lodash/filter';
 import get from 'lodash/fp/get';
@@ -18,9 +19,9 @@ import {
   TaskHistory,
 } from './index';
 import { Reward } from './rewardsSlice';
+import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
-import { SnackbarsState } from './snackbarsSlice';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -59,7 +60,7 @@ export const tasksSelector = createSelector(
     if (isUndefined(tasks)) return tasks;
     // TODO refactor
     return filter(
-      tasks,
+      shuffle(tasks),
       ({ tags = [] }) =>
         !tags.some((tag) => excludedTags.includes(tag.toLowerCase())),
     );

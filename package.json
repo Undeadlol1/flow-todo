@@ -105,7 +105,8 @@
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "plop": "npx plop",
     "chromatic": "npx chromatic --allow-console-errors -t '$CHROMATIC_TOKEN'",
-    "lint": "eslint --fix --ext .js,.jsx ./"
+    "find_ts_errors": "npx typescript",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/**"
   },
   "engines": {
     "node": ">=10.0.0"

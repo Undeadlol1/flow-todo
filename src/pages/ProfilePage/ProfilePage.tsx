@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
-import { UserInfo } from 'firebase/app';
+import firebase from 'firebase/app';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   profile?: Profile;
   isLoading: boolean;
-  user?: UserInfo & FirebaseReducer.AuthState;
+  user?: firebase.UserInfo & FirebaseReducer.AuthState;
 }
 
 export const ProfilePage = memo((props: Props) => {
@@ -110,7 +110,7 @@ export const ProfilePage = memo((props: Props) => {
           <ToggleEncouragingMessages
             isLoading={props.isLoading}
             value={profile.areEcouragingMessagesDisabled}
-            onChange={areEcouragingMessagesDisabled =>
+            onChange={(areEcouragingMessagesDisabled) =>
               updateProfile({
                 ...profile,
                 areEcouragingMessagesDisabled,
@@ -141,7 +141,7 @@ export const ProfilePage = memo((props: Props) => {
   );
 });
 
-export const ProfilePageContainer = memo(props => {
+export const ProfilePageContainer = memo((props) => {
   const user = useSelector(authSelector);
   const profile = useSelector(profileSelector);
   const isLoading = !(user.isLoaded && profile.isLoaded);

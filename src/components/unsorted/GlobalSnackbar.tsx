@@ -1,4 +1,4 @@
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Theme, withStyles } from '@material-ui/core';
 import delay from 'lodash/delay';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
@@ -12,6 +12,12 @@ import debug from 'debug';
 
 const log = debug('GlobalSnackbar');
 
+const StyledSnackbar = withStyles((theme: Theme) => ({
+  root: {
+    zIndex: theme.zIndex.tooltip,
+  },
+}))(Snackbar);
+
 export interface GlobalSnackbarProps {
   _isOpenForDevPurposes?: boolean;
 }
@@ -24,7 +30,7 @@ const GlobalSnackbar = memo(
       toggleSnackbar,
     } = useSnackbars({ _isOpenForDevPurposes });
     return (
-      <Snackbar
+      <StyledSnackbar
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',

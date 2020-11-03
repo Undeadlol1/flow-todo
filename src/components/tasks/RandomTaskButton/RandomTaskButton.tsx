@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import clsx from 'clsx';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -25,8 +25,8 @@ import {
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
-    color: theme.palette.secondary.contrastText,
     padding: '100px',
+    color: theme.palette.secondary.contrastText,
     backgroundColor: theme.palette.primary.main,
   },
   buttonRoot: {
@@ -62,10 +62,10 @@ export const RandomTaskButton = ({
   const randomTaskId = get(docs, `[${random(docs.length - 1)}].id`);
   // TODO: move logic into a service?
   if (
-    !isEmpty(docs)
-    && !currentTaskId
-    && !isAppTourActive
-    && randomTaskId
+    !isEmpty(docs) &&
+    !currentTaskId &&
+    !isAppTourActive &&
+    randomTaskId
   ) {
     firestore
       .doc(`tasks/${randomTaskId}`)
@@ -108,12 +108,10 @@ export const RandomTaskButton = ({
 
 interface ContainerProps {
   className?: string;
-  tasks?: firestore.QuerySnapshot;
+  tasks?: firebase.firestore.QuerySnapshot;
 }
 
-export default memo((
-  props: ContainerProps,
-) => {
+export default memo((props: ContainerProps) => {
   const tasks = useSelector(tasksSelector);
   const { isAppTourActive } = useTypedSelector(uiSelector);
 

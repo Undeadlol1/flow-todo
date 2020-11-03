@@ -1,16 +1,17 @@
-import React from 'react';
-import get from 'lodash/get';
-import PropTypes from 'prop-types';
-import useForm from 'react-hook-form';
-import { firestore, auth } from 'firebase/app';
+import { Box } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { useAuthState } from 'react-firebase-hooks/auth';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeStyles } from '@material-ui/styles';
+import  firebase  from 'firebase/app';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
+import React from 'react';
+import useForm from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import Button from '@material-ui/core/Button';
-import { Box } from '@material-ui/core';
 import { showSnackbar } from '../../../services';
+import { useSelector } from 'react-redux'
+import { authSelector } from '../../../store/selectors'
 
 const useStyles = makeStyles({
   container: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
 const UpsertNote = props => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const [user] = useAuthState(auth());
+  const user  = useSelector(authSelector)
   const {
     register,
     errors,
@@ -32,7 +33,7 @@ const UpsertNote = props => {
   } = useForm();
 
   let error;
-  if (!user) error = t('Please login');
+  if (!user?.uid) error = t('Please login');
   else error = props.error || get(errors, 'note.message');
 
   function createNote() {
@@ -46,7 +47,7 @@ const UpsertNote = props => {
     }
 
     clearError('note');
-    firestore()
+    firebase.firestore()
       .collection('tasks')
       .doc(props.taskId)
       .update({

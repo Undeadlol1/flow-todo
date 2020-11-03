@@ -5,7 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import subDays from 'date-fns/subDays';
 import debug from 'debug';
-import firebase, { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import extend from 'lodash/extend';
 import { snackbarReducer } from 'material-ui-snackbar-redux';
 import nanoid from 'nanoid';
@@ -37,7 +37,7 @@ import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
 
 const log = debug('store');
-const { FieldValue } = firestore;
+const { FieldValue } = firebase.firestore;
 
 export type IDayliStreak = {
   perDay: number;
@@ -166,6 +166,7 @@ export function createSubtask(
 ): Promise<void | Error> {
   console.log('taskId: ', taskId);
   return (
+    // @ts-ignore
     getFirestore2(firebase)
       // return getFirestore()
       .update(
@@ -259,6 +260,7 @@ const store = configureStore({
     }),
   ],
   devTools: process.env.NODE_ENV !== 'test',
+  // @ts-ignore
   enhancers: [reduxFirestore(firebase)],
 });
 
@@ -288,7 +290,7 @@ export function claimReward(reward: Reward) {
     const fs = getFirestore();
     if (!reward.isReccuring) fs.doc('rewards/' + reward.id).delete();
     fs.doc('profiles/' + reward.userId).update({
-      points: firestore.FieldValue.increment(reward.points * -1),
+      points: FieldValue.increment(reward.points * -1),
     });
   } catch (error) {
     handleErrors(error);
@@ -297,8 +299,8 @@ export function claimReward(reward: Reward) {
 
 export type RootReducer = ReturnType<typeof rootReducer>;
 
-export const useTypedSelector: TypedUseSelectorHook<
-  ReturnType<typeof rootReducer>
-> = useSelector;
+export const useTypedSelector: TypedUseSelectorHook<ReturnType<
+  typeof rootReducer
+>> = useSelector;
 
 export default store;

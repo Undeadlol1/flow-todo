@@ -116,6 +116,7 @@ const SortableListContainer = SortableContainer(
 
 export default function SubtasksList({ documents, ...props }: Props) {
   const classes = useStyles();
+  // @ts-ignore
   const firestore = getFirestore(firebase);
   const [subtasksStub, setSubtasksStub] = useState<
     Subtask[] | undefined

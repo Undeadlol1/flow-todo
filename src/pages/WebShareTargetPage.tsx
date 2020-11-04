@@ -10,7 +10,7 @@ import not from 'ramda/es/not';
 import queryString from 'query-string';
 import { Theme } from '@material-ui/core';
 import { authSelector } from '../store/selectors';
-import { createTask } from '../store/index';
+import { createTask } from "../repositories/createTask";
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {

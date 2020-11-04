@@ -3,10 +3,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import subDays from 'date-fns/subDays';
 import debug from 'debug';
 import firebase from 'firebase/app';
-import extend from 'lodash/extend';
 import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
@@ -99,37 +97,6 @@ export type Task = {
   updatedAt?: number;
 };
 
-export function createTask(values: {
-  id?: string;
-  name: string;
-  userId: string;
-  note?: string;
-  tags?: string[];
-  subtasks?: Subtask[];
-}) {
-  return (
-    getFirestore()
-      .collection('tasks')
-      .doc(values.id || nanoid())
-      // TODO: was tired while writing this code.
-      // Is this correct*
-      .set(
-        extend(values, {
-          isDone: false,
-          cratedAt: Date.now(),
-          dueAt: subDays(new Date(), 1).getTime(),
-        }),
-        { merge: true },
-      )
-      .catch(handleErrors)
-  );
-}
-
-export function deleteTask(taskId: string): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .delete();
-}
 // NOTE: WIP
 export function createSubtask(
   taskId: string,

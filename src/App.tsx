@@ -4,7 +4,6 @@ import React, { useMemo, memo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
-// eslint-disable-next-line
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import RouterAndDataLoader from './RouterAndDataLoader';

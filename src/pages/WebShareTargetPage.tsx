@@ -1,16 +1,16 @@
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
-import nanoid from 'nanoid';
+import queryString from 'query-string';
+import not from 'ramda/es/not';
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import not from 'ramda/es/not';
-import queryString from 'query-string';
-import { Theme } from '@material-ui/core';
-import { authSelector } from '../store/selectors';
+import { getUniqueId } from '../helpers/getUniqueId';
 import { createTask } from '../store/index';
+import { authSelector } from '../store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -28,7 +28,7 @@ const WebShareTargetPage = memo(() => {
   const [inProgress, setInProgress] = useState(false);
 
   useEffect(() => {
-    const id = nanoid();
+    const id = getUniqueId();
     const { note, url } = query;
     const name = (query.name || note || url) as string;
 

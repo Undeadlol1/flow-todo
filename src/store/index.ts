@@ -7,7 +7,6 @@ import subDays from 'date-fns/subDays';
 import debug from 'debug';
 import firebase from 'firebase/app';
 import extend from 'lodash/extend';
-import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
@@ -34,6 +33,7 @@ import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
+import { getUniqueId } from '../helpers/getUniqueId';
 
 const log = debug('store');
 const { FieldValue } = firebase.firestore;
@@ -108,7 +108,7 @@ export function createTask(values: {
   return (
     getFirestore()
       .collection('tasks')
-      .doc(values.id || nanoid())
+      .doc(values.id || getUniqueId())
       // TODO: was tired while writing this code.
       // Is this correct*
       .set(
@@ -146,7 +146,7 @@ export function upsertTask(
 
   return getFirestore()
     .collection('tasks')
-    .doc(taskId || nanoid())
+    .doc(taskId || getUniqueId())
     .set(payload, { merge: true })
     .catch(handleErrors);
 }
@@ -175,7 +175,7 @@ export function createSubtask(
           // TODO: Use firestore from from redux-firestore
           subtasks: FieldValue.arrayUnion({
             // TODO: this might be the reason of "id" dissapearing from Task
-            id: nanoid(),
+            id: getUniqueId(),
             isDone: false,
             parentId: taskId,
             createdAt: Date.now(),

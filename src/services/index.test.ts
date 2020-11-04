@@ -1,16 +1,16 @@
+import { getUniqueId } from '../helpers/getUniqueId';
 import {
   calculateNextRepetition,
   // findSequenceDuplicates,
 } from './index';
-import nanoid from 'nanoid';
 
 describe('spacedRepetion()', () => {
   it('returns a value', () => {
     const result = calculateNextRepetition({
-      id: nanoid(),
+      id: getUniqueId(),
       isDone: false,
-      name: nanoid(),
-      userId: nanoid(),
+      name: getUniqueId(),
+      userId: getUniqueId(),
       dueAt: Date.now(),
     });
     expect(typeof result).toBe('object');

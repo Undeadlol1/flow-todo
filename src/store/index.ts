@@ -84,8 +84,6 @@ export type TaskHistory = {
 export type Task = {
   id: string;
   name: string;
-  dueAt: number;
-  doneAt?: number;
   userId: string;
   note?: string;
   isDone: boolean;
@@ -95,6 +93,10 @@ export type Task = {
   subtasks?: Subtask[];
   history?: TaskHistory[];
   tags?: string[];
+  dueAt: number;
+  doneAt?: number;
+  createdAt: number;
+  updatedAt?: number;
 };
 
 export function createTask(values: {

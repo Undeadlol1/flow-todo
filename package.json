@@ -54,7 +54,7 @@
     "lorem-ipsum": "^2.0.3",
     "material-ui-chip-input": "^1.1.0",
     "material-ui-snackbar-provider": "^1.3.1",
-    "nanoid": "^2.1.6",
+    "nanoid": "^3.1.16",
     "notistack": "^1.0.1",
     "pretty-error": "^2.1.1",
     "prop-types": "^15.7.2",

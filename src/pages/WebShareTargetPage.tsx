@@ -9,7 +9,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getUniqueId } from '../helpers/getUniqueId';
-import { createTask } from '../store/index';
+import { createTask } from '../repositories/createTask';
 import { authSelector } from '../store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({

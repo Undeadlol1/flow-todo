@@ -1,14 +1,22 @@
+import find from 'lodash/find';
+import get from 'lodash/fp/get';
 import { Task } from '../store';
 import { getFirestore } from './index';
 
 export default class TaskService {
+  static get db() {
+    return getFirestore();
+  }
+
   static async deactivateActiveTasks(tasks: Task[] = []) {
     return Promise.all(
       tasks
-        .filter(i => i.isCurrent)
-        .map(({ id }) => getFirestore()
+        .filter(get('isCurrent'))
+        .map(({ id }) =>
+          this.db
             .doc(`tasks/${id}`)
-            .update({ isCurrent: false } as Task)),
+            .update({ isCurrent: false } as Task),
+        ),
     );
   }
 
@@ -20,12 +28,10 @@ export default class TaskService {
     currentTasks: Task[];
   }) {
     return nextTaskId
-      ? getFirestore()
-          .doc(`tasks/${nextTaskId}`)
-          .update({
-            ...currentTasks.find(({ id }) => id === nextTaskId),
-            isCurrent: true,
-          })
+      ? this.db.doc(`tasks/${nextTaskId}`).update({
+          ...find(currentTasks, { id: nextTaskId }),
+          isCurrent: true,
+        })
       : Promise.resolve();
   }
 }

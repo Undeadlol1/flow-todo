@@ -15,10 +15,8 @@ import {
   useTypedTranslate,
 } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
-import {
-  addPointsWithSideEffects,
-  upsertTask,
-} from '../../../store/index';
+import { addPointsWithSideEffects } from '../../../store/index';
+import { upsertTask } from '../../../repositories/upsertTask';
 import { authSelector } from '../../../store/selectors';
 
 const useStyles = makeStyles({
@@ -64,7 +62,9 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        onSubmit={form.handleSubmit((values: any) => props.onSubmit(values, form.reset))}
+        onSubmit={form.handleSubmit((values: any) =>
+          props.onSubmit(values, form.reset),
+        )}
       >
         <TextField
           fullWidth
@@ -131,9 +131,11 @@ function UpsertTaskContainer({
       if (showSnackbarOnSuccess) {
         Snackbar.addToQueue(
           pointsToAdd
-            ? `${translate('Successfully saved')
-                }. ${
-                translate('points added', { points: pointsToAdd })}`
+            ? `${translate(
+                'Successfully saved',
+              )}. ${translate('points added', {
+                points: pointsToAdd,
+              })}`
             : translate('Successfully saved'),
         );
       }

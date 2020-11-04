@@ -3,10 +3,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import subDays from 'date-fns/subDays';
 import debug from 'debug';
 import firebase from 'firebase/app';
-import extend from 'lodash/extend';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
@@ -84,8 +82,6 @@ export type TaskHistory = {
 export type Task = {
   id: string;
   name: string;
-  dueAt: number;
-  doneAt?: number;
   userId: string;
   note?: string;
   isDone: boolean;
@@ -95,67 +91,12 @@ export type Task = {
   subtasks?: Subtask[];
   history?: TaskHistory[];
   tags?: string[];
+  dueAt: number;
+  doneAt?: number;
+  createdAt: number;
+  updatedAt?: number;
 };
 
-export function createTask(values: {
-  id?: string;
-  name: string;
-  userId: string;
-  note?: string;
-  tags?: string[];
-  subtasks?: Subtask[];
-}) {
-  return (
-    getFirestore()
-      .collection('tasks')
-      .doc(values.id || getUniqueId())
-      // TODO: was tired while writing this code.
-      // Is this correct*
-      .set(
-        extend(values, {
-          isDone: false,
-          cratedAt: Date.now(),
-          dueAt: subDays(new Date(), 1).getTime(),
-        }),
-        { merge: true },
-      )
-      .catch(handleErrors)
-  );
-}
-
-export function upsertTask(
-  values: {
-    name?: string;
-    userId?: string;
-    isCurrent?: boolean;
-    tags?: string[];
-  },
-  taskId?: string,
-): Promise<void | Error> {
-  const isCreate = !taskId;
-  const payload = extend(
-    values,
-    isCreate && {
-      isDone: false,
-      dueAt: subDays(new Date(), 1).getTime(),
-    },
-  );
-
-  if (isCreate && !values.userId)
-    return Promise.reject('You forgot to add userId');
-
-  return getFirestore()
-    .collection('tasks')
-    .doc(taskId || getUniqueId())
-    .set(payload, { merge: true })
-    .catch(handleErrors);
-}
-
-export function deleteTask(taskId: string): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .delete();
-}
 // NOTE: WIP
 export function createSubtask(
   taskId: string,

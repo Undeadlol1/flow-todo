@@ -12,8 +12,6 @@ import Pagination from '@material-ui/lab/Pagination';
 import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import slice from 'lodash/slice';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
@@ -25,14 +23,13 @@ const log = debug('TasksList');
 const tasksPerPage = 7;
 
 const useStyles = makeStyles((theme: Theme) => {
-  const color = theme.palette.text.primary;
   return {
     list: {
       width: '100%',
     },
     link: {
-      color,
       textDecoration: 'none',
+      color: theme.palette.text.primary,
     },
     textWrapper: {
       overflow: 'hidden',
@@ -52,17 +49,19 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+interface TasksListProps {
+  tasks: Task[];
+  loading: boolean;
+  canDelete?: boolean;
+  deleteTask?: (id: string) => void;
+}
+
 export function TasksList({
   loading,
   tasks,
   canDelete,
   deleteTask,
-}: {
-  tasks: Task[];
-  loading: boolean;
-  canDelete?: boolean;
-  deleteTask?: (id: string) => void;
-}) {
+}: TasksListProps) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
 
@@ -73,7 +72,6 @@ export function TasksList({
 
   log('tasks: %O', tasks);
   log('page: ', page);
-  log('tasksPerPage * page: ', tasksPerPage * page);
   log('numberOfPAges: ', numberOfPAges);
 
   if (loading) return null;
@@ -81,33 +79,31 @@ export function TasksList({
   return (
     <Paper className={classes.paper}>
       <List className={classes.list}>
-        {slice(tasks, sliceTasksFrom, sliceTasksTo).map((task) => (
-          <ListItem
-            key={task.id}
-            component={Link}
-            className={classes.link}
-            to={`/tasks/${task.id}`}
-          >
-            <ListItemText
-              primary={get(task, 'subtasks[0].name', task.name)}
-              classes={{
-                primary: classes.text,
-                root: classes.textWrapper,
-              }}
-            />
-            <When condition={!!canDelete}>
+        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
+          const text = get(task, 'subtasks[0].name', task.name);
+          return (
+            <ListItem
+              key={task.id}
+              component={Link}
+              className={classes.link}
+              to={`/tasks/${task.id}`}
+            >
+              <ListItemText
+                primary={text}
+                classes={{
+                  primary: classes.text,
+                  root: classes.textWrapper,
+                }}
+              />
               <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="Delete"
+                <DeleteButton
+                  isVisible={canDelete}
                   onClick={() => deleteTask && deleteTask(task.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                />
               </ListItemSecondaryAction>
-            </When>
-          </ListItem>
-        ))}
+            </ListItem>
+          );
+        })}
       </List>
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
@@ -121,17 +117,30 @@ export function TasksList({
   );
 }
 
+function DeleteButton({
+  isVisible: canDelete,
+  onClick,
+}: {
+  onClick: () => void;
+  isVisible: TasksListProps['canDelete'];
+}) {
+  return (
+    <When condition={!!canDelete}>
+      <IconButton
+        edge="end"
+        aria-label="Delete"
+        onClick={() => onClick()}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </When>
+  );
+}
+
 TasksList.defaultProps = {
   tasks: null,
   loading: false,
   canDelete: false,
-};
-
-TasksList.propTypes = {
-  loading: PropTypes.bool,
-  tasks: PropTypes.array,
-  canDelete: PropTypes.bool,
-  deleteTask: PropTypes.func,
 };
 
 // TODO add props types

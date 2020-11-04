@@ -7,7 +7,9 @@
         "TaskPage",
         "Profile",
         "templates",
-        "eslint"
+        "eslint",
+        "storybook",
+        "firebase"
     ],
     "eslint.enable": true
 }

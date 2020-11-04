@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
-import { UserInfo } from 'firebase/app';
+import firebase from 'firebase/app';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
@@ -19,14 +19,13 @@ import { FirebaseReducer, useFirestore } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
+import { MyUserPoints } from '../../components/unsorted/MyUserPoints';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
 import { Profile, upsertProfile } from '../../store/index';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const log = debug('ProfilePage');
-// TODO: remove this line.
-debug.enable('ProfilePage');
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   profile?: Profile;
   isLoading: boolean;
-  user?: UserInfo & FirebaseReducer.AuthState;
+  user?: firebase.UserInfo & FirebaseReducer.AuthState;
 }
 
 export const ProfilePage = memo((props: Props) => {
@@ -92,7 +91,20 @@ export const ProfilePage = memo((props: Props) => {
             <Card>
               <CardHeader
                 title={title}
-                subheader={t('level_is', { level: userLevel })}
+                subheader={
+                  <>
+                    <Grid container justify="space-between">
+                      <Grid item xs={6}>
+                        {t('level_is', { level: userLevel })}{' '}
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box textAlign="right">
+                          {t('points')}: <MyUserPoints />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </>
+                }
               />
               <CardMedia component="img" src={photoUrl as string} />
             </Card>
@@ -110,7 +122,7 @@ export const ProfilePage = memo((props: Props) => {
           <ToggleEncouragingMessages
             isLoading={props.isLoading}
             value={profile.areEcouragingMessagesDisabled}
-            onChange={areEcouragingMessagesDisabled =>
+            onChange={(areEcouragingMessagesDisabled) =>
               updateProfile({
                 ...profile,
                 areEcouragingMessagesDisabled,
@@ -141,7 +153,7 @@ export const ProfilePage = memo((props: Props) => {
   );
 });
 
-export const ProfilePageContainer = memo(props => {
+export const ProfilePageContainer = memo((props) => {
   const user = useSelector(authSelector);
   const profile = useSelector(profileSelector);
   const isLoading = !(user.isLoaded && profile.isLoaded);

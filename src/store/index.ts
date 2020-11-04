@@ -3,12 +3,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import subDays from 'date-fns/subDays';
 import debug from 'debug';
-import firebase, { firestore } from 'firebase/app';
-import extend from 'lodash/extend';
-import { snackbarReducer } from 'material-ui-snackbar-redux';
-import nanoid from 'nanoid';
+import firebase from 'firebase/app';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
@@ -35,9 +31,10 @@ import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
+import { getUniqueId } from '../helpers/getUniqueId';
 
 const log = debug('store');
-const { FieldValue } = firestore;
+const { FieldValue } = firebase.firestore;
 
 export type IDayliStreak = {
   perDay: number;
@@ -85,8 +82,6 @@ export type TaskHistory = {
 export type Task = {
   id: string;
   name: string;
-  dueAt: number;
-  doneAt?: number;
   userId: string;
   note?: string;
   isDone: boolean;
@@ -96,67 +91,12 @@ export type Task = {
   subtasks?: Subtask[];
   history?: TaskHistory[];
   tags?: string[];
+  dueAt: number;
+  doneAt?: number;
+  createdAt: number;
+  updatedAt?: number;
 };
 
-export function createTask(values: {
-  id?: string;
-  name: string;
-  userId: string;
-  note?: string;
-  tags?: string[];
-  subtasks?: Subtask[];
-}) {
-  return (
-    getFirestore()
-      .collection('tasks')
-      .doc(values.id || nanoid())
-      // TODO: was tired while writing this code.
-      // Is this correct*
-      .set(
-        extend(values, {
-          isDone: false,
-          cratedAt: Date.now(),
-          dueAt: subDays(new Date(), 1).getTime(),
-        }),
-        { merge: true },
-      )
-      .catch(handleErrors)
-  );
-}
-
-export function upsertTask(
-  values: {
-    name?: string;
-    userId?: string;
-    isCurrent?: boolean;
-    tags?: string[];
-  },
-  taskId?: string,
-): Promise<void | Error> {
-  const isCreate = !taskId;
-  const payload = extend(
-    values,
-    isCreate && {
-      isDone: false,
-      dueAt: subDays(new Date(), 1).getTime(),
-    },
-  );
-
-  if (isCreate && !values.userId)
-    return Promise.reject('You forgot to add userId');
-
-  return getFirestore()
-    .collection('tasks')
-    .doc(taskId || nanoid())
-    .set(payload, { merge: true })
-    .catch(handleErrors);
-}
-
-export function deleteTask(taskId: string): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .delete();
-}
 // NOTE: WIP
 export function createSubtask(
   taskId: string,
@@ -166,6 +106,7 @@ export function createSubtask(
 ): Promise<void | Error> {
   console.log('taskId: ', taskId);
   return (
+    // @ts-ignore
     getFirestore2(firebase)
       // return getFirestore()
       .update(
@@ -175,7 +116,7 @@ export function createSubtask(
           // TODO: Use firestore from from redux-firestore
           subtasks: FieldValue.arrayUnion({
             // TODO: this might be the reason of "id" dissapearing from Task
-            id: nanoid(),
+            id: getUniqueId(),
             isDone: false,
             parentId: taskId,
             createdAt: Date.now(),
@@ -242,7 +183,6 @@ const rootReducer = combineReducers({
   tasks: tasksSlice,
   rewards: rewardsSlice,
   snackbars: snackbarsSlice,
-  snackbar: snackbarReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });
@@ -259,6 +199,7 @@ const store = configureStore({
     }),
   ],
   devTools: process.env.NODE_ENV !== 'test',
+  // @ts-ignore
   enhancers: [reduxFirestore(firebase)],
 });
 
@@ -288,7 +229,7 @@ export function claimReward(reward: Reward) {
     const fs = getFirestore();
     if (!reward.isReccuring) fs.doc('rewards/' + reward.id).delete();
     fs.doc('profiles/' + reward.userId).update({
-      points: firestore.FieldValue.increment(reward.points * -1),
+      points: FieldValue.increment(reward.points * -1),
     });
   } catch (error) {
     handleErrors(error);
@@ -297,8 +238,8 @@ export function claimReward(reward: Reward) {
 
 export type RootReducer = ReturnType<typeof rootReducer>;
 
-export const useTypedSelector: TypedUseSelectorHook<
-  ReturnType<typeof rootReducer>
-> = useSelector;
+export const useTypedSelector: TypedUseSelectorHook<ReturnType<
+  typeof rootReducer
+>> = useSelector;
 
 export default store;

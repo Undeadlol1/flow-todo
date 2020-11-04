@@ -114,5 +114,6 @@ export default {
     won_days_in_a_row: 'Won days in a row',
     'tasks list': 'Tasks List',
     level_is: 'Level: {{level}}',
+    points: 'Points',
   },
 };

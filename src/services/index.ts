@@ -7,10 +7,8 @@ import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
-import { firestore } from 'firebase';
 import get from 'lodash/get';
 import i18n from 'i18next';
-import { snackbarActions } from 'material-ui-snackbar-redux';
 import store, { Task } from '../store';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
@@ -21,7 +19,8 @@ import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
 import { toggleLevelUpAnimation } from '../store/usersSlice';
 import { Reward } from '../store/rewardsSlice';
-import { sort, findLastIndex } from 'ramda';
+import sort from 'ramda/es/sort';
+import findLastIndex from 'ramda/es/findLastIndex';
 import { getFirebase } from 'react-redux-firebase';
 import random from 'lodash/random';
 import { toggleSidebar as toggleUiSidebar } from '../store/uiSlice';
@@ -122,10 +121,10 @@ export function initializeFirebase() {
 }
 
 export function normalizeQueryResponse(
-  snapshot: firestore.QuerySnapshot,
+  snapshot: firebase.firestore.QuerySnapshot,
 ) {
   if (snapshot.empty) return [];
-  return snapshot.docs.map((document: any) => ({
+  return snapshot.docs.map((document) => ({
     id: document.id,
     ...document.data(),
   }));
@@ -135,15 +134,13 @@ export function handleErrors(
   e: Error | undefined | firebase.auth.Error,
 ) {
   if (e) {
-    var pe = new PrettyError();
-    console.log(pe.render(e));
-    store.dispatch(
-      snackbarActions.show({
-        message:
-          'Error: ' + get(e, 'message') ||
-          i18n.t('Something went wrong'),
-      }),
-    );
+    var { render } = new PrettyError();
+    const message = `Error: ${
+      e?.message || i18n.t('Something went wrong')
+    }`;
+
+    console.error(render(e));
+    Snackbar.addToQueue(message);
   }
 }
 

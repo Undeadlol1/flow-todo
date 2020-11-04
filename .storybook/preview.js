@@ -1,8 +1,8 @@
 import '@storybook/addon-console';
-import React from 'react'
-import { addDecorator, configure } from '@storybook/react';
-import { App } from '../src/App';
 import { withKnobs } from '@storybook/addon-knobs';
+import { addDecorator } from '@storybook/react';
+import React from 'react';
+import { App } from '../src/App';
 
 addDecorator(withKnobs)
 addDecorator(storyFn => (
@@ -11,4 +11,3 @@ addDecorator(storyFn => (
     </App>
 ))
 
-configure(require.context('../src', true, /\.stories\.(js|tsx)$/), module);

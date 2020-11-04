@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import invoke from 'lodash/invoke';
 import isUndefined from 'lodash/isUndefined';
 import React from 'react';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
@@ -15,11 +15,10 @@ import {
   useTypedTranslate,
 } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
-import {
-  addPointsWithSideEffects,
-  upsertTask,
-} from '../../../store/index';
+import { addPointsWithSideEffects } from '../../../store/index';
+import { upsertTask } from '../../../repositories/upsertTask';
 import { authSelector } from '../../../store/selectors';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const useStyles = makeStyles({
   button: {
@@ -45,15 +44,18 @@ export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
   const form = useForm<{ name: string }>({
-    validationSchema: YupObject({
-      name: YupString()
-        .min(3, t('validation.atleast3Symbols'))
-        .max(100, t('validation.textIsTooLong'))
-        .required(t('validation.required')),
-    }),
+    resolver: yupResolver(
+      YupObject({
+        name: YupString()
+          .min(3, t('validation.atleast3Symbols'))
+          .max(100, t('validation.textIsTooLong'))
+          .trim()
+          .required(t('validation.required')),
+      }),
+    ),
   });
   const error = props.userId
-    ? get(form, 'errors.name.message')
+    ? get(form, 'errors.name.message', '')
     : t('Please login');
 
   let isSubmitDisabled: boolean | Error = true;
@@ -64,7 +66,9 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        onSubmit={form.handleSubmit((values: any) => props.onSubmit(values, form.reset))}
+        onSubmit={form.handleSubmit((values: any) =>
+          props.onSubmit(values, form.reset),
+        )}
       >
         <TextField
           fullWidth
@@ -131,9 +135,12 @@ function UpsertTaskContainer({
       if (showSnackbarOnSuccess) {
         Snackbar.addToQueue(
           pointsToAdd
-            ? `${translate('Successfully saved')
-                }. ${
-                translate('points added', { points: pointsToAdd })}`
+            ? `${translate('Successfully saved')}. ${translate(
+                'points added',
+                {
+                  points: pointsToAdd,
+                },
+              )}`
             : translate('Successfully saved'),
         );
       }

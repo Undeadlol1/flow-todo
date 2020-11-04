@@ -31,8 +31,7 @@ const DayliTasksStreak = memo(({ streak }: Props) => {
   return (
     <Typography variant="h6">
       <Box fontWeight={100}>
-        {t('won_days_in_a_row')}
-        :
+        {t('won_days_in_a_row')}:{' '}
         <NumbersAnimatedOnUpdate value={daysInARow} />
       </Box>
     </Typography>

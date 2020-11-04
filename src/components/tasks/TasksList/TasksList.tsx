@@ -1,4 +1,4 @@
-import { Badge, Theme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -12,13 +12,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import shuffle from 'lodash/shuffle';
-import slice from 'lodash/slice';
-import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
-import TaskService from '../../../services/TaskService';
 import { Task, useTypedSelector } from '../../../store/index';
 import { tasksSelector } from '../../../store/selectors';
 
@@ -29,14 +25,13 @@ debug.enable('TasksList');
 const tasksPerPage = 7;
 
 const useStyles = makeStyles((theme: Theme) => {
-  const color = theme.palette.text.primary;
   return {
     list: {
       width: '100%',
     },
     link: {
-      color,
       textDecoration: 'none',
+      color: theme.palette.text.primary,
     },
     textWrapper: {
       overflow: 'hidden',
@@ -50,46 +45,44 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'inline',
     },
     paper: {
+      margin: '0 auto',
       padding: theme.spacing(1),
     },
   };
 });
+
+interface TasksListProps {
+  tasks: Task[];
+  loading: boolean;
+  canDelete?: boolean;
+  deleteTask?: (id: string) => void;
+}
 
 export function TasksList({
   loading,
   tasks,
   canDelete,
   deleteTask,
-}: {
-  tasks: Task[];
-  loading: boolean;
-  canDelete?: boolean;
-  deleteTask?: (id: string) => void;
-}) {
+}: TasksListProps) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
-  const numberOfPAges = Number(
-    (tasks?.length / tasksPerPage).toFixed(),
-  );
-  const randomizedTasks = useMemo(() => shuffle(tasks), [tasks]);
 
-  if (loading) return null;
-  if (isEmpty(tasks) || get(tasks, 'empty')) return null;
+  const sliceTasksTo = tasksPerPage * page;
+  const sliceTasksFrom = tasksPerPage * (page - 1);
+  const numberOfPAges =
+    Number((tasks.length / tasksPerPage).toFixed()) + 1;
 
   log('tasks: %O', tasks);
   log('page: ', page);
-  log('tasksPerPage * page: ', tasksPerPage * page);
   log('numberOfPAges: ', numberOfPAges);
 
+  if (loading) return null;
+  if (isEmpty(tasks) || get(tasks, 'empty')) return null;
   return (
-    <Box mx="auto" component={Paper} className={classes.paper}>
+    <Paper className={classes.paper}>
       <List className={classes.list}>
-        {slice(
-          randomizedTasks,
-          tasksPerPage * (page - 1), // Start from.
-          tasksPerPage * page, // End at.
-        ).map((task) => {
-          const isStale = TaskService.isStale(task);
+        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
+          const text = get(task, 'subtasks[0].name', task.name);
           return (
             <ListItem
               key={task.id}
@@ -97,36 +90,19 @@ export function TasksList({
               className={classes.link}
               to={`/tasks/${task.id}`}
             >
-              <Badge
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+              <ListItemText
+                primary={text}
+                classes={{
+                  primary: classes.text,
+                  root: classes.textWrapper,
                 }}
-                overlap="rectangle"
-                color="primary"
-                // TODO: i18n
-                badgeContent="Stale"
-              >
-                <ListItemText
-                  primary={get(task, 'subtasks[0].name', task.name)}
-                  classes={{
-                    primary: classes.text,
-                    root: classes.textWrapper,
-                  }}
+              />
+              <ListItemSecondaryAction>
+                <DeleteButton
+                  isVisible={canDelete}
+                  onClick={() => deleteTask && deleteTask(task.id)}
                 />
-              </Badge>
-              <When condition={!!canDelete}>
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="Delete"
-                    // @ts-ignore
-                    onClick={() => deleteTask(task.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </When>
+              </ListItemSecondaryAction>
             </ListItem>
           );
         })}
@@ -139,7 +115,27 @@ export function TasksList({
           />
         </Box>
       </When>
-    </Box>
+    </Paper>
+  );
+}
+
+function DeleteButton({
+  isVisible: canDelete,
+  onClick,
+}: {
+  onClick: () => void;
+  isVisible: TasksListProps['canDelete'];
+}) {
+  return (
+    <When condition={!!canDelete}>
+      <IconButton
+        edge="end"
+        aria-label="Delete"
+        onClick={() => onClick()}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </When>
   );
 }
 
@@ -147,13 +143,6 @@ TasksList.defaultProps = {
   tasks: null,
   loading: false,
   canDelete: false,
-};
-
-TasksList.propTypes = {
-  loading: PropTypes.bool,
-  tasks: PropTypes.array,
-  canDelete: PropTypes.bool,
-  deleteTask: PropTypes.func,
 };
 
 // TODO add props types

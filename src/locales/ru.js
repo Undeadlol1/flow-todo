@@ -117,5 +117,6 @@ export default {
         won_days_in_a_row: 'Побеждал(a) дней подряд',
     'tasks list': 'Список задач',
     level_is: 'Уровень: {{level}}',
+    points: 'Очки',
   },
 };

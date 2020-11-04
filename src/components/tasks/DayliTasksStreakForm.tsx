@@ -7,8 +7,6 @@ import Snackbar from '../../services/Snackbar';
 import { useSelector } from 'react-redux';
 
 const log = debug('DayliTasksStreakForm');
-// TODO: remove this line.
-debug.enable('DayliTasksStreakForm')
 
 function DayliTasksStreakForm() {
   const profile = useSelector(profileSelector);
@@ -23,17 +21,18 @@ function DayliTasksStreakForm() {
       return;
     }
 
-    const mergedProfile ={
+    const mergedProfile = {
       ...profile,
       dailyStreak: {
         ...profile.dailyStreak,
         perDay: selectedNumber,
       },
-    }
-    log('Updating with this values: ', mergedProfile)
+    };
+    log('Updating with this values: ', mergedProfile);
 
-    upsertProfile(mergedProfile)
-    .catch(e => Snackbar.addToQueue(e.message));
+    upsertProfile(mergedProfile).catch((e) =>
+      Snackbar.addToQueue(e.message),
+    );
   }
 
   return (

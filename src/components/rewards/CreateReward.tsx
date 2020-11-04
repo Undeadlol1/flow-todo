@@ -8,11 +8,11 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';
 import React, { memo } from 'react';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Theme } from '@material-ui/core';
 import {
@@ -25,6 +25,7 @@ import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useTypedSelector } from '../../store/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -48,7 +49,7 @@ const CreateReward = (props: Props) => {
   const { t } = useTranslation();
   const tt = useTypedTranslate();
   const userId = useTypedSelector(
-    s => get(s, 'firebase.auth.uid') as string,
+    (s) => get(s, 'firebase.auth.uid') as string,
   );
   const {
     register,
@@ -58,32 +59,35 @@ const CreateReward = (props: Props) => {
     reset,
     setError,
   } = useForm({
-    validationSchema: YupObject({
-      name: YupString()
-        .min(3, t('validation.atleast3Symbols'))
-        .max(100, t('validation.textIsTooLong'))
-        .required(t('validation.required')),
-      points: YupNumber()
-        .min(1, t('validation.minimumValue', { value: 1 }))
-        .max(10000, t('validation.maximumValue', { value: 10000 }))
-        .required(t('validation.required')),
-      image: YupString().url(t('validation.invalidURL')),
-      isReccuring: YupBoolean(),
-    }),
+    resolver: yupResolver(
+      YupObject({
+        name: YupString()
+          .min(3, t('validation.atleast3Symbols'))
+          .max(100, t('validation.textIsTooLong'))
+          .required(t('validation.required')),
+        points: YupNumber()
+          .min(1, t('validation.minimumValue', { value: 1 }))
+          .max(10000, t('validation.maximumValue', { value: 10000 }))
+          .required(t('validation.required')),
+        image: YupString().url(t('validation.invalidURL')),
+        isReccuring: YupBoolean(),
+      }),
+    ),
   });
   const error = get(errors, 'name.message');
   function onSubmit(values: any) {
     console.log('values: ', values);
-    return firestore()
+    return firebase
+      .firestore()
       .collection('rewards')
       .add({ ...values, userId })
       .then(() => {
         reset({});
         invoke(props, 'callback');
       })
-      .catch(e => {
+      .catch((e) => {
         handleErrors(e);
-        setError('name', 'mismatch', get(e, 'message', e));
+        setError('name', get(e, 'message', e));
       });
   }
 

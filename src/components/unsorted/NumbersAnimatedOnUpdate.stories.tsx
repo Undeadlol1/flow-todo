@@ -1,4 +1,4 @@
-import { add } from 'ramda';
+import add from 'ramda/es/add';
 import React, { useEffect, useState } from 'react';
 import { sections } from '../storybookContants';
 import { NumbersAnimatedOnUpdate } from './NumbersAnimatedOnUpdate';

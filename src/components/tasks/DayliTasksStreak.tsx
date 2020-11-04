@@ -17,7 +17,7 @@ interface Props {
 const DayliTasksStreak = memo(({ streak }: Props) => {
   const t = useTypedTranslate();
 
-  let daysInARow = DailyStreak.daysInARow(streak) + 1;
+  let daysInARow = DailyStreak.daysInARow(streak);
   const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
 
   log('streak.startsAt: ', new Date(streak?.startsAt as number));

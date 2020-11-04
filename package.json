@@ -41,7 +41,7 @@
     "chromatic": "^5.2.0",
     "classnames": "^2.2.6",
     "clsx": "^1.0.4",
-    "date-fns": "^2.6.0",
+    "date-fns": "^2.16.1",
     "debug": "^4.2.0",
     "firebase": "^8.0.0",
     "firebase-tools": "^8.14.1",

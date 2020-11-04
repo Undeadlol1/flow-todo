@@ -1,7 +1,6 @@
 import { SnackbarOrigin } from '@material-ui/core/Snackbar';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import firebase from 'firebase/app';
-import { SnackbarProvider as NotistackSnackbarProver } from 'notistack';
 import React, { useMemo, memo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
@@ -26,11 +25,6 @@ const reduxFirebaseProps = {
   createFirestoreInstance,
 };
 
-const snachbarPosition: SnackbarOrigin = {
-  vertical: 'bottom',
-  horizontal: 'center',
-};
-
 export function App(props: {
   isStorybookEnv?: boolean;
   children?: JSX.Element;
@@ -44,21 +38,15 @@ export function App(props: {
     <div className="App">
       <ReduxProvider store={store}>
         <Theme isMobile={isMobile}>
-          <NotistackSnackbarProver
-            dense={isMobile}
-            autoHideDuration={3500}
-            anchorOrigin={snachbarPosition}
-          >
-            {props.isStorybookEnv ? (
-              <BrowserRouter>{props.children}</BrowserRouter>
-            ) : (
-              <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
-                <RouterAndDataLoader>
-                  {props.children}
-                </RouterAndDataLoader>
-              </ReactReduxFirebaseProvider>
-            )}
-          </NotistackSnackbarProver>
+          {props.isStorybookEnv ? (
+            <BrowserRouter>{props.children}</BrowserRouter>
+          ) : (
+            <ReactReduxFirebaseProvider {...reduxFirebaseProps}>
+              <RouterAndDataLoader>
+                {props.children}
+              </RouterAndDataLoader>
+            </ReactReduxFirebaseProvider>
+          )}
         </Theme>
       </ReduxProvider>
     </div>

@@ -12,6 +12,7 @@ describe('spacedRepetion()', () => {
       name: getUniqueId(),
       userId: getUniqueId(),
       dueAt: Date.now(),
+      createdAt: Date.now(),
     });
     expect(typeof result).toBe('object');
   });

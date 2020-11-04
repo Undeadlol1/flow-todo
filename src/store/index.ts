@@ -123,34 +123,6 @@ export function createTask(values: {
   );
 }
 
-export function upsertTask(
-  values: {
-    name?: string;
-    userId?: string;
-    isCurrent?: boolean;
-    tags?: string[];
-  },
-  taskId?: string,
-): Promise<void | Error> {
-  const isCreate = !taskId;
-  const payload = extend(
-    values,
-    isCreate && {
-      isDone: false,
-      dueAt: subDays(new Date(), 1).getTime(),
-    },
-  );
-
-  if (isCreate && !values.userId)
-    return Promise.reject('You forgot to add userId');
-
-  return getFirestore()
-    .collection('tasks')
-    .doc(taskId || nanoid())
-    .set(payload, { merge: true })
-    .catch(handleErrors);
-}
-
 export function deleteTask(taskId: string): Promise<void | Error> {
   return getFirestore()
     .doc('tasks/' + taskId)

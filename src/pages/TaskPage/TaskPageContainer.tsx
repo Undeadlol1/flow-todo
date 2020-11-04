@@ -19,9 +19,9 @@ import {
   addPointsWithSideEffects,
   TaskHistory,
   upsertProfile,
-  upsertTask,
   useTypedSelector,
 } from '../../store/index';
+import { upsertTask } from '../../repositories/upsertTask';
 import {
   activeTaskSelector,
   authSelector,

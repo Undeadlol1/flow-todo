@@ -1,7 +1,7 @@
 import subDays from 'date-fns/subDays';
 import extend from 'lodash/extend';
-import nanoid from 'nanoid';
 import { getFirestore, handleErrors } from '../services/index';
+import { getUniqueId } from '../helpers/getUniqueId';
 
 export function upsertTask(
   values: {
@@ -33,7 +33,7 @@ export function upsertTask(
 
   return getFirestore()
     .collection('tasks')
-    .doc(taskId || nanoid())
+    .doc(taskId || getUniqueId())
     .set(payload, { merge: true })
     .catch(handleErrors);
 }

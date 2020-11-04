@@ -5,7 +5,6 @@ import {
 } from '@reduxjs/toolkit';
 import debug from 'debug';
 import firebase from 'firebase/app';
-import nanoid from 'nanoid';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import {
@@ -32,6 +31,7 @@ import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
+import { getUniqueId } from '../helpers/getUniqueId';
 
 const log = debug('store');
 const { FieldValue } = firebase.firestore;
@@ -116,7 +116,7 @@ export function createSubtask(
           // TODO: Use firestore from from redux-firestore
           subtasks: FieldValue.arrayUnion({
             // TODO: this might be the reason of "id" dissapearing from Task
-            id: nanoid(),
+            id: getUniqueId(),
             isDone: false,
             parentId: taskId,
             createdAt: Date.now(),

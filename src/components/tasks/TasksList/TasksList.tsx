@@ -12,7 +12,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { Task, useTypedSelector } from '../../../store/index';

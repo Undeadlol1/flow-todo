@@ -1,13 +1,8 @@
 import subDays from 'date-fns/subDays';
 import extend from 'lodash/extend';
-import nanoid from 'nanoid';
-import {
-  getFirestore,
-
-  handleErrors
-} from '../services/index';
+import { getFirestore, handleErrors } from '../services/index';
 import { Subtask } from '../store/index';
-
+import { getUniqueId } from '../helpers/getUniqueId';
 
 export function createTask(values: {
   id?: string;
@@ -20,7 +15,7 @@ export function createTask(values: {
   return (
     getFirestore()
       .collection('tasks')
-      .doc(values.id || nanoid())
+      .doc(values.id || getUniqueId())
       // TODO: was tired while writing this code.
       // Is this correct*
       .set(
@@ -29,7 +24,7 @@ export function createTask(values: {
           cratedAt: Date.now(),
           dueAt: subDays(new Date(), 1).getTime(),
         }),
-        { merge: true }
+        { merge: true },
       )
       .catch(handleErrors)
   );

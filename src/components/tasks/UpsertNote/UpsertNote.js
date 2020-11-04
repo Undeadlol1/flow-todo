@@ -1,7 +1,7 @@
 import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { firestore, auth } from 'firebase/app';
 import TextField from '@material-ui/core/TextField';
 import { useAuthState } from 'react-firebase-hooks/auth';

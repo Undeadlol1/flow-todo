@@ -1,4 +1,3 @@
-import { SnackbarOrigin } from '@material-ui/core/Snackbar';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import firebase from 'firebase/app';
 import React, { useMemo, memo } from 'react';

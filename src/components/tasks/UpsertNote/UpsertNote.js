@@ -3,15 +3,15 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeStyles } from '@material-ui/styles';
-import  firebase  from 'firebase/app';
+import firebase from 'firebase/app';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { showSnackbar } from '../../../services';
-import { useSelector } from 'react-redux'
-import { authSelector } from '../../../store/selectors'
+import { authSelector } from '../../../store/selectors';
 
 const useStyles = makeStyles({
   container: {

@@ -12,9 +12,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import slice from 'lodash/slice';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { Task, useTypedSelector } from '../../../store/index';
@@ -25,14 +23,13 @@ const log = debug('TasksList');
 const tasksPerPage = 7;
 
 const useStyles = makeStyles((theme: Theme) => {
-  const color = theme.palette.text.primary;
   return {
     list: {
       width: '100%',
     },
     link: {
-      color,
       textDecoration: 'none',
+      color: theme.palette.text.primary,
     },
     textWrapper: {
       overflow: 'hidden',
@@ -73,7 +70,6 @@ export function TasksList({
 
   log('tasks: %O', tasks);
   log('page: ', page);
-  log('tasksPerPage * page: ', tasksPerPage * page);
   log('numberOfPAges: ', numberOfPAges);
 
   if (loading) return null;
@@ -81,7 +77,7 @@ export function TasksList({
   return (
     <Paper className={classes.paper}>
       <List className={classes.list}>
-        {slice(tasks, sliceTasksFrom, sliceTasksTo).map((task) => (
+        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => (
           <ListItem
             key={task.id}
             component={Link}
@@ -89,7 +85,7 @@ export function TasksList({
             to={`/tasks/${task.id}`}
           >
             <ListItemText
-              primary={get(task, 'subtasks[0].name', task.name)}
+              primary={getTaskOrSubtaskName(task)}
               classes={{
                 primary: classes.text,
                 root: classes.textWrapper,
@@ -121,17 +117,14 @@ export function TasksList({
   );
 }
 
+function getTaskOrSubtaskName(task: Task): ReactNode {
+  return get(task, 'subtasks[0].name', task.name);
+}
+
 TasksList.defaultProps = {
   tasks: null,
   loading: false,
   canDelete: false,
-};
-
-TasksList.propTypes = {
-  loading: PropTypes.bool,
-  tasks: PropTypes.array,
-  canDelete: PropTypes.bool,
-  deleteTask: PropTypes.func,
 };
 
 // TODO add props types

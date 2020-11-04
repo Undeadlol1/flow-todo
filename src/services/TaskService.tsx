@@ -1,3 +1,4 @@
+import differenceInDays from 'date-fns/esm/differenceInDays';
 import { isEmpty } from 'lodash';
 import find from 'lodash/find';
 import get from 'lodash/fp/get';
@@ -37,6 +38,13 @@ export default class TaskService {
   }
 
   static isStale(task: Task): boolean {
-    return isEmpty(task.history);
+    const today = Date.now();
+    const isTaskOld =
+      differenceInDays(task?.createdAt || today, today) > 3;
+    const isTaskUpdatedLongAgo =
+      differenceInDays(task?.updatedAt || today, today) > 3;
+    return (
+      (isTaskOld && isEmpty(task.history)) || isTaskUpdatedLongAgo
+    );
   }
 }

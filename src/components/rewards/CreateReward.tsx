@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import get from 'lodash/get';
 import invoke from 'lodash/invoke';
 import React, { memo } from 'react';
@@ -77,7 +77,8 @@ const CreateReward = (props: Props) => {
   const error = get(errors, 'name.message');
   function onSubmit(values: any) {
     console.log('values: ', values);
-    return firestore()
+    return firebase
+      .firestore()
       .collection('rewards')
       .add({ ...values, userId })
       .then(() => {

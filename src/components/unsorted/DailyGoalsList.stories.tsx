@@ -1,10 +1,10 @@
 import React from 'react';
-import nanoid from 'nanoid';
+import { getUniqueId } from '../../helpers/getUniqueId';
+import DailyStreak from '../../services/dailyStreak';
+import { DailyGoal } from '../../store/types';
+import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
 import { DayliGoalsList } from './DayliGoalsList';
-import DailyStreak from '../../services/dailyStreak';
-import { streaks } from '../dataMocks';
-import { DailyGoal } from '../../store/types';
 
 export default {
   component: DayliGoalsList,
@@ -13,21 +13,21 @@ export default {
 
 const goals = [
   {
-    id: nanoid(),
+    id: getUniqueId(),
     name: 'Eat healthy',
     streak: DailyStreak.getEmptyStreak(),
   },
   {
-    id: nanoid(),
+    id: getUniqueId(),
     name: 'Develop app',
     streak: streaks.doneTasksToday,
   },
   {
-    id: nanoid(),
+    id: getUniqueId(),
     name: 'Sports',
     streak: streaks.doneTasksFewDays,
   },
 ] as DailyGoal[];
 
-export const Demo = args => <DayliGoalsList {...args} />;
+export const Demo = (args) => <DayliGoalsList {...args} />;
 Demo.args = { goals };

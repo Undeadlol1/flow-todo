@@ -8,17 +8,17 @@ import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import { loremIpsum } from 'lorem-ipsum';
-import nanoid from 'nanoid';
 import React, { memo, MouseEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
+import { getUniqueId } from '../../helpers/getUniqueId';
 import LevelingService from '../../services/leveling';
 import {
   addPoints,
   addPointsWithSideEffects,
-  createTask,
   Profile,
 } from '../../store/index';
+import { createTask } from "../../repositories/createTask";
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -41,7 +41,7 @@ function DevelopmentOnlyMenu() {
   const profile = useSelector(profileSelector);
 
   function addTask() {
-    const taskId = nanoid();
+    const taskId = getUniqueId();
     createTask({
       id: taskId,
       userId: auth.uid,
@@ -56,7 +56,7 @@ function DevelopmentOnlyMenu() {
       subtasks: Array(random(5))
         .fill('')
         .map(() => ({
-          id: nanoid(),
+          id: getUniqueId(),
           name: loremIpsum({
             count: 4,
             units: 'words',

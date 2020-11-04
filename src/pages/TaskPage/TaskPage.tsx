@@ -10,7 +10,6 @@ import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
 import isString from 'lodash/isString';
 import sample from 'lodash/sample';
-import { useSnackbar } from 'notistack';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
 import head from 'ramda/es/head';
@@ -36,8 +35,7 @@ import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
-import { useDispatch } from 'react-redux';
-import { addSnackbarToQueue } from '../../store/snackbarsSlice';
+import Snackbar from '../../services/Snackbar';
 
 // TODO i18n
 const encouragingMessages = [
@@ -81,7 +79,6 @@ export default function TaskPage(props: TaskPageProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
   const route = useRouteMatch() || {};
-  const { enqueueSnackbar } = useSnackbar();
 
   const { path } = route;
   const {
@@ -90,8 +87,7 @@ export default function TaskPage(props: TaskPageProps) {
     loading,
     tasksDoneTodayNotificationProps,
   } = props;
-  const activeSubtasks = filter(task.subtasks, i => !i.isDone);
-  const dispatch = useDispatch();
+  const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
@@ -99,16 +95,11 @@ export default function TaskPage(props: TaskPageProps) {
     const snackBarTimeout = setTimeout(() => {
       if (!props.shouldDisplayEncouragements) return;
       if (tasksDoneTodayNotificationProps.isVisible) return;
-      dispatch(
-        addSnackbarToQueue(sample(encouragingMessages) as string),
-      );
-      // enqueueSnackbar(sample(encouragingMessages), {
-      //   autoHideDuration: 4500,
-      // });
+      Snackbar.addToQueue(sample(encouragingMessages) as string);
     }, 3500);
     return () => clearTimeout(snackBarTimeout);
     // eslint-disable-next-line
-  }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
+  }, [props.shouldDisplayEncouragements]);
 
   if (loading) {
     return (
@@ -143,11 +134,8 @@ export default function TaskPage(props: TaskPageProps) {
         autoStart
         onEnd={() => {
           // TODO i18n
-          enqueueSnackbar(
+          Snackbar.addToQueue(
             'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
-            {
-              autoHideDuration: 10000,
-            },
           );
         }}
       />

@@ -15,10 +15,8 @@ import {
   useTypedTranslate,
 } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
-import {
-  addPointsWithSideEffects,
-  upsertTask,
-} from '../../../store/index';
+import { addPointsWithSideEffects } from '../../../store/index';
+import { upsertTask } from '../../../repositories/upsertTask';
 import { authSelector } from '../../../store/selectors';
 import { yupResolver } from '@hookform/resolvers/yup';
 

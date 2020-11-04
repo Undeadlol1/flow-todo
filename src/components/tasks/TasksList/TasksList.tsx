@@ -49,17 +49,19 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
+interface TasksListProps {
+  tasks: Task[];
+  loading: boolean;
+  canDelete?: boolean;
+  deleteTask?: (id: string) => void;
+}
+
 export function TasksList({
   loading,
   tasks,
   canDelete,
   deleteTask,
-}: {
-  tasks: Task[];
-  loading: boolean;
-  canDelete?: boolean;
-  deleteTask?: (id: string) => void;
-}) {
+}: TasksListProps) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
 
@@ -77,33 +79,31 @@ export function TasksList({
   return (
     <Paper className={classes.paper}>
       <List className={classes.list}>
-        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => (
-          <ListItem
-            key={task.id}
-            component={Link}
-            className={classes.link}
-            to={`/tasks/${task.id}`}
-          >
-            <ListItemText
-              primary={getTaskOrSubtaskName(task)}
-              classes={{
-                primary: classes.text,
-                root: classes.textWrapper,
-              }}
-            />
-            <When condition={!!canDelete}>
+        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
+          const text = get(task, 'subtasks[0].name', task.name);
+          return (
+            <ListItem
+              key={task.id}
+              component={Link}
+              className={classes.link}
+              to={`/tasks/${task.id}`}
+            >
+              <ListItemText
+                primary={text}
+                classes={{
+                  primary: classes.text,
+                  root: classes.textWrapper,
+                }}
+              />
               <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="Delete"
+                <DeleteButton
+                  isVisible={canDelete}
                   onClick={() => deleteTask && deleteTask(task.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                />
               </ListItemSecondaryAction>
-            </When>
-          </ListItem>
-        ))}
+            </ListItem>
+          );
+        })}
       </List>
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
@@ -117,8 +117,24 @@ export function TasksList({
   );
 }
 
-function getTaskOrSubtaskName(task: Task): ReactNode {
-  return get(task, 'subtasks[0].name', task.name);
+function DeleteButton({
+  isVisible: canDelete,
+  onClick,
+}: {
+  onClick: () => void;
+  isVisible: TasksListProps['canDelete'];
+}) {
+  return (
+    <When condition={!!canDelete}>
+      <IconButton
+        edge="end"
+        aria-label="Delete"
+        onClick={() => onClick()}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </When>
+  );
 }
 
 TasksList.defaultProps = {

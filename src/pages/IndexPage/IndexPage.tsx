@@ -74,7 +74,7 @@ export const IndexPage = memo((props: IndexPageProps) => {
 
   function renderWelcomeCardOrContent() {
     if (isLoading || createdAtleastOneTask)
-      return <TasksList tasks={activeTasks} />;
+      return <TasksList tasks={activeTasks} loading={false} />;
     return <WelcomeCard />;
   }
 

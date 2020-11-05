@@ -17,7 +17,7 @@
     "@storybook/react": "^6.0.28",
     "@types/babel__core": "^7.1.12",
     "@types/classnames": "^2.2.11",
-    "@types/concurrently": "^4.1.0",
+    "@types/concurrently": "^5.2.1",
     "@types/debug": "^4.1.5",
     "@types/eslint": "^7.2.4",
     "@types/eslint-plugin-prettier": "^3.1.0",

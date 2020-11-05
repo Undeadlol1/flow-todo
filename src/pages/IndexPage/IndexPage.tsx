@@ -54,7 +54,7 @@ export interface IndexPageProps {
 const sectionProps = {
   item: true,
   xs: 12,
-  sm: 12,
+  sm: 8,
   md: 8,
   lg: 6,
 } as GridProps;

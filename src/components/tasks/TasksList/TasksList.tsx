@@ -130,6 +130,8 @@ function useStyles() {
         display: 'inline',
       },
       paper: {
+        width: '10000px',
+        maxWidth: '100%',
         margin: '0 auto',
         padding: theme.spacing(1),
       },

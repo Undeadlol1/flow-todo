@@ -11,7 +11,9 @@ import {
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { addPoints, Task, useTypedSelector } from '../../store/index';
+import { useTypedSelector } from '../../store/index';
+import { Task } from '../../entities/Task';
+import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { authSelector } from '../../store/selectors';
 import Collapsible from '../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
@@ -43,7 +45,7 @@ const HardChoices = (
   const taskNote = get(task, 'note');
   const auth = useTypedSelector(authSelector);
   const addPointsOnSuccess = (points = 10) => {
-    addPoints(auth.uid, points);
+    addPointsToUser(auth.uid, points);
     showSnackbar(
       t('youAreCloserToYourGoal', {
         points,

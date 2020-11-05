@@ -32,8 +32,9 @@ import userSlice from './usersSlice';
 import snackbarsSlice from './snackbarsSlice';
 import { getUniqueId } from '../helpers/getUniqueId';
 import animationSlice from './animationSlice';
+import { addPointsToUser } from '../repositories/addPointsToUser';
 
-const log = debug('store');
+export const log = debug('store');
 const { FieldValue } = firebase.firestore;
 
 export type IDayliStreak = {
@@ -48,44 +49,6 @@ export interface FirebaseUserProfile {
   photoURL?: string;
   displayName: string;
 }
-
-export type Subtask = {
-  id: string;
-  isDone: boolean;
-  parentId: string;
-  createdAt: number;
-  name: string;
-};
-
-export type TaskHistory = {
-  createdAt: number;
-  comment?: string;
-  actionType:
-    | 'postpone'
-    | 'updateName'
-    | 'updateSubtask'
-    | 'stepForward'
-    | 'leapForward'
-    | 'setDone';
-};
-
-export type Task = {
-  id: string;
-  name: string;
-  userId: string;
-  note?: string;
-  isDone: boolean;
-  isCurrent?: boolean;
-  isPinned?: boolean;
-  repetitionLevel?: number;
-  subtasks?: Subtask[];
-  history?: TaskHistory[];
-  tags?: string[];
-  dueAt: number;
-  doneAt?: number;
-  createdAt: number;
-  updatedAt?: number;
-};
 
 // NOTE: WIP
 export function createSubtask(
@@ -125,25 +88,6 @@ export function changeTags(taskId: string, tags: string[]) {
 }
 
 initializeFirebase();
-
-export function addPoints(
-  userId: string,
-  points: number,
-): Promise<void> {
-  log('addPoints.userId', userId);
-  log('addPoints.points', points);
-  return getFirestore()
-    .doc('profiles/' + userId)
-    .set(
-      {
-        userId,
-        points: FieldValue.increment(points),
-        experience: FieldValue.increment(points),
-      },
-      { merge: true },
-    )
-    .catch(handleErrors);
-}
 
 const rootReducer = combineReducers({
   ui: uiSlice,
@@ -190,7 +134,7 @@ export function addPointsWithSideEffects(
     showLevelUpAnimation();
   }
 
-  return addPoints(auth.uid, points);
+  return addPointsToUser(auth.uid, points);
 }
 
 export function claimReward(reward: Reward) {

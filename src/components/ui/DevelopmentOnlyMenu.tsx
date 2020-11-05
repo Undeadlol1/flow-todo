@@ -13,10 +13,8 @@ import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { getUniqueId } from '../../helpers/getUniqueId';
 import LevelingService from '../../services/leveling';
-import {
-  addPoints,
-  addPointsWithSideEffects,
-} from '../../store/index';
+import { addPointsWithSideEffects } from '../../store/index';
+import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { Profile } from '../../entities/Profile';
 import { createTask } from '../../repositories/createTask';
 import { authSelector, profileSelector } from '../../store/selectors';
@@ -75,7 +73,7 @@ function DevelopmentOnlyMenu() {
     const pointsToNextLevel = LevelingService.calculatePointsToNextLevel(
       level,
     );
-    addPoints(auth.uid, pointsToNextLevel);
+    addPointsToUser(auth.uid, pointsToNextLevel);
   }
 
   function resetLevel() {

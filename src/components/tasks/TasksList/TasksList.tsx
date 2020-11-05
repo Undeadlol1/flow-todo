@@ -15,7 +15,8 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
-import { Task, useTypedSelector } from '../../../store/index';
+import { useTypedSelector } from '../../../store/index';
+import { Task } from "../../../entities/Task";
 import { tasksSelector } from '../../../store/selectors';
 import { tasksPerPage } from '../../../contants';
 

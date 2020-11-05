@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import get from 'lodash/fp/get';
-import { Task } from '../store';
+import { Task } from '../entities/Task';
 import { getFirestore } from './index';
 
 export default class TaskService {

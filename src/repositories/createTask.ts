@@ -1,7 +1,7 @@
 import subDays from 'date-fns/subDays';
 import extend from 'lodash/extend';
 import { getFirestore, handleErrors } from '../services/index';
-import { Subtask } from '../store/index';
+import { Subtask } from "../entities/Subtask";
 import { getUniqueId } from '../helpers/getUniqueId';
 
 export function createTask(values: {

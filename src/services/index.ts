@@ -9,7 +9,7 @@ import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
 import get from 'lodash/get';
 import i18n from 'i18next';
-import store, { Task } from '../store';
+import store from '../store';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
@@ -30,6 +30,7 @@ import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Snackbar from './Snackbar';
+import { Task } from '../entities/Task';
 
 const logger = debug('utils');
 

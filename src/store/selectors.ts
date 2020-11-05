@@ -14,9 +14,9 @@ import { createSelector } from 'reselect';
 import {
   IDayliStreak,
   RootReducer,
-  Task,
-  TaskHistory,
 } from './index';
+import { TaskHistory } from "../entities/TaskHistory";
+import { Task } from "../entities/Task";
 import { Profile } from '../entities/Profile';
 import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';

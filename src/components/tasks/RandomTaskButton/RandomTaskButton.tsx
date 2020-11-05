@@ -16,7 +16,8 @@ import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import { Theme } from '@material-ui/core';
-import { Task, useTypedSelector } from '../../../store/index';
+import { useTypedSelector } from '../../../store/index';
+import { Task } from '../../../entities/Task';
 import {
   activeTaskSelector,
   tasksSelector,

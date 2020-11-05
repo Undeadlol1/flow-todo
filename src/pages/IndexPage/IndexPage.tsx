@@ -19,7 +19,9 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { useSelector } from 'react-redux';
-import { IDayliStreak, Task, TaskHistory } from '../../store/index';
+import { IDayliStreak } from '../../store/index';
+import { TaskHistory } from "../../entities/TaskHistory";
+import { Task } from "../../entities/Task";
 import {
   authSelector,
   profileSelector,

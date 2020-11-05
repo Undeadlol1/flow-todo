@@ -13,11 +13,11 @@ import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
 import {
   IDayliStreak,
-  Profile,
   RootReducer,
   Task,
   TaskHistory,
 } from './index';
+import { Profile } from '../entities/Profile';
 import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';

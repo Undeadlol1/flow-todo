@@ -1,10 +1,10 @@
 import { Card, CardContent, TextField } from '@material-ui/core';
 import React, { ChangeEvent, memo } from 'react';
-import { upsertProfile } from '../../store';
 import { profileSelector } from '../../store/selectors';
 import debug from 'debug';
 import Snackbar from '../../services/Snackbar';
 import { useSelector } from 'react-redux';
+import { upsertProfile } from '../../repositories/upsertProfile';
 
 const log = debug('DayliTasksStreakForm');
 

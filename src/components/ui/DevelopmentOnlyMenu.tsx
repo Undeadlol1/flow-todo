@@ -16,9 +16,9 @@ import LevelingService from '../../services/leveling';
 import {
   addPoints,
   addPointsWithSideEffects,
-  Profile,
 } from '../../store/index';
-import { createTask } from "../../repositories/createTask";
+import { Profile } from '../../entities/Profile';
+import { createTask } from '../../repositories/createTask';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({

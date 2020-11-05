@@ -29,7 +29,6 @@ import {
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
-import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
 import { getUniqueId } from '../helpers/getUniqueId';
 
@@ -40,16 +39,6 @@ export type IDayliStreak = {
   perDay: number;
   startsAt: number | null;
   updatedAt: number | null;
-};
-
-export type Profile = {
-  userId: string;
-  points: number;
-  experience: number;
-  dailyStreak: IDayliStreak;
-  areEcouragingMessagesDisabled: boolean;
-  isLoaded: boolean; // react-redux-firebase specific props
-  isEmpty: boolean; // react-redux-firebase specific props;
 };
 
 export interface FirebaseUserProfile {
@@ -127,19 +116,6 @@ export function createSubtask(
   );
 }
 
-export function deleteSubtask(
-  taskId: string,
-  subtask: {
-    id: string;
-  },
-): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .update({
-      subtasks: FieldValue.arrayRemove(subtask),
-    });
-}
-
 export function changeTags(taskId: string, tags: string[]) {
   return getFirestore()
     .doc('tasks/' + taskId)
@@ -148,15 +124,6 @@ export function changeTags(taskId: string, tags: string[]) {
 }
 
 initializeFirebase();
-
-export async function upsertProfile(profile: Profile) {
-  if (!profile.userId) throw Error('You must specify userId!');
-  if (!profile.dailyStreak)
-    profile.dailyStreak = DailyStreak.getEmptyStreak();
-  return getFirestore()
-    .doc('profiles/' + profile.userId)
-    .set(profile, { merge: true });
-}
 
 export function addPoints(
   userId: string,

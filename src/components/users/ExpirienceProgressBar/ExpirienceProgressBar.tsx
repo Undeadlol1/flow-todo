@@ -8,7 +8,7 @@ import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Box, Theme } from '@material-ui/core';
 import LevelingService from '../../../services/leveling';
-import { Profile } from '../../../store/index';
+import { Profile } from '../../../entities/Profile';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -28,7 +28,7 @@ export const ExpirienceProgressBar: React.FC<{
   profile?: Profile;
   className?: string;
   isAnimationActive: boolean;
-}> = memo(props => {
+}> = memo((props) => {
   const classes = useStyles();
   const userPoints = get(props.profile, 'experience', 0);
   const level = LevelingService.calculateUserLevel(userPoints);
@@ -66,9 +66,9 @@ export const ExpirienceProgressBar: React.FC<{
   return (
     <Tooltip
       arrow
-      title={`${userPoints -
-        pointsToReachPreviousLevel}/${pointsToReachNextLevel -
-        pointsToReachPreviousLevel}`}
+      title={`${userPoints - pointsToReachPreviousLevel}/${
+        pointsToReachNextLevel - pointsToReachPreviousLevel
+      }`}
     >
       <Box>
         <LinearProgress

@@ -22,7 +22,8 @@ import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMess
 import { MyUserPoints } from '../../components/unsorted/MyUserPoints';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
-import { Profile, upsertProfile } from '../../store/index';
+import { Profile } from '../../entities/Profile';
+import { upsertProfile } from '../../repositories/upsertProfile';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const log = debug('ProfilePage');

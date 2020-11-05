@@ -28,7 +28,8 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
-import { deleteSubtask, Subtask } from '../../store';
+import { Subtask } from '../../store';
+import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { addPointsWithSideEffects } from '../../store/index';
 import { authSelector } from '../../store/selectors';
 

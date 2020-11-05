@@ -7,16 +7,20 @@ const log = debug('NumbersAnimatedOnUpdate');
 
 interface Props {
   value: number;
+  isAnimationDisabled?: boolean;
 }
 
 const NumbersAnimatedOnUpdate = memo(
-  ({ value: nextPoints }: Props) => {
+  ({ value: nextPoints, isAnimationDisabled }: Props) => {
     const previousPoints = usePrevious(nextPoints) || 0;
     const difference = nextPoints - previousPoints;
     log('nextPoints: ', nextPoints);
     log('previousPoints: ', previousPoints);
     log('difference: ', difference);
 
+    if (isAnimationDisabled) {
+      return <>{nextPoints}</>;
+    }
     return (
       <CountUp
         end={nextPoints}

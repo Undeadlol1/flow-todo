@@ -111,8 +111,8 @@ export function initializeFirebase() {
   } else {
     // Use Firestore emulator for local development
     firebase.firestore().settings({
-      // ssl: false,
-      // host: 'localhost:8080',
+      ssl: false,
+      host: 'localhost:8080',
     });
   }
 

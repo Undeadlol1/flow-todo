@@ -17,15 +17,15 @@ const UserPoints = memo(
     logger('isLoaded', isLoaded);
 
     if (isLoaded) {
- return (
-   <Chip
-     color="secondary"
-     label={
+      return (
+        <Chip
+          color="secondary"
+          label={
             isLoaded && <NumbersAnimatedOnUpdate value={nextPoints} />
           }
-   />
+        />
       );
-}
+    }
     return <Skeleton variant="circle" width="33px" height="33px" />;
   },
   (previousProps, nextProps) => {

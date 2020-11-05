@@ -113,6 +113,7 @@ export const IndexPage = memo((props: IndexPageProps) => {
             tasksPerDay={props.tasksPerDay}
             tasksToday={props.tasksToday}
             isLoaded={isLoaded(props.logs)}
+            isUpdateAnimationDisabled={true}
           />
         </When>
       </Grid>

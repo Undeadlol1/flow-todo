@@ -31,6 +31,7 @@ import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
 import snackbarsSlice from './snackbarsSlice';
 import { getUniqueId } from '../helpers/getUniqueId';
+import animationSlice from './animationSlice';
 
 const log = debug('store');
 const { FieldValue } = firebase.firestore;
@@ -150,6 +151,7 @@ const rootReducer = combineReducers({
   tasks: tasksSlice,
   rewards: rewardsSlice,
   snackbars: snackbarsSlice,
+  animation: animationSlice,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });

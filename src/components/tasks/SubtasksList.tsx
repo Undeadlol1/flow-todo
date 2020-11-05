@@ -125,7 +125,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
 
   if (!documents || isEmpty(documents)) return null;
 
-  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+  const updateSubtasks = ({ oldIndex, newIndex }: any) => {
     const taskId = documents[0].parentId;
     const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
     setSubtasksStub(updatedSubtasks);
@@ -141,7 +141,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
         useDragHandle
         lockAxis="y"
         items={subtasksStub || documents}
-        onSortEnd={onSortEnd}
+        onSortEnd={updateSubtasks}
       />
     </Paper>
   );

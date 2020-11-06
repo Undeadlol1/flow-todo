@@ -115,5 +115,6 @@ export default {
     'tasks list': 'Tasks List',
     level_is: 'Level: {{level}}',
     points: 'Points',
+    task_is_stale: 'Task is stale and needs to be reworked.'
   },
 };

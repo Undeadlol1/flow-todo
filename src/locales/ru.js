@@ -118,5 +118,6 @@ export default {
     'tasks list': 'Список задач',
     level_is: 'Уровень: {{level}}',
     points: 'Очки',
+    task_is_stale: 'Задача протухла и нуждается в переработке.'
   },
 };

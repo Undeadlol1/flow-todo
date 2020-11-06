@@ -1,6 +1,7 @@
 import {
   IconButton,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   Theme,
@@ -8,29 +9,15 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { Task } from '../../entities/Task';
 import TaskService from '../../services/TaskService';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  link: {
-    textDecoration: 'none',
-    color: theme.palette.text.primary,
-  },
-  text: {
-    display: 'inline',
-  },
-  textWrapper: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    [theme.breakpoints.down('sm')]: {
-      whiteSpace: 'nowrap',
-      maxWidth: '100%',
-    },
-  },
-}));
+import BrokenImageIcon from '@material-ui/icons/BrokenImage';
+import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from 'react-i18next';
+import { useTypedTranslate } from '../../services/index';
 
 interface Props {
   task: Task;
@@ -46,16 +33,37 @@ const TasksListItem = memo(function TasksListItem({
   ...props
 }: Props) {
   const classes = useStyles();
+  const t = useTypedTranslate();
 
-  const isStale = TaskService.isStale(task) || props.isStale;
-  console.log('isStale: ', isStale);
+  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+
+  function toggleTooltip(
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) {
+    event.preventDefault();
+    event.stopPropagation();
+    setTooltipVisibility(!isTooltipVisible);
+  }
+
+  const isStale = TaskService.isStale(task) || !!props.isStale;
   const text = get(task, 'subtasks[0].name', task.name);
+
   return (
     <ListItem
+      button
       component={Link}
       className={classes.link}
-      to={`/tasks/${task.id}`}
+      to={`/tasks/${task.id}${
+        isStale ? '/isTroublesome/isHard' : ''
+      }`}
     >
+      <When condition={isStale}>
+        <Tooltip title={t('task_is_stale')} onClick={toggleTooltip}>
+          <ListItemIcon>
+            <BrokenImageIcon />
+          </ListItemIcon>
+        </Tooltip>
+      </When>
       <ListItemText
         primary={text}
         classes={{
@@ -91,6 +99,26 @@ function DeleteButton({
       </IconButton>
     </When>
   );
+}
+
+function useStyles() {
+  return makeStyles((theme: Theme) => ({
+    link: {
+      textDecoration: 'none',
+      color: theme.palette.text.primary,
+    },
+    text: {
+      display: 'inline',
+    },
+    textWrapper: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      [theme.breakpoints.down('sm')]: {
+        whiteSpace: 'nowrap',
+        maxWidth: '100%',
+      },
+    },
+  }))();
 }
 
 TasksListItem.displayName = 'TasksListItem';

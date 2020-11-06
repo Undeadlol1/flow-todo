@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { getUniqueId } from '../../helpers/getUniqueId';
 import LevelingService from '../../services/leveling';
-import { addPointsWithSideEffects } from '../../store/index';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { Profile } from '../../entities/Profile';
 import { createTask } from '../../repositories/createTask';

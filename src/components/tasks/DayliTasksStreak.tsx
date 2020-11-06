@@ -4,7 +4,7 @@ import debug from 'debug';
 import React, { memo } from 'react';
 import { useTypedTranslate } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
-import { IDayliStreak } from '../../store/index';
+import { IDayliStreak } from "../../entities/IDayliStreak";
 import { NumbersAnimatedOnUpdate } from '../unsorted/NumbersAnimatedOnUpdate';
 
 const componentName = 'DayliTasksStreak';

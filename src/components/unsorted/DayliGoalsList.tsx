@@ -7,12 +7,12 @@ import {
   Checkbox,
   CardContent,
   CardHeader,
- FormControlLabel,
+  FormControlLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import Card from '@material-ui/core/Card';
 
-import { DailyGoal } from '../../store/types';
+import { DailyGoal } from '../../entities/DailyGoal';
 
 const componentName = 'DayliGoalsList';
 const log = debug(componentName);
@@ -30,7 +30,7 @@ const DailyGoalsList = memo((props: Props) => {
 
   return (
     <Box className={rootClasses}>
-      {props.goals.map(goal => (
+      {props.goals.map((goal) => (
         <Box key={goal.id} mb={2}>
           <Card>
             <CardHeader

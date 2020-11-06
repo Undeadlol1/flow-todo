@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import useToggle from 'react-use/lib/useToggle';
 import { object as YupObject, string as YupString } from 'yup';
-import { createSubtask } from '../../../store/index';
+import { createSubtask } from "../../../repositories/createSubtask";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const useStyles = makeStyles((theme: Theme) => ({

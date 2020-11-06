@@ -15,9 +15,9 @@ import DailyStreak from '../../services/dailyStreak';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import {
-  addPointsWithSideEffects,
   useTypedSelector,
 } from '../../store/index';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import { TaskHistory } from '../../entities/TaskHistory';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { upsertTask } from '../../repositories/upsertTask';

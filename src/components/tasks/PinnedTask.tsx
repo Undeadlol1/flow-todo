@@ -18,7 +18,7 @@ import {
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { addPointsWithSideEffects } from '../../store/index';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import {
   authSelector,
   pinnedTaskSelector,

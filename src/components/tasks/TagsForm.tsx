@@ -1,6 +1,6 @@
 import React from 'react';
 import ChipInput from 'material-ui-chip-input';
-import { changeTags } from '../../store/index';
+import { changeTags } from '../../repositories/changeTags';
 import { useTypedTranslate } from '../../services/index';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   tags?: string[];
 }
 
-export const TagsForm: React.FC<Props> = props => {
+export const TagsForm: React.FC<Props> = (props) => {
   const t = useTypedTranslate();
   return (
     <ChipInput
@@ -16,7 +16,7 @@ export const TagsForm: React.FC<Props> = props => {
       label={t('tags')}
       variant="outlined"
       defaultValue={props.tags}
-      onChange={tags => changeTags(props.taskId, tags)}
+      onChange={(tags) => changeTags(props.taskId, tags)}
     />
   );
 };

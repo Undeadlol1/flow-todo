@@ -55,10 +55,10 @@ export default class TaskService {
       // TODO: remove this line in the future.
       task?.createdAt === undefined;
 
-    console.log('isStale is called. %O', task);
-    console.log('isTaskOld: ', isTaskOld);
-    console.log('isTaskUpdatedLongAgo: ', isTaskUpdatedLongAgo);
-    console.log('result: ', result);
+    log('isStale is called. %O', task);
+    log('isTaskOld: ', isTaskOld);
+    log('isTaskUpdatedLongAgo: ', isTaskUpdatedLongAgo);
+    log('result: ', result);
 
     return result;
   }

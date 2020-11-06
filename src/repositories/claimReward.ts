@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { getFirestore, handleErrors } from '../services/index';
 import { Reward } from '../store/rewardsSlice';
 

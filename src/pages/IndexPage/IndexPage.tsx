@@ -19,7 +19,9 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { useSelector } from 'react-redux';
-import { IDayliStreak, Task, TaskHistory } from '../../store/index';
+import { IDayliStreak } from '../../store/index';
+import { TaskHistory } from "../../entities/TaskHistory";
+import { Task } from "../../entities/Task";
 import {
   authSelector,
   profileSelector,
@@ -54,7 +56,7 @@ export interface IndexPageProps {
 const sectionProps = {
   item: true,
   xs: 12,
-  sm: 12,
+  sm: 8,
   md: 8,
   lg: 6,
 } as GridProps;
@@ -74,7 +76,7 @@ export const IndexPage = memo((props: IndexPageProps) => {
 
   function renderWelcomeCardOrContent() {
     if (isLoading || createdAtleastOneTask)
-      return <TasksList tasks={activeTasks} />;
+      return <TasksList tasks={activeTasks} loading={false} />;
     return <WelcomeCard />;
   }
 
@@ -113,6 +115,7 @@ export const IndexPage = memo((props: IndexPageProps) => {
             tasksPerDay={props.tasksPerDay}
             tasksToday={props.tasksToday}
             isLoaded={isLoaded(props.logs)}
+            isUpdateAnimationDisabled={true}
           />
         </When>
       </Grid>

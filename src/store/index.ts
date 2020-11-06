@@ -29,11 +29,12 @@ import {
 import tasksSlice from './tasksSlice';
 import uiSlice, { toggleRewardModal } from './uiSlice';
 import userSlice from './usersSlice';
-import DailyStreak from '../services/dailyStreak';
 import snackbarsSlice from './snackbarsSlice';
 import { getUniqueId } from '../helpers/getUniqueId';
+import animationSlice from './animationSlice';
+import { addPointsToUser } from '../repositories/addPointsToUser';
 
-const log = debug('store');
+export const log = debug('store');
 const { FieldValue } = firebase.firestore;
 
 export type IDayliStreak = {
@@ -42,60 +43,12 @@ export type IDayliStreak = {
   updatedAt: number | null;
 };
 
-export type Profile = {
-  userId: string;
-  points: number;
-  experience: number;
-  dailyStreak: IDayliStreak;
-  areEcouragingMessagesDisabled: boolean;
-  isLoaded: boolean; // react-redux-firebase specific props
-  isEmpty: boolean; // react-redux-firebase specific props;
-};
-
 export interface FirebaseUserProfile {
   uid: string;
   email: string;
   photoURL?: string;
   displayName: string;
 }
-
-export type Subtask = {
-  id: string;
-  isDone: boolean;
-  parentId: string;
-  createdAt: number;
-  name: string;
-};
-
-export type TaskHistory = {
-  createdAt: number;
-  comment?: string;
-  actionType:
-    | 'postpone'
-    | 'updateName'
-    | 'updateSubtask'
-    | 'stepForward'
-    | 'leapForward'
-    | 'setDone';
-};
-
-export type Task = {
-  id: string;
-  name: string;
-  userId: string;
-  note?: string;
-  isDone: boolean;
-  isCurrent?: boolean;
-  isPinned?: boolean;
-  repetitionLevel?: number;
-  subtasks?: Subtask[];
-  history?: TaskHistory[];
-  tags?: string[];
-  dueAt: number;
-  doneAt?: number;
-  createdAt: number;
-  updatedAt?: number;
-};
 
 // NOTE: WIP
 export function createSubtask(
@@ -127,19 +80,6 @@ export function createSubtask(
   );
 }
 
-export function deleteSubtask(
-  taskId: string,
-  subtask: {
-    id: string;
-  },
-): Promise<void | Error> {
-  return getFirestore()
-    .doc('tasks/' + taskId)
-    .update({
-      subtasks: FieldValue.arrayRemove(subtask),
-    });
-}
-
 export function changeTags(taskId: string, tags: string[]) {
   return getFirestore()
     .doc('tasks/' + taskId)
@@ -149,40 +89,13 @@ export function changeTags(taskId: string, tags: string[]) {
 
 initializeFirebase();
 
-export async function upsertProfile(profile: Profile) {
-  if (!profile.userId) throw Error('You must specify userId!');
-  if (!profile.dailyStreak)
-    profile.dailyStreak = DailyStreak.getEmptyStreak();
-  return getFirestore()
-    .doc('profiles/' + profile.userId)
-    .set(profile, { merge: true });
-}
-
-export function addPoints(
-  userId: string,
-  points: number,
-): Promise<void> {
-  log('addPoints.userId', userId);
-  log('addPoints.points', points);
-  return getFirestore()
-    .doc('profiles/' + userId)
-    .set(
-      {
-        userId,
-        points: FieldValue.increment(points),
-        experience: FieldValue.increment(points),
-      },
-      { merge: true },
-    )
-    .catch(handleErrors);
-}
-
 const rootReducer = combineReducers({
   ui: uiSlice,
   users: userSlice,
   tasks: tasksSlice,
   rewards: rewardsSlice,
   snackbars: snackbarsSlice,
+  animation: animationSlice,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });
@@ -221,7 +134,7 @@ export function addPointsWithSideEffects(
     showLevelUpAnimation();
   }
 
-  return addPoints(auth.uid, points);
+  return addPointsToUser(auth.uid, points);
 }
 
 export function claimReward(reward: Reward) {

@@ -17,14 +17,14 @@ import {
   handleErrors,
   showSnackbar,
   useTypedTranslate,
-} from '../../../services/index';
-import { addPointsWithSideEffects } from '../../../store/index';
+} from '../../services/index';
+import { addPointsWithSideEffects } from '../../store/index';
 import {
   authSelector,
   pinnedTaskSelector,
-} from '../../../store/selectors';
-import CreateSubtask from '../CreateSubtask/CreateSubtask';
-import SubtasksList from '../SubtasksList';
+} from '../../store/selectors';
+import CreateSubtask from './CreateSubtask/CreateSubtask';
+import SubtasksList from './SubtasksList';
 
 let taskId = '';
 const log = debug('Pinnedtask');

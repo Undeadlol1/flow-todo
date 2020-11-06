@@ -9,7 +9,7 @@ import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
 import get from 'lodash/get';
 import i18n from 'i18next';
-import store, { Task } from '../store';
+import store from '../store';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
@@ -28,9 +28,9 @@ import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
-import { useEffect, useState } from 'react';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Snackbar from './Snackbar';
+import { Task } from '../entities/Task';
 
 const logger = debug('utils');
 
@@ -256,52 +256,3 @@ export function initializeI18n() {
 export function findSequenceDuplicates(
   history: History[] = [],
 ): void {}
-
-// NOTE: this is a copy/pastej
-const debounce = (delay: number, fn: any) => {
-  let timerId: any;
-
-  return function (...args: any[]) {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-
-    timerId = setTimeout(() => {
-      fn(...args);
-      timerId = null;
-    }, delay);
-  };
-};
-
-// NOTE: this is a copy/paste
-export const useDebouncedWindowSize = (debounceTime?: number) => {
-  const isClient: boolean = typeof window === 'object';
-  const getSize = () => ({
-    width: isClient ? window.innerWidth : undefined,
-    height: isClient ? window.innerHeight : undefined,
-  });
-  const [windowSize, setWindowSize] = useState(getSize);
-
-  useEffect(() => {
-    if (!isClient) {
-      return;
-    }
-
-    const handleResize = () => {
-      setWindowSize(getSize());
-    };
-
-    let handleResizeFn = handleResize;
-
-    if (debounceTime) {
-      handleResizeFn = debounce(debounceTime, handleResize);
-    }
-
-    window.addEventListener('resize', handleResizeFn);
-
-    return () => window.removeEventListener('resize', handleResizeFn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceTime, isClient]);
-
-  return windowSize;
-};

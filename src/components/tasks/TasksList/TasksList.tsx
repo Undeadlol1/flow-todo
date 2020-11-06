@@ -15,41 +15,12 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
-import { Task, useTypedSelector } from '../../../store/index';
+import { useTypedSelector } from '../../../store/index';
+import { Task } from '../../../entities/Task';
 import { tasksSelector } from '../../../store/selectors';
+import { tasksPerPage } from '../../../contants';
 
 const log = debug('TasksList');
-// TODO: remove this line.
-debug.enable('TasksList');
-
-const tasksPerPage = 7;
-
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    list: {
-      width: '100%',
-    },
-    link: {
-      textDecoration: 'none',
-      color: theme.palette.text.primary,
-    },
-    textWrapper: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      [theme.breakpoints.down('sm')]: {
-        whiteSpace: 'nowrap',
-        maxWidth: '100%',
-      },
-    },
-    text: {
-      display: 'inline',
-    },
-    paper: {
-      margin: '0 auto',
-      padding: theme.spacing(1),
-    },
-  };
-});
 
 interface TasksListProps {
   tasks: Task[];
@@ -139,11 +110,36 @@ function DeleteButton({
   );
 }
 
-TasksList.defaultProps = {
-  tasks: null,
-  loading: false,
-  canDelete: false,
-};
+function useStyles() {
+  return makeStyles((theme: Theme) => {
+    return {
+      list: {
+        width: '100%',
+      },
+      link: {
+        textDecoration: 'none',
+        color: theme.palette.text.primary,
+      },
+      textWrapper: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        [theme.breakpoints.down('sm')]: {
+          whiteSpace: 'nowrap',
+          maxWidth: '100%',
+        },
+      },
+      text: {
+        display: 'inline',
+      },
+      paper: {
+        width: '10000px',
+        maxWidth: '100%',
+        margin: '0 auto',
+        padding: theme.spacing(1),
+      },
+    };
+  })();
+}
 
 // TODO add props types
 export default function TasksListContainer(props: any) {

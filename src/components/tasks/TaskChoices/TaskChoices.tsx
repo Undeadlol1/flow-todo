@@ -22,7 +22,8 @@ import {
   useTypedTranslate,
 } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
-import { Subtask, Task } from '../../../store/index';
+import { Task } from '../../../entities/Task';
+import { Subtask } from '../../../entities/Subtask';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -43,7 +44,7 @@ const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
   const classes = useStyles();
   const activeSubtasks =
-    filter(props.task.subtasks, i => !i.isDone) || [];
+    filter(props.task.subtasks, (i) => !i.isDone) || [];
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
     fullWidth: true,

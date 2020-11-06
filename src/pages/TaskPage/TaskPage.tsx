@@ -26,7 +26,6 @@ import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
 import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
 import { useTypedTranslate } from '../../services/index';
-import { Task } from '../../store';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -36,6 +35,7 @@ import {
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
 import Snackbar from '../../services/Snackbar';
+import { Task } from '../../entities/Task';
 
 // TODO i18n
 const encouragingMessages = [

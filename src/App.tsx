@@ -7,7 +7,8 @@ import { createFirestoreInstance } from 'redux-firestore';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import RouterAndDataLoader from './RouterAndDataLoader';
-import { initializeI18n, useDebouncedWindowSize } from './services';
+import { initializeI18n } from './services';
+import { useDebouncedWindowSize } from './hooks/useDebouncedWindowSize';
 import store from './store';
 import { Theme } from './Theme';
 

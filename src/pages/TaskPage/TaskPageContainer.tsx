@@ -14,13 +14,12 @@ import { getRandomTaskId, handleErrors } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
-import { Task } from '../../store';
 import {
   addPointsWithSideEffects,
-  TaskHistory,
-  upsertProfile,
   useTypedSelector,
 } from '../../store/index';
+import { TaskHistory } from '../../entities/TaskHistory';
+import { upsertProfile } from '../../repositories/upsertProfile';
 import { upsertTask } from '../../repositories/upsertTask';
 import {
   activeTaskSelector,
@@ -35,6 +34,7 @@ import {
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
 import { deleteTask } from '../../repositories/deleteTask';
+import { Task } from '../../entities/Task';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);

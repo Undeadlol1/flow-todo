@@ -38,11 +38,13 @@ export interface TasksDoneTodayProps {
   tasksPerDay: number;
   tasksToday: number;
   dailyStreak: IDayliStreak;
+  isUpdateAnimationDisabled?: boolean;
 }
 
 function TasksDoneToday({
   tasksToday,
   tasksPerDay,
+  isUpdateAnimationDisabled,
   ...props
 }: TasksDoneTodayProps) {
   const classes = useStyles();
@@ -68,6 +70,7 @@ function TasksDoneToday({
             >
               <NumbersAnimatedOnUpdate
                 value={completedTasksInpercentages}
+                isAnimationDisabled={isUpdateAnimationDisabled}
               />
               {`${completedTasksInpercentages > 0 ? '%' : ''}`}
             </span>
@@ -91,7 +94,10 @@ function TasksDoneToday({
           }
         />
         <Box mt={2}>
-          <DayliTasksStreak streak={props.dailyStreak} />
+          <DayliTasksStreak
+            streak={props.dailyStreak}
+            isUpdateAnimationDisabled={isUpdateAnimationDisabled}
+          />
         </Box>
       </CardContent>
     </Card>

@@ -12,30 +12,36 @@ const log = debug(componentName);
 
 interface Props {
   streak: IDayliStreak;
+  isUpdateAnimationDisabled?: boolean;
 }
 
-const DayliTasksStreak = memo(({ streak }: Props) => {
-  const t = useTypedTranslate();
+const DayliTasksStreak = memo(
+  ({ streak, isUpdateAnimationDisabled }: Props) => {
+    const t = useTypedTranslate();
 
-  let daysInARow = DailyStreak.daysInARow(streak) + 1;
-  const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
+    let daysInARow = DailyStreak.daysInARow(streak);
+    const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
 
-  log('streak.startsAt: ', new Date(streak?.startsAt as number));
-  log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
-  log('daysInARow: ', daysInARow);
-  log('daysSinceUpdate: ', daysSinceUpdate);
+    log('streak.startsAt: ', new Date(streak?.startsAt as number));
+    log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
+    log('daysInARow: ', daysInARow);
+    log('daysSinceUpdate: ', daysSinceUpdate);
 
-  if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
-    daysInARow = 0;
-  }
-  return (
-    <Typography variant="h6">
-      <Box fontWeight={100}>
-        {t('won_days_in_a_row')}:{' '}
-        <NumbersAnimatedOnUpdate value={daysInARow} />
-      </Box>
-    </Typography>
-  );
-});
+    if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
+      daysInARow = 0;
+    }
+    return (
+      <Typography variant="h6">
+        <Box fontWeight={100}>
+          {t('won_days_in_a_row')}:{' '}
+          <NumbersAnimatedOnUpdate
+            value={daysInARow}
+            isAnimationDisabled={isUpdateAnimationDisabled}
+          />
+        </Box>
+      </Typography>
+    );
+  },
+);
 
 export default memo(DayliTasksStreak);

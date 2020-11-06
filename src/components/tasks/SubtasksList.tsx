@@ -28,9 +28,10 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
-import { deleteSubtask, Subtask } from '../../store';
+import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { addPointsWithSideEffects } from '../../store/index';
 import { authSelector } from '../../store/selectors';
+import { Subtask } from '../../entities/Subtask';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -124,7 +125,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
 
   if (!documents || isEmpty(documents)) return null;
 
-  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+  const updateSubtasks = ({ oldIndex, newIndex }: any) => {
     const taskId = documents[0].parentId;
     const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
     setSubtasksStub(updatedSubtasks);
@@ -140,7 +141,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
         useDragHandle
         lockAxis="y"
         items={subtasksStub || documents}
-        onSortEnd={onSortEnd}
+        onSortEnd={updateSubtasks}
       />
     </Paper>
   );

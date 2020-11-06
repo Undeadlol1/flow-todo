@@ -6,6 +6,8 @@ import {
   ListItemText,
   Theme,
 } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
@@ -13,11 +15,8 @@ import React, { memo, useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { Task } from '../../entities/Task';
-import TaskService from '../../services/TaskService';
-import BrokenImageIcon from '@material-ui/icons/BrokenImage';
-import Tooltip from '@material-ui/core/Tooltip';
-import { useTranslation } from 'react-i18next';
 import { useTypedTranslate } from '../../services/index';
+import TaskService from '../../services/TaskService';
 
 interface Props {
   task: Task;

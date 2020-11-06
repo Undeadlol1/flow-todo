@@ -1,24 +1,26 @@
-import React, { memo } from 'react';
 import {
-  Box,
   IconButton,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   Theme,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/styles';
+import get from 'lodash/get';
+import React, { memo } from 'react';
+import { When } from 'react-if';
+import { Link } from 'react-router-dom';
 import { Task } from '../../entities/Task';
 import TaskService from '../../services/TaskService';
-import get from 'lodash/get';
-import { Link } from 'react-router-dom';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { When } from 'react-if';
 
 const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textDecoration: 'none',
     color: theme.palette.text.primary,
+  },
+  text: {
+    display: 'inline',
   },
   textWrapper: {
     overflow: 'hidden',
@@ -28,13 +30,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: '100%',
     },
   },
-  text: {
-    display: 'inline',
-  },
 }));
 
 interface Props {
   task: Task;
+  isStale?: boolean;
   canDelete?: boolean;
   deleteTask?: (id: string) => void;
 }
@@ -43,10 +43,11 @@ const TasksListItem = memo(function TasksListItem({
   task,
   canDelete,
   deleteTask,
+  ...props
 }: Props) {
   const classes = useStyles();
 
-  const isStale = TaskService.isStale(task);
+  const isStale = TaskService.isStale(task) || props.isStale;
   console.log('isStale: ', isStale);
   const text = get(task, 'subtasks[0].name', task.name);
   return (

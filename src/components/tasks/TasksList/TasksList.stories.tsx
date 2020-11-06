@@ -1,10 +1,9 @@
-import { random } from 'faker';
+import { addDecorator } from '@storybook/react';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { addDecorator } from '@storybook/react';
-import { TasksList } from './TasksList';
 import { sections } from '../../storybookContants';
-import { Task } from '../../../store/index';
+import { TasksList } from './TasksList';
+import { tasksMock } from '../../dataMocks';
 
 type DecoratorFunction = Parameters<typeof addDecorator>[0];
 
@@ -17,31 +16,17 @@ export interface StoryMetadata {
 const metaData: StoryMetadata = {
   component: TasksList,
   title: `${sections.tasks}TasksList`,
-  decorators: [storyFn => <Router>{storyFn()}</Router>],
+  decorators: [(storyFn) => <Router>{storyFn()}</Router>],
 };
 
 export default metaData;
 
 const props = {
   loading: false,
+  tasks: tasksMock,
   deleteTask() {
     console.log('"deleteTask" clicked');
   },
-  tasks: Array(25)
-    .fill('')
-    .map(
-      (i, index) => ({
-          id: random.uuid(),
-          name: random.boolean() ? random.word() : random.words(10),
-          subtasks: random.boolean()
-            ? [
-                {
-                  name: 'This is a subtask.',
-                },
-              ]
-            : undefined,
-        } as Task),
-    ),
 };
 
 export const withItems = () => <TasksList {...props} />;

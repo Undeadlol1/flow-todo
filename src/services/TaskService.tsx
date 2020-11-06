@@ -7,8 +7,6 @@ import { getFirestore } from './index';
 import debug from 'debug';
 
 const log = debug('TaskService');
-// TODO: remove this line.
-debug.enable('TaskService');
 
 export default class TaskService {
   static get db() {

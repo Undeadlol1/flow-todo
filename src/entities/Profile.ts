@@ -1,4 +1,4 @@
-import { IDayliStreak } from '../store/index';
+import { IDayliStreak } from "./IDayliStreak";
 
 export type Profile = {
   userId: string;

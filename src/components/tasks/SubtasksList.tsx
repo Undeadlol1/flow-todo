@@ -29,7 +29,7 @@ import {
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
 import { deleteSubtask } from '../../repositories/deleteSubtask';
-import { addPointsWithSideEffects } from '../../store/index';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import { authSelector } from '../../store/selectors';
 import { Subtask } from '../../entities/Subtask';
 

@@ -1,6 +1,6 @@
 import { random } from 'faker';
-import { IDayliStreak } from '../store';
 import subDays from 'date-fns/esm/subDays';
+import { IDayliStreak } from '../entities/IDayliStreak';
 import { TasksDoneTodayProps } from './tasks/TasksDoneToday';
 import { Task } from '../entities/Task';
 

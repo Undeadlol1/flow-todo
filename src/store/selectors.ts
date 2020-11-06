@@ -12,9 +12,9 @@ import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
 import {
-  IDayliStreak,
   RootReducer,
 } from './index';
+import { IDayliStreak } from "../entities/IDayliStreak";
 import { TaskHistory } from "../entities/TaskHistory";
 import { Task } from "../entities/Task";
 import { Profile } from '../entities/Profile';

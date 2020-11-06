@@ -1,6 +1,8 @@
+import debug from 'debug';
 import firebase from 'firebase/app';
 import { getFirestore, handleErrors } from '../services/index';
-import { log } from '../store/index';
+
+const log = debug('addPointsToUser');
 
 export function addPointsToUser(
   userId: string,

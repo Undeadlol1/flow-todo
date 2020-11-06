@@ -9,11 +9,12 @@ import findLast from 'ramda/es/findLast';
 import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTypedTranslate } from '../../services/index';
-import { useTypedSelector, claimReward } from '../../store';
+import { useTypedSelector } from '../../store';
 import { Profile } from '../../entities/Profile';
 import { Reward } from '../../store/rewardsSlice';
 import { toggleRewardModal } from '../../store/uiSlice';
 import RewardCard from './RewardCard';
+import { claimReward } from '../../repositories/claimReward';
 
 interface Props {
   isOpen: boolean;

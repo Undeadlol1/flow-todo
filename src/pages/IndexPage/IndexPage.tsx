@@ -19,7 +19,7 @@ import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { useSelector } from 'react-redux';
-import { IDayliStreak } from '../../store/index';
+import { IDayliStreak } from "../../entities/IDayliStreak";
 import { TaskHistory } from "../../entities/TaskHistory";
 import { Task } from "../../entities/Task";
 import {

@@ -11,7 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { Theme } from '@material-ui/core';
 import { useTypedTranslate } from '../../services/index';
 import { Reward } from '../../store/rewardsSlice';
-import { claimReward } from '../../store';
+import { claimReward } from '../../repositories/claimReward';
 
 const log = debug('RewardCard');
 const useStyles = makeStyles((theme: Theme) => ({

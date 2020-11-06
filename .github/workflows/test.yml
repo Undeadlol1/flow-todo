@@ -1,4 +1,4 @@
-name: npm test
+name: run tests
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ on:
       - unlocked
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:

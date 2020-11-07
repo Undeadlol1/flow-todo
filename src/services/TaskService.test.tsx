@@ -19,12 +19,25 @@ const typicalTask: Task = {
   createdAt: today,
   id: getUniqueId(),
   name: 'task name',
-  userId: getUniqueId()
+  userId: getUniqueId(),
 };
 
 describe('TaskService.isStale returns"', () => {
-  it('true if task hasnt been worked on.', () => {
-    const result = TaskService.isStale(typicalTask);
-    expect(result).toEqual(false);
+  it('true if "createdAt" is undefined.', () => {
+    const task = {
+      ...typicalTask,
+      createdAt: (undefined as unknown) as number,
+    };
+
+    expect(TaskService.isStale(task)).toEqual(true);
+  });
+
+  it("true if task wasn't worked on after creation.", () => {
+    const task = {
+      ...typicalTask,
+      history: [],
+      createdAt: subDays(today, 5).getTime(),
+    };
+    expect(TaskService.isStale(task)).toEqual(true);
   });
 });

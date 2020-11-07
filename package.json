@@ -91,7 +91,7 @@
     "start:nofirebase": "react-scripts start",
     "start": "concurrently \"npx cross-env DEBUG_HIDE_DATE=true PORT=3001 react-scripts start\" \"firebase emulators:start --only firestore\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --runInBand",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

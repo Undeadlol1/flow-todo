@@ -7,6 +7,8 @@ import { getFirestore } from './index';
 import debug from 'debug';
 
 const log = debug('TaskService');
+// TODO: remove this line.
+debug.enable('TaskService');
 
 export default class TaskService {
   static get db() {
@@ -40,38 +42,41 @@ export default class TaskService {
       : Promise.resolve();
   }
 
-  // TOOD dueAt>updatedAt ===3
   static isStale(task: Task): boolean {
     const today = Date.now();
     const isTaskCreatedLongAgo =
-      differenceInDays(task?.createdAt || today, today) > 3;
+      differenceInDays(today, task.createdAt || today) > 3;
     const isTaskUpdatedLongAgo =
-      differenceInDays(task?.updatedAt || today, today) > 3;
-    const isTaskReadyButNotWorkedOn =
-      differenceInDays(task.dueAt, today) > 3;
+      differenceInDays(today, task?.updatedAt || today) > 3;
+    // const isTaskReadyButNotWorkedOn =
+    //   differenceInDays(today, task.dueAt) > 3;
 
     log('isStale is called. %O', task);
     log('isTaskOld: ', isTaskCreatedLongAgo);
     log('isTaskUpdatedLongAgo: ', isTaskUpdatedLongAgo);
 
-    // NOTE: At first i didn't have "createdAt" property.
-    // TODO: remove this line in the future.
-    if (task?.createdAt === undefined) {
-      log('task.createdAt is undefined. Task is considered stale.');
-      return true;
+    function notifyThatTaskIsTale(reason: string) {
+      log(reason);
+      log('Task is stale.');
     }
-    if (isTaskReadyButNotWorkedOn) {
-      log('Task is due but not worked on. It is stale.');
+
+    if (task?.createdAt === undefined) {
+      notifyThatTaskIsTale('task.createdAt is undefined.');
       return true;
     }
     // TODO:
+    // TOOD dueAt>updatedAt ===3
     if (isTaskCreatedLongAgo && isEmpty(task.history)) {
-      log('Task created long ago, but has no history. It is stale.');
+      notifyThatTaskIsTale(
+        'Task created long ago, but has no history. It is stale.',
+      );
       return true;
     }
     if (task.updatedAt !== undefined && isTaskUpdatedLongAgo) {
+      notifyThatTaskIsTale('Task is stale.');
       return true;
     }
+    log('Task is not stale.');
     return false;
   }
 }

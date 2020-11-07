@@ -1,17 +1,10 @@
-import DailyStreak from './dailyStreak';
-import addDays from 'date-fns/addDays';
 import subDays from 'date-fns/esm/subDays';
-import isSameDay from 'date-fns/esm/isSameDay';
-import { IDayliStreak } from '../entities/IDayliStreak';
-import TaskService from './TaskService';
-import { getUniqueId } from '../helpers/getUniqueId';
 import { Task } from '../entities/Task';
+import { getUniqueId } from '../helpers/getUniqueId';
+import TaskService from './TaskService';
 
 const today = Date.now();
-const tommorow = addDays(today, 1).getTime();
-const yesterday = subDays(today, 1).getTime();
-const twoDaysAgo = subDays(today, 2).getTime();
-const threeDaysAgo = subDays(today, 3).getTime();
+const fiveDaysAgo = subDays(today, 5).getTime();
 
 const typicalTask: Task = {
   dueAt: today,
@@ -36,7 +29,15 @@ describe('TaskService.isStale returns"', () => {
     const task = {
       ...typicalTask,
       history: [],
-      createdAt: subDays(today, 5).getTime(),
+      createdAt: fiveDaysAgo,
+    };
+    expect(TaskService.isStale(task)).toEqual(true);
+  });
+
+  it("task wasn't worked on after update.", () => {
+    const task: Task = {
+      ...typicalTask,
+      dueAt: fiveDaysAgo,
     };
     expect(TaskService.isStale(task)).toEqual(true);
   });

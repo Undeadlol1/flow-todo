@@ -7,8 +7,6 @@ import { getFirestore } from './index';
 import debug from 'debug';
 
 const log = debug('TaskService');
-// TODO: remove this line.
-debug.enable('TaskService');
 
 export default class TaskService {
   static get db() {
@@ -46,14 +44,11 @@ export default class TaskService {
     const today = Date.now();
     const isTaskCreatedLongAgo =
       differenceInDays(today, task.createdAt || today) > 3;
-    const isTaskUpdatedLongAgo =
-      differenceInDays(today, task?.updatedAt || today) > 3;
-    // const isTaskReadyButNotWorkedOn =
-    //   differenceInDays(today, task.dueAt) > 3;
+    const isTaskReadyButNotWorkedOn =
+      differenceInDays(today, task.dueAt) > 3;
 
     log('isStale is called. %O', task);
     log('isTaskOld: ', isTaskCreatedLongAgo);
-    log('isTaskUpdatedLongAgo: ', isTaskUpdatedLongAgo);
 
     function notifyThatTaskIsTale(reason: string) {
       log(reason);
@@ -64,16 +59,14 @@ export default class TaskService {
       notifyThatTaskIsTale('task.createdAt is undefined.');
       return true;
     }
-    // TODO:
-    // TOOD dueAt>updatedAt ===3
     if (isTaskCreatedLongAgo && isEmpty(task.history)) {
       notifyThatTaskIsTale(
         'Task created long ago, but has no history. It is stale.',
       );
       return true;
     }
-    if (task.updatedAt !== undefined && isTaskUpdatedLongAgo) {
-      notifyThatTaskIsTale('Task is stale.');
+    if (isTaskReadyButNotWorkedOn) {
+      notifyThatTaskIsTale('Task has been due for a while.');
       return true;
     }
     log('Task is not stale.');

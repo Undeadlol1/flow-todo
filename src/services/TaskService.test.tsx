@@ -6,7 +6,7 @@ import TaskService from './TaskService';
 const today = Date.now();
 const fiveDaysAgo = subDays(today, 5).getTime();
 
-const typicalTask: Task = {
+const taskDefaults: Task = {
   dueAt: today,
   isDone: false,
   createdAt: today,
@@ -18,7 +18,7 @@ const typicalTask: Task = {
 describe('TaskService.isStale returns"', () => {
   it('true if "createdAt" is undefined.', () => {
     const task = {
-      ...typicalTask,
+      ...taskDefaults,
       createdAt: (undefined as unknown) as number,
     };
 
@@ -27,7 +27,7 @@ describe('TaskService.isStale returns"', () => {
 
   it("true if task wasn't worked on after creation.", () => {
     const task = {
-      ...typicalTask,
+      ...taskDefaults,
       history: [],
       createdAt: fiveDaysAgo,
     };
@@ -36,7 +36,7 @@ describe('TaskService.isStale returns"', () => {
 
   it("task wasn't worked on after update.", () => {
     const task: Task = {
-      ...typicalTask,
+      ...taskDefaults,
       dueAt: fiveDaysAgo,
     };
     expect(TaskService.isStale(task)).toEqual(true);

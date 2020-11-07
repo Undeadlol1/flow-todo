@@ -40,24 +40,38 @@ export default class TaskService {
       : Promise.resolve();
   }
 
+  // TOOD dueAt>updatedAt ===3
   static isStale(task: Task): boolean {
     const today = Date.now();
-    const isTaskOld =
+    const isTaskCreatedLongAgo =
       differenceInDays(task?.createdAt || today, today) > 3;
     const isTaskUpdatedLongAgo =
       differenceInDays(task?.updatedAt || today, today) > 3;
-    const result =
-      (isTaskOld && isEmpty(task.history)) ||
-      isTaskUpdatedLongAgo ||
-      // NOTE: At first i didn't have "createdAt" property.
-      // TODO: remove this line in the future.
-      task?.createdAt === undefined;
+    const isTaskReadyButNotWorkedOn =
+      differenceInDays(task.dueAt, today) > 3;
 
     log('isStale is called. %O', task);
-    log('isTaskOld: ', isTaskOld);
+    log('isTaskOld: ', isTaskCreatedLongAgo);
     log('isTaskUpdatedLongAgo: ', isTaskUpdatedLongAgo);
-    log('result: ', result);
 
-    return result;
+    // NOTE: At first i didn't have "createdAt" property.
+    // TODO: remove this line in the future.
+    if (task?.createdAt === undefined) {
+      log('task.createdAt is undefined. Task is considered stale.');
+      return true;
+    }
+    if (isTaskReadyButNotWorkedOn) {
+      log('Task is due but not worked on. It is stale.');
+      return true;
+    }
+    // TODO:
+    if (isTaskCreatedLongAgo && isEmpty(task.history)) {
+      log('Task created long ago, but has no history. It is stale.');
+      return true;
+    }
+    if (task.updatedAt !== undefined && isTaskUpdatedLongAgo) {
+      return true;
+    }
+    return false;
   }
 }

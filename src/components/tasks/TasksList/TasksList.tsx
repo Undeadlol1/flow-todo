@@ -87,14 +87,14 @@ function useStyles() {
   })();
 }
 
-// TODO add props types
+// TODO #125 add props types
 export default function TasksListContainer(props: any) {
   const tasks = useTypedSelector(tasksSelector);
 
   const mergeProps = {
     ...props,
-    loading: tasks === undefined,
     tasks,
+    loading: tasks === undefined,
   };
 
   return <TasksList {...mergeProps} />;

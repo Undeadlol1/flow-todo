@@ -115,6 +115,9 @@ export default {
     'tasks list': 'Tasks List',
     level_is: 'Level: {{level}}',
     points: 'Points',
-    task_is_stale: 'Task is stale and needs to be reworked.'
+    task_is_stale: 'Task is stale and needs to be reworked.',
+    reject_the_task: 'Reject the task',
+    dont_hesitate_to_push_this_button: 'Don\'t hesitate to push this button.',
+    only_20_percent_gives_results: 'Only 20% of efforts give us 80% of results.',
   },
 };

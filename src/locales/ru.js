@@ -118,6 +118,9 @@ export default {
     'tasks list': 'Список задач',
     level_is: 'Уровень: {{level}}',
     points: 'Очки',
-    task_is_stale: 'Задача протухла и нуждается в переработке.'
+    task_is_stale: 'Задача протухла и нуждается в переработке.',
+    reject_the_task: 'Откажитесь от задачи',
+    dont_hesitate_to_push_this_button: 'Не стесняйтесь жать эту кнопку.',
+    only_20_percent_gives_results: 'Лишь 20% усилий дают 80% результата.',
   },
 };

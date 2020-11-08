@@ -52,9 +52,7 @@ const TasksListItem = memo(function TasksListItem({
       button
       component={Link}
       className={classes.link}
-      to={`/tasks/${task.id}${
-        isStale ? '/isTroublesome/isHard' : ''
-      }`}
+      to={`/tasks/${task.id}${isStale ? '/isHard' : ''}`}
     >
       <When condition={isStale}>
         <Tooltip title={t('task_is_stale')} onClick={toggleTooltip}>
@@ -81,14 +79,14 @@ const TasksListItem = memo(function TasksListItem({
 });
 
 function DeleteButton({
-  isVisible: canDelete,
   onClick,
+  isVisible,
 }: {
   onClick: () => void;
   isVisible: Props['canDelete'];
 }) {
   return (
-    <When condition={!!canDelete}>
+    <When condition={!!isVisible}>
       <IconButton
         edge="end"
         aria-label="Delete"
@@ -113,8 +111,8 @@ function useStyles() {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       [theme.breakpoints.down('sm')]: {
-        whiteSpace: 'nowrap',
         maxWidth: '100%',
+        whiteSpace: 'nowrap',
       },
     },
   }))();

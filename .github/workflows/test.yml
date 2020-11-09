@@ -12,7 +12,7 @@ on:
       - unlocked
 
 jobs:
-  test:
+  build_then_test:
     runs-on: ubuntu-latest
 
     steps:

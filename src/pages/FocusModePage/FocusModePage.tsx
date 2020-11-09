@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
-interface {{name}}Props {
+interface Props {
 };
 
-const {{name}} = memo(function {{name}} (props: {{name}}Props) {
+const FocusModePage = memo((props: Props) => {
     const classes = useStyles();
 
     return (
@@ -17,6 +17,6 @@ const {{name}} = memo(function {{name}} (props: {{name}}Props) {
     );
 });
 
-{{pascalCase name}}.displayName = '{{pascalCase name}}';
+FocusModePage.displayName = 'FocusModePage';
 
-export { {{pascalCase name}} }
+export { FocusModePage }

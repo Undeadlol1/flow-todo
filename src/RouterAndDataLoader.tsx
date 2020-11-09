@@ -14,6 +14,7 @@ import Sidebar from './components/ui/Sidebar';
 import { GlobalSnackbar } from './components/unsorted/GlobalSnackbar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 import FAQPage from './pages/FAQPage';
+import { FocusModePage } from './pages/FocusModePage';
 import HomePage from './pages/IndexPage/IndexPage';
 import PrivacyPage from './pages/PrivacyPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
@@ -96,7 +97,10 @@ export default memo((props: { children?: JSX.Element }) => {
       },
       {
         collection: 'tasks',
-        where: [['userId', '==', userId], ['isPinned', '==', true]],
+        where: [
+          ['userId', '==', userId],
+          ['isPinned', '==', true],
+        ],
         storeAs: 'pinnedTask',
         limit: 1,
       },
@@ -131,6 +135,9 @@ export default memo((props: { children?: JSX.Element }) => {
         <Switch>
           <Route path="/tasks/:taskId">
             <TaskPage />
+          </Route>
+          <Route path="/focus">
+            <FocusModePage />
           </Route>
           <Route path="/tasks">
             <TasksPage />

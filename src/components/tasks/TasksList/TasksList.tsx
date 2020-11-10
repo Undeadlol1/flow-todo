@@ -16,6 +16,8 @@ import { tasksSelector } from '../../../store/selectors';
 import { TasksListItem } from '../TasksListItem';
 
 const log = debug('TasksList');
+// TODO: remove this line.
+debug.enable('TasksList');
 
 interface TasksListProps {
   tasks: Task[];
@@ -35,8 +37,7 @@ export function TasksList({
 
   const sliceTasksTo = tasksPerPage * page;
   const sliceTasksFrom = tasksPerPage * (page - 1);
-  const numberOfPAges =
-    Number((tasks.length / tasksPerPage).toFixed()) + 1;
+  const numberOfPAges = Math.ceil(tasks.length / tasksPerPage);
 
   log('tasks: %O', tasks);
   log('page: ', page);

@@ -4,7 +4,7 @@ import { WhatDoYouFeelSlider } from './WhatDoYouFeelSlider';
 
 export default {
   component: WhatDoYouFeelSlider,
-  title: sections.ui + 'WhatDoYouFeelSlider',
+  title: `${sections.ui}WhatDoYouFeelSlider`,
 };
 
 const props = {};

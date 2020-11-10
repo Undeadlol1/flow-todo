@@ -19,7 +19,7 @@ import { FirebaseReducer, useFirestore } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
-import { MyUserPoints } from '../../components/unsorted/MyUserPoints';
+import { MyUserPoints } from '../../components/users/MyUserPoints';
 import { handleErrors } from '../../services/index';
 import LevelingService from '../../services/leveling';
 import { Profile } from '../../entities/Profile';

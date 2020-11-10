@@ -2,7 +2,7 @@ import Chip from '@material-ui/core/Chip';
 import Skeleton from '@material-ui/lab/Skeleton';
 import debug from 'debug';
 import React, { memo } from 'react';
-import { NumbersAnimatedOnUpdate } from '../unsorted/NumbersAnimatedOnUpdate';
+import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 
 const logger = debug('UserPoints');
 

@@ -4,7 +4,7 @@ import { {{pascalCase name}} } from './{{pascalCase name}}';
 
 export default {
     component: {{ pascalCase name }},
-    title: sections.unsorted + '{{pascalCase name}}',
+    title: `${sections.unsorted}{{pascalCase name}}`,
 };
 
 const props = {}

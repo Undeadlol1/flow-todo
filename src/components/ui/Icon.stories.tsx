@@ -17,6 +17,10 @@ export const Demo = (args) => (
     <Icon code="sad_face" />
     <h2>Use controls to change: </h2>
     <Icon {...args} />
+    <h2>Sizes: </h2>
+    <Icon {...args} size="small" />
+    <Icon {...args} size="default" />
+    <Icon {...args} size="big" />
   </div>
 );
 Demo.args = props;

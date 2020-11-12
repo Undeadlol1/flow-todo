@@ -5,7 +5,7 @@ import Typography, {
 } from '@material-ui/core/Typography';
 import get from 'lodash/get';
 import React from 'react';
-import { Theme } from '@material-ui/core';
+import { Box, Button, ButtonProps, Theme } from '@material-ui/core';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
 import {
   showSnackbar,
@@ -21,6 +21,7 @@ import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
 import TagsForm from './TagsForm';
+import { deleteTaskArguments } from '../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -33,28 +34,68 @@ const paragraphProps: TypographyProps = {
   color: 'textSecondary',
 };
 
-const HardChoices = (
-  props: Partial<{
-    task: Task;
-    taskId: string;
-  }>,
-) => {
+const HardChoices = (props: {
+  task: Task;
+  taskId: string;
+  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
+}) => {
   const t = useTypedTranslate();
   const classes = useStyles();
   const { task, taskId } = props;
   const taskNote = get(task, 'note');
   const auth = useTypedSelector(authSelector);
-  const addPointsOnSuccess = (points = 10) => {
+
+  const commonButtonProps: ButtonProps = {
+    fullWidth: true,
+    color: 'primary',
+    variant: 'contained',
+  };
+
+  function destroy() {
+    const pointsToAdd = 10;
+    props.deleteTask({
+      pointsToAdd,
+      snackbarMessage: t('getRidOfUnimportant', {
+        points: pointsToAdd,
+      }),
+    });
+  }
+
+  function addPointsOnSuccess(points = 10) {
     addPointsToUser(auth.uid, points);
     showSnackbar(
       t('youAreCloserToYourGoal', {
         points,
       }),
     );
-  };
+  }
 
   return (
     <Grid item container {...TaskPageGridWidth} justify="center">
+      <Grid item xs={12}>
+        <Collapsible
+          title={t('reject_the_task')}
+          isOpen={Boolean(get(task, 'subtasks.length'))}
+        >
+          <>
+            <Grid item xs={12}>
+              <Typography paragraph>
+                {t('dont_hesitate_to_push_this_button')}
+              </Typography>
+              <Typography paragraph>
+                {t('only_20_percent_gives_results')}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Box mb={2}>
+                <Button {...commonButtonProps} onClick={destroy}>
+                  {t('notImportant')}
+                </Button>
+              </Box>
+            </Grid>
+          </>
+        </Collapsible>
+      </Grid>
       <Grid item xs={12}>
         <Collapsible
           title={t('Add subtasks')}

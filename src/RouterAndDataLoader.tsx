@@ -45,11 +45,10 @@ export default memo((props: { children?: JSX.Element }) => {
   const yesterday = subHours(today, getHours(today)).getTime();
 
   // Refetch data every hour.
-  const dataRefetchInterval = 1000 * 60 * 60;
   useInterval(() => {
     console.log('Refetching data every hour...');
     setToday(Date.now());
-  }, dataRefetchInterval);
+  }, 1000 * 60 * 60);
 
   // Store userId in localStorage to improve loading times on startup
   const userId =

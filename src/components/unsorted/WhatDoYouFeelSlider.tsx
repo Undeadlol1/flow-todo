@@ -3,7 +3,9 @@ import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import React, { memo } from 'react';
 
-interface WhatDoYouFeelSliderProps {}
+export interface WhatDoYouFeelSliderProps {
+  onChange: (value: number) => void;
+}
 
 const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
   props: WhatDoYouFeelSliderProps,
@@ -19,14 +21,18 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
           </Box>
         </Grid>
         <Grid item xs>
-          <Slider
-            min={0}
-            max={100}
-            step={25}
-            defaultValue={0}
-            valueLabelDisplay="off"
-            onChangeCommitted={console.log}
-          />
+          <Box mt="15px">
+            <Slider
+              min={0}
+              max={100}
+              step={25}
+              defaultValue={0}
+              valueLabelDisplay="off"
+              onChangeCommitted={(event, value) =>
+                props.onChange(value as number)
+              }
+            />
+          </Box>
         </Grid>
         <Grid item xs={2}>
           <Box textAlign="center">

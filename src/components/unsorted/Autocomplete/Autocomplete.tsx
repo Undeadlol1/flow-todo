@@ -10,14 +10,13 @@ const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 interface OptionType {
   value: any;
   label: string;
-  // TODO: remove?
   inputValue?: string;
 }
 
 export interface AutocompleteProps {
   label: string;
-  onChange: (value: any) => void;
   options: OptionType[];
+  onChange: (value: any) => void;
 }
 
 const filter = createFilterOptions<OptionType>();
@@ -27,35 +26,15 @@ const Autocomplete = memo(function Autocomplete(
 ) {
   const classes = useStyles();
 
-  // TODO: remove?
-  const [value, setValue] = React.useState<OptionType | null>(null);
-
   return (
     <Box className={classes.root}>
       <MuiAutocomplete
         freeSolo
         clearOnBlur
-        value={value}
         selectOnFocus
         handleHomeEndKeys
         options={props.options}
         renderOption={(i) => i.label}
-        onChange={(event, newValue) => {
-          console.log('on change newValue: ', newValue);
-          props.onChange(newValue);
-          // if (typeof newValue === 'string') {
-          //   setValue({
-          //     label: newValue,
-          //   });
-          // } else if (newValue && newValue.inputValue) {
-          //   // Create a new value from the user input
-          //   setValue({
-          //     label: newValue.inputValue,
-          //   });
-          // } else {
-          //   setValue(newValue);
-          // }
-        }}
         filterOptions={(options, params) => {
           console.log('params: ', params);
           const filtered = filter(options, params);
@@ -93,6 +72,23 @@ const Autocomplete = memo(function Autocomplete(
             label={props.label}
           />
         )}
+        onChange={(event, newValue, reason) => {
+          if (reason !== 'select-option') {
+            return;
+          }
+
+          if (typeof newValue === 'string') {
+            props.onChange(newValue);
+          } else {
+            console.log('on change newValue: ', newValue);
+            // TODO: rename this.
+            if (newValue?.inputValue) {
+              newValue.label = newValue.inputValue;
+            }
+            console.log('newValue.value: ', newValue?.value);
+            props.onChange(newValue);
+          }
+        }}
       />
     </Box>
   );

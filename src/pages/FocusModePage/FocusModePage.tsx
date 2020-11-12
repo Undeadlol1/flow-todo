@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Box, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { TasksList } from '../../components/tasks/TasksList/TasksList';
+import { TasksList } from '../../components/tasks/TasksList';
 import { WhatDoYouFeelSlider } from '../../components/unsorted/WhatDoYouFeelSlider';
 
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));

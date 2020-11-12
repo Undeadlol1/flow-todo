@@ -7,4 +7,4 @@ export default {
   title: `${sections.ui}Sidebar`,
 };
 
-export const Normal = () => <Sidebar isOpen isLoggedIn isTasksListEmpty />;
+export const Normal = () => <Sidebar isOpen isLoggedIn />;

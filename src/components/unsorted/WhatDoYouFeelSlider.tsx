@@ -1,7 +1,7 @@
+import React, { memo } from 'react';
 import { Box, Fab, Grid, Slider } from '@material-ui/core';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import React, { memo } from 'react';
 
 export interface WhatDoYouFeelSliderProps {
   onChange: (value: number) => void;

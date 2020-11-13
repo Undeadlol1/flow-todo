@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { useTypedSelector } from '../../../store/index';
-import { Task } from "../../../entities/Task";
+import { Task } from '../../../entities/Task';
 import { tasksSelector } from '../../../store/selectors';
 import { tasksPerPage } from '../../../contants';
 
@@ -39,8 +39,7 @@ export function TasksList({
 
   const sliceTasksTo = tasksPerPage * page;
   const sliceTasksFrom = tasksPerPage * (page - 1);
-  const numberOfPAges =
-    Number((tasks.length / tasksPerPage).toFixed()) + 1;
+  const numberOfPAges = Math.ceil(tasks.length / tasksPerPage);
 
   log('tasks: %O', tasks);
   log('page: ', page);

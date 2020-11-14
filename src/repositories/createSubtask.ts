@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
-import { getFirestore } from 'redux-firestore';
+import { Subtask } from '../entities/Subtask';
 import { getUniqueId } from '../helpers/getUniqueId';
+import { updateTask } from './updateTask';
 
 export function createSubtask(
   taskId: string,
@@ -14,14 +15,11 @@ export function createSubtask(
     id: getUniqueId(),
     createdAt: Date.now(),
     name: values.name.trim(),
-  };
-  return (
+  } as Subtask;
+
+  return updateTask({
+    id: taskId,
     // @ts-ignore
-    getFirestore(firebase).update(
-      { collection: 'tasks', doc: taskId },
-      {
-        subtasks: firebase.firestore.FieldValue.arrayUnion(subtask),
-      },
-    )
-  );
+    subtasks: firebase.firestore.FieldValue.arrayUnion(subtask),
+  });
 }

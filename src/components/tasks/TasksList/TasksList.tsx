@@ -16,8 +16,6 @@ import { tasksSelector } from '../../../store/selectors';
 import { TasksListItem } from '../TasksListItem';
 
 const log = debug('TasksList');
-// TODO: remove this line.
-debug.enable('TasksList');
 
 interface TasksListProps {
   tasks: Task[];

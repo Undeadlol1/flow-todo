@@ -1,35 +1,27 @@
 import firebase from 'firebase/app';
-import { getFirestore as getFirestore2 } from 'redux-firestore';
+import { getFirestore } from 'redux-firestore';
 import { getUniqueId } from '../helpers/getUniqueId';
 
-const { FieldValue } = firebase.firestore;
-
-// NOTE: WIP
 export function createSubtask(
   taskId: string,
   values: {
     name: string;
   },
 ): Promise<void | Error> {
-  console.log('taskId: ', taskId);
+  const subtask = {
+    isDone: false,
+    parentId: taskId,
+    id: getUniqueId(),
+    createdAt: Date.now(),
+    name: values.name.trim(),
+  };
   return (
     // @ts-ignore
-    getFirestore2(firebase)
-      // return getFirestore()
-      .update(
-        { collection: 'tasks', doc: taskId },
-        {
-          // TODO: this might be the reason of "id" dissapearing from Task
-          // TODO: Use firestore from from redux-firestore
-          subtasks: FieldValue.arrayUnion({
-            // TODO: this might be the reason of "id" dissapearing from Task
-            id: getUniqueId(),
-            isDone: false,
-            parentId: taskId,
-            createdAt: Date.now(),
-            name: values.name.trim(),
-          }),
-        },
-      )
+    getFirestore(firebase).update(
+      { collection: 'tasks', doc: taskId },
+      {
+        subtasks: firebase.firestore.FieldValue.arrayUnion(subtask),
+      },
+    )
   );
 }

@@ -1,7 +1,7 @@
-import subDays from 'date-fns/subDays';
 import extend from 'lodash/extend';
-import { getFirestore, handleErrors } from '../services/index';
+import subDays from 'date-fns/subDays';
 import { getUniqueId } from '../helpers/getUniqueId';
+import { getFirestore, handleErrors } from '../services/index';
 
 export function upsertTask(
   values: {
@@ -17,7 +17,7 @@ export function upsertTask(
     return Promise.reject('You forgot to add userId');
   }
 
-  const now = new Date().getTime();
+  const now = Date.now();
   const payload = extend(
     values,
     isCreate

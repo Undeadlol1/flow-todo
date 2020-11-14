@@ -5,7 +5,7 @@ import TasksDoneToday from './TasksDoneToday';
 
 export default {
   component: TasksDoneToday,
-  title: sections.tasks + 'TasksDoneToday',
+  title: `${sections.tasks}TasksDoneToday`,
 };
 
 const props = TasksDoneTodaySampleProps;
@@ -15,7 +15,7 @@ export const Demos = () => {
   // Change amount completed tasks every few seconds.
   useEffect(() => {
     const interval = setInterval(
-      () => setAmount(i => (i < props.tasksPerDay ? ++i : 0)),
+      () => setAmount(i => (i < props.tasksPerDay ? i + 1 : 0)),
       2000,
     );
     return () => clearInterval(interval);

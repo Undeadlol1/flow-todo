@@ -1,14 +1,15 @@
-import { Typography, Theme } from '@material-ui/core';
+import { Theme, Typography } from '@material-ui/core';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/styles';
 import AssigmentIcon from '@material-ui/icons/Assignment';
 import DoneIcon from '@material-ui/icons/Done';
 import HeartIcon from '@material-ui/icons/Favorite';
 import SmileEmoticon from '@material-ui/icons/TagFaces';
+import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
+import map from 'lodash/map';
 import head from 'ramda/es/head';
 import React from 'react';
 import { When } from 'react-if';
@@ -17,14 +18,12 @@ import { updateTaskParams } from '../../../pages/TaskPage/TaskPageContainer';
 import {
   calculateNextRepetition,
   Confidence,
-} from '../../../services';
-import {
   distanceBetweenDates,
-  showSnackbar,
   useTypedTranslate,
 } from '../../../services/index';
-import { Task, Subtask } from '../../../store/index';
-import map from 'lodash/map';
+import Snackbar from '../../../services/Snackbar';
+import { Task } from '../../../entities/Task';
+import { Subtask } from '../../../entities/Subtask';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -45,7 +44,7 @@ const TaskChoices = (props: Props) => {
   const t = useTypedTranslate();
   const classes = useStyles();
   const activeSubtasks =
-    filter(props.task.subtasks, i => !i.isDone) || [];
+    filter(props.task.subtasks, (i) => !i.isDone) || [];
   const hasSubtasks = Boolean(activeSubtasks.length);
   const commonButtonProps: ButtonProps = {
     fullWidth: true,
@@ -64,33 +63,33 @@ const TaskChoices = (props: Props) => {
       props.task,
       confidence,
     );
-    props.updateTask({
-      values: {
-        isCurrent: false,
-        ...nextRepetition,
-      },
-      history: {
-        createdAt: Date.now(),
-        // @ts-ignore
-        actionType:
-          confidence === 'normal' ? 'stepForward' : 'leapForward',
-      },
-      pointsToAdd: confidence === 'normal' ? 10 : 20,
-      snackbarMessage: t('important to step forward'),
-    });
-    setTimeout(
-      () =>
-        showSnackbar(
+    props
+      .updateTask({
+        values: {
+          isCurrent: false,
+          ...nextRepetition,
+        },
+        history: {
+          createdAt: Date.now(),
+          // @ts-ignore
+          actionType:
+            confidence === 'normal' ? 'stepForward' : 'leapForward',
+        },
+        pointsToAdd: confidence === 'normal' ? 10 : 20,
+        snackbarMessage: t('important to step forward'),
+      })
+      .then(() => {
+        Snackbar.addToQueue(
           t('you will see task again in', {
             date: distanceBetweenDates(
               nextRepetition.dueAt,
               new Date(),
             ),
           }),
-        ),
-      4000,
-    );
+        );
+      });
   }
+
   function doneTask() {
     const rewardPerSubtask = 10;
     const repetitionLevel = get(props, 'task.repetitionLevel') || 1;

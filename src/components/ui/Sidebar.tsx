@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Theme,
 } from '@material-ui/core';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
@@ -28,20 +29,20 @@ import {
 } from '../../services/index';
 
 const log = debug('Sidebar');
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   link: {
     width: '100%',
     color: 'inherit',
     textDecoration: 'none',
   },
-  list: {
-    width: '250px',
-  },
   mailto: {
     color: 'inherit',
     textDecoration: 'none',
   },
-});
+  backgroundColor: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+}));
 
 const StyledListText = withStyles({
   root: {
@@ -93,18 +94,23 @@ const Sidebar: React.FC<{
   }
 
   return (
-    <Drawer open={isOpen} onClose={toggleSidebar}>
-      <List className={cx.list}>
-        <ListItem
-          button
-          onClick={redirectAndCloseSidebar('/streaks')}
-        >
-          <ListItemIcon>
-            <PlaylistAddCheckIcon />
-          </ListItemIcon>
-          {/* TODO: i18n */}
-          <StyledListText primary={'GOALS'} />
-        </ListItem>
+    <Drawer
+      open={isOpen}
+      anchor="bottom"
+      classes={{ paper: cx.backgroundColor }}
+      onClose={toggleSidebar}
+    >
+      <ListItem
+        button
+        onClick={redirectAndCloseSidebar('/streaks')}
+      >
+        <ListItemIcon>
+          <PlaylistAddCheckIcon />
+        </ListItemIcon>
+        {/* TODO: i18n */}
+        <StyledListText primary={'GOALS'} />
+      </ListItem>
+      <List>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>
             <HelpIcon />
@@ -121,8 +127,7 @@ const Sidebar: React.FC<{
           <ListItemIcon>
             <TelegramIcon />
           </ListItemIcon>
-          {/* TODO: i18n */}
-          <StyledListText primary="Группа в Телеграмме" />
+          <StyledListText primary={t('telegram_group')} />
         </ListItem>
         <When condition={isShareSupported}>
           <ListItem button onClick={shareMainPage}>
@@ -132,7 +137,7 @@ const Sidebar: React.FC<{
             <StyledListText primary={t('share')} />
           </ListItem>
         </When>
-        <MailTo className={cx.mailto} secure to="paleyblog@gmail.com">
+        <MailTo secure className={cx.mailto} to="paleyblog@gmail.com">
           <ListItem button>
             <ListItemIcon>
               <EmailIcon />

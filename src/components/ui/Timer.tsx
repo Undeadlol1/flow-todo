@@ -5,8 +5,8 @@ import Fab from './Fab';
 
 interface Props {
   // Run function on timer stop.
-  onEnd?: Function;
-  onStart?: Function;
+  onEnd?: () => any;
+  onStart?: () => any;
   autoStart?: boolean;
   className?: string;
 }
@@ -23,7 +23,7 @@ export default function Timer(props: Props) {
 
   // Run function on timer stop.
   // TODO: make sure this doesn't always run. Not all timers are autostarted.
-  useTimeoutFn(props.onEnd || function() {}, timerDuration);
+  useTimeoutFn(props.onEnd || (() => {}), timerDuration);
   return (
     <>
       {audio}
@@ -32,15 +32,15 @@ export default function Timer(props: Props) {
         formatValue={val => {
           // Timer returns '0' seconds by default'.
           if (val === 0) return '00';
-          else return val;
+          return val;
         }}
         // @ts-ignore
-        onStart={props.onStart}
-        // @ts-ignore
-        onStop={props.onEnd}
         direction="backward"
+        // @ts-ignore
         startImmediately={false}
         initialTime={timerDuration}
+        onStart={props.onStart}
+        onStop={props.onEnd}
       >
         {/*
         // @ts-ignore */}
@@ -61,10 +61,11 @@ export default function Timer(props: Props) {
           return (
             <Fab
               color="primary"
-              onClick={toggleTimer}
               className={props.className}
+              onClick={toggleTimer}
             >
-              <ReactTimer.Minutes />:
+              <ReactTimer.Minutes />
+              :
               <ReactTimer.Seconds />
             </Fab>
           );

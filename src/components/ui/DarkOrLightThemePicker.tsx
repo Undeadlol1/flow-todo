@@ -32,9 +32,9 @@ const DarkOrLightThemePicker = () => {
             {t('select_theme')}
           </InputLabel>
           <Select
-            onChange={setTheme}
             labelId="theme-selector"
             value={uiState.preferedColorScheme}
+            onChange={setTheme}
           >
             <MenuItem value="dark">{t('select_theme_dark')}</MenuItem>
             <MenuItem value="light">

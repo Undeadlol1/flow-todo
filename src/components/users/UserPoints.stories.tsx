@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import UserPoints from './UserPoints';
 import { number, boolean } from '@storybook/addon-knobs';
 import add from 'ramda/es/add';
+import UserPoints from './UserPoints';
 import { sections } from '../storybookContants';
 
 export default {
-  title: sections.users + 'UserPoints',
+  title: `${sections.users}UserPoints`,
   component: UserPoints,
 };
 
 export const normal = () => (
   <>
-    Loading: <br />
+    Loading:
+    {' '}
+    <br />
     <UserPoints isLoaded={false} value={10} />
-    Variants: <br />
-    <UserPoints value={10} isLoaded /> <br />
-    <UserPoints value={100} isLoaded /> <br />
-    <UserPoints value={1000} isLoaded /> <br />
-    <UserPoints value={10000} isLoaded /> <br />
-    Use knobs to change: <br />
+    Variants:
+    {' '}
+    <br />
+    <UserPoints isLoaded value={10} />
+    {' '}
+    <br />
+    <UserPoints isLoaded value={100} />
+    {' '}
+    <br />
+    <UserPoints isLoaded value={1000} />
+    {' '}
+    <br />
+    <UserPoints isLoaded value={10000} />
+    {' '}
+    <br />
+    Use knobs to change:
+    {' '}
+    <br />
     <UserPoints
       value={number('points', 10)}
       isLoaded={boolean('is loading', true)}
@@ -34,5 +48,5 @@ export const Animation = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <UserPoints value={points} />;
+  return <UserPoints isLoaded value={points} />;
 };

@@ -7,8 +7,8 @@ export type UiState = {
   isSidebarOpen: boolean;
   isAppTourActive: boolean;
   isRewardModalOpen: boolean;
-  isTasksDoneTodayNotificationOpen: boolean,
   preferedColorScheme: UiColorScheme;
+  isTasksDoneTodayNotificationOpen: boolean;
 };
 
 const prereferedColorScheme = localStorage.getItem(
@@ -21,9 +21,7 @@ const initialState: UiState = {
   isAppTourActive: false,
   isRewardModalOpen: false,
   isTasksDoneTodayNotificationOpen: false,
-  preferedColorScheme: prereferedColorScheme
-    ? prereferedColorScheme
-    : 'light',
+  preferedColorScheme: prereferedColorScheme || 'light',
 };
 
 const uiSlice = createSlice({
@@ -52,9 +50,9 @@ const uiSlice = createSlice({
 export const {
   toggleAppTour,
   toggleSidebar,
+  setColorScheme,
   toggleRewardModal,
   toggleTasksDoneTodayNotification,
-  setColorScheme,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

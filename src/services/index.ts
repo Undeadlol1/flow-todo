@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -7,11 +7,9 @@ import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
-import { firestore } from 'firebase';
 import get from 'lodash/get';
 import i18n from 'i18next';
-import { snackbarActions } from 'material-ui-snackbar-redux';
-import store, { Task } from '../store';
+import store from '../store';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
@@ -21,7 +19,8 @@ import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
 import { toggleLevelUpAnimation } from '../store/usersSlice';
 import { Reward } from '../store/rewardsSlice';
-import { sort, findLastIndex } from 'ramda';
+import sort from 'ramda/es/sort';
+import findLastIndex from 'ramda/es/findLastIndex';
 import { getFirebase } from 'react-redux-firebase';
 import random from 'lodash/random';
 import { toggleSidebar as toggleUiSidebar } from '../store/uiSlice';
@@ -29,8 +28,9 @@ import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en';
 import ruTranslations from '../locales/ru';
-import { useEffect, useState } from 'react';
 import useTheme from '@material-ui/core/styles/useTheme';
+import Snackbar from './Snackbar';
+import { Task } from '../entities/Task';
 
 const logger = debug('utils');
 
@@ -87,16 +87,18 @@ export function calculateNextRepetition(
 }
 
 export function initializeFirebase() {
-  firebase.initializeApp({
-    apiKey: 'AIzaSyAmCyhaB-8xjMH5yi9PoitoAyD-KeFnNtA',
-    authDomain: 'flow-todo-5824b.firebaseapp.com',
-    databaseURL: 'https://flow-todo-5824b.firebaseio.com',
-    projectId: 'flow-todo-5824b',
-    storageBucket: 'flow-todo-5824b.appspot.com',
-    messagingSenderId: '772125171665',
-    appId: '1:772125171665:web:3fffadc4031335de290af0',
-    measurementId: 'G-DLFD2VSSK1',
-  });
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyAmCyhaB-8xjMH5yi9PoitoAyD-KeFnNtA',
+      authDomain: 'flow-todo-5824b.firebaseapp.com',
+      databaseURL: 'https://flow-todo-5824b.firebaseio.com',
+      projectId: 'flow-todo-5824b',
+      storageBucket: 'flow-todo-5824b.appspot.com',
+      messagingSenderId: '772125171665',
+      appId: '1:772125171665:web:3fffadc4031335de290af0',
+      measurementId: 'G-DLFD2VSSK1',
+    });
+  }
 
   if (process.env.NODE_ENV === 'production') {
     firebase.analytics();
@@ -119,10 +121,10 @@ export function initializeFirebase() {
 }
 
 export function normalizeQueryResponse(
-  snapshot: firestore.QuerySnapshot,
+  snapshot: firebase.firestore.QuerySnapshot,
 ) {
   if (snapshot.empty) return [];
-  return snapshot.docs.map(document => ({
+  return snapshot.docs.map((document) => ({
     id: document.id,
     ...document.data(),
   }));
@@ -132,20 +134,18 @@ export function handleErrors(
   e: Error | undefined | firebase.auth.Error,
 ) {
   if (e) {
-    var pe = new PrettyError();
-    console.log(pe.render(e));
-    store.dispatch(
-      snackbarActions.show({
-        message:
-          'Error: ' + get(e, 'message') ||
-          i18n.t('Something went wrong'),
-      }),
-    );
+    var { render } = new PrettyError();
+    const message = `Error: ${
+      e?.message || i18n.t('Something went wrong')
+    }`;
+
+    console.error(render(e));
+    Snackbar.addToQueue(message);
   }
 }
 
 export function showSnackbar(message: string) {
-  store.dispatch(snackbarActions.show({ message }));
+  Snackbar.addToQueue(message);
 }
 
 export function getNewlyUnlockedReward(
@@ -155,11 +155,11 @@ export function getNewlyUnlockedReward(
 ): Reward | undefined {
   const sortedRewards = sort((a, b) => a.points - b.points, rewards);
   const currentRewardIndex = findLastIndex(
-    i => i.points <= currentPoints,
+    (i) => i.points <= currentPoints,
     rewards,
   );
   const nextRewardIndex = findLastIndex(
-    i => i.points <= currentPoints + pointsAboutToAdd,
+    (i) => i.points <= currentPoints + pointsAboutToAdd,
     rewards,
   );
   const nextReward = rewards[nextRewardIndex];
@@ -231,6 +231,9 @@ export function toggleSidebar() {
 }
 
 export function initializeI18n() {
+  if (i18n.isInitialized) {
+    return i18n;
+  }
   return i18n
     .use(languageDetector)
     .use(initReactI18next)
@@ -253,52 +256,3 @@ export function initializeI18n() {
 export function findSequenceDuplicates(
   history: History[] = [],
 ): void {}
-
-// NOTE: this is a copy/pastej
-const debounce = (delay: number, fn: any) => {
-  let timerId: any;
-
-  return function(...args: any[]) {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-
-    timerId = setTimeout(() => {
-      fn(...args);
-      timerId = null;
-    }, delay);
-  };
-};
-
-// NOTE: this is a copy/paste
-export const useDebouncedWindowSize = (debounceTime?: number) => {
-  const isClient: boolean = typeof window === 'object';
-  const getSize = () => ({
-    width: isClient ? window.innerWidth : undefined,
-    height: isClient ? window.innerHeight : undefined,
-  });
-  const [windowSize, setWindowSize] = useState(getSize);
-
-  useEffect(() => {
-    if (!isClient) {
-      return;
-    }
-
-    const handleResize = () => {
-      setWindowSize(getSize());
-    };
-
-    let handleResizeFn = handleResize;
-
-    if (debounceTime) {
-      handleResizeFn = debounce(debounceTime, handleResize);
-    }
-
-    window.addEventListener('resize', handleResizeFn);
-
-    return () => window.removeEventListener('resize', handleResizeFn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceTime, isClient]);
-
-  return windowSize;
-};

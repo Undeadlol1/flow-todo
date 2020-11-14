@@ -4,7 +4,7 @@ import { UpsertDailyGoal } from './UpsertDailyGoal';
 
 export default {
   component: UpsertDailyGoal,
-  title: sections.streaks + 'UpsertDailyGoal',
+  title: `${sections.streaks}UpsertDailyGoal`,
 };
 
 export const Normal = () => <UpsertDailyGoal />;

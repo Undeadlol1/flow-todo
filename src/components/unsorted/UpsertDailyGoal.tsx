@@ -1,9 +1,4 @@
-import {
-  Box,
-  Grid,
-  Theme,
-  Button,
-} from '@material-ui/core';
+import { Box, Grid, Theme, Button } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { memo } from 'react';
 import { Field, Form, Formik } from 'formik';
@@ -24,7 +19,7 @@ const UpsertDailyGoal = memo((props: Props) => {
     <Box className={rootClasses}>
       <Formik
         initialValues={{ title: '' }}
-        validate={values => {
+        validate={(values) => {
           const errors: Partial<{ title: string }> = {};
           if (!values.title?.trim()) {
             // TODO i18n
@@ -43,15 +38,15 @@ const UpsertDailyGoal = memo((props: Props) => {
           <Form onSubmit={handleSubmit}>
             <Grid container>
               <Grid item xs>
-                  <Field
+                <Field
                   fullWidth
                   name="title"
                   // TODO: i18n
                   label="Название"
                   variant="outlined"
-                  onBlur={handleBlur}
                   value={values.title}
                   component={TextField}
+                  onBlur={handleBlur}
                   onChange={handleChange}
                 />
               </Grid>

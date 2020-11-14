@@ -5,20 +5,22 @@ import Typography, {
 } from '@material-ui/core/Typography';
 import get from 'lodash/get';
 import React from 'react';
+import { Theme } from '@material-ui/core';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
 import {
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { addPoints, Task, useTypedSelector } from '../../store/index';
+import { useTypedSelector } from '../../store/index';
+import { Task } from '../../entities/Task';
+import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { authSelector } from '../../store/selectors';
-import Collapsible from './../ui/Collapsible';
+import Collapsible from '../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
 import TagsForm from './TagsForm';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -43,7 +45,7 @@ const HardChoices = (
   const taskNote = get(task, 'note');
   const auth = useTypedSelector(authSelector);
   const addPointsOnSuccess = (points = 10) => {
-    addPoints(auth.uid, points);
+    addPointsToUser(auth.uid, points);
     showSnackbar(
       t('youAreCloserToYourGoal', {
         points,

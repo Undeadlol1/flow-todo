@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import clsx from 'clsx';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -15,18 +15,19 @@ import { Else, If, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
-import { Task, useTypedSelector } from '../../../store/index';
+import { Theme } from '@material-ui/core';
+import { useTypedSelector } from '../../../store/index';
+import { Task } from '../../../entities/Task';
 import {
   activeTaskSelector,
   tasksSelector,
   uiSelector,
 } from '../../../store/selectors';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
-    color: theme.palette.secondary.contrastText,
     padding: '100px',
+    color: theme.palette.secondary.contrastText,
     backgroundColor: theme.palette.primary.main,
   },
   buttonRoot: {
@@ -68,7 +69,7 @@ export const RandomTaskButton = ({
     randomTaskId
   ) {
     firestore
-      .doc('tasks/' + randomTaskId)
+      .doc(`tasks/${randomTaskId}`)
       .update({ isCurrent: true });
   }
 
@@ -108,12 +109,10 @@ export const RandomTaskButton = ({
 
 interface ContainerProps {
   className?: string;
-  tasks?: firestore.QuerySnapshot;
+  tasks?: firebase.firestore.QuerySnapshot;
 }
 
-export default memo(function RandomTaskButtonContainer(
-  props: ContainerProps,
-) {
+export default memo((props: ContainerProps) => {
   const tasks = useSelector(tasksSelector);
   const { isAppTourActive } = useTypedSelector(uiSelector);
 
@@ -122,7 +121,7 @@ export default memo(function RandomTaskButtonContainer(
       {...{
         ...props,
         isAppTourActive,
-        tasks: tasks,
+        tasks,
         loading: isUndefined(tasks),
       }}
     />

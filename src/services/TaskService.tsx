@@ -1,33 +1,37 @@
-import { Task } from '../store';
+import find from 'lodash/find';
+import get from 'lodash/fp/get';
+import { Task } from '../entities/Task';
 import { getFirestore } from './index';
 
 export default class TaskService {
-  static async deactivateActiveTasks(tasks: Task[]) {
+  static get db() {
+    return getFirestore();
+  }
+
+  static async deactivateActiveTasks(tasks: Task[] = []) {
     return Promise.all(
       tasks
-        .filter(i => i.isCurrent)
+        .filter(get('isCurrent'))
         .map(({ id }) =>
-          getFirestore()
-            .doc('tasks/' + id)
+          this.db
+            .doc(`tasks/${id}`)
             .update({ isCurrent: false } as Task),
         ),
     );
   }
 
   static async activateNextTask({
-    nextTaskId,
-    currentTasks,
+    nextTaskId = '',
+    currentTasks = [],
   }: {
     nextTaskId: string;
     currentTasks: Task[];
   }) {
     return nextTaskId
-      ? getFirestore()
-          .doc('tasks/' + nextTaskId)
-          .update({
-            ...currentTasks.find(({ id }) => id === nextTaskId),
-            isCurrent: true,
-          })
+      ? this.db.doc(`tasks/${nextTaskId}`).update({
+          ...find(currentTasks, { id: nextTaskId }),
+          isCurrent: true,
+        })
       : Promise.resolve();
   }
 }

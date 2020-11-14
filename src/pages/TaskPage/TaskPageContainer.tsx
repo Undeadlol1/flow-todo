@@ -1,39 +1,40 @@
 import debug from 'debug';
-import get from 'lodash/get';
-import find from 'lodash/find';
-import TaskPage from './TaskPage';
-import filter from 'lodash/filter';
-import isEmpty from 'lodash/isEmpty';
-import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
-import { TaskPageProps } from './TaskPage';
-import { useTranslation } from 'react-i18next';
-import { deleteTask, Task } from '../../store';
-import { uiSelector } from '../../store/selectors';
-import { useFirestore } from 'react-redux-firebase';
-import DailyStreak from '../../services/dailyStreak';
-import TaskService from '../../services/TaskService';
-import { useHistory, useParams } from 'react-router-dom';
-import { snackbarActions } from 'material-ui-snackbar-redux';
-import { upsertProfile, upsertTask } from '../../store/index';
-import { getRandomTaskId, handleErrors } from '../../services';
-import React, { memo, useEffect, useState as useToggle } from 'react';
-import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
-import {
-  TaskHistory,
-  useTypedSelector,
-  addPointsWithSideEffects,
-} from '../../store/index';
-import {
-  authSelector,
-  tasksSelector,
-  profileSelector,
-  activeTaskSelector,
-  fetchedTaskSelector,
-  tasksDoneTodaySelector,
-  firestoreStatusSelector,
-} from '../../store/selectors';
 import delay from 'lodash/delay';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import React, { memo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
+import { useHistory, useParams } from 'react-router-dom';
+import useToggle from 'react-use/lib/useToggle';
+import { getRandomTaskId, handleErrors } from '../../services';
+import DailyStreak from '../../services/dailyStreak';
+import Snackbar from '../../services/Snackbar';
+import TaskService from '../../services/TaskService';
+import {
+  useTypedSelector,
+} from '../../store/index';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
+import { TaskHistory } from '../../entities/TaskHistory';
+import { upsertProfile } from '../../repositories/upsertProfile';
+import { upsertTask } from '../../repositories/upsertTask';
+import {
+  activeTaskSelector,
+  authSelector,
+  fetchedTaskSelector,
+  firestoreStatusSelector,
+  profileSelector,
+  tasksDoneTodaySelector,
+  tasksSelector,
+  uiSelector,
+} from '../../store/selectors';
+import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
+import TaskPage, { TaskPageProps } from './TaskPage';
+import { deleteTask } from '../../repositories/deleteTask';
+import { Task } from '../../entities/Task';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -58,8 +59,8 @@ const Container = memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
-  const { enqueueSnackbar } = useSnackbar();
   // Data.
+  // @ts-ignore
   let { taskId = '' } = useParams();
   const tasks = useTypedSelector(tasksSelector) || [];
   const currentTaskId = get(
@@ -67,7 +68,7 @@ const Container = memo(() => {
     'id',
   );
   const nextTaskId = getRandomTaskId(
-    filter(tasks, t => t.id !== taskId),
+    filter(tasks, (t) => t.id !== taskId),
   );
   const { uid: userId } = useTypedSelector(authSelector);
   const uiState = useTypedSelector(uiSelector);
@@ -84,7 +85,7 @@ const Container = memo(() => {
   if (taskId === 'active') {
     taskId = currentTaskId as string;
   }
-  let task = find(tasks, ['id', taskId]) || fetchedTask;
+  const task = find(tasks, ['id', taskId]) || fetchedTask;
 
   // Fetch task if needed.
   useEffect(() => {
@@ -102,7 +103,7 @@ const Container = memo(() => {
           storeAs: 'currentTask',
         })
         .then(() => toggleLoading(false))
-        .catch(error => {
+        .catch((error) => {
           handleErrors(error);
           goHome();
         });
@@ -128,28 +129,23 @@ const Container = memo(() => {
     pointsToRemoveFromUser,
     message,
   }: {
-    deletedTask: Task;
     message: string;
+    deletedTask: Task;
     pointsToRemoveFromUser: number;
   }) {
-    async function undoTaskDeletion() {
-      await Promise.all([
-        upsertTask(deletedTask, deletedTask.id),
-        addPointsWithSideEffects(
-          deletedTask.userId,
-          pointsToRemoveFromUser * -1,
-        ),
-      ]);
-      history.replace(`/tasks/${deletedTask.id}`);
-    }
+    // function undoTaskDeletion() {
+    //   return Promise.all([
+    //     upsertTask(deletedTask, deletedTask.id),
+    //     addPointsWithSideEffects(
+    //       deletedTask.userId,
+    //       pointsToRemoveFromUser * -1,
+    //     ),
+    //   ])
+    //     .then(() => history.replace(`/tasks/${deletedTask.id}`))
+    //     .catch(handleErrors);
+    // }
 
-    dispatch(
-      snackbarActions.show({
-        message,
-        action: t('undo'),
-        handleAction: () => undoTaskDeletion(),
-      }),
-    );
+    Snackbar.addToQueue(message);
   }
 
   const mergedProps = {
@@ -165,14 +161,17 @@ const Container = memo(() => {
     }: updateTaskParams) {
       log('updateTask is running.');
       try {
-        history.replace(nextTaskId ? '/tasks/' + nextTaskId : '/');
+        history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
         const toggleTaskDoneNotification = () =>
           dispatch(toggleTasksDoneTodayNotification());
 
+        console.log('snackbarMessage: ', snackbarMessage);
         toggleTaskDoneNotification();
-        delay(toggleTaskDoneNotification, 3500);
-        delay(enqueueSnackbar, 3500, snackbarMessage);
+        delay(() => {
+          toggleTaskDoneNotification();
+          Snackbar.addToQueue(snackbarMessage);
+        }, 3500);
 
         await Promise.all([
           TaskService.deactivateActiveTasks(tasks),
@@ -226,7 +225,7 @@ const Container = memo(() => {
         history.replace(nextTaskId ? '/tasks/active' : '/');
       } catch (error) {
         handleErrors(error);
-        history.replace(`/tasks/active`);
+        history.replace('/tasks/active');
       } finally {
         toggleLoading(false);
       }

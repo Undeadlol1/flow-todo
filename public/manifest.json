@@ -2,7 +2,7 @@
   "short_name": "Долгий Ящик",
   "name": "Долгий Ящик",
   "start_url": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "share_target": {
     "method": "GET",
     "action": "/web-share-target",

@@ -110,11 +110,13 @@ export default {
     select_theme: 'Выберите тему',
     select_theme_dark: 'Тëмная',
     select_theme_light: 'Светлая',
+    telegram_group: 'Группа в Телеграмме',
     faq: 'ЧаВо',
     'frequently asked questions': 'Часто Задаваемые Вопросы',
     completed_tasks_today: 'Побед сегодня',
         won_days_in_a_row: 'Побеждал(a) дней подряд',
     'tasks list': 'Список задач',
     level_is: 'Уровень: {{level}}',
+    points: 'Очки',
   },
 };

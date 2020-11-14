@@ -1,3 +1,4 @@
+import { Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,10 +7,10 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import { makeStyles } from '@material-ui/styles';
 import arrayMove from 'array-move';
 import firebase from 'firebase/app';
 import isEmpty from 'lodash/isEmpty';
@@ -24,13 +25,13 @@ import {
 import { getFirestore } from 'redux-firestore';
 import {
   handleErrors,
-  showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { deleteSubtask, Subtask } from '../../store';
-import { addPointsWithSideEffects } from '../../store/index';
+import Snackbar from '../../services/Snackbar';
+import { deleteSubtask } from '../../repositories/deleteSubtask';
+import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import { authSelector } from '../../store/selectors';
-import { Theme } from '@material-ui/core';
+import { Subtask } from '../../entities/Subtask';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -70,7 +71,7 @@ const SortableItem = SortableElement(
     }
 
     function setDone() {
-      showSnackbar(t('goodJobPointsRecieved', { points: 10 }));
+      Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
       Promise.all([
         remove(),
         addPointsWithSideEffects(auth.uid, 10),
@@ -90,7 +91,7 @@ const SortableItem = SortableElement(
           className={classes.link}
         />
         <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={remove} aria-label="Delete">
+          <IconButton edge="end" aria-label="Delete" onClick={remove}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>
@@ -116,6 +117,7 @@ const SortableListContainer = SortableContainer(
 
 export default function SubtasksList({ documents, ...props }: Props) {
   const classes = useStyles();
+  // @ts-ignore
   const firestore = getFirestore(firebase);
   const [subtasksStub, setSubtasksStub] = useState<
     Subtask[] | undefined
@@ -123,12 +125,12 @@ export default function SubtasksList({ documents, ...props }: Props) {
 
   if (!documents || isEmpty(documents)) return null;
 
-  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+  const updateSubtasks = ({ oldIndex, newIndex }: any) => {
     const taskId = documents[0].parentId;
     const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
     setSubtasksStub(updatedSubtasks);
     firestore
-      .doc('tasks/' + taskId)
+      .doc(`tasks/${taskId}`)
       .update({ subtasks: updatedSubtasks })
       .catch(handleErrors);
   };
@@ -136,10 +138,10 @@ export default function SubtasksList({ documents, ...props }: Props) {
   return (
     <Paper elevation={6} className={classes.paper}>
       <SortableListContainer
+        useDragHandle
         lockAxis="y"
-        onSortEnd={onSortEnd}
-        useDragHandle={true}
         items={subtasksStub || documents}
+        onSortEnd={updateSubtasks}
       />
     </Paper>
   );

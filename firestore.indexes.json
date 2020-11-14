@@ -37,6 +37,20 @@
       ]
     },
     {
+      "collectionGroup": "taskLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "rewards",
       "queryScope": "COLLECTION",
       "fields": [

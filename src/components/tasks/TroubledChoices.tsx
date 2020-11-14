@@ -6,14 +6,14 @@ import { makeStyles } from '@material-ui/styles';
 import addHours from 'date-fns/addHours';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import { Theme } from '@material-ui/core';
 import { TaskPageGridWidth } from '../../pages/TaskPage';
 import { useTypedTranslate } from '../../services/index';
 import {
   deleteTaskArguments,
   updateTaskParams,
 } from '../../pages/TaskPage/TaskPageContainer';
-import Typography from '@material-ui/core/Typography';
-import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

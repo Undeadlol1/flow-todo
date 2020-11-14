@@ -10,7 +10,6 @@ import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
 import isString from 'lodash/isString';
 import sample from 'lodash/sample';
-import { useSnackbar } from 'notistack';
 import compose from 'ramda/es/compose';
 import defaultTo from 'ramda/es/defaultTo';
 import head from 'ramda/es/head';
@@ -18,6 +17,7 @@ import prop from 'ramda/es/prop';
 import React, { useEffect } from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import TroublesChoices from '../../components/tasks/TroubledChoices';
@@ -26,7 +26,6 @@ import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
 import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
 import { useTypedTranslate } from '../../services/index';
-import { Task } from '../../store';
 import {
   deleteTaskArguments,
   updateTaskParams,
@@ -35,7 +34,8 @@ import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
-import isEmpty from 'lodash/isEmpty';
+import Snackbar from '../../services/Snackbar';
+import { Task } from '../../entities/Task';
 
 // TODO i18n
 const encouragingMessages = [
@@ -79,7 +79,6 @@ export default function TaskPage(props: TaskPageProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
   const route = useRouteMatch() || {};
-  const { enqueueSnackbar } = useSnackbar();
 
   const { path } = route;
   const {
@@ -88,7 +87,7 @@ export default function TaskPage(props: TaskPageProps) {
     loading,
     tasksDoneTodayNotificationProps,
   } = props;
-  const activeSubtasks = filter(task.subtasks, i => !i.isDone);
+  const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
@@ -96,13 +95,11 @@ export default function TaskPage(props: TaskPageProps) {
     const snackBarTimeout = setTimeout(() => {
       if (!props.shouldDisplayEncouragements) return;
       if (tasksDoneTodayNotificationProps.isVisible) return;
-      enqueueSnackbar(sample(encouragingMessages), {
-        autoHideDuration: 4500,
-      });
+      Snackbar.addToQueue(sample(encouragingMessages) as string);
     }, 3500);
     return () => clearTimeout(snackBarTimeout);
     // eslint-disable-next-line
-  }, [enqueueSnackbar, props.shouldDisplayEncouragements]);
+  }, [props.shouldDisplayEncouragements]);
 
   if (loading) {
     return (
@@ -134,16 +131,13 @@ export default function TaskPage(props: TaskPageProps) {
         {...tasksDoneTodayNotificationProps}
       />
       <Timer
+        autoStart
         onEnd={() => {
           // TODO i18n
-          enqueueSnackbar(
+          Snackbar.addToQueue(
             'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
-            {
-              autoHideDuration: 10000,
-            },
           );
         }}
-        autoStart
       />
       <Grid item xs={12}>
         <Grid
@@ -156,7 +150,7 @@ export default function TaskPage(props: TaskPageProps) {
               <MuiLink component={Link} to={`/tasks/${taskId}`}>
                 <CardContent>
                   <When condition={!isEmpty(activeSubtasks)}>
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography gutterBottom color="textSecondary">
                       {task.name}
                     </Typography>
                   </When>
@@ -177,7 +171,7 @@ export default function TaskPage(props: TaskPageProps) {
           </Zoom>
         </Grid>
       </Grid>
-      <Grid container justify="center" item xs={12}>
+      <Grid container item justify="center" xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome/isHard`}>
             <HardChoices {...props} />
@@ -185,7 +179,7 @@ export default function TaskPage(props: TaskPageProps) {
           <Route path={`${path}/isTroublesome`}>
             <TroublesChoices {...props} />
           </Route>
-          <Route path={path + '/isGood'}>
+          <Route path={`${path}/isGood`}>
             <TaskChoices
               className="IntroHandle__choices"
               {...props}

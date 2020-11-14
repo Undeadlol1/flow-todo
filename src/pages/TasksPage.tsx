@@ -2,10 +2,10 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
 import debug from 'debug';
 import React, { memo } from 'react';
+import { Theme } from '@material-ui/core';
 import { useTypedSelector } from '../store';
 import { tasksSelector } from '../store/selectors';
-import { TasksList } from './../components/tasks/TasksList/TasksList';
-import { Theme } from '@material-ui/core';
+import { TasksList } from '../components/tasks/TasksList/TasksList';
 
 const log = debug('RewardsPage');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,7 +24,7 @@ const RewardsPage: React.FC<{}> = () => {
   return (
     <Grid container justify="center" className={cx.pageContainer}>
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <TasksList tasks={tasks || []} />
+        <TasksList tasks={tasks || []} loading={false} />
       </Grid>
     </Grid>
   );

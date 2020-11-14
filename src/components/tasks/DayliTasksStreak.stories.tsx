@@ -5,21 +5,26 @@ import DayliTasksStreak from './DayliTasksStreak';
 
 export default {
   component: DayliTasksStreak,
-  title: sections.tasks + 'DayliTasksStreak',
+  title: `${sections.tasks}DayliTasksStreak`,
 };
 
-export const Demos = () => {
-  return (
-    <>
-      Done yesterday: <br />
-      (meaning user is working on a streak, it is not yet broken)
-      <DayliTasksStreak streak={streaks.doneTasksYesterday} />
-      Done today:
-      <DayliTasksStreak streak={streaks.doneTasksToday} />
-      Few days:
-      <DayliTasksStreak streak={streaks.doneTasksFewDays} />
-      Noting will be shown if streak is broken:
-      <DayliTasksStreak streak={streaks.streakIsBroken} />
-    </>
-  );
-};
+export const Demos = () => (
+  <>
+    Done yesterday:
+    <br />
+    (meaning user is working on a streak, it is not yet broken)
+    <DayliTasksStreak streak={streaks.doneTasksYesterday} />
+    <hr />
+    Done today:
+    <hr />
+    <DayliTasksStreak streak={streaks.doneTasksToday} />
+    <hr />
+    Few days:
+    <hr />
+    <DayliTasksStreak streak={streaks.doneTasksFewDays} />
+    <hr />
+    Noting will be shown if streak is broken:
+    <hr />
+    <DayliTasksStreak streak={streaks.streakIsBroken} />
+  </>
+);

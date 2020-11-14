@@ -107,11 +107,13 @@ export default {
     select_theme: 'Select a theme',
     select_theme_dark: 'Dark',
     select_theme_light: 'Light',
+    telegram_group: 'Telegram Group',
     faq: 'FAQ',
     'frequently asked questions': 'Frequently Asked Questions',
     completed_tasks_today: 'Wins today',
     won_days_in_a_row: 'Won days in a row',
     'tasks list': 'Tasks List',
     level_is: 'Level: {{level}}',
+    points: 'Points',
   },
 };

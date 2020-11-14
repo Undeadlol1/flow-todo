@@ -6,7 +6,10 @@
         "dayliStreak",
         "TaskPage",
         "Profile",
-        "templates"
+        "templates",
+        "eslint",
+        "storybook",
+        "firebase"
     ],
     "eslint.enable": true
 }

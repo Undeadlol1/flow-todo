@@ -12,20 +12,18 @@ import React from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useToggle from 'react-use/lib/useToggle';
+import { Theme } from '@material-ui/core';
 import { useFabStyles } from '../../components/ui/Fab';
 import {
   handleErrors,
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {},
     speedDial: {},
-  }),
-);
+  }));
 
 interface Props {
   taskId?: string;
@@ -41,7 +39,7 @@ export default function TaskPageFABMenu(props: Props) {
 
   function pin() {
     firestoreRedux
-      .update('tasks/' + props.taskId, {
+      .update(`tasks/${props.taskId}`, {
         isPinned: true,
       })
       .catch(handleErrors);
@@ -50,7 +48,7 @@ export default function TaskPageFABMenu(props: Props) {
 
   function resetIntervals() {
     firestoreRedux
-      .update('tasks/' + props.taskId, {
+      .update(`tasks/${props.taskId}`, {
         repetitionLevel: 0,
       })
       .then(() => showSnackbar(t('Successfully saved')))
@@ -74,20 +72,20 @@ export default function TaskPageFABMenu(props: Props) {
         ariaLabel="SpeedDial tooltip example"
         // TODO: change name to "root"
         className={fabClasses.fab}
-        icon={
+        icon={(
           <SpeedDialIcon
             icon={<MoreVertIcon />}
             openIcon={<CloseIcon />}
           />
-        }
+        )}
+        open={open}
         onOpen={() => toggleOpen(true)}
         onClose={() => toggleOpen(false)}
-        open={open}
       >
         {actions.map(action => (
           <SpeedDialAction
-            tooltipOpen
             key={action.name}
+            tooltipOpen
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={() => {

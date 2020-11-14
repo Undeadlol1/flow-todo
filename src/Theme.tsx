@@ -3,9 +3,9 @@ import { ThemeProvider } from '@material-ui/styles';
 import i18n from 'i18next';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
-import { uiSelector } from './store/selectors';
 import { ruRU, enUS } from '@material-ui/core/locale/';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { uiSelector } from './store/selectors';
 
 export const Theme: FunctionComponent<{
   isMobile?: boolean;
@@ -13,8 +13,7 @@ export const Theme: FunctionComponent<{
   const uiState = useSelector(uiSelector);
   const { language } = i18n;
   const theme = React.useMemo(
-    () =>
-      createMuiTheme(
+    () => createMuiTheme(
         {
           zIndex: {
             /*

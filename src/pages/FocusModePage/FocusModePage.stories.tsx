@@ -10,7 +10,8 @@ export default {
 
 const props = {
   isLoading: false,
-  tasks: tasksMock,
+  tasksToList: tasksMock,
+  tasksForAutoComplete: tasksMock,
 } as FocusModePageProps;
 
 export const Demo = (args) => <FocusModePage {...args} />;

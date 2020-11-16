@@ -1,10 +1,29 @@
+import { random } from 'faker';
 import subDays from 'date-fns/esm/subDays';
 import { IDayliStreak } from '../entities/IDayliStreak';
 import { TasksDoneTodayProps } from './tasks/TasksDoneToday';
+import { Task } from '../entities/Task';
 
 const perDay = 3;
 const today = new Date().getTime();
 const yesterday = subDays(today, 1).getTime();
+
+export const tasksMock = Array(25)
+  .fill('')
+  .map(
+    (i, index) =>
+      ({
+        id: random.uuid(),
+        name: random.boolean() ? random.word() : random.words(10),
+        subtasks: random.boolean()
+          ? [
+              {
+                name: 'This is a name of subtask.',
+              },
+            ]
+          : undefined,
+      } as Task),
+  );
 
 export const streaks = {
   doneTasksYesterday: {

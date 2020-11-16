@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { TasksList } from '../../components/tasks/TasksList';
 import { WhatDoYouFeelSlider } from '../../components/unsorted/WhatDoYouFeelSlider';
 import { Task } from '../../entities/Task';
+import { If } from 'react-if';
 
 export interface FocusModePageProps {
   tasks: Task[];
@@ -18,7 +19,9 @@ const FocusModePage = memo(function FocusModePage({
       <Box mb={2}>
         <TasksList tasks={tasks} loading={isLoading} />
       </Box>
-      <WhatDoYouFeelSlider onChange={console.log} />
+      <If condition={!isLoading}>
+        <WhatDoYouFeelSlider onChange={console.log} />
+      </If>
     </Box>
   );
 });

@@ -1,13 +1,13 @@
 import React from 'react';
 import { sections } from '../storybookContants';
-import { {{pascalCase name}} } from '../{{pascalCase name}}';
+import { {{pascalCase name}}, {{name}}Props } from '../../{{pascalCase name}}';
 
 export default {
     component: {{ pascalCase name }},
     title: `${sections.unsorted}{{pascalCase name}}`,
 };
 
-const props = {}
+const props = {} as {{name}}Props
 
 export const Demo = args => <{{ pascalCase name }} {...args} />
 Demo.args = props

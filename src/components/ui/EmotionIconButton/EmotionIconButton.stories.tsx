@@ -12,6 +12,7 @@ export default {
 
 const props = {
   type: 'happy_face',
+  onClick: console.log,
 } as EmotionIconButtonProps;
 
 export const Demo = (args) => <EmotionIconButton {...args} />;

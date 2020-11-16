@@ -1,11 +1,8 @@
-import React, { memo } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { Box, TextField, Theme } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import MuiAutocomplete, {
   createFilterOptions,
 } from '@material-ui/lab/Autocomplete';
-
-const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
+import React, { memo } from 'react';
 
 interface OptionType {
   value: any;
@@ -24,10 +21,8 @@ const filter = createFilterOptions<OptionType>();
 const Autocomplete = memo(function Autocomplete(
   props: AutocompleteProps,
 ) {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.root}>
+    <Box my={2}>
       <MuiAutocomplete
         freeSolo
         clearOnBlur
@@ -36,7 +31,6 @@ const Autocomplete = memo(function Autocomplete(
         options={props.options}
         renderOption={(i) => i.label}
         filterOptions={(options, params) => {
-          console.log('params: ', params);
           const filtered = filter(options, params);
 
           // Suggest the creation of a new value
@@ -78,16 +72,15 @@ const Autocomplete = memo(function Autocomplete(
           }
 
           if (typeof newValue === 'string') {
-            props.onChange(newValue);
-          } else {
-            console.log('on change newValue: ', newValue);
-            // TODO: rename this.
-            if (newValue?.inputValue) {
-              newValue.label = newValue.inputValue;
-            }
-            console.log('newValue.value: ', newValue?.value);
-            props.onChange(newValue);
+            return props.onChange(newValue);
           }
+
+          // TODO: rename this.
+          if (newValue?.inputValue) {
+            newValue.label = newValue.inputValue;
+          }
+
+          props.onChange(newValue);
         }}
       />
     </Box>

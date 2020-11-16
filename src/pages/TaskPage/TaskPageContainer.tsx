@@ -32,7 +32,6 @@ import {
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
 import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
-import { Task } from '../../entities/Task';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);

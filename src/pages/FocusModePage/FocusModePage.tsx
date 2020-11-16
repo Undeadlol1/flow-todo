@@ -4,6 +4,7 @@ import { TasksList } from '../../components/tasks/TasksList';
 import { WhatDoYouFeelSlider } from '../../components/unsorted/WhatDoYouFeelSlider';
 import { Task } from '../../entities/Task';
 import { If } from 'react-if';
+import { Autocomplete } from '../../components/unsorted/Autocomplete';
 
 export interface FocusModePageProps {
   tasks: Task[];
@@ -16,6 +17,11 @@ const FocusModePage = memo(function FocusModePage({
 }: FocusModePageProps) {
   return (
     <Box>
+      <Autocomplete
+        options={[]}
+        label="Somelabel"
+        onChange={console.log}
+      />
       <Box mb={2}>
         <TasksList tasks={tasks} loading={isLoading} />
       </Box>

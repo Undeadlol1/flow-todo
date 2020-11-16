@@ -33,7 +33,7 @@ const WhatDoYouFeelAboutTheTask = memo((props: Props) => {
             </Grid>
             <Grid item xs>
               <Link to={`${url}/isTroublesome`}>
-                <EmotionIconButton type="sad_face" color="primary" />
+                <EmotionIconButton type="sad_face" />
               </Link>
             </Grid>
           </Grid>

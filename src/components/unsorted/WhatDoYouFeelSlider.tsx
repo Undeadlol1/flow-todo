@@ -14,7 +14,7 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
       <Grid item container justify="space-between">
         <Grid item xs={2}>
           <Box textAlign="center">
-            <EmotionIconButton color="primary" type="sad_face" />
+            <EmotionIconButton type="sad_face" />
           </Box>
         </Grid>
         <Grid item xs>

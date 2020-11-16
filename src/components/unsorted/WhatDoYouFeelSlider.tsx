@@ -1,7 +1,6 @@
+import { Box, Grid, Slider } from '@material-ui/core';
 import React, { memo } from 'react';
-import { Box, Fab, Grid, Slider } from '@material-ui/core';
-import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import { EmotionIconButton } from '../ui/EmotionIconButton';
 
 export interface WhatDoYouFeelSliderProps {
   onChange: (value: number) => void;
@@ -15,9 +14,7 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
       <Grid item container justify="space-between">
         <Grid item xs={2}>
           <Box textAlign="center">
-            <Fab color="secondary">
-              <DissatisfiedIcon fontSize="large" />
-            </Fab>
+            <EmotionIconButton color="primary" type="sad_face" />
           </Box>
         </Grid>
         <Grid item xs>
@@ -36,9 +33,7 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
         </Grid>
         <Grid item xs={2}>
           <Box textAlign="center">
-            <Fab color="primary">
-              <SatisfiedIcon fontSize="large" />
-            </Fab>
+            <EmotionIconButton type="happy_face" />
           </Box>
         </Grid>
       </Grid>

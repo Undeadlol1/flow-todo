@@ -4,17 +4,20 @@ import { Icon } from '../../ui/Icon';
 
 export interface EmotionIconButtonProps {
   type: 'happy_face' | 'sad_face';
-  onClick: (
+  color?: 'primary' | 'secondary';
+  onClick?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void;
 }
 
-const EmotionIconButton = memo(function EmotionIconButton(
-  props: EmotionIconButtonProps,
-) {
+const EmotionIconButton = memo(function EmotionIconButton({
+  type,
+  color = 'secondary',
+  onClick,
+}: EmotionIconButtonProps) {
   return (
-    <Fab color="secondary" onClick={props.onClick}>
-      <Icon code={props.type} size="large" />
+    <Fab color={color} onClick={onClick}>
+      <Icon code={type} size="large" />
     </Fab>
   );
 });

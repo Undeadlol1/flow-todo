@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@hookform/resolvers": "^1.0.1",
-    "@material-ui/core": "^4.7.0",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.35",
     "@reach/window-size": "^0.11.2",
@@ -39,6 +39,7 @@
     "array-move": "^3.0.1",
     "chromatic": "^5.3.0",
     "classnames": "^2.2.6",
+    "formik-material-ui": "^3.0.0",
     "clsx": "^1.0.4",
     "date-fns": "^2.16.1",
     "debug": "^4.2.0",

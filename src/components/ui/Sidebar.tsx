@@ -21,6 +21,7 @@ import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
 import { useHistory } from 'react-router-dom';
 import useWebShare from 'react-use-web-share';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import {
   handleErrors,
   toggleSidebar,
@@ -99,6 +100,16 @@ const Sidebar: React.FC<{
       classes={{ paper: cx.backgroundColor }}
       onClose={toggleSidebar}
     >
+      <ListItem
+        button
+        onClick={redirectAndCloseSidebar('/streaks')}
+      >
+        <ListItemIcon>
+          <PlaylistAddCheckIcon />
+        </ListItemIcon>
+        {/* TODO: i18n */}
+        <StyledListText primary={'GOALS'} />
+      </ListItem>
       <List>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>

@@ -1,9 +1,4 @@
-import {
-  Box,
-  Theme,
-  IconProps as MuiIconProps,
-  Icon as MuiIcon,
-} from '@material-ui/core';
+import { Box, Theme } from '@material-ui/core';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import { makeStyles } from '@material-ui/styles';

@@ -11,7 +11,7 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
   props: WhatDoYouFeelSliderProps,
 ) {
   return (
-    <Box mt={10}>
+    <Box>
       <Grid item container justify="space-between">
         <Grid item xs={2}>
           <Box textAlign="center">

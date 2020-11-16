@@ -11,8 +11,6 @@ import React, { useState } from 'react';
 import { When } from 'react-if';
 import { tasksPerPage } from '../../../contants';
 import { Task } from '../../../entities/Task';
-import { useTypedSelector } from '../../../store/index';
-import { tasksSelector } from '../../../store/selectors';
 import { TasksListItem } from '../TasksListItem';
 
 const log = debug('TasksList');
@@ -84,17 +82,4 @@ function useStyles() {
       },
     };
   })();
-}
-
-// TODO #125 add props types
-export default function TasksListContainer(props: any) {
-  const tasks = useTypedSelector(tasksSelector);
-
-  const mergeProps = {
-    ...props,
-    tasks,
-    loading: tasks === undefined,
-  };
-
-  return <TasksList {...mergeProps} />;
 }

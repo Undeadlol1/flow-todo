@@ -136,7 +136,7 @@ export default memo((props: { children?: JSX.Element }) => {
             <TaskPage />
           </Route>
           <Route path="/focus">
-            <FocusModePage />
+            <FocusModePage tasks={[]} isLoading={false} />
           </Route>
           <Route path="/tasks">
             <TasksPage />

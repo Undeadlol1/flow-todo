@@ -17,13 +17,19 @@ module.exports = function (plop) {
             {
                 type: 'add',
                 templateFile: 'templates/DumbComponent.txt',
-                path: './src/components/unsorted/{{pascalCase name}}.tsx',
+                path: './src/components/unsorted/{{pascalCase name}}/{{pascalCase name}}.tsx',
             },
             // Create storybook file.
             {
                 type: 'add',
                 templateFile: 'templates/DumbComponent.stories.txt',
-                path: './src/components/unsorted/{{pascalCase name}}.stories.tsx',
+                path: './src/components/unsorted/{{pascalCase name}}/{{pascalCase name}}.stories.tsx',
+            },
+            // Create index file.
+            {
+                type: 'add',
+                templateFile: 'templates/DumbComponent.index.txt',
+                path: './src/components/unsorted/{{pascalCase name}}/index.ts',
             },
         ],
     });

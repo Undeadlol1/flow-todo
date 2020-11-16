@@ -1,22 +1,31 @@
+import { Box } from '@material-ui/core';
 import React, { memo } from 'react';
-import { Box, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { TasksList } from '../../components/tasks/TasksList';
+import { WhatDoYouFeelSlider } from '../../components/unsorted/WhatDoYouFeelSlider';
+import { Task } from '../../entities/Task';
+import { If } from 'react-if';
 
-const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
+export interface FocusModePageProps {
+  tasks: Task[];
+  isLoading: boolean;
+}
 
-interface Props {
-};
-
-const FocusModePage = memo((props: Props) => {
-    const classes = useStyles();
-
-    return (
-        <Box className={classes.root}>
-            Boilerplate is ready for you to work on.
-        </Box>
-    );
+const FocusModePage = memo(function FocusModePage({
+  tasks,
+  isLoading,
+}: FocusModePageProps) {
+  return (
+    <Box>
+      <Box mb={2}>
+        <TasksList tasks={tasks} loading={isLoading} />
+      </Box>
+      <If condition={!isLoading}>
+        <WhatDoYouFeelSlider onChange={console.log} />
+      </If>
+    </Box>
+  );
 });
 
 FocusModePage.displayName = 'FocusModePage';
 
-export { FocusModePage }
+export { FocusModePage };

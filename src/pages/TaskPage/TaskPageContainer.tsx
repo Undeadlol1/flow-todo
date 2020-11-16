@@ -163,27 +163,25 @@ const Container = memo(() => {
   async function deleteTask(options: deleteTaskArguments = {}) {
     log('deleteTask is running.');
     toggleLoading(true);
-    try {
-      await Promise.all([
-        deleteTaskRepo(taskId),
-        addPointsWithSideEffects(userId, 10),
-        TaskService.activateNextTask({
-          nextTaskId,
-          currentTasks: tasks,
-        }),
-      ]);
-      showSnackbarAfterTaskDelete({
-        deletedTask: task,
-        pointsToRemoveFromUser: options.pointsToAdd || 10,
-        message: options.snackbarMessage || t('successfullyDeleted'),
-      });
-      history.replace(nextTaskId ? '/tasks/active' : '/');
-    } catch (error) {
-      handleErrors(error);
-      history.replace('/tasks/active');
-    } finally {
-      toggleLoading(false);
-    }
+    return Promise.all([
+      deleteTaskRepo(taskId),
+      addPointsWithSideEffects(userId, 10),
+      TaskService.activateNextTask({
+        nextTaskId,
+        currentTasks: tasks,
+      }),
+    ])
+      .then(() => {
+        Snackbar.addToQueue(
+          options.snackbarMessage || t('successfullyDeleted'),
+        );
+        history.replace(nextTaskId ? '/tasks/active' : '/');
+      })
+      .catch((error) => {
+        handleErrors(error);
+        history.replace('/tasks/active');
+      })
+      .finally(toggleLoading);
   }
 
   async function updateDailyStreak() {
@@ -197,30 +195,6 @@ const Container = memo(() => {
         tasksDoneToday: tasksDoneToday + 1,
       }),
     });
-  }
-
-  function showSnackbarAfterTaskDelete({
-    deletedTask,
-    pointsToRemoveFromUser,
-    message,
-  }: {
-    message: string;
-    deletedTask: Task;
-    pointsToRemoveFromUser: number;
-  }) {
-    // function undoTaskDeletion() {
-    //   return Promise.all([
-    //     upsertTask(deletedTask, deletedTask.id),
-    //     addPointsWithSideEffects(
-    //       deletedTask.userId,
-    //       pointsToRemoveFromUser * -1,
-    //     ),
-    //   ])
-    //     .then(() => history.replace(`/tasks/${deletedTask.id}`))
-    //     .catch(handleErrors);
-    // }
-
-    Snackbar.addToQueue(message);
   }
 
   const mergedProps = {

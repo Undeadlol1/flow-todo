@@ -20,7 +20,6 @@ import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
-import TroublesChoices from '../../components/tasks/TroubledChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
@@ -173,11 +172,8 @@ export default function TaskPage(props: TaskPageProps) {
       </Grid>
       <Grid container item justify="center" xs={12}>
         <Switch>
-          <Route path={`${path}/isTroublesome/isHard`}>
-            <HardChoices {...props} />
-          </Route>
           <Route path={`${path}/isTroublesome`}>
-            <TroublesChoices {...props} />
+            <HardChoices {...props} />
           </Route>
           <Route path={`${path}/isGood`}>
             <TaskChoices

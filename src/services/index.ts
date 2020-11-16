@@ -251,8 +251,3 @@ export function initializeI18n() {
       },
     });
 }
-
-// TODO better name
-export function findSequenceDuplicates(
-  history: History[] = [],
-): void {}

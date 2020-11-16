@@ -14,10 +14,8 @@ import { getRandomTaskId, handleErrors } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
-import {
-  useTypedSelector,
-} from '../../store/index';
-import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
+import { useTypedSelector } from '../../store/index';
+import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
 import { TaskHistory } from '../../entities/TaskHistory';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { upsertTask } from '../../repositories/upsertTask';
@@ -33,7 +31,7 @@ import {
 } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
-import { deleteTask } from '../../repositories/deleteTask';
+import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
 import { Task } from '../../entities/Task';
 
 const componentName = 'TaskPageContainer';
@@ -111,6 +109,83 @@ const Container = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task, isLoading, firestoreStatus, taskId]);
 
+  async function updateTask({
+    values,
+    snackbarMessage,
+    pointsToAdd = 10,
+    history: historyToAdd,
+  }: updateTaskParams) {
+    log('updateTask is running.');
+    try {
+      history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
+
+      const toggleTaskDoneNotification = () =>
+        dispatch(toggleTasksDoneTodayNotification());
+
+      toggleTaskDoneNotification();
+      delay(() => {
+        toggleTaskDoneNotification();
+        Snackbar.addToQueue(snackbarMessage);
+      }, 3500);
+
+      await Promise.all([
+        TaskService.deactivateActiveTasks(tasks),
+        upsertTask(
+          {
+            ...task,
+            ...values,
+            history: [...get(task, 'history', []), historyToAdd],
+          },
+          task.id,
+        ),
+        firestoreRedux.collection('taskLogs').add({
+          ...historyToAdd,
+          taskId,
+          userId,
+          createdAt: Date.now(),
+        }),
+        addPointsWithSideEffects(userId, pointsToAdd),
+        TaskService.activateNextTask({
+          nextTaskId,
+          currentTasks: tasks,
+        }),
+        updateDailyStreak(),
+      ]);
+    } catch (error) {
+      handleErrors(error);
+      if (error.message.includes('Null value error.')) {
+        return goHome();
+      }
+      history.replace('/tasks/active');
+    }
+  }
+
+  async function deleteTask(options: deleteTaskArguments = {}) {
+    log('deleteTask is running.');
+    toggleLoading(true);
+    try {
+      await Promise.all([
+        deleteTaskRepo(taskId),
+        addPointsWithSideEffects(userId, 10),
+        TaskService.activateNextTask({
+          nextTaskId,
+          currentTasks: tasks,
+        }),
+      ]);
+      showSnackbarAfterTaskDelete({
+        deletedTask: task,
+        pointsToRemoveFromUser: options.pointsToAdd || 10,
+        message: options.snackbarMessage || t('successfullyDeleted'),
+      });
+      history.replace(nextTaskId ? '/tasks/active' : '/');
+    } catch (error) {
+      handleErrors(error);
+      history.replace('/tasks/active');
+    } finally {
+      toggleLoading(false);
+    }
+  }
+
   async function updateDailyStreak() {
     return upsertProfile({
       ...profile,
@@ -150,86 +225,11 @@ const Container = memo(() => {
 
   const mergedProps = {
     taskId,
+    updateTask,
+    deleteTask,
     task: task || {},
     loading: isEmpty(task) || isLoading,
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
-    async updateTask({
-      values,
-      snackbarMessage,
-      pointsToAdd = 10,
-      history: historyToAdd,
-    }: updateTaskParams) {
-      log('updateTask is running.');
-      try {
-        history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
-
-        const toggleTaskDoneNotification = () =>
-          dispatch(toggleTasksDoneTodayNotification());
-
-        console.log('snackbarMessage: ', snackbarMessage);
-        toggleTaskDoneNotification();
-        delay(() => {
-          toggleTaskDoneNotification();
-          Snackbar.addToQueue(snackbarMessage);
-        }, 3500);
-
-        await Promise.all([
-          TaskService.deactivateActiveTasks(tasks),
-          upsertTask(
-            {
-              ...task,
-              ...values,
-              history: [...get(task, 'history', []), historyToAdd],
-            },
-            task.id,
-          ),
-          firestoreRedux.collection('taskLogs').add({
-            ...historyToAdd,
-            taskId,
-            userId,
-            createdAt: Date.now(),
-          }),
-          addPointsWithSideEffects(userId, pointsToAdd),
-          TaskService.activateNextTask({
-            nextTaskId,
-            currentTasks: tasks,
-          }),
-          updateDailyStreak(),
-        ]);
-      } catch (error) {
-        handleErrors(error);
-        if (error.message.includes('Null value error.')) {
-          return goHome();
-        }
-        history.replace('/tasks/active');
-      }
-    },
-    async deleteTask(options: deleteTaskArguments = {}) {
-      log('deleteTask is running.');
-      toggleLoading(true);
-      try {
-        await Promise.all([
-          deleteTask(taskId),
-          addPointsWithSideEffects(userId, 10),
-          TaskService.activateNextTask({
-            nextTaskId,
-            currentTasks: tasks,
-          }),
-        ]);
-        showSnackbarAfterTaskDelete({
-          deletedTask: task,
-          pointsToRemoveFromUser: options.pointsToAdd || 10,
-          message:
-            options.snackbarMessage || t('successfullyDeleted'),
-        });
-        history.replace(nextTaskId ? '/tasks/active' : '/');
-      } catch (error) {
-        handleErrors(error);
-        history.replace('/tasks/active');
-      } finally {
-        toggleLoading(false);
-      }
-    },
     tasksDoneTodayNotificationProps: {
       isLoaded: true,
       tasksToday: tasksDoneToday,

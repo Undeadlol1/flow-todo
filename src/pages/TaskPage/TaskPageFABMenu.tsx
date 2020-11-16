@@ -20,10 +20,12 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     root: {},
     speedDial: {},
-  }));
+  }),
+);
 
 interface Props {
   taskId?: string;
@@ -68,21 +70,19 @@ export default function TaskPageFABMenu(props: Props) {
     <div className={classes.root}>
       <Backdrop open={open} />
       <SpeedDial
-        //   TODO: i18n
-        ariaLabel="SpeedDial tooltip example"
-        // TODO: change name to "root"
-        className={fabClasses.fab}
-        icon={(
+        open={open}
+        ariaLabel="FAB Menu"
+        className={fabClasses.root}
+        icon={
           <SpeedDialIcon
             icon={<MoreVertIcon />}
             openIcon={<CloseIcon />}
           />
-        )}
-        open={open}
+        }
         onOpen={() => toggleOpen(true)}
         onClose={() => toggleOpen(false)}
       >
-        {actions.map(action => (
+        {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
             tooltipOpen

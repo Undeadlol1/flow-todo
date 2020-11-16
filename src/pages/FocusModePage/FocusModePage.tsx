@@ -5,6 +5,7 @@ import { WhatDoYouFeelSlider } from '../../components/unsorted/WhatDoYouFeelSlid
 import { Task } from '../../entities/Task';
 import { If } from 'react-if';
 import { Autocomplete } from '../../components/unsorted/Autocomplete';
+import { useTypedTranslate } from '../../services';
 
 export interface FocusModePageProps {
   isLoading: boolean;
@@ -17,6 +18,7 @@ const FocusModePage = memo(function FocusModePage({
   tasksToList = [],
   tasksForAutoComplete = [],
 }: FocusModePageProps) {
+  const t = useTypedTranslate();
   const autocompleteOptions = tasksForAutoComplete.map((task) => ({
     value: task,
     label: task.name,
@@ -26,8 +28,7 @@ const FocusModePage = memo(function FocusModePage({
     <Box>
       <Autocomplete
         options={autocompleteOptions}
-        // TODO i18n
-        label="Pick or create a task"
+        label={t('pick_or_create_a_task')}
         onChange={console.log}
       />
       <Box mb={2}>

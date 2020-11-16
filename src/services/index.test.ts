@@ -1,8 +1,5 @@
 import { getUniqueId } from '../helpers/getUniqueId';
-import {
-  calculateNextRepetition,
-  // findSequenceDuplicates,
-} from './index';
+import { calculateNextRepetition } from './index';
 
 describe('spacedRepetion()', () => {
   it('returns a value', () => {
@@ -15,12 +12,5 @@ describe('spacedRepetion()', () => {
       createdAt: Date.now(),
     });
     expect(typeof result).toBe('object');
-  });
-});
-
-describe('findSequenceDuplicates()', () => {
-  it('returns a value', () => {
-    // const result = findSequenceDuplicates();
-    // expect(typeof result).toBe('object');
   });
 });

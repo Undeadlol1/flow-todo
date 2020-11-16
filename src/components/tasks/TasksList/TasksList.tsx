@@ -33,8 +33,7 @@ export function TasksList({
 
   const sliceTasksTo = tasksPerPage * page;
   const sliceTasksFrom = tasksPerPage * (page - 1);
-  const numberOfPAges =
-    Number((tasks.length / tasksPerPage).toFixed()) + 1;
+  const numberOfPAges = Math.ceil(tasks.length / tasksPerPage);
 
   log('tasks: %O', tasks);
   log('page: ', page);

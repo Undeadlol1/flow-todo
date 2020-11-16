@@ -11,8 +11,8 @@ import { Theme, Zoom } from '@material-ui/core';
 import classNames from 'classnames';
 import { useTypedTranslate } from '../../services/index';
 import DayliTasksStreak from './DayliTasksStreak';
-import { IDayliStreak } from "../../entities/IDayliStreak";
-import { NumbersAnimatedOnUpdate } from '../unsorted/NumbersAnimatedOnUpdate';
+import { IDayliStreak } from '../../entities/IDayliStreak';
+import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 
 const useStyles = makeStyles((theme: Theme) => ({
   successIcon: {

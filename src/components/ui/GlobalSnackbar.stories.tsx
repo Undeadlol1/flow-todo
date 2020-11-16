@@ -7,12 +7,12 @@ import {
 
 export default {
   component: GlobalSnackbar,
-  title: `${sections.unsorted}GlobalSnackbar`,
+  title: `${sections.ui}GlobalSnackbar`,
 };
 
 const props = {
   _isOpenForDevPurposes: true,
 } as GlobalSnackbarProps;
 
-export const Demo = args => <GlobalSnackbar {...args} />;
+export const Demo = (args) => <GlobalSnackbar {...args} />;
 Demo.args = props;

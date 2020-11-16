@@ -14,14 +14,14 @@ import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
-import { TasksList } from '../../components/tasks/TasksList/TasksList';
+import { TasksList } from '../../components/tasks/TasksList';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { useScreenIsNarrow } from '../../services/index';
 import { useSelector } from 'react-redux';
-import { IDayliStreak } from "../../entities/IDayliStreak";
-import { TaskHistory } from "../../entities/TaskHistory";
-import { Task } from "../../entities/Task";
+import { IDayliStreak } from '../../entities/IDayliStreak';
+import { TaskHistory } from '../../entities/TaskHistory';
+import { Task } from '../../entities/Task';
 import {
   authSelector,
   profileSelector,

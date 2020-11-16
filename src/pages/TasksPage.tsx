@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 import { Theme } from '@material-ui/core';
 import { useTypedSelector } from '../store';
 import { tasksSelector } from '../store/selectors';
-import { TasksList } from '../components/tasks/TasksList/TasksList';
+import { TasksList } from '../components/tasks/TasksList';
 
 const log = debug('RewardsPage');
 const useStyles = makeStyles((theme: Theme) => ({

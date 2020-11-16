@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
-interface Props {
+export interface {{name}}Props {
 };
 
-const {{pascalCase name}} = memo((props: Props) => {
+const {{name}} = memo(function {{name}} (props: {{name}}Props) {
     const classes = useStyles();
 
     return (

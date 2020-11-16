@@ -3,31 +3,22 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Fab,
   Grid,
-  Theme,
 } from '@material-ui/core';
-import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import React, { memo } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useTypedTranslate } from '../../services';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
-}));
+import { EmotionIconButton } from '../ui/EmotionIconButton';
 
 interface Props {
   className?: string;
 }
 
 const WhatDoYouFeelAboutTheTask = memo((props: Props) => {
-  const classes = useStyles();
   const t = useTypedTranslate();
   const { url } = useRouteMatch() || { url: '' };
-  const rootClasses = classNames(classes.root, props.className);
+  const rootClasses = classNames(props.className);
 
   return (
     <Box className={rootClasses} width="100%" textAlign="center">
@@ -36,22 +27,14 @@ const WhatDoYouFeelAboutTheTask = memo((props: Props) => {
         <CardContent>
           <Grid item container xs={12}>
             <Grid item xs>
-              <Fab
-                component={Link}
-                color="secondary"
-                to={`${url}/isGood`}
-              >
-                <SatisfiedIcon fontSize="large" />
-              </Fab>
+              <Link to={`${url}/isGood`}>
+                <EmotionIconButton type="happy_face" />
+              </Link>
             </Grid>
             <Grid item xs>
-              <Fab
-                component={Link}
-                color="primary"
-                to={`${url}/isTroublesome`}
-              >
-                <DissatisfiedIcon fontSize="large" />
-              </Fab>
+              <Link to={`${url}/isTroublesome`}>
+                <EmotionIconButton type="sad_face" color="primary" />
+              </Link>
             </Grid>
           </Grid>
         </CardContent>

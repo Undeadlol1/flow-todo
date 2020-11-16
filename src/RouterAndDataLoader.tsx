@@ -9,11 +9,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import useInterval from 'react-use/esm/useInterval';
 import RewardModal from './components/rewards/RewardModal';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
+import { GlobalSnackbar } from './components/ui/GlobalSnackbar';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
-import { GlobalSnackbar } from './components/unsorted/GlobalSnackbar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 import FAQPage from './pages/FAQPage';
+import { FocusModePage } from './pages/FocusModePage';
 import HomePage from './pages/IndexPage/IndexPage';
 import PrivacyPage from './pages/PrivacyPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
@@ -133,6 +134,14 @@ export default memo((props: { children?: JSX.Element }) => {
         <Switch>
           <Route path="/tasks/:taskId">
             <TaskPage />
+          </Route>
+          <Route path="/focus">
+            {/* TODO use a container instead of dumb component. */}
+            <FocusModePage
+              tasksToList={[]}
+              isLoading={false}
+              tasksForAutoComplete={[]}
+            />
           </Route>
           <Route path="/tasks">
             <TasksPage />

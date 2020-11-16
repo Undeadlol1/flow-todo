@@ -4,7 +4,7 @@ import {
   profilePointsSelector,
   profileSelector,
 } from '../../store/selectors';
-import UserPoints from '../users/UserPoints';
+import UserPoints from './UserPoints';
 
 interface Props {}
 

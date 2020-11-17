@@ -69,9 +69,9 @@ const FAQPage = memo(() => {
         {data.map(([question, ...answerParagpraphs], index) => (
           <Accordion key={index}>
             <AccordionSummary
+              id="panel1a-header"
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
-              id="panel1a-header"
             >
               <Typography variant="subtitle1" component="h2">
                 {question}
@@ -79,7 +79,7 @@ const FAQPage = memo(() => {
             </AccordionSummary>
             <AccordionDetails>
               <Box key={index}>
-                {answerParagpraphs.map(answer => (
+                {answerParagpraphs.map((answer) => (
                   <Typography key={answer} paragraph>
                     {answer}
                   </Typography>

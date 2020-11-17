@@ -119,5 +119,9 @@ export default {
     reject_the_task: 'Reject the task',
     dont_hesitate_to_push_this_button: 'Don\'t hesitate to push this button.',
     only_20_percent_gives_results: 'Only 20% of efforts give us 80% of results.',
+    tasks_per_day: 'Tasks per day',
+    motivational_messages_of_task_page: 'Motivational messages of task page',
+    add_any_value: `Add "{{value}}"`,
+    pick_or_create_a_task : "Pick or create a task"
   },
 };

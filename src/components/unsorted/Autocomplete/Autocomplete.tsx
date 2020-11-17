@@ -3,6 +3,7 @@ import MuiAutocomplete, {
   createFilterOptions,
 } from '@material-ui/lab/Autocomplete';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface OptionType {
   value: any;
@@ -21,6 +22,7 @@ const filter = createFilterOptions<OptionType>();
 const Autocomplete = memo(function Autocomplete(
   props: AutocompleteProps,
 ) {
+  const { t } = useTranslation();
   return (
     <Box my={2}>
       <MuiAutocomplete
@@ -33,14 +35,13 @@ const Autocomplete = memo(function Autocomplete(
         filterOptions={(options, params) => {
           const filtered = filter(options, params);
 
-          // Suggest the creation of a new value
+          // Suggest the creation of a new value.
           if (params.inputValue !== '') {
             filtered.push({
               // TODO this.
               value: {},
               inputValue: params.inputValue,
-              // TODO: i18n
-              label: `Add "${params.inputValue}"`,
+              label: t('add_any_value', { value: params.inputValue }),
             });
           }
 

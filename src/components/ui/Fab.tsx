@@ -5,7 +5,7 @@ import cx from 'clsx';
 import React, { memo } from 'react';
 
 export const useFabStyles = makeStyles((theme: Theme) => ({
-  fab: {
+  root: {
     zIndex: 1300,
     position: 'fixed',
     [theme.breakpoints.down('sm')]: {
@@ -35,7 +35,7 @@ const Fab = ({ isHidden, ...props }: Props) => {
     <MUIFab
       color="primary"
       {...props}
-      className={cx([classes.fab, props.className])}
+      className={cx([classes.root, props.className])}
     />
   );
 };

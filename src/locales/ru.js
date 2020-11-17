@@ -122,5 +122,9 @@ export default {
     reject_the_task: 'Откажитесь от задачи',
     dont_hesitate_to_push_this_button: 'Не стесняйтесь жать эту кнопку.',
     only_20_percent_gives_results: 'Лишь 20% усилий дают 80% результата.',
+    tasks_per_day: 'Задач в день',
+    motivational_messages_of_task_page :"Мотивационные сообщения экрана с задачей",
+    add_any_value: `Добавить "{{value}}"`,
+    pick_or_create_a_task : "Выберите или создайте задачу",
   },
 };

@@ -11,12 +11,10 @@ import uniq from 'lodash/uniq';
 import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import {
-  RootReducer,
-} from './index';
-import { IDayliStreak } from "../entities/IDayliStreak";
-import { TaskHistory } from "../entities/TaskHistory";
-import { Task } from "../entities/Task";
+import { RootReducer } from './index';
+import { IDayliStreak } from '../entities/IDayliStreak';
+import { TaskHistory } from '../entities/TaskHistory';
+import { Task } from '../entities/Task';
 import { Profile } from '../entities/Profile';
 import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';
@@ -47,10 +45,6 @@ export const tasksDoneTodaySelector = createSelector(
 
 export const excludedTagsSelector = (state: RootReducer) =>
   state.tasks.excludedTags;
-
-// TODO is this needed? How do we determine if tags are active?
-export const activeTagsSelector = (state: RootReducer) =>
-  state.tasks.activeTags;
 
 export const tasksSelector = createSelector(
   fetchedTasksSelector,

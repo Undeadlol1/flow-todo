@@ -5,10 +5,12 @@ import debug from 'debug';
 import Snackbar from '../../services/Snackbar';
 import { useSelector } from 'react-redux';
 import { upsertProfile } from '../../repositories/upsertProfile';
+import { useTypedTranslate } from '../../services';
 
 const log = debug('DayliTasksStreakForm');
 
 function DayliTasksStreakForm() {
+  const t = useTypedTranslate();
   const profile = useSelector(profileSelector);
   const tasksPerDay = profile?.dailyStreak?.perDay;
 
@@ -44,9 +46,7 @@ function DayliTasksStreakForm() {
           name="perDay"
           autoComplete="off"
           disabled={!profile?.userId}
-          // TODO i18n
-          label="Задач в день"
-          // label={t('')}
+          label={t('tasks_per_day')}
           defaultValue={tasksPerDay}
           onChange={onChange}
         />

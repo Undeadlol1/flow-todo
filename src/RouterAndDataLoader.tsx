@@ -44,7 +44,6 @@ export default memo((props: { children?: JSX.Element }) => {
   const [today, setToday] = useState(Date.now());
   const yesterday = subHours(today, getHours(today)).getTime();
 
-  // Refetch data every hour.
   useInterval(() => {
     console.log('Refetching data every hour...');
     setToday(Date.now());

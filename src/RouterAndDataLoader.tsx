@@ -135,7 +135,12 @@ export default memo((props: { children?: JSX.Element }) => {
             <TaskPage />
           </Route>
           <Route path="/focus">
-            <FocusModePage tasks={[]} isLoading={false} />
+            {/* TODO use a container instead of dumb component. */}
+            <FocusModePage
+              tasksToList={[]}
+              isLoading={false}
+              tasksForAutoComplete={[]}
+            />
           </Route>
           <Route path="/tasks">
             <TasksPage />

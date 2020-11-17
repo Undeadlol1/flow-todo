@@ -1,10 +1,7 @@
-import { Box, Theme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import SatisfiedIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import DissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import { makeStyles } from '@material-ui/styles';
 import React, { memo } from 'react';
-
-const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
 export type Icons = 'happy_face' | 'sad_face';
 
@@ -17,7 +14,6 @@ const Icon = memo(function Icon({
   code,
   size = 'default',
 }: IconProps) {
-  const classes = useStyles();
   function getIconByCode() {
     switch (code) {
       case 'happy_face':
@@ -28,7 +24,7 @@ const Icon = memo(function Icon({
         return <SatisfiedIcon fontSize={size} />;
     }
   }
-  return <Box className={classes.root}>{getIconByCode()}</Box>;
+  return <Box display="flex">{getIconByCode()}</Box>;
 });
 
 Icon.displayName = 'Icon';

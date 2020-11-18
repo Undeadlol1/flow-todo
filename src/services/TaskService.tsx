@@ -46,15 +46,24 @@ export default class TaskService {
       differenceInDays(today, task.createdAt || today) > 3;
     const isTaskReadyButNotWorkedOn =
       differenceInDays(today, task.dueAt) > 3;
+    const hasTaskBeenUpdatedRecently =
+      task.updatedAt === undefined
+        ? false
+        : differenceInDays(today, task.updatedAt) < 5;
 
     log('isStale is called. %O', task);
     log('isTaskOld: ', isTaskCreatedLongAgo);
+    log('hasTaskBeenUpdatedRecently: ', hasTaskBeenUpdatedRecently);
 
     function notifyThatTaskIsTale(reason: string) {
       log(reason);
       log('Task is stale.');
     }
 
+    if (hasTaskBeenUpdatedRecently) {
+      notifyThatTaskIsTale('Task has been updated recently.');
+      return false;
+    }
     if (task?.createdAt === undefined) {
       notifyThatTaskIsTale('task.createdAt is undefined.');
       return true;

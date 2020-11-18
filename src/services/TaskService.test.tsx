@@ -46,9 +46,9 @@ describe('TaskService.isStale returns"', () => {
   it('false if task is old but was updated.', () => {
     const task: Task = {
       ...taskDefaults,
+      updatedAt: today,
       dueAt: fiveDaysAgo,
       createdAt: fiveDaysAgo,
-      updatedAt: today,
     };
     expect(TaskService.isStale(task)).toEqual(false);
   });

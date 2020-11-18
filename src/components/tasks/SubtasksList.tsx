@@ -12,7 +12,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import { makeStyles } from '@material-ui/styles';
 import arrayMove from 'array-move';
-import firebase from 'firebase/app';
 import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,16 +21,16 @@ import {
   SortableElement,
   SortableHandle,
 } from 'react-sortable-hoc';
-import { getFirestore } from 'redux-firestore';
+import { Subtask } from '../../entities/Subtask';
+import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
+import { deleteSubtask } from '../../repositories/deleteSubtask';
+import { updateSubtasks } from '../../repositories/updateSubtasks';
 import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
-import { deleteSubtask } from '../../repositories/deleteSubtask';
-import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import { authSelector } from '../../store/selectors';
-import { Subtask } from '../../entities/Subtask';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -115,25 +114,20 @@ const SortableListContainer = SortableContainer(
   },
 );
 
-export default function SubtasksList({ documents, ...props }: Props) {
+export default function SubtasksList({ documents = [] }: Props) {
   const classes = useStyles();
-  // @ts-ignore
-  const firestore = getFirestore(firebase);
   const [subtasksStub, setSubtasksStub] = useState<
     Subtask[] | undefined
   >();
 
-  if (!documents || isEmpty(documents)) return null;
+  if (isEmpty(documents)) return null;
 
-  const updateSubtasks = ({ oldIndex, newIndex }: any) => {
+  function rearangeSubtasks({ oldIndex, newIndex }: any) {
     const taskId = documents[0].parentId;
     const updatedSubtasks = arrayMove(documents, oldIndex, newIndex);
     setSubtasksStub(updatedSubtasks);
-    firestore
-      .doc(`tasks/${taskId}`)
-      .update({ subtasks: updatedSubtasks })
-      .catch(handleErrors);
-  };
+    updateSubtasks({ taskId, subtasks: updatedSubtasks });
+  }
 
   return (
     <Paper elevation={6} className={classes.paper}>
@@ -141,7 +135,7 @@ export default function SubtasksList({ documents, ...props }: Props) {
         useDragHandle
         lockAxis="y"
         items={subtasksStub || documents}
-        onSortEnd={updateSubtasks}
+        onSortEnd={rearangeSubtasks}
       />
     </Paper>
   );

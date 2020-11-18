@@ -1,4 +1,5 @@
 import subDays from 'date-fns/esm/subDays';
+import { now } from 'lodash';
 import { Task } from '../entities/Task';
 import { getUniqueId } from '../helpers/getUniqueId';
 import TaskService from './TaskService';
@@ -33,12 +34,22 @@ describe('TaskService.isStale returns"', () => {
     };
     expect(TaskService.isStale(task)).toEqual(true);
   });
-
-  it("task wasn't worked on after update.", () => {
+  // TODO: remove this test? Is this one wrong?
+  it("true if task wasn't worked on after update.", () => {
     const task: Task = {
       ...taskDefaults,
       dueAt: fiveDaysAgo,
     };
     expect(TaskService.isStale(task)).toEqual(true);
+  });
+
+  it('false if task is old but was updated.', () => {
+    const task: Task = {
+      ...taskDefaults,
+      dueAt: fiveDaysAgo,
+      createdAt: fiveDaysAgo,
+      updatedAt: today,
+    };
+    expect(TaskService.isStale(task)).toEqual(false);
   });
 });

@@ -79,7 +79,7 @@
     "redux": "^4.0.4",
     "redux-firestore": "^0.14.0",
     "reselect": "^4.0.0",
-    "typescript": "4.0.5",
+    "typescript": "4.1.2",
     "web-vitals": "^1.0.1",
     "workbox-core": "^5.1.4",
     "workbox-expiration": "^5.1.4",

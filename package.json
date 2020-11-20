@@ -51,7 +51,7 @@
     "lodash": "^4.17.15",
     "lorem-ipsum": "^2.0.3",
     "material-ui-chip-input": "^1.1.0",
-    "nanoid": "^3.1.16",
+    "nanoid": "^3.1.17",
     "pretty-error": "^2.1.2",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.7",

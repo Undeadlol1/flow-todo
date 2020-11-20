@@ -112,22 +112,12 @@ export function initializeFirebase() {
   } else {
     // Use Firestore emulator for local development
     firebase.firestore().settings({
-      // ssl: false,
-      // host: 'localhost:8080',
+      ssl: false,
+      host: 'localhost:8080',
     });
   }
 
   return firebase;
-}
-
-export function normalizeQueryResponse(
-  snapshot: firebase.firestore.QuerySnapshot,
-) {
-  if (snapshot.empty) return [];
-  return snapshot.docs.map((document) => ({
-    id: document.id,
-    ...document.data(),
-  }));
 }
 
 export function handleErrors(

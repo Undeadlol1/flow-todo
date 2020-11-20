@@ -35,6 +35,8 @@ import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
+// TODO: remove this line.
+debug.enable('TaskPageContainer');
 
 export interface updateTaskParams {
   values: any;
@@ -83,6 +85,9 @@ const Container = memo(() => {
     taskId = currentTaskId as string;
   }
   const task = find(tasks, ['id', taskId]) || fetchedTask;
+
+  log('task: ', task);
+  log('isStale?', TaskService.isStale(task));
 
   // Fetch task if needed.
   useEffect(() => {

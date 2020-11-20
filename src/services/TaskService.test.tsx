@@ -34,11 +34,21 @@ describe('TaskService.isStale returns"', () => {
     expect(TaskService.isStale(task)).toEqual(true);
   });
 
-  it("task wasn't worked on after update.", () => {
+  it("true if task wasn't worked on after update.", () => {
     const task: Task = {
       ...taskDefaults,
       dueAt: fiveDaysAgo,
     };
     expect(TaskService.isStale(task)).toEqual(true);
+  });
+
+  it('false if task is old but was updated.', () => {
+    const task: Task = {
+      ...taskDefaults,
+      updatedAt: today,
+      dueAt: fiveDaysAgo,
+      createdAt: fiveDaysAgo,
+    };
+    expect(TaskService.isStale(task)).toEqual(false);
   });
 });

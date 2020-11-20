@@ -127,4 +127,7 @@ export default {
     add_any_value: `Добавить "{{value}}"`,
     pick_or_create_a_task : "Выберите или создайте задачу",
   },
+  sidebar: {
+    focus_mode: 'Режим Фокусировки',
+  }
 };

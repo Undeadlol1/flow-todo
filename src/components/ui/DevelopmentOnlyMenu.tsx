@@ -12,8 +12,8 @@ import React, { memo, MouseEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { getUniqueId } from '../../helpers/getUniqueId';
-import LevelingService from '../../services/leveling';
-import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
+import LevelingService from '../../services/Leveling';
+import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
 import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { Profile } from '../../entities/Profile';
 import { createTask } from '../../repositories/createTask';
@@ -85,8 +85,8 @@ function DevelopmentOnlyMenu() {
   function createAReward() {
     firestore.collection('rewards').add({
       userId: auth.uid,
-      name: loremIpsum({ count: random(1, 5), units: 'words' }),
       points: random(0, 100),
+      name: loremIpsum({ count: random(1, 5), units: 'words' }),
     });
   }
 

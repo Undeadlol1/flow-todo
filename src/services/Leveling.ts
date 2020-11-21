@@ -30,7 +30,7 @@ export default class LevelingService {
   }
 
   static calculatePointsToNextLevel(level: number) {
-    const baseXP = 30
+    const baseXP = 30;
     const exponent = 1.1;
     return baseXP * ((level ^ exponent) | 1);
   }

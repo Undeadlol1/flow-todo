@@ -26,6 +26,8 @@ import {
   toggleSidebar,
   useTypedTranslate,
 } from '../../services/index';
+import FocusIcon from '@material-ui/icons/FilterCenterFocus';
+import { useTranslation } from 'react-i18next';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -57,6 +59,7 @@ const Sidebar: React.FC<{
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
+  const { t: sidebarTranslator } = useTranslation('sidebar');
   log('isLoggedIn: ', isLoggedIn);
   log('isOpen: ', isOpen);
 
@@ -71,9 +74,7 @@ const Sidebar: React.FC<{
     if (!isLoggedIn) history.push('/signin');
     else {
       localStorage.removeItem('userId');
-      getFirebase()
-        .logout()
-        .catch(handleErrors);
+      getFirebase().logout().catch(handleErrors);
     }
   }
 
@@ -99,6 +100,12 @@ const Sidebar: React.FC<{
       classes={{ paper: cx.backgroundColor }}
       onClose={toggleSidebar}
     >
+      <ListItem button onClick={redirectAndCloseSidebar('/focus')}>
+        <ListItemIcon>
+          <FocusIcon />
+        </ListItemIcon>
+        <StyledListText primary={sidebarTranslator('focus_mode')} />
+      </ListItem>
       <List>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>

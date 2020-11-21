@@ -20,7 +20,7 @@ import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import LevelingService from '../../../services/leveling';
+import LevelingService from '../../../services/Leveling';
 import { useTypedSelector } from '../../../store';
 import {
   authSelector,

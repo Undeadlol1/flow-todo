@@ -21,7 +21,7 @@ import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
 import { MyUserPoints } from '../../components/users/MyUserPoints';
 import { handleErrors } from '../../services/index';
-import LevelingService from '../../services/leveling';
+import LevelingService from '../../services/Leveling';
 import { Profile } from '../../entities/Profile';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { authSelector, profileSelector } from '../../store/selectors';

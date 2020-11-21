@@ -129,7 +129,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.7",
     "@storybook/addon-essentials": "^6.1.1",
-    "@storybook/node-logger": "^6.1.1",
+    "@storybook/node-logger": "^6.1.2",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@testing-library/jest-dom": "^5.11.6",
     "@types/enzyme": "^3.10.8",

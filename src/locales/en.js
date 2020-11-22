@@ -125,6 +125,6 @@ export default {
     pick_or_create_a_task : "Pick or create a task"
   },
   sidebar: {
-    focus_mode: 'Focus Mode',
+    focus_mode: 'Focus Mode (WIP)',
   }
 };

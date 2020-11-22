@@ -8,33 +8,30 @@ import Zoom from '@material-ui/core/Zoom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import filter from 'lodash/filter';
+import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import sample from 'lodash/sample';
-import compose from 'ramda/es/compose';
-import defaultTo from 'ramda/es/defaultTo';
-import head from 'ramda/es/head';
-import prop from 'ramda/es/prop';
 import React, { useEffect } from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
 import HardChoices from '../../components/tasks/HardChoices';
 import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
-import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
-import { useTypedTranslate } from '../../services/index';
-import {
-  deleteTaskArguments,
-  updateTaskParams,
-} from './TaskPageContainer';
 import {
   TasksDoneTodayNotification,
   TasksDoneTodayNotificationProps,
 } from '../../components/unsorted/TasksDoneTodayNotification';
-import Snackbar from '../../services/Snackbar';
+import { WhatDoYouFeelAboutTheTask } from '../../components/unsorted/WhatDoYouFeelAboutTheTask';
 import { Task } from '../../entities/Task';
+import { useTypedTranslate } from '../../services/index';
+import Snackbar from '../../services/Snackbar';
+import TaskService from '../../services/TaskService';
+import {
+  deleteTaskArguments,
+  updateTaskParams,
+} from './TaskPageContainer';
 
 // TODO i18n
 const encouragingMessages = [
@@ -154,15 +151,7 @@ export default function TaskPage(props: TaskPageProps) {
                     </Typography>
                   </When>
                   <Typography variant="h5" component="h1">
-                    {/* TODO rework this */}
-                    {/* @ts-ignore */}
-                    {compose(
-                      defaultTo(task.name),
-                      // @ts-ignore
-                      prop('name'),
-                      head,
-                      // @ts-ignore
-                    )(activeSubtasks)}
+                    {TaskService.getFirstActiveSubtask(task)?.name}
                   </Typography>
                 </CardContent>
               </MuiLink>

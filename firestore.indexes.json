@@ -31,6 +31,10 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "isFocusedOn",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "dueAt",
           "order": "ASCENDING"
         }

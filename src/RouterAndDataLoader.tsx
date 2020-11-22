@@ -65,7 +65,7 @@ export default memo((props: { children?: JSX.Element }) => {
         where: [
           ['userId', '==', userId],
           ['isDone', '==', false],
-          ['isCreatedInFocusMode', '==', false],
+          ['isFocusedOn', '==', false],
           ['dueAt', '<', today],
         ],
         limit: 100,

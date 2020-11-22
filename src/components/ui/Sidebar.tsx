@@ -52,10 +52,13 @@ const StyledListText = withStyles({
   },
 })(ListItemText);
 
-const Sidebar: React.FC<{
+function Sidebar({
+  isLoggedIn,
+  isOpen,
+}: {
   isOpen: boolean;
   isLoggedIn: boolean;
-}> = ({ isLoggedIn, isOpen }) => {
+}) {
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
@@ -100,13 +103,13 @@ const Sidebar: React.FC<{
       classes={{ paper: cx.backgroundColor }}
       onClose={toggleSidebar}
     >
-      <ListItem button onClick={redirectAndCloseSidebar('/focus')}>
-        <ListItemIcon>
-          <FocusIcon />
-        </ListItemIcon>
-        <StyledListText primary={sidebarTranslator('focus_mode')} />
-      </ListItem>
       <List>
+        <ListItem button onClick={redirectAndCloseSidebar('/focus')}>
+          <ListItemIcon>
+            <FocusIcon />
+          </ListItemIcon>
+          <StyledListText primary={sidebarTranslator('focus_mode')} />
+        </ListItem>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>
             <HelpIcon />
@@ -152,6 +155,6 @@ const Sidebar: React.FC<{
       </List>
     </Drawer>
   );
-};
+}
 
 export default memo(Sidebar);

@@ -2,7 +2,7 @@ import { IconButton, useTheme } from '@material-ui/core';
 import React, { memo } from 'react';
 import { Planet } from 'react-kawaii';
 
-type EmotionTypes =
+export type EmotionTypes =
   | 'happy_face'
   | 'sad_face'
   | 'blissful_face'
@@ -23,6 +23,14 @@ const EmotionIconButton = memo(function EmotionIconButton({
   function geticon() {
     const kawaiiIconSize = 75;
     switch (type) {
+      case 'blissful_face':
+        return (
+          <Planet
+            mood="blissful"
+            size={kawaiiIconSize}
+            color={theme.palette.primary.main}
+          />
+        );
       case 'happy_face':
         return (
           <Planet
@@ -43,14 +51,6 @@ const EmotionIconButton = memo(function EmotionIconButton({
         return (
           <Planet
             mood="ko"
-            size={kawaiiIconSize}
-            color={theme.palette.secondary.main}
-          />
-        );
-      case 'blissful_face':
-        return (
-          <Planet
-            mood="blissful"
             size={kawaiiIconSize}
             color={theme.palette.secondary.main}
           />

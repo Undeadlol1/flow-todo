@@ -9,6 +9,8 @@ export type Task = {
   isDone: boolean;
   isCurrent?: boolean;
   isPinned?: boolean;
+  isFocusedOn?: boolean;
+  isCreatedInFocusMode?: boolean;
   repetitionLevel?: number;
   subtasks?: Subtask[];
   history?: TaskHistory[];

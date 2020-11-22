@@ -7,7 +7,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIconBlank from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import { makeStyles } from '@material-ui/styles';
@@ -82,7 +83,12 @@ const SortableItem = SortableElement(
         <DragHandle />
         <ListItemIcon>
           <IconButton edge="end" aria-label="Done" onClick={setDone}>
-            <CheckBoxIcon />
+            {/* FIXME: improssible to toggle properly  */}
+            {subtask.isDone ? (
+              <CheckBoxIcon />
+            ) : (
+              <CheckBoxIconBlank />
+            )}
           </IconButton>
         </ListItemIcon>
         <ListItemText

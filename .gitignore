@@ -18,7 +18,9 @@
 .env.test.local
 .env.production.local
 
-*.log
-
 # Firebase
 /.firebase
+
+# Various
+*.log
+.eslintcache

@@ -32,6 +32,9 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
+import debug from 'debug';
+
+const log = debug('TaskPage');
 
 // TODO i18n
 const encouragingMessages = [
@@ -72,18 +75,20 @@ export interface TaskPageProps {
 }
 
 export default function TaskPage(props: TaskPageProps) {
-  const classes = useStyles();
-  const t = useTypedTranslate();
-  const route = useRouteMatch() || {};
-
-  const { path } = route;
   const {
     task,
     taskId,
     loading,
     tasksDoneTodayNotificationProps,
   } = props;
+  const classes = useStyles();
+  const t = useTypedTranslate();
+  const route = useRouteMatch() || {};
+
+  const { path } = route;
   const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
+  log('task: ', task);
+  log('activeSubtasks: ', activeSubtasks);
 
   // Show encouraging snackbar after short delay
   // NOTE: Make sure snackbar is not shown when user redirects.
@@ -147,11 +152,11 @@ export default function TaskPage(props: TaskPageProps) {
                 <CardContent>
                   <When condition={!isEmpty(activeSubtasks)}>
                     <Typography gutterBottom color="textSecondary">
-                      {task.name}
+                      {TaskService.getFirstActiveSubtask(task)?.name}
                     </Typography>
                   </When>
                   <Typography variant="h5" component="h1">
-                    {TaskService.getFirstActiveSubtask(task)?.name}
+                    {task.name}
                   </Typography>
                 </CardContent>
               </MuiLink>

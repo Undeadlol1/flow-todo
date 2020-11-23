@@ -10,6 +10,7 @@ describe('spacedRepetion()', () => {
       userId: getUniqueId(),
       dueAt: Date.now(),
       createdAt: Date.now(),
+      isFocusedOn: false,
     });
     expect(typeof result).toBe('object');
   });

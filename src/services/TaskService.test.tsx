@@ -12,6 +12,7 @@ const taskDefaults: Task = {
   createdAt: today,
   id: getUniqueId(),
   name: 'task name',
+  isFocusedOn: false,
   userId: getUniqueId(),
 };
 

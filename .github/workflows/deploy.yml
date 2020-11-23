@@ -1,0 +1,38 @@
+name: Deploy React and Firebase
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  instal_and_cache_deps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        id: npm-cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            ~/.npm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci --no-optional
+
+      - name: Build
+        run: npm run-script build
+
+      - name: Deploy
+        run: npx firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"

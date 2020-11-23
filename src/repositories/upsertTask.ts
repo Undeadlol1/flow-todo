@@ -9,6 +9,7 @@ export function upsertTask(
     tags?: string[];
     userId?: string;
     isCurrent?: boolean;
+    isFocusedOn?: boolean;
   },
   taskId?: string,
 ): Promise<void | Error> {
@@ -25,6 +26,7 @@ export function upsertTask(
           isDone: false,
           createdAt: now,
           dueAt: subDays(now, 1).getTime(),
+          isFocusedOn: !!values.isFocusedOn,
         }
       : {
           updatedAt: now,

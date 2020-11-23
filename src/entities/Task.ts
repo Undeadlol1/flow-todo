@@ -9,7 +9,7 @@ export type Task = {
   isDone: boolean;
   isCurrent?: boolean;
   isPinned?: boolean;
-  isFocusedOn?: boolean;
+  isFocusedOn: boolean;
   isCreatedInFocusMode?: boolean;
   repetitionLevel?: number;
   subtasks?: Subtask[];

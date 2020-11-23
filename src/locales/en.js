@@ -124,4 +124,7 @@ export default {
     add_any_value: `Add "{{value}}"`,
     pick_or_create_a_task : "Pick or create a task"
   },
+  sidebar: {
+    focus_mode: 'Focus Mode (WIP)',
+  }
 };

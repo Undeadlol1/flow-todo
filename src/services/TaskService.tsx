@@ -1,16 +1,21 @@
 import differenceInDays from 'date-fns/esm/differenceInDays';
-import { isEmpty } from 'lodash';
-import find from 'lodash/find';
+import debug from 'debug';
+import { filter, find, isEmpty, last } from 'lodash';
 import get from 'lodash/fp/get';
+import { Subtask } from '../entities/Subtask';
 import { Task } from '../entities/Task';
 import { getFirestore } from './index';
-import debug from 'debug';
 
 const log = debug('TaskService');
 
 export default class TaskService {
   static get db() {
     return getFirestore();
+  }
+
+  static getFirstActiveSubtask(task: Task): Subtask | undefined {
+    const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
+    return last(activeSubtasks);
   }
 
   static async deactivateActiveTasks(tasks: Task[] = []) {

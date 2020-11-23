@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Box, Theme } from '@material-ui/core';
-import LevelingService from '../../../services/leveling';
+import LevelingService from '../../../services/Leveling';
 import { Profile } from '../../../entities/Profile';
 
 const log = debug('ExpirienceProgressBar');

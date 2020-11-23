@@ -120,16 +120,6 @@ export function initializeFirebase() {
   return firebase;
 }
 
-export function normalizeQueryResponse(
-  snapshot: firebase.firestore.QuerySnapshot,
-) {
-  if (snapshot.empty) return [];
-  return snapshot.docs.map((document) => ({
-    id: document.id,
-    ...document.data(),
-  }));
-}
-
 export function handleErrors(
   e: Error | undefined | firebase.auth.Error,
 ) {
@@ -241,6 +231,8 @@ export function initializeI18n() {
       lng: 'ru',
       debug: false,
       fallbackLng: 'en',
+      // ns: ['translation', 'sidebar'],
+      // defaultNS: 'translation',
       interpolation: {
         // not needed for react as it escapes by default
         escapeValue: false,

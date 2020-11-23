@@ -10,7 +10,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/styles';
-import get from 'lodash/get';
 import React, { memo, useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
@@ -45,7 +44,8 @@ const TasksListItem = memo(function TasksListItem({
   }
 
   const isStale = TaskService.isStale(task) || !!props.isStale;
-  const text = get(task, 'subtasks[0].name', task.name);
+  const text =
+    TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
   return (
     <ListItem

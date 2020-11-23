@@ -1,4 +1,4 @@
-name: run tests
+name: Deploy React and Firebase
 
 on:
   push:

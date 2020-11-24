@@ -117,20 +117,26 @@ export default {
     points: 'Points',
     task_is_stale: 'Task is stale and needs to be reworked.',
     reject_the_task: 'Reject the task',
-    dont_hesitate_to_push_this_button: 'Don\'t hesitate to push this button.',
-    only_20_percent_gives_results: 'Only 20% of efforts give us 80% of results.',
+    dont_hesitate_to_push_this_button:
+      "Don't hesitate to push this button.",
+    only_20_percent_gives_results:
+      'Only 20% of efforts give us 80% of results.',
     tasks_per_day: 'Tasks per day',
-    motivational_messages_of_task_page: 'Motivational messages of task page',
+    motivational_messages_of_task_page:
+      'Motivational messages of task page',
     add_any_value: `Add "{{value}}"`,
-    pick_or_create_a_task : "Pick or create a task",
-    you_worked_enough_on_this_task: 'You have worked enough time on this task. Don\'t hesitate to press "Advanced Forward" button. Good job.',
+    pick_or_create_a_task: 'Pick or create a task',
+    you_worked_enough_on_this_task:
+      'You have worked enough time on this task. Don\'t hesitate to press "Advanced Forward" button. Good job.',
   },
   sidebar: {
     focus_mode: 'Focus Mode (WIP)',
   },
   encouragingMessages: {
-    dont_think_about_it: 'Don\'t think about it. Jump into action.',
-    do_you_want_it_or_do_you_force_yourself: 'Do you want it or do you force youserlf? That is a big difference',
-    procrastinaton_is_a_fear_of_action: 'Procrastination is a fear of action. The more you think about it the harder it is to start acting.'
-  }
+    dont_think_about_it: "Don't think about it. Jump into action.",
+    do_you_want_it_or_do_you_force_yourself:
+      'Do you want it or do you force youserlf? That is a big difference',
+    procrastinaton_is_a_fear_of_action:
+      'Procrastination is a fear of action. The more you think about it the harder it is to start acting.',
+  },
 };

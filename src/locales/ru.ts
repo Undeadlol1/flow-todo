@@ -114,26 +114,32 @@ export default {
     faq: 'ЧаВо',
     'frequently asked questions': 'Часто Задаваемые Вопросы',
     completed_tasks_today: 'Побед сегодня',
-        won_days_in_a_row: 'Побеждал(a) дней подряд',
+    won_days_in_a_row: 'Побеждал(a) дней подряд',
     'tasks list': 'Список задач',
     level_is: 'Уровень: {{level}}',
     points: 'Очки',
     task_is_stale: 'Задача протухла и нуждается в переработке.',
     reject_the_task: 'Откажитесь от задачи',
-    dont_hesitate_to_push_this_button: 'Не стесняйтесь жать эту кнопку.',
-    only_20_percent_gives_results: 'Лишь 20% усилий дают 80% результата.',
+    dont_hesitate_to_push_this_button:
+      'Не стесняйтесь жать эту кнопку.',
+    only_20_percent_gives_results:
+      'Лишь 20% усилий дают 80% результата.',
     tasks_per_day: 'Задач в день',
-    motivational_messages_of_task_page :"Мотивационные сообщения экрана с задачей",
+    motivational_messages_of_task_page:
+      'Мотивационные сообщения экрана с задачей',
     add_any_value: `Добавить "{{value}}"`,
-    pick_or_create_a_task : "Выберите или создайте задачу",
-    you_worked_enough_on_this_task: 'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
+    pick_or_create_a_task: 'Выберите или создайте задачу',
+    you_worked_enough_on_this_task:
+      'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
   },
   sidebar: {
     focus_mode: 'Режим Фокусировки (не доделано)',
   },
   encouragingMessages: {
     dont_think_about_it: 'Не думай об этом. Просто начни действовать',
-    do_you_want_it_or_do_you_force_yourself: 'Ты хочешь это сделать или ты себя заставляешь? Это большая разница.',
-    procrastinaton_is_a_fear_of_action: 'Прокрастинация - это боязнь действия. Чем больше думаешь, тем труднее начать действовать.',
-  }
+    do_you_want_it_or_do_you_force_yourself:
+      'Ты хочешь это сделать или ты себя заставляешь? Это большая разница.',
+    procrastinaton_is_a_fear_of_action:
+      'Прокрастинация - это боязнь действия. Чем больше думаешь, тем труднее начать действовать.',
+  },
 };

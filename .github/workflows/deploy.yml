@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  instal_and_cache_deps:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:

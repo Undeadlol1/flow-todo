@@ -218,8 +218,6 @@ export function initializeI18n() {
       lng: 'ru',
       debug: false,
       fallbackLng: 'en',
-      // ns: ['translation', 'sidebar'],
-      // defaultNS: 'translation',
       interpolation: {
         // not needed for react as it escapes by default
         escapeValue: false,

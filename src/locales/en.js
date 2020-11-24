@@ -122,7 +122,8 @@ export default {
     tasks_per_day: 'Tasks per day',
     motivational_messages_of_task_page: 'Motivational messages of task page',
     add_any_value: `Add "{{value}}"`,
-    pick_or_create_a_task : "Pick or create a task"
+    pick_or_create_a_task : "Pick or create a task",
+    you_worked_enough_on_this_task: 'You have worked enough time on this task. Don\'t hesitate to press "Advanced Forward" button. Good job.',
   },
   sidebar: {
     focus_mode: 'Focus Mode (WIP)',

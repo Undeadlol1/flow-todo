@@ -134,10 +134,7 @@ export default function TaskPage(props: TaskPageProps) {
       <Timer
         autoStart
         onEnd={() => {
-          // TODO i18n
-          Snackbar.addToQueue(
-            'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
-          );
+          Snackbar.addToQueue(t('you_worked_enough_on_this_task'));
         }}
       />
       <Grid item xs={12}>

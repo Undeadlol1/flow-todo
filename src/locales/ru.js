@@ -126,6 +126,7 @@ export default {
     motivational_messages_of_task_page :"Мотивационные сообщения экрана с задачей",
     add_any_value: `Добавить "{{value}}"`,
     pick_or_create_a_task : "Выберите или создайте задачу",
+    you_worked_enough_on_this_task: 'Вы достаточно поработали над задачей. Можете смело жать "сделал шаг вперед". Вы молодец.',
   },
   sidebar: {
     focus_mode: 'Режим Фокусировки (не доделано)',

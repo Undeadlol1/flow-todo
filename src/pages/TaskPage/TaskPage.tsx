@@ -7,11 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
+import debug from 'debug';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import sample from 'lodash/sample';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
@@ -32,8 +34,6 @@ import {
   deleteTaskArguments,
   updateTaskParams,
 } from './TaskPageContainer';
-import debug from 'debug';
-import { useTranslation } from 'react-i18next';
 
 const log = debug('TaskPage');
 

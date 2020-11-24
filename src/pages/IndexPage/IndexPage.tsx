@@ -71,6 +71,16 @@ export const IndexPage = memo(
     const classes = useStyles();
     const isScreeenNarrow = useScreenIsNarrow();
 
+    const wrapperProps: GridProps = {
+      spacing: 2,
+      container: true,
+      justify: 'center',
+      direction: 'column',
+      alignItems: 'stretch',
+      alignContent: 'center',
+      className: classes.pageContainer,
+    };
+
     log('isLoading: ', isLoading);
     log('activeTasks: %O', activeTasks);
     log('createdAtleastOneTask: ', createdAtleastOneTask);
@@ -83,15 +93,7 @@ export const IndexPage = memo(
 
     if (isLoading) {
       return (
-        <Grid
-          container
-          spacing={2}
-          justify="center"
-          direction="column"
-          alignItems="stretch"
-          alignContent="center"
-          className={classes.pageContainer}
-        >
+        <Grid {...wrapperProps}>
           <Grid {...sectionProps}>
             <Skeleton height="200px" width="350px" variant="rect" />
           </Grid>
@@ -100,15 +102,7 @@ export const IndexPage = memo(
     }
 
     return (
-      <Grid
-        container
-        spacing={2}
-        justify="center"
-        direction="column"
-        alignItems="stretch"
-        alignContent="center"
-        className={classes.pageContainer}
-      >
+      <Grid {...wrapperProps}>
         <Grid {...sectionProps}>
           <When condition={!!createdAtleastOneTask}>
             <TasksDoneToday

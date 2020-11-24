@@ -152,11 +152,12 @@ export default function TaskPage(props: TaskPageProps) {
                 <CardContent>
                   <When condition={!isEmpty(activeSubtasks)}>
                     <Typography gutterBottom color="textSecondary">
-                      {TaskService.getFirstActiveSubtask(task)?.name}
+                      {task.name}
                     </Typography>
                   </When>
                   <Typography variant="h5" component="h1">
-                    {task.name}
+                    {TaskService.getFirstActiveSubtask(task)?.name ||
+                      task.name}
                   </Typography>
                 </CardContent>
               </MuiLink>

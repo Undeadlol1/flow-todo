@@ -85,12 +85,6 @@ export const IndexPage = memo(
     log('activeTasks: %O', activeTasks);
     log('createdAtleastOneTask: ', createdAtleastOneTask);
 
-    function renderWelcomeCardOrContent() {
-      if (isLoading || createdAtleastOneTask)
-        return <TasksList tasks={activeTasks} loading={false} />;
-      return <WelcomeCard />;
-    }
-
     if (isLoading) {
       return (
         <Grid {...wrapperProps}>
@@ -121,7 +115,11 @@ export const IndexPage = memo(
             isScreeenNarrow && classes.fullWidth,
           )}
         >
-          {renderWelcomeCardOrContent()}
+          {createdAtleastOneTask ? (
+            <TasksList tasks={activeTasks} loading={false} />
+          ) : (
+            <WelcomeCard />
+          )}
         </Grid>
         <Grid {...sectionProps}>
           <Box mt={2}>

@@ -23,11 +23,11 @@ import { useHistory } from 'react-router-dom';
 import useWebShare from 'react-use-web-share';
 import {
   handleErrors,
-  toggleSidebar,
   useTypedTranslate,
 } from '../../services/index';
 import FocusIcon from '@material-ui/icons/FilterCenterFocus';
 import { useTranslation } from 'react-i18next';
+import { toggleSidebar } from '../../store/uiState';
 
 const log = debug('Sidebar');
 const useStyles = makeStyles((theme: Theme) => ({

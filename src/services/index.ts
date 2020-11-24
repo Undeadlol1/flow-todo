@@ -9,19 +9,16 @@ import formatDistance from 'date-fns/formatDistance';
 import debug from 'debug';
 import get from 'lodash/get';
 import i18n from 'i18next';
-import store from '../store';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
 import ru from 'date-fns/locale/ru';
 import PrettyError from 'pretty-error';
 import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
-import { toggleLevelUpAnimation } from '../store/usersSlice';
 import { Reward } from '../store/rewardsSlice';
 import sort from 'ramda/es/sort';
 import findLastIndex from 'ramda/es/findLastIndex';
 import { getFirebase } from 'react-redux-firebase';
-import { toggleSidebar as toggleUiSidebar } from '../store/uiSlice';
 import languageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en';
@@ -194,17 +191,8 @@ export function useTypedTranslate() {
   ) => t(key, ...rest);
 }
 
-export function showLevelUpAnimation() {
-  store.dispatch(toggleLevelUpAnimation());
-  setTimeout(() => store.dispatch(toggleLevelUpAnimation()), 5000);
-}
-
 export function getFirestore() {
   return getFirebase().firestore();
-}
-
-export function toggleSidebar() {
-  store.dispatch(toggleUiSidebar());
 }
 
 export function initializeI18n() {

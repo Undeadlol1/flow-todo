@@ -35,8 +35,6 @@ import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
-// TODO: remove this line.
-debug.enable('TaskPageContainer');
 
 export interface updateTaskParams {
   values: any;

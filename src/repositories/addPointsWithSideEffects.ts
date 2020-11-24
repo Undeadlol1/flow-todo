@@ -1,7 +1,4 @@
-import {
-  getNewlyUnlockedReward,
-  showLevelUpAnimation,
-} from '../services/index';
+import { getNewlyUnlockedReward } from '../services/index';
 import LevelingService from '../services/Leveling';
 import {
   authSelector,
@@ -11,6 +8,7 @@ import {
 import { toggleRewardModal } from '../store/uiSlice';
 import { addPointsToUser } from './addPointsToUser';
 import { store } from '../store/index';
+import { showLevelUpAnimation } from '../store/uiState';
 
 export function addPointsWithSideEffects(
   userId: string,

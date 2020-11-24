@@ -17,7 +17,7 @@ import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import { TasksList } from '../../components/tasks/TasksList';
 import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
-import { useScreenIsNarrow } from '../../services/index';
+import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
 import { useSelector } from 'react-redux';
 import { IDayliStreak } from '../../entities/IDayliStreak';
 import { TaskHistory } from '../../entities/TaskHistory';
@@ -69,7 +69,7 @@ export const IndexPage = memo(
     ...props
   }: IndexPageProps) => {
     const classes = useStyles();
-    const isScreeenNarrow = useScreenIsNarrow();
+    const isScreeenNarrow = useIsScreenNarrow();
 
     const wrapperProps: GridProps = {
       spacing: 2,

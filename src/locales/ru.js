@@ -130,5 +130,10 @@ export default {
   },
   sidebar: {
     focus_mode: 'Режим Фокусировки (не доделано)',
+  },
+  encouragingMessages: {
+    dont_think_about_it: 'Не думай об этом. Просто начни действовать',
+    do_you_want_it_or_do_you_force_yourself: 'Ты хочешь это сделать или ты себя заставляешь? Это большая разница.',
+    procrastinaton_is_a_fear_of_action: 'Прокрастинация - это боязнь действия. Чем больше думаешь, тем труднее начать действовать.',
   }
 };

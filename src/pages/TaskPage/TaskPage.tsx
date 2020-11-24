@@ -11,7 +11,7 @@ import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import sample from 'lodash/sample';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import HardChoices from '../../components/tasks/HardChoices';
@@ -33,15 +33,9 @@ import {
   updateTaskParams,
 } from './TaskPageContainer';
 import debug from 'debug';
+import { useTranslation } from 'react-i18next';
 
 const log = debug('TaskPage');
-
-// TODO i18n
-const encouragingMessages = [
-  'Не думай об этом. Просто начни действовать',
-  'Ты хочешь это сделать или ты себя заставляешь? Это большая разница.',
-  'Прокрастинация - это боязнь действия. Чем больше думаешь, тем труднее начать действовать.',
-];
 
 const useStyles = makeStyles((theme: Theme) => ({
   pageContainer: {
@@ -68,10 +62,10 @@ export interface TaskPageProps {
   taskId: string;
   loading: boolean;
   shouldDisplayEncouragements: boolean;
+  updateTask: (options: updateTaskParams) => Promise<void>;
+  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   // TODO this feels wrong.
   tasksDoneTodayNotificationProps: TasksDoneTodayNotificationProps;
-  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
-  updateTask: (options: updateTaskParams) => Promise<void>;
 }
 
 export default function TaskPage(props: TaskPageProps) {
@@ -84,6 +78,9 @@ export default function TaskPage(props: TaskPageProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
   const route = useRouteMatch() || {};
+  const { t: translateEncouragements } = useTranslation(
+    'encouragingMessages',
+  );
 
   const { path } = route;
   const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
@@ -91,16 +88,25 @@ export default function TaskPage(props: TaskPageProps) {
   log('activeSubtasks: ', activeSubtasks);
 
   // Show encouraging snackbar after short delay
-  // NOTE: Make sure snackbar is not shown when user redirects.
   useEffect(() => {
+    const encouragingMessages = [
+      translateEncouragements('dont_think_about_it'),
+      translateEncouragements(
+        'do_you_want_it_or_do_you_force_yourself',
+      ),
+      translateEncouragements('procrastinaton_is_a_fear_of_action'),
+    ];
     const snackBarTimeout = setTimeout(() => {
       if (!props.shouldDisplayEncouragements) return;
       if (tasksDoneTodayNotificationProps.isVisible) return;
       Snackbar.addToQueue(sample(encouragingMessages) as string);
     }, 3500);
     return () => clearTimeout(snackBarTimeout);
-    // eslint-disable-next-line
-  }, [props.shouldDisplayEncouragements]);
+  }, [
+    translateEncouragements,
+    props.shouldDisplayEncouragements,
+    tasksDoneTodayNotificationProps.isVisible,
+  ]);
 
   if (loading) {
     return (

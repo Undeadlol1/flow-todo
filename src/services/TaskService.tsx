@@ -1,6 +1,6 @@
 import differenceInDays from 'date-fns/esm/differenceInDays';
 import debug from 'debug';
-import { filter, find, isEmpty, last } from 'lodash';
+import { filter, find, isEmpty, last, random } from 'lodash';
 import get from 'lodash/fp/get';
 import { Subtask } from '../entities/Subtask';
 import { Task } from '../entities/Task';
@@ -11,6 +11,10 @@ const log = debug('TaskService');
 export default class TaskService {
   static get db() {
     return getFirestore();
+  }
+
+  static getRandomTaskId(tasks: Task[]): string {
+    return get(`[${random(tasks.length - 1)}].id`)(tasks);
   }
 
   static getFirstActiveSubtask(task: Task): Subtask | undefined {

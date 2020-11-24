@@ -10,15 +10,16 @@ import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import useToggle from 'react-use/lib/useToggle';
-import { getRandomTaskId, handleErrors } from '../../services';
+import { TaskHistory } from '../../entities/TaskHistory';
+import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
+import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
+import { upsertProfile } from '../../repositories/upsertProfile';
+import { upsertTask } from '../../repositories/upsertTask';
+import { handleErrors } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import { useTypedSelector } from '../../store/index';
-import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
-import { TaskHistory } from '../../entities/TaskHistory';
-import { upsertProfile } from '../../repositories/upsertProfile';
-import { upsertTask } from '../../repositories/upsertTask';
 import {
   activeTaskSelector,
   authSelector,
@@ -31,7 +32,6 @@ import {
 } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
-import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -64,7 +64,7 @@ const Container = memo(() => {
     useTypedSelector(activeTaskSelector),
     'id',
   );
-  const nextTaskId = getRandomTaskId(
+  const nextTaskId = TaskService.getRandomTaskId(
     filter(tasks, (t) => t.id !== taskId),
   );
   const { uid: userId } = useTypedSelector(authSelector);

@@ -3,6 +3,5 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 export function useIsScreenNarrow(): boolean {
   const theme = useTheme();
-  const isScreenNarrow = useMediaQuery(theme.breakpoints.down('xs'));
-  return isScreenNarrow;
+  return useMediaQuery(theme.breakpoints.down('xs'));
 }

@@ -8,23 +8,27 @@ export default {
   title: `${sections.tasks}DayliTasksStreak`,
 };
 
+const Header = ({ title }: { title: string }) => {
+  return (
+    <div
+      style={{ backgroundColor: 'lightblue', fontStyle: 'italic' }}
+    >
+      <hr />
+      {title}
+      <hr />
+    </div>
+  );
+};
+
 export const Demos = () => (
   <>
-    Done yesterday:
-    <br />
-    (meaning user is working on a streak, it is not yet broken)
+    <Header title="Done yesterday (meaning user is working on a streak, it is not yet broken):" />
     <DayliTasksStreak streak={streaks.doneTasksYesterday} />
-    <hr />
-    Done today:
-    <hr />
+    <Header title="Done today:" />
     <DayliTasksStreak streak={streaks.doneTasksToday} />
-    <hr />
-    Few days:
-    <hr />
+    <Header title="Few days:" />
     <DayliTasksStreak streak={streaks.doneTasksFewDays} />
-    <hr />
-    Noting will be shown if streak is broken:
-    <hr />
+    <Header title="Noting will be shown if streak is broken:" />
     <DayliTasksStreak streak={streaks.streakIsBroken} />
   </>
 );

@@ -96,12 +96,12 @@ function DeleteButton({
 
 function useStyles() {
   return makeStyles((theme: Theme) => ({
+    text: {
+      display: 'inline',
+    },
     link: {
       textDecoration: 'none',
       color: theme.palette.text.primary,
-    },
-    text: {
-      display: 'inline',
     },
     textWrapper: {
       overflow: 'hidden',
@@ -113,7 +113,5 @@ function useStyles() {
     },
   }))();
 }
-
-TasksListItem.displayName = 'TasksListItem';
 
 export { TasksListItem };

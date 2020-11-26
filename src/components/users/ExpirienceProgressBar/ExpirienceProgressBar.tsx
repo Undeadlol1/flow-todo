@@ -64,13 +64,13 @@ export const ExpirienceProgressBar: React.FC<{
     );
   }
   return (
-    <Tooltip
-      arrow
-      title={`${userPoints - pointsToReachPreviousLevel}/${
-        pointsToReachNextLevel - pointsToReachPreviousLevel
-      }`}
-    >
-      <Box>
+    <Box>
+      <Tooltip
+        arrow
+        title={`${userPoints - pointsToReachPreviousLevel}/${
+          pointsToReachNextLevel - pointsToReachPreviousLevel
+        }`}
+      >
         <LinearProgress
           color="secondary"
           value={progressPercent === 100 ? 0 : progressPercent}
@@ -82,8 +82,8 @@ export const ExpirienceProgressBar: React.FC<{
             props.isAnimationActive ? 'indeterminate' : 'determinate'
           }
         />
-      </Box>
-    </Tooltip>
+      </Tooltip>
+    </Box>
   );
 });
 

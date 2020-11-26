@@ -1,15 +1,14 @@
 import debug from 'debug';
-import delay from 'lodash/delay';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import React, { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory, useParams } from 'react-router-dom';
 import useToggle from 'react-use/lib/useToggle';
+import { ViewerController } from '../../controllers/ViewerController';
 import { TaskHistory } from '../../entities/TaskHistory';
 import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
 import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
@@ -54,7 +53,6 @@ const Container = memo(() => {
   // Services.
   const [t] = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
   const firestoreRedux = useFirestore();
   // Data.
   // @ts-ignore
@@ -121,15 +119,6 @@ const Container = memo(() => {
     try {
       history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
-      const toggleTaskDoneNotification = () =>
-        dispatch(toggleTasksDoneTodayNotification());
-
-      toggleTaskDoneNotification();
-      delay(() => {
-        toggleTaskDoneNotification();
-        Snackbar.addToQueue(snackbarMessage);
-      }, 3500);
-
       await Promise.all([
         TaskService.deactivateActiveTasks(tasks),
         upsertTask(
@@ -146,7 +135,10 @@ const Container = memo(() => {
           userId,
           createdAt: Date.now(),
         }),
-        addPointsWithSideEffects(userId, pointsToAdd),
+        ViewerController.rewardUserForWorkingOnATask({
+          points: pointsToAdd,
+          snackbarMessage,
+        }),
         TaskService.activateNextTask({
           nextTaskId,
           currentTasks: tasks,

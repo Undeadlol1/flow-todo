@@ -33,7 +33,10 @@ const TasksListItem = memo(function TasksListItem({
   const classes = useStyles();
   const t = useTypedTranslate();
 
+  const isStale = TaskService.isStale(task) || !!props.isStale;
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  const text =
+    TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
   function toggleTooltip(
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -42,10 +45,6 @@ const TasksListItem = memo(function TasksListItem({
     event.stopPropagation();
     setTooltipVisibility(!isTooltipVisible);
   }
-
-  const isStale = TaskService.isStale(task) || !!props.isStale;
-  const text =
-    TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
   return (
     <ListItem
@@ -68,12 +67,10 @@ const TasksListItem = memo(function TasksListItem({
           root: classes.textWrapper,
         }}
       />
-      <ListItemSecondaryAction>
-        <DeleteButton
-          isVisible={canDelete}
-          onClick={() => deleteTask && deleteTask(task.id)}
-        />
-      </ListItemSecondaryAction>
+      <DeleteButton
+        isVisible={canDelete}
+        onClick={() => deleteTask && deleteTask(task.id)}
+      />
     </ListItem>
   );
 });
@@ -87,25 +84,23 @@ function DeleteButton({
 }) {
   return (
     <When condition={!!isVisible}>
-      <IconButton
-        edge="end"
-        aria-label="Delete"
-        onClick={() => onClick()}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="Delete" onClick={onClick}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
     </When>
   );
 }
 
 function useStyles() {
   return makeStyles((theme: Theme) => ({
+    text: {
+      display: 'inline',
+    },
     link: {
       textDecoration: 'none',
       color: theme.palette.text.primary,
-    },
-    text: {
-      display: 'inline',
     },
     textWrapper: {
       overflow: 'hidden',
@@ -117,7 +112,5 @@ function useStyles() {
     },
   }))();
 }
-
-TasksListItem.displayName = 'TasksListItem';
 
 export { TasksListItem };

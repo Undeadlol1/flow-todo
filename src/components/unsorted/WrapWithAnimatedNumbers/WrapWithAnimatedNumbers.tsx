@@ -1,10 +1,22 @@
-import React, { memo, ReactElement } from 'react';
-import { Box, Theme } from '@material-ui/core';
+import { Box, Fade, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import React, { memo, ReactElement } from 'react';
 import { NumbersAnimatedOnUpdate } from '../../ui/NumbersAnimatedOnUpdate';
-import { When } from 'react-if';
 
-const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    position: 'relative',
+    display: 'inline-block',
+  },
+  wrappedChild: {},
+  numbersWrapper: {
+    left: 'auto',
+    width: '100%',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: theme.spacing(4) * -1,
+  },
+}));
 
 export interface WrapWithAnimatedNumbersProps {
   number: number;
@@ -19,16 +31,14 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
 
   return (
     <Box className={classes.root}>
-      <Box>{props.children}</Box>
-      <Box>
-        <When condition={props.isVisible}>
+      <Box className={classes.wrappedChild}>{props.children}</Box>
+      <Box className={classes.numbersWrapper}>
+        <Fade in={props.isVisible}>
           <NumbersAnimatedOnUpdate value={props.number} />
-        </When>
+        </Fade>
       </Box>
     </Box>
   );
 });
-
-WrapWithAnimatedNumbers.displayName = 'WrapWithAnimatedNumbers';
 
 export { WrapWithAnimatedNumbers };

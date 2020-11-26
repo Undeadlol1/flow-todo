@@ -1,11 +1,11 @@
-import { Avatar } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
+import useToggle from 'react-use/esm/useToggle';
 import { sections } from '../../storybookContants';
 import {
   WrapWithAnimatedNumbers,
   WrapWithAnimatedNumbersProps,
 } from './WrapWithAnimatedNumbers';
-import useToggle from 'react-use/esm/useToggle';
 
 export default {
   component: WrapWithAnimatedNumbers,
@@ -16,7 +16,11 @@ const props = {
   number: 100,
   isVisible: false,
   children: (
-    <Avatar src="https://i.picsum.photos/id/1025/200/200.jpg?hmac=lPP7DRqIRSrMTmBMEg5NbVzguwqQQs2meA5kSrgLAhc" />
+    <Box p="60px" width="200px" height="200px" border="1px red solid">
+      <Typography align="center">
+        This is some element to wrap.
+      </Typography>
+    </Box>
   ),
 } as WrapWithAnimatedNumbersProps;
 
@@ -27,6 +31,21 @@ export const Demo = (args) => {
     return () => clearInterval(interval);
   }, [toggleVisibility]);
 
-  return <WrapWithAnimatedNumbers {...args} isVisible={isVisible} />;
+  return (
+    <>
+      <WrapWithAnimatedNumbers {...args} isVisible={isVisible} />
+      <Box
+        mt={6}
+        p="50px"
+        width="200px"
+        height="200px"
+        border="1px red solid"
+      >
+        <Typography align="center">
+          This is some elemtn beneath the wrapped one.
+        </Typography>
+      </Box>
+    </>
+  );
 };
 Demo.args = props;

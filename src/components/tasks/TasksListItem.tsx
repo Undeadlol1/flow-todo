@@ -68,12 +68,10 @@ const TasksListItem = memo(function TasksListItem({
           root: classes.textWrapper,
         }}
       />
-      <ListItemSecondaryAction>
-        <DeleteButton
-          isVisible={canDelete}
-          onClick={() => deleteTask && deleteTask(task.id)}
-        />
-      </ListItemSecondaryAction>
+      <DeleteButton
+        isVisible={canDelete}
+        onClick={() => deleteTask && deleteTask(task.id)}
+      />
     </ListItem>
   );
 });
@@ -87,13 +85,15 @@ function DeleteButton({
 }) {
   return (
     <When condition={!!isVisible}>
-      <IconButton
-        edge="end"
-        aria-label="Delete"
-        onClick={() => onClick()}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <ListItemSecondaryAction>
+        <IconButton
+          edge="end"
+          aria-label="Delete"
+          onClick={() => onClick()}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
     </When>
   );
 }

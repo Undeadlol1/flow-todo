@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const NavBar = memo(() => {
+export default memo(function NavBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   return (
@@ -89,16 +89,14 @@ const NavBar = memo(() => {
             </Link>
           </ButtonBase>
           <Box className={classes.flexGrow} />
-          <LoginOrLogoutButton />
+          <AvatarWithLevelBadge />
         </Toolbar>
       </AppBar>
     </div>
   );
 });
 
-NavBar.displayName = 'NavBar';
-
-export function LoginOrLogoutButton() {
+function AvatarWithLevelBadge() {
   const classes = useStyles();
 
   const user = useTypedSelector(authSelector);
@@ -122,48 +120,44 @@ export function LoginOrLogoutButton() {
   }
 
   return (
-    <>
-      <Slide in timeout={500} direction="left">
-        <Box mr={0.5}>
-          <Button
-            component={Link}
-            to="/profile"
-            className={clsx(
-              classes.link,
-              isLevelUpAnimationActive && 'animated pulse infinite',
-            )}
+    <Slide in timeout={500} direction="left">
+      <Box mr={0.5}>
+        <Button
+          component={Link}
+          to="/profile"
+          className={clsx(
+            classes.link,
+            isLevelUpAnimationActive && 'animated pulse infinite',
+          )}
+        >
+          <Badge
+            overlap="circle"
+            color="secondary"
+            // NOTE: "+1" is a quick fix
+            badgeContent={
+              profile.isLoaded &&
+              Math.trunc(
+                LevelingService.calculateUserLevel(experience),
+              ) + 1
+            }
           >
-            <Badge
-              overlap="circle"
-              color="secondary"
-              // NOTE: "+1" is a quick fix
-              badgeContent={
-                profile.isLoaded &&
-                Math.trunc(
-                  LevelingService.calculateUserLevel(experience),
-                ) + 1
-              }
-            >
-              <If condition={hasPhoto}>
-                <Then>
-                  <Avatar
-                    src={photoUrl}
-                    className={clsx(classes.avatar)}
-                  />
-                </Then>
-                <Else>
-                  <AccountCircle
-                    fontSize="large"
-                    className={classes.avatar}
-                  />
-                </Else>
-              </If>
-            </Badge>
-          </Button>
-        </Box>
-      </Slide>
-    </>
+            <If condition={hasPhoto}>
+              <Then>
+                <Avatar
+                  src={photoUrl}
+                  className={clsx(classes.avatar)}
+                />
+              </Then>
+              <Else>
+                <AccountCircle
+                  fontSize="large"
+                  className={classes.avatar}
+                />
+              </Else>
+            </If>
+          </Badge>
+        </Button>
+      </Box>
+    </Slide>
   );
 }
-
-export default NavBar;

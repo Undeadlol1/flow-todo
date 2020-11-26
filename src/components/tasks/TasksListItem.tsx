@@ -33,7 +33,10 @@ const TasksListItem = memo(function TasksListItem({
   const classes = useStyles();
   const t = useTypedTranslate();
 
+  const isStale = TaskService.isStale(task) || !!props.isStale;
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  const text =
+    TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
   function toggleTooltip(
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -42,10 +45,6 @@ const TasksListItem = memo(function TasksListItem({
     event.stopPropagation();
     setTooltipVisibility(!isTooltipVisible);
   }
-
-  const isStale = TaskService.isStale(task) || !!props.isStale;
-  const text =
-    TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
   return (
     <ListItem

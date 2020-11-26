@@ -86,11 +86,7 @@ function DeleteButton({
   return (
     <When condition={!!isVisible}>
       <ListItemSecondaryAction>
-        <IconButton
-          edge="end"
-          aria-label="Delete"
-          onClick={() => onClick()}
-        >
+        <IconButton edge="end" aria-label="Delete" onClick={onClick}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

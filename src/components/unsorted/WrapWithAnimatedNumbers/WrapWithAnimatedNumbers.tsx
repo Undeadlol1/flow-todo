@@ -1,7 +1,6 @@
-import { Box, Fade, Theme } from '@material-ui/core';
+import { Box, Fade, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { memo, ReactElement } from 'react';
-import { NumbersAnimatedOnUpdate } from '../../ui/NumbersAnimatedOnUpdate';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,8 +32,8 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
     <Box className={classes.root}>
       <Box className={classes.wrappedChild}>{props.children}</Box>
       <Box className={classes.numbersWrapper}>
-        <Fade in={props.isVisible}>
-          <NumbersAnimatedOnUpdate value={props.number} />
+        <Fade mountOnEnter unmountOnExit in={props.isVisible}>
+          <Typography>+{props.number}</Typography>
         </Fade>
       </Box>
     </Box>

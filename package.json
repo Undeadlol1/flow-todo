@@ -9,7 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.35",
     "@reach/window-size": "^0.12.0",
     "@reduxjs/toolkit": "^1.0.4",
-    "@storybook/addon-actions": "^6.1.7",
+    "@storybook/addon-actions": "^6.1.8",
     "@storybook/addon-console": "^1.2.2",
     "@storybook/addon-knobs": "^6.1.8",
     "@storybook/addon-links": "^6.1.8",

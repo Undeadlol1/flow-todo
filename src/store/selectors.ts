@@ -1,6 +1,5 @@
 import { AuthError } from '@firebase/auth-types';
 import firebase from 'firebase/app';
-import { identity } from 'lodash';
 import countBy from 'lodash/countBy';
 import filter from 'lodash/filter';
 import get from 'lodash/fp/get';

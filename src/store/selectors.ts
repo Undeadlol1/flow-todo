@@ -1,6 +1,5 @@
 import { AuthError } from '@firebase/auth-types';
 import firebase from 'firebase/app';
-import { shuffle } from 'lodash';
 import countBy from 'lodash/countBy';
 import filter from 'lodash/filter';
 import get from 'lodash/fp/get';
@@ -11,11 +10,11 @@ import uniq from 'lodash/uniq';
 import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { RootReducer } from './index';
 import { IDayliStreak } from '../entities/IDayliStreak';
-import { TaskHistory } from '../entities/TaskHistory';
-import { Task } from '../entities/Task';
 import { Profile } from '../entities/Profile';
+import { Task } from '../entities/Task';
+import { TaskHistory } from '../entities/TaskHistory';
+import { RootReducer } from './index';
 import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';
@@ -52,9 +51,8 @@ export const tasksSelector = createSelector(
   (tasks: Task[], excludedTags) => {
     // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;
-    // TODO refactor
     return filter(
-      shuffle(tasks),
+      tasks,
       ({ tags = [] }) =>
         !tags.some((tag) => excludedTags.includes(tag.toLowerCase())),
     );

@@ -138,7 +138,7 @@ export const firestoreStatusSelector = (state: RootReducer) =>
 
 export const uiSelector = createSelector(
   get('ui'),
-  (ui) => ui as UiState,
+  (ui: UiState) => ui,
 );
 
 export const animationSelector = createSelector(
@@ -148,7 +148,7 @@ export const animationSelector = createSelector(
 
 export const usersSelector = createSelector(
   get('users'),
-  (users) => users as UsersState,
+  (users: UsersState) => users,
 );
 
 export const snackbarsSelector = createSelector(

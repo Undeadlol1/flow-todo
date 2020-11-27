@@ -23,7 +23,6 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc';
 import { Subtask } from '../../entities/Subtask';
-import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
 import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { updateSubtasks } from '../../repositories/updateSubtasks';
 import {
@@ -32,6 +31,7 @@ import {
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
 import { authSelector } from '../../store/selectors';
+import { ViewerController } from '../../controllers/ViewerController';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -74,7 +74,7 @@ const SortableItem = SortableElement(
       Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
       Promise.all([
         remove(),
-        addPointsWithSideEffects(auth.uid, 10),
+        ViewerController.rewardUserWithPoints(10),
       ]).catch(handleErrors);
     }
 

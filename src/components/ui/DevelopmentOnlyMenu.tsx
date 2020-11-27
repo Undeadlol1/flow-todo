@@ -11,12 +11,12 @@ import { loremIpsum } from 'lorem-ipsum';
 import React, { memo, MouseEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
-import { getUniqueId } from '../../helpers/getUniqueId';
-import LevelingService from '../../services/Leveling';
-import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
-import { addPointsToUser } from '../../repositories/addPointsToUser';
+import { ViewerController } from '../../controllers/ViewerController';
 import { Profile } from '../../entities/Profile';
+import { getUniqueId } from '../../helpers/getUniqueId';
+import { addPointsToUser } from '../../repositories/addPointsToUser';
 import { createTask } from '../../repositories/createTask';
+import LevelingService from '../../services/Leveling';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -103,7 +103,7 @@ function DevelopmentOnlyMenu() {
         onClose={toggleMenu}
       >
         <MenuItem
-          onClick={() => addPointsWithSideEffects(auth.uid, 50)}
+          onClick={() => ViewerController.rewardUserWithPoints(50)}
         >
           Add 50 points
         </MenuItem>

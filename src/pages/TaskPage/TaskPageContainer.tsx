@@ -99,7 +99,7 @@ const Container = memo(() => {
           collection: 'tasks',
           storeAs: 'currentTask',
         })
-        .then(() => toggleLoading(false))
+        .then(toggleLoading)
         .catch((error) => {
           handleErrors(error);
           goHome();
@@ -147,7 +147,8 @@ const Container = memo(() => {
     } catch (error) {
       handleErrors(error);
       if (error.message.includes('Null value error.')) {
-        return goHome();
+        goHome();
+        return;
       }
       history.replace('/tasks/active');
     }

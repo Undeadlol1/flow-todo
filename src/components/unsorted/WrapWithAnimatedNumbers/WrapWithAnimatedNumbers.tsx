@@ -33,7 +33,7 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
       <Box className={classes.wrappedChild}>{props.children}</Box>
       <Box className={classes.numbersWrapper}>
         <Fade mountOnEnter unmountOnExit in={props.isVisible}>
-          <Typography>+{props.number}</Typography>
+          <Typography>+ {props.number}</Typography>
         </Fade>
       </Box>
     </Box>

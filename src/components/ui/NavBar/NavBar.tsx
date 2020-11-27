@@ -16,14 +16,14 @@ import classNames from 'classnames';
 import clsx from 'clsx';
 import debug from 'debug';
 import get from 'lodash/get';
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { usePrevious, useToggle } from 'react-use';
 import LevelingService from '../../../services/Leveling';
 import { useTypedSelector } from '../../../store';
 import {
+  animationSelector,
   authSelector,
   profileSelector,
   usersSelector,
@@ -94,47 +94,24 @@ export default memo(function NavBar() {
 
 function AvatarWithLevelBadge() {
   const classes = useStyles();
-  const [arePointsVisible, setArePointsVisible] = useToggle(false);
 
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
-  console.log('profile: ', profile);
+  const {
+    isPointsRewardingInProgress,
+    pointToDisplayDuringRewardAnimation,
+  } = useTypedSelector(animationSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );
-  const points = get(profile, 'points', 0);
-  const previousPoints = usePrevious(points);
-  const pointsAdded = points - (previousPoints || 0);
   const experience = get(profile, 'experience', 0);
   const photoUrl =
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
   const hasPhoto = !!photoUrl;
 
   log('profile: %O', profile);
-  log('points: ', points);
-  console.log('points: ', points);
-  console.log('previousPoints: ', previousPoints);
-  console.log('pointsAdded: ', pointsAdded);
-  console.log('arePointsVisible: ', arePointsVisible);
-
-  useEffect(() => {
-    if (points === 0) return;
-    if (pointsAdded === 0) {
-      setArePointsVisible(false);
-      return;
-    }
-    if (!profile.isLoaded) return;
-    if (points === previousPoints) return;
-
-    setArePointsVisible(true);
-    setTimeout(setArePointsVisible, 3000);
-  }, [
-    points,
-    setArePointsVisible,
-    previousPoints,
-    pointsAdded,
-    profile.isLoaded,
-  ]);
+  log('Is reward animation going: ', isPointsRewardingInProgress);
+  log('Points to display: ', pointToDisplayDuringRewardAnimation);
 
   if (!user.isLoaded) {
     return (
@@ -147,8 +124,8 @@ function AvatarWithLevelBadge() {
 
   return (
     <WrapWithAnimatedNumbers
-      number={pointsAdded}
-      isVisible={arePointsVisible}
+      isVisible={isPointsRewardingInProgress}
+      number={pointToDisplayDuringRewardAnimation}
     >
       <Box
         mr={0.5}

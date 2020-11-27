@@ -20,6 +20,7 @@ import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
+import { AnimationState } from './animationSlice';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -140,6 +141,11 @@ export const firestoreStatusSelector = (state: RootReducer) =>
 export const uiSelector = createSelector(
   get('ui'),
   (ui) => ui as UiState,
+);
+
+export const animationSelector = createSelector(
+  get('animation'),
+  (animation) => animation as AnimationState,
 );
 
 export const usersSelector = createSelector(

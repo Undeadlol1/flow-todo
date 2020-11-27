@@ -10,6 +10,7 @@ import { addPointsToUser } from './addPointsToUser';
 import { store } from '../store/index';
 import { showLevelUpAnimation } from '../store/uiState';
 
+// TODO: remove this. Use service/controller instead.
 export function addPointsWithSideEffects(
   userId: string,
   points: number,

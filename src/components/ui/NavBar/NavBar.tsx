@@ -105,9 +105,12 @@ function AvatarWithLevelBadge() {
     usersSelector,
   );
   const experience = get(profile, 'experience', 0);
+  // NOTE: "+1" is a quick fix
+  const userLevel =
+    profile.isLoaded &&
+    Math.trunc(LevelingService.calculateUserLevel(experience)) + 1;
   const photoUrl =
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
-  const hasPhoto = !!photoUrl;
 
   log('profile: %O', profile);
   log('Is reward animation going: ', isPointsRewardingInProgress);
@@ -145,20 +148,11 @@ function AvatarWithLevelBadge() {
             <Badge
               overlap="circle"
               color="secondary"
-              // NOTE: "+1" is a quick fix
-              badgeContent={
-                profile.isLoaded &&
-                Math.trunc(
-                  LevelingService.calculateUserLevel(experience),
-                ) + 1
-              }
+              badgeContent={userLevel}
             >
-              <If condition={hasPhoto}>
+              <If condition={!!photoUrl}>
                 <Then>
-                  <Avatar
-                    src={photoUrl}
-                    className={clsx(classes.avatar)}
-                  />
+                  <Avatar src={photoUrl} className={classes.avatar} />
                 </Then>
                 <Else>
                   <AccountCircle

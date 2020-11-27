@@ -1,4 +1,5 @@
 import delay from 'lodash/delay';
+import { promiseDelay } from '../helpers/promiseDelay';
 import { addPointsToUser } from '../repositories/addPointsToUser';
 import { getNewlyUnlockedReward } from '../services';
 import LevelingService from '../services/Leveling';
@@ -25,8 +26,7 @@ export class ViewerController {
   }
 
   private static get viewerId(): string {
-    const auth = authSelector(ViewerController.state);
-    return auth.uid;
+    return authSelector(this.state).uid;
   }
 
   static async rewardUserWithPoints(points: number) {
@@ -56,12 +56,11 @@ export class ViewerController {
     points: number;
     snackbarMessage: string;
   }) => {
-    ViewerController.toggleTaskDoneNotification();
-    delay(() => {
-      ViewerController.toggleTaskDoneNotification()
-        .then(() => ViewerController.rewardUserWithPoints(points))
-        .then(() => Snackbar.addToQueue(snackbarMessage));
-    }, 3500);
+    ViewerController.toggleTaskDoneNotification()
+      .then(() => promiseDelay(3500))
+      .then(() => ViewerController.toggleTaskDoneNotification())
+      .then(() => ViewerController.rewardUserWithPoints(points))
+      .then(() => Snackbar.addToQueue(snackbarMessage));
   };
 
   private static toggleTaskDoneNotification = (): Promise<void> => {

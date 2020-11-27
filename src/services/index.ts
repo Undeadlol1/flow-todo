@@ -180,6 +180,7 @@ export function distanceBetweenDates(
   return formatDistance(dateToFormat, dateToCompareWith, {
     // @ts-ignore
     locale: dateLocales[i18n.language],
+    addSuffix: false,
   });
 }
 

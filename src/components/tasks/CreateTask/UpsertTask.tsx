@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
@@ -10,15 +11,14 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
+import { ViewerController } from '../../../controllers/ViewerController';
+import { upsertTask } from '../../../repositories/upsertTask';
 import {
   handleErrors,
   useTypedTranslate,
 } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
-import { addPointsWithSideEffects } from "../../../repositories/addPointsWithSideEffects";
-import { upsertTask } from '../../../repositories/upsertTask';
 import { authSelector } from '../../../store/selectors';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 const useStyles = makeStyles({
   button: {
@@ -126,7 +126,7 @@ function UpsertTaskContainer({
       await Promise.all([
         upsertTask({ name, userId }, taskId),
         pointsToAdd
-          ? addPointsWithSideEffects(userId, pointsToAdd || 10)
+          ? ViewerController.rewardUserWithPoints(pointsToAdd || 10)
           : Promise.resolve(),
       ]);
 

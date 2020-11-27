@@ -10,7 +10,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import useToggle from 'react-use/lib/useToggle';
 import { ViewerController } from '../../controllers/ViewerController';
 import { TaskHistory } from '../../entities/TaskHistory';
-import { addPointsWithSideEffects } from '../../repositories/addPointsWithSideEffects';
 import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { upsertTask } from '../../repositories/upsertTask';
@@ -100,7 +99,7 @@ const Container = memo(() => {
           collection: 'tasks',
           storeAs: 'currentTask',
         })
-        .then(() => toggleLoading(false))
+        .then(toggleLoading)
         .catch((error) => {
           handleErrors(error);
           goHome();
@@ -148,7 +147,8 @@ const Container = memo(() => {
     } catch (error) {
       handleErrors(error);
       if (error.message.includes('Null value error.')) {
-        return goHome();
+        goHome();
+        return;
       }
       history.replace('/tasks/active');
     }
@@ -159,7 +159,7 @@ const Container = memo(() => {
     toggleLoading(true);
     return Promise.all([
       deleteTaskRepo(taskId),
-      addPointsWithSideEffects(userId, 10),
+      ViewerController.rewardUserWithPoints(10),
       TaskService.activateNextTask({
         nextTaskId,
         currentTasks: tasks,

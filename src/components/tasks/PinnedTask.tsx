@@ -18,13 +18,13 @@ import {
   showSnackbar,
   useTypedTranslate,
 } from '../../services/index';
-import { addPointsWithSideEffects } from "../../repositories/addPointsWithSideEffects";
 import {
   authSelector,
   pinnedTaskSelector,
 } from '../../store/selectors';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import SubtasksList from './SubtasksList';
+import { ViewerController } from '../../controllers/ViewerController';
 
 let taskId = '';
 const log = debug('Pinnedtask');
@@ -43,7 +43,7 @@ export default memo(() => {
     const points = 30;
     showSnackbar(t('goodJobPointsRecieved', { points }));
     Promise.all([
-      addPointsWithSideEffects(auth.uid, points),
+      ViewerController.rewardUserWithPoints(points),
       taskRef.update({
         isDone: true,
         isPinned: false,

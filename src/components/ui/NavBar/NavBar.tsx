@@ -23,21 +23,17 @@ import { Link } from 'react-router-dom';
 import LevelingService from '../../../services/Leveling';
 import { useTypedSelector } from '../../../store';
 import {
+  animationSelector,
   authSelector,
   profileSelector,
   usersSelector,
 } from '../../../store/selectors';
 import { toggleSidebar } from '../../../store/uiSlice';
+import { WrapWithAnimatedNumbers } from '../../unsorted/WrapWithAnimatedNumbers';
 
 const log = debug('NavBar');
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    // Prevent "Slide" component animation to
-    // cause scrollbars to appear
-    overflow: 'hidden',
-  },
   title: {
     padding: theme.spacing(0, 1),
   },
@@ -63,12 +59,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const NavBar = memo(() => {
+export default memo(function NavBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="transparent">
+    <div className={classes.flexGrow}>
+      <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -89,28 +85,36 @@ const NavBar = memo(() => {
             </Link>
           </ButtonBase>
           <Box className={classes.flexGrow} />
-          <LoginOrLogoutButton />
+          <AvatarWithLevelBadge />
         </Toolbar>
       </AppBar>
     </div>
   );
 });
 
-NavBar.displayName = 'NavBar';
-
-export function LoginOrLogoutButton() {
+function AvatarWithLevelBadge() {
   const classes = useStyles();
 
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
+  const {
+    isPointsRewardingInProgress,
+    pointToDisplayDuringRewardAnimation,
+  } = useTypedSelector(animationSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );
   const experience = get(profile, 'experience', 0);
+  // NOTE: "+1" is a quick fix
+  const userLevel =
+    profile.isLoaded &&
+    Math.trunc(LevelingService.calculateUserLevel(experience)) + 1;
   const photoUrl =
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
-  const hasPhoto = !!photoUrl;
-  log('profile: ', profile);
+
+  log('profile: %O', profile);
+  log('Is reward animation going: ', isPointsRewardingInProgress);
+  log('Points to display: ', pointToDisplayDuringRewardAnimation);
 
   if (!user.isLoaded) {
     return (
@@ -122,12 +126,20 @@ export function LoginOrLogoutButton() {
   }
 
   return (
-    <>
-      <Slide in timeout={500} direction="left">
-        <Box mr={0.5}>
+    <WrapWithAnimatedNumbers
+      isVisible={isPointsRewardingInProgress}
+      number={pointToDisplayDuringRewardAnimation}
+    >
+      <Box
+        mr={0.5}
+        // Prevent "Slide" component animation to
+        // cause scrollbars to appear.
+        overflow="hidden"
+      >
+        <Slide in timeout={500} direction="left">
           <Button
-            component={Link}
             to="/profile"
+            component={Link}
             className={clsx(
               classes.link,
               isLevelUpAnimationActive && 'animated pulse infinite',
@@ -136,20 +148,11 @@ export function LoginOrLogoutButton() {
             <Badge
               overlap="circle"
               color="secondary"
-              // NOTE: "+1" is a quick fix
-              badgeContent={
-                profile.isLoaded &&
-                Math.trunc(
-                  LevelingService.calculateUserLevel(experience),
-                ) + 1
-              }
+              badgeContent={userLevel}
             >
-              <If condition={hasPhoto}>
+              <If condition={!!photoUrl}>
                 <Then>
-                  <Avatar
-                    src={photoUrl}
-                    className={clsx(classes.avatar)}
-                  />
+                  <Avatar src={photoUrl} className={classes.avatar} />
                 </Then>
                 <Else>
                   <AccountCircle
@@ -160,10 +163,8 @@ export function LoginOrLogoutButton() {
               </If>
             </Badge>
           </Button>
-        </Box>
-      </Slide>
-    </>
+        </Slide>
+      </Box>
+    </WrapWithAnimatedNumbers>
   );
 }
-
-export default NavBar;

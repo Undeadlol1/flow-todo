@@ -1,6 +1,6 @@
 import React from 'react';
-import { sections } from '../storybookContants';
-import { {{pascalCase name}}, {{name}}Props } from '../../{{pascalCase name}}';
+import { sections } from '../../storybookContants';
+import { {{pascalCase name}}, {{name}}Props } from './{{pascalCase name}}';
 
 export default {
     component: {{ pascalCase name }},

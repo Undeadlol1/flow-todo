@@ -1,4 +1,4 @@
-TODO for procrastinators.
+TODO app for procrastinators.
 
 ![Application logo.](https://github.com/Undeadlol1/flow-todo/blob/master/public/images/logo.png?raw=true)
 

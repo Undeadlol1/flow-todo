@@ -14,6 +14,9 @@ jobs:
 
       - name: Cached Dependencies
         uses: ktmud/cached-dependencies@v1
+        with:
+          run: |
+            npm-install
 
       - name: Build
         run: npm run-script build

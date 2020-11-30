@@ -7,8 +7,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import CheckBoxIconBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxIconBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import { makeStyles } from '@material-ui/styles';
@@ -16,12 +16,12 @@ import arrayMove from 'array-move';
 import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import {
   SortableContainer,
   SortableElement,
   SortableHandle,
 } from 'react-sortable-hoc';
+import { ViewerController } from '../../controllers/ViewerController';
 import { Subtask } from '../../entities/Subtask';
 import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { updateSubtasks } from '../../repositories/updateSubtasks';
@@ -30,8 +30,6 @@ import {
   useTypedTranslate,
 } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
-import { authSelector } from '../../store/selectors';
-import { ViewerController } from '../../controllers/ViewerController';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -63,7 +61,6 @@ const DragHandle = SortableHandle(() => (
 const SortableItem = SortableElement(
   ({ subtask }: { subtask: Subtask }) => {
     const t = useTypedTranslate();
-    const auth = useSelector(authSelector);
     const classes = useStyles();
 
     function remove() {

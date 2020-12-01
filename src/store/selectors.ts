@@ -20,6 +20,7 @@ import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
 import { AnimationState } from './animationSlice';
+import shuffle from 'lodash/shuffle';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -53,7 +54,7 @@ export const tasksSelector = createSelector(
     // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;
     return filter(
-      tasks,
+      shuffle(tasks),
       ({ tags = [] }) =>
         !tags.some((tag) => excludedTags.includes(tag.toLowerCase())),
     );

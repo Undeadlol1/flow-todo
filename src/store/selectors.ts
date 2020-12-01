@@ -65,6 +65,11 @@ export const activeTaskSelector = createSelector(
   (tasks: Task[] = []) => tasks.find((i) => !!i.isCurrent),
 );
 
+export const focusModeTasksSelector = createSelector(
+  get('firestore.ordered.focusModeTasks'),
+  (tasks: Task[]) => tasks,
+);
+
 export const tagsOfFetchedTasksSelector = createSelector(
   fetchedTasksSelector,
   (tasks: Task[] = []): string[] => {

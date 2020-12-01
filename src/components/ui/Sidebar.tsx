@@ -103,6 +103,12 @@ function Sidebar({
       classes={{ paper: cx.backgroundColor }}
       onClose={toggleSidebar}
     >
+      <ListItem button onClick={redirectAndCloseSidebar('/focus')}>
+        <ListItemIcon>
+          <FocusIcon />
+        </ListItemIcon>
+        <StyledListText primary={sidebarTranslator('focus_mode')} />
+      </ListItem>
       <List>
         <ListItem button onClick={redirectAndCloseSidebar('/faq')}>
           <ListItemIcon>

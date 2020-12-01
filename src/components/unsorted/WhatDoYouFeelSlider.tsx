@@ -27,6 +27,7 @@ const WhatDoYouFeelSlider = memo(function WhatDoYouFeelSlider(
               min={0}
               max={100}
               step={25}
+              track={false}
               valueLabelDisplay="off"
               defaultValue={sliderValue}
               onChange={(_, value) => {

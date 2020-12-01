@@ -21,7 +21,7 @@
     "@types/eslint": "^7.2.5",
     "@types/eslint-plugin-prettier": "^3.1.0",
     "@types/faker": "^5.1.4",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^26.0.16",
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.10",
     "@types/prettier": "2.1.5",

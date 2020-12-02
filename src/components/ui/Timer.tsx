@@ -5,8 +5,8 @@ import Fab from './Fab';
 
 interface Props {
   // Run function on timer stop.
-  onEnd?: () => any;
-  onStart?: () => any;
+  onEnd?: () => void;
+  onStart?: () => void;
   autoStart?: boolean;
   className?: string;
 }
@@ -29,7 +29,7 @@ export default function Timer(props: Props) {
       {audio}
       <ReactTimer
         // @ts-ignore
-        formatValue={val => {
+        formatValue={(val) => {
           // Timer returns '0' seconds by default'.
           if (val === 0) return '00';
           return val;

@@ -7,8 +7,12 @@ import {
 export default class Snackbar {
   private static dispatch = store?.dispatch;
 
-  public static addToQueue(snackbarMesssage: string) {
+  public static addToQueue(snackbarMesssage: string): void {
     this.dispatch(addSnackbarToQueue(snackbarMesssage));
+  }
+
+  public static addToQueueFP(snackbarMesssage: string): () => void {
+    return () => this.addToQueue(snackbarMesssage);
   }
 
   public static updateQueue(queue: string[]) {

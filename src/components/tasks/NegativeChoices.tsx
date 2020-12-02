@@ -33,7 +33,7 @@ const paragraphProps: TypographyProps = {
   color: 'textSecondary',
 };
 
-const HardChoices = (props: {
+const NegativeChoices = (props: {
   task: Task;
   taskId: string;
   deleteTask: () => Promise<void>;
@@ -162,4 +162,4 @@ const HardChoices = (props: {
   );
 };
 
-export default HardChoices;
+export default NegativeChoices;

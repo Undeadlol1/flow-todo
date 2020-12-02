@@ -16,8 +16,8 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
-import HardChoices from '../../components/tasks/HardChoices';
-import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
+import NegativeChoices from '../../components/tasks/NegativeChoices';
+import PositiveChoices from '../../components/tasks/TaskChoices/PositiveChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
@@ -31,6 +31,7 @@ import { useTypedTranslate } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import { updateTaskParams } from './TaskPageContainer';
+import flow from 'lodash/fp/flow';
 
 const log = debug('TaskPage');
 
@@ -75,35 +76,17 @@ export default function TaskPage(props: TaskPageProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
   const route = useRouteMatch() || {};
-  const { t: translateEncouragements } = useTranslation(
-    'encouragingMessages',
-  );
 
   const { path } = route;
   const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
   log('task: ', task);
   log('activeSubtasks: ', activeSubtasks);
 
-  // Show encouraging snackbar after short delay
-  useEffect(() => {
-    const encouragingMessages = [
-      translateEncouragements('dont_think_about_it'),
-      translateEncouragements(
-        'do_you_want_it_or_do_you_force_yourself',
-      ),
-      translateEncouragements('procrastinaton_is_a_fear_of_action'),
-    ];
-    const snackBarTimeout = setTimeout(() => {
-      if (!props.shouldDisplayEncouragements) return;
-      if (tasksDoneTodayNotificationProps.isVisible) return;
-      Snackbar.addToQueue(sample(encouragingMessages) as string);
-    }, 3500);
-    return () => clearTimeout(snackBarTimeout);
-  }, [
-    translateEncouragements,
-    props.shouldDisplayEncouragements,
-    tasksDoneTodayNotificationProps.isVisible,
-  ]);
+  useEncouragingTextSnackbar({
+    isVisible:
+      props.shouldDisplayEncouragements &&
+      !tasksDoneTodayNotificationProps.isVisible,
+  });
 
   if (loading) {
     return (
@@ -136,9 +119,9 @@ export default function TaskPage(props: TaskPageProps) {
       />
       <Timer
         autoStart
-        onEnd={() => {
-          Snackbar.addToQueue(t('you_worked_enough_on_this_task'));
-        }}
+        onEnd={Snackbar.addToQueueFP(
+          t('you_worked_enough_on_this_task'),
+        )}
       />
       <Grid item xs={12}>
         <Grid
@@ -168,10 +151,10 @@ export default function TaskPage(props: TaskPageProps) {
       <Grid container item justify="center" xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome`}>
-            <HardChoices {...props} />
+            <NegativeChoices {...props} />
           </Route>
           <Route path={`${path}/isGood`}>
-            <TaskChoices
+            <PositiveChoices
               className="IntroHandle__choices"
               {...props}
             />
@@ -204,4 +187,30 @@ export default function TaskPage(props: TaskPageProps) {
       </Grid>
     </Grid>
   );
+
+  function useEncouragingTextSnackbar({
+    isVisible,
+  }: {
+    isVisible: boolean;
+  }) {
+    const { t: translate } = useTranslation('encouragingMessages');
+    const encouragement = flow(
+      sample,
+      translate,
+    )([
+      'dont_think_about_it',
+      'procrastinaton_is_a_fear_of_action',
+      'do_you_want_it_or_do_you_force_yourself',
+    ]);
+
+    useEffect(() => {
+      if (!isVisible) return;
+
+      const snackBarTimeout = setTimeout(
+        Snackbar.addToQueueFP(encouragement),
+        3500,
+      );
+      return () => clearTimeout(snackBarTimeout);
+    }, [isVisible, encouragement]);
+  }
 }

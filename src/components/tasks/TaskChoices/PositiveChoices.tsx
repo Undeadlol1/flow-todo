@@ -114,6 +114,11 @@ const PositiveChoices = (props: Props) => {
     const pointsToAdd = 10;
     props.updateTask({
       pointsToAdd,
+      snackbarMessage: t('Good job!'),
+      history: {
+        createdAt: Date.now(),
+        actionType: 'doneSubtask',
+      },
       values: {
         ...calculateNextRepetition(props.task, 'normal'),
         subtasks: map(props.task!.subtasks, (t: Subtask) =>
@@ -124,13 +129,6 @@ const PositiveChoices = (props: Props) => {
         ),
         isCurrent: false,
       },
-      history: {
-        createdAt: Date.now(),
-        actionType: 'updateSubtask',
-      },
-      snackbarMessage: t('goodJobPointsRecieved', {
-        points: pointsToAdd,
-      }),
     });
   }
 

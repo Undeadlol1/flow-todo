@@ -40,6 +40,7 @@ export const tasksDoneTodaySelector = createSelector(
         'stepForward',
         'leapForward',
         'setDone',
+        'doneSubtask',
       ]),
     ).true || 0,
 );

@@ -7,8 +7,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxIconBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import { makeStyles } from '@material-ui/styles';
@@ -21,15 +19,10 @@ import {
   SortableElement,
   SortableHandle,
 } from 'react-sortable-hoc';
-import { ViewerController } from '../../controllers/ViewerController';
 import { Subtask } from '../../entities/Subtask';
 import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { updateSubtasks } from '../../repositories/updateSubtasks';
-import {
-  handleErrors,
-  useTypedTranslate,
-} from '../../services/index';
-import Snackbar from '../../services/Snackbar';
+import { useTypedTranslate } from '../../services/index';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -67,27 +60,9 @@ const SortableItem = SortableElement(
       return deleteSubtask(subtask);
     }
 
-    function setDone() {
-      Snackbar.addToQueue(t('Good job!'));
-      Promise.all([
-        remove(),
-        ViewerController.rewardPoints(10),
-      ]).catch(handleErrors);
-    }
-
     return (
       <ListItem ContainerComponent="div">
         <DragHandle />
-        <ListItemIcon>
-          <IconButton edge="end" aria-label="Done" onClick={setDone}>
-            {/* FIXME: improssible to toggle properly  */}
-            {subtask.isDone ? (
-              <CheckBoxIcon />
-            ) : (
-              <CheckBoxIconBlank />
-            )}
-          </IconButton>
-        </ListItemIcon>
         <ListItemText
           primary={subtask.name}
           className={classes.link}

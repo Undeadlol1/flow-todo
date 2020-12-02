@@ -60,7 +60,7 @@
     "react-countup": "^4.2.3",
     "react-dom": "^16.14.0",
     "react-firebaseui-localized": "^1.0.8",
-    "react-hook-form": "^6.12.1",
+    "react-hook-form": "^6.12.2",
     "react-i18next": "^11.7.4",
     "react-if": "^4.0.1",
     "react-joyride": "^2.1.1",

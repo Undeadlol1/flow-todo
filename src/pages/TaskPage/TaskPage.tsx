@@ -82,7 +82,6 @@ export default function TaskPage(props: TaskPageProps) {
   log('task: ', task);
   log('activeSubtasks: ', activeSubtasks);
 
-  // Show encouraging snackbar after short delay
   useEncouragingTextSnackbar({
     isVisible:
       props.shouldDisplayEncouragements &&
@@ -120,9 +119,9 @@ export default function TaskPage(props: TaskPageProps) {
       />
       <Timer
         autoStart
-        onEnd={() => {
-          Snackbar.addToQueue(t('you_worked_enough_on_this_task'));
-        }}
+        onEnd={Snackbar.addToQueueFP(
+          t('you_worked_enough_on_this_task'),
+        )}
       />
       <Grid item xs={12}>
         <Grid
@@ -207,9 +206,10 @@ export default function TaskPage(props: TaskPageProps) {
     useEffect(() => {
       if (!isVisible) return;
 
-      const snackBarTimeout = setTimeout(() => {
-        Snackbar.addToQueue(encouragement);
-      }, 3500);
+      const snackBarTimeout = setTimeout(
+        Snackbar.addToQueueFP(encouragement),
+        3500,
+      );
       return () => clearTimeout(snackBarTimeout);
     }, [isVisible, encouragement]);
   }

@@ -194,23 +194,23 @@ export default function TaskPage(props: TaskPageProps) {
     isVisible: boolean;
   }) {
     const { t: translate } = useTranslation('encouragingMessages');
-    const encouragement = flow(
-      sample,
-      translate,
-    )([
-      'dont_think_about_it',
-      'procrastinaton_is_a_fear_of_action',
-      'do_you_want_it_or_do_you_force_yourself',
-    ]);
 
     useEffect(() => {
       if (!isVisible) return;
 
+      const encouragement = flow(
+        sample,
+        translate,
+      )([
+        'dont_think_about_it',
+        'procrastinaton_is_a_fear_of_action',
+        'do_you_want_it_or_do_you_force_yourself',
+      ]);
       const snackBarTimeout = setTimeout(
         Snackbar.addToQueueFP(encouragement),
         3500,
       );
       return () => clearTimeout(snackBarTimeout);
-    }, [isVisible, encouragement]);
+    }, [isVisible, translate]);
   }
 }

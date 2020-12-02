@@ -30,10 +30,7 @@ import { Task } from '../../entities/Task';
 import { useTypedTranslate } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
-import {
-  deleteTaskArguments,
-  updateTaskParams,
-} from './TaskPageContainer';
+import { updateTaskParams } from './TaskPageContainer';
 
 const log = debug('TaskPage');
 
@@ -62,8 +59,8 @@ export interface TaskPageProps {
   taskId: string;
   loading: boolean;
   shouldDisplayEncouragements: boolean;
+  deleteTask: () => Promise<void>;
   updateTask: (options: updateTaskParams) => Promise<void>;
-  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
   // TODO this feels wrong.
   tasksDoneTodayNotificationProps: TasksDoneTodayNotificationProps;
 }

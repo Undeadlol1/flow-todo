@@ -21,7 +21,6 @@ import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import UpsertNote from './UpsertNote/UpsertNote';
 import TagsForm from './TagsForm';
-import { deleteTaskArguments } from '../../pages/TaskPage/TaskPageContainer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -37,7 +36,7 @@ const paragraphProps: TypographyProps = {
 const HardChoices = (props: {
   task: Task;
   taskId: string;
-  deleteTask: (options?: deleteTaskArguments) => Promise<void>;
+  deleteTask: () => Promise<void>;
 }) => {
   const t = useTypedTranslate();
   const classes = useStyles();
@@ -50,16 +49,6 @@ const HardChoices = (props: {
     color: 'primary',
     variant: 'contained',
   };
-
-  function destroy() {
-    const pointsToAdd = 10;
-    props.deleteTask({
-      pointsToAdd,
-      snackbarMessage: t('getRidOfUnimportant', {
-        points: pointsToAdd,
-      }),
-    });
-  }
 
   function addPointsOnSuccess(points = 10) {
     addPointsToUser(auth.uid, points);
@@ -88,7 +77,10 @@ const HardChoices = (props: {
             </Grid>
             <Grid item xs={12}>
               <Box mb={2}>
-                <Button {...commonButtonProps} onClick={destroy}>
+                <Button
+                  {...commonButtonProps}
+                  onClick={props.deleteTask}
+                >
                   {t('notImportant')}
                 </Button>
               </Box>

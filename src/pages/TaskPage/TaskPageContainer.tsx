@@ -30,18 +30,12 @@ import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
 import { updateDailyStreak } from '../../repositories/updateDailyStreak';
 
-const componentName = 'TaskPageContainer';
-const log = debug(componentName);
+const log = debug('TaskPageContainer');
 
 export interface updateTaskParams {
   values: any;
   pointsToAdd?: number;
   history: TaskHistory;
-  snackbarMessage?: string;
-}
-
-export interface deleteTaskArguments {
-  pointsToAdd?: number;
   snackbarMessage?: string;
 }
 
@@ -70,7 +64,7 @@ const Container = memo(() => {
   const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
 
-  function goHome() {
+  function redirectHome() {
     return history.replace('/');
   }
 
@@ -101,7 +95,7 @@ const Container = memo(() => {
         .then(toggleLoading)
         .catch((error) => {
           handleErrors(error);
-          goHome();
+          redirectHome();
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,28 +146,27 @@ const Container = memo(() => {
     } catch (error) {
       handleErrors(error);
       if (error.message.includes('Null value error.')) {
-        goHome();
+        redirectHome();
         return;
       }
       history.replace('/tasks/active');
     }
   }
 
-  async function deleteTask(options: deleteTaskArguments = {}) {
+  async function deleteTask() {
     log('deleteTask is running.');
+    const pointsToAdd = 10;
     toggleLoading(true);
     return Promise.all([
       deleteTaskRepo(taskId),
-      ViewerController.rewardUserWithPoints(10),
+      ViewerController.rewardPoints(pointsToAdd),
       TaskService.activateNextTask({
         nextTaskId,
         currentTasks: tasks,
       }),
     ])
       .then(() => {
-        Snackbar.addToQueue(
-          options.snackbarMessage || t('successfullyDeleted'),
-        );
+        Snackbar.addToQueue(t('getRidOfUnimportant'));
         history.replace(nextTaskId ? '/tasks/active' : '/');
       })
       .catch((error) => {

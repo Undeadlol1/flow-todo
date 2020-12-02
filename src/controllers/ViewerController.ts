@@ -1,6 +1,7 @@
 import delay from 'lodash/delay';
 import { promiseDelay } from '../helpers/promiseDelay';
 import { addPointsToUser } from '../repositories/addPointsToUser';
+import { upsertProfile } from '../repositories/upsertProfile';
 import { getNewlyUnlockedReward } from '../services';
 import LevelingService from '../services/Leveling';
 import Snackbar from '../services/Snackbar';
@@ -12,6 +13,7 @@ import store from '../store/index';
 import {
   authSelector,
   profilePointsSelector,
+  profileSelector,
   rewardsSelector,
 } from '../store/selectors';
 import {
@@ -25,9 +27,31 @@ export class ViewerController {
     return store.getState();
   }
 
+  private static get viewer() {
+    return profileSelector(this.state);
+  }
+
   private static get viewerId(): string {
     return authSelector(this.state).uid;
   }
+
+  static rewardUserForWorkingOnATask = async ({
+    points,
+    snackbarMessage,
+  }: {
+    points: number;
+    snackbarMessage?: string;
+  }) => {
+    return ViewerController.toggleTaskDoneNotification()
+      .then(() => promiseDelay(3500))
+      .then(() => ViewerController.toggleTaskDoneNotification())
+      .then(() => ViewerController.rewardPoints(points))
+      .then(() => {
+        if (snackbarMessage) {
+          return Snackbar.addToQueue(snackbarMessage);
+        }
+      });
+  };
 
   static async rewardPoints(points: number) {
     const { state, viewerId } = ViewerController;
@@ -49,23 +73,19 @@ export class ViewerController {
     return addPointsToUser(viewerId, points);
   }
 
-  static rewardUserForWorkingOnATask = async ({
-    points,
-    snackbarMessage,
-  }: {
-    points: number;
-    snackbarMessage?: string;
-  }) => {
-    return ViewerController.toggleTaskDoneNotification()
-      .then(() => promiseDelay(3500))
-      .then(() => ViewerController.toggleTaskDoneNotification())
-      .then(() => ViewerController.rewardPoints(points))
-      .then(() => {
-        if (snackbarMessage) {
-          return Snackbar.addToQueue(snackbarMessage);
-        }
-      });
-  };
+  static async resetPoints() {
+    return upsertProfile({
+      ...this.viewer,
+      points: 0,
+    });
+  }
+
+  static async resetExperience() {
+    return upsertProfile({
+      ...this.viewer,
+      experience: 0,
+    });
+  }
 
   private static toggleTaskDoneNotification = (): Promise<void> => {
     store.dispatch(toggleTasksDoneTodayNotification());

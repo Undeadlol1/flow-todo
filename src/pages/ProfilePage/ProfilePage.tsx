@@ -15,15 +15,16 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import { useSelector } from 'react-redux';
-import { FirebaseReducer, useFirestore } from 'react-redux-firebase';
+import { FirebaseReducer } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
 import { MyUserPoints } from '../../components/users/MyUserPoints';
-import { handleErrors } from '../../services/index';
-import LevelingService from '../../services/Leveling';
+import { ViewerController } from '../../controllers/ViewerController';
 import { Profile } from '../../entities/Profile';
 import { upsertProfile } from '../../repositories/upsertProfile';
+import { handleErrors } from '../../services/index';
+import LevelingService from '../../services/Leveling';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const log = debug('ProfilePage');
@@ -45,7 +46,6 @@ interface Props {
 export const ProfilePage = memo((props: Props) => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const firestore = useFirestore();
   const userId = props.user!.uid;
   const profile = useSelector(profileSelector);
 
@@ -53,14 +53,15 @@ export const ProfilePage = memo((props: Props) => {
     return () => {
       if (props.isLoading) return;
       // eslint-disable-next-line no-restricted-globals
-      if (confirm(t('are you sure'))) {
-        firestore
-          .doc(`profiles/${userId}`)
-          .update({
-            [fieldToReset]: 0,
-          })
-          .catch(handleErrors);
+      if (!confirm(t('are you sure'))) return;
+
+      if (fieldToReset === 'points') {
+        return ViewerController.resetPoints();
       }
+      if (fieldToReset === 'experience') {
+        return ViewerController.resetExperience();
+      }
+      return;
     };
   }
   const photoUrl = props.user!.photoURL;

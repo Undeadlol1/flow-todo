@@ -64,11 +64,11 @@ const SortableItem = SortableElement(
     const classes = useStyles();
 
     function remove() {
-      return deleteSubtask(subtask.parentId, subtask);
+      return deleteSubtask(subtask);
     }
 
     function setDone() {
-      Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
+      Snackbar.addToQueue(t('Good job!'));
       Promise.all([
         remove(),
         ViewerController.rewardPoints(10),

@@ -1,14 +1,12 @@
 import firebase from 'firebase/app';
 import { getFirestore } from '../services/index';
+import { Subtask } from '../entities/Subtask';
 
 export function deleteSubtask(
-  taskId: string,
-  subtask: {
-    id: string;
-  },
+  subtask: Subtask,
 ): Promise<void | Error> {
   return getFirestore()
-    .doc('tasks/' + taskId)
+    .doc('tasks/' + subtask.parentId)
     .update({
       subtasks: firebase.firestore.FieldValue.arrayRemove(subtask),
     });

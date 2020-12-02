@@ -31,6 +31,7 @@ import { useTypedTranslate } from '../../services/index';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import { updateTaskParams } from './TaskPageContainer';
+import flow from 'lodash/fp/flow';
 
 const log = debug('TaskPage');
 
@@ -193,22 +194,23 @@ export default function TaskPage(props: TaskPageProps) {
   }: {
     isVisible: boolean;
   }) {
-    const { t: translateEncouragements } = useTranslation(
-      'encouragingMessages',
-    );
+    const { t: translate } = useTranslation('encouragingMessages');
+    const encouragement = flow(
+      sample,
+      translate,
+    )([
+      'dont_think_about_it',
+      'procrastinaton_is_a_fear_of_action',
+      'do_you_want_it_or_do_you_force_yourself',
+    ]);
 
     useEffect(() => {
       if (!isVisible) return;
 
-      const encouragingMessages = [
-        'dont_think_about_it',
-        'procrastinaton_is_a_fear_of_action',
-        'do_you_want_it_or_do_you_force_yourself',
-      ].map(translateEncouragements);
       const snackBarTimeout = setTimeout(() => {
-        Snackbar.addToQueue(sample(encouragingMessages) as string);
+        Snackbar.addToQueue(encouragement);
       }, 3500);
       return () => clearTimeout(snackBarTimeout);
-    }, [isVisible, translateEncouragements]);
+    }, [isVisible, encouragement]);
   }
 }

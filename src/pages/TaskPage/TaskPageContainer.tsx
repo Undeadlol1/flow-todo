@@ -11,10 +11,8 @@ import useToggle from 'react-use/lib/useToggle';
 import { ViewerController } from '../../controllers/ViewerController';
 import { TaskHistory } from '../../entities/TaskHistory';
 import { deleteTask as deleteTaskRepo } from '../../repositories/deleteTask';
-import { upsertProfile } from '../../repositories/upsertProfile';
 import { upsertTask } from '../../repositories/upsertTask';
 import { handleErrors } from '../../services';
-import DailyStreak from '../../services/dailyStreak';
 import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import { useTypedSelector } from '../../store/index';
@@ -30,6 +28,7 @@ import {
 } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
+import { updateDailyStreak } from '../../repositories/updateDailyStreak';
 
 const componentName = 'TaskPageContainer';
 const log = debug(componentName);
@@ -142,7 +141,13 @@ const Container = memo(() => {
           nextTaskId,
           currentTasks: tasks,
         }),
-        updateDailyStreak(),
+        updateDailyStreak({
+          profile,
+          userId: profile.userId,
+          // NOTE: +1 because when this function is called task
+          // update is not registred yet, thus task may look as it is nt done yet.
+          tasksDoneToday: tasksDoneToday + 1,
+        }),
       ]);
     } catch (error) {
       handleErrors(error);
@@ -176,19 +181,6 @@ const Container = memo(() => {
         history.replace('/tasks/active');
       })
       .finally(toggleLoading);
-  }
-
-  async function updateDailyStreak() {
-    return upsertProfile({
-      ...profile,
-      userId,
-      dailyStreak: DailyStreak.getUpdatedStreak({
-        streak: profile.dailyStreak,
-        // NOTE: +1 because when this function is called task
-        // update is not registred yet, thus task may look as it is nt done yet.
-        tasksDoneToday: tasksDoneToday + 1,
-      }),
-    });
   }
 
   const mergedProps = {

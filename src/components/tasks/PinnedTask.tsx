@@ -43,7 +43,7 @@ export default memo(() => {
     const points = 30;
     showSnackbar(t('goodJobPointsRecieved', { points }));
     Promise.all([
-      ViewerController.rewardUserWithPoints(points),
+      ViewerController.rewardPoints(points),
       taskRef.update({
         isDone: true,
         isPinned: false,

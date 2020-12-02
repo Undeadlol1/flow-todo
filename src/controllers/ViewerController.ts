@@ -29,7 +29,7 @@ export class ViewerController {
     return authSelector(this.state).uid;
   }
 
-  static async rewardUserWithPoints(points: number) {
+  static async rewardPoints(points: number) {
     const { state, viewerId } = ViewerController;
     const profilePoints = profilePointsSelector(state);
     const nextReward = getNewlyUnlockedReward(
@@ -59,7 +59,7 @@ export class ViewerController {
     return ViewerController.toggleTaskDoneNotification()
       .then(() => promiseDelay(3500))
       .then(() => ViewerController.toggleTaskDoneNotification())
-      .then(() => ViewerController.rewardUserWithPoints(points))
+      .then(() => ViewerController.rewardPoints(points))
       .then(() => {
         if (snackbarMessage) {
           return Snackbar.addToQueue(snackbarMessage);

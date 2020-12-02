@@ -62,8 +62,7 @@ export default {
       'Ты стал ближе к своей цели. Молодец! Очков получено: {{points}}',
     'you will see task again in':
       'Ты увидишь эту задачу снова через {{date}}.',
-    getRidOfUnimportant:
-      'Не бойся избавляться от неважного. Очков получено: {{points}}',
+    getRidOfUnimportant: 'Не бойся избавляться от неважного.',
     feedback: 'Обратная связь',
     'what do you feel': 'Что ты чувствуешь по отношению к задаче?',
     'points added': 'Добавлено очков: {{points}}',

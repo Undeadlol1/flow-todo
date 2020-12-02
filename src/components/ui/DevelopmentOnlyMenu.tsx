@@ -103,7 +103,7 @@ function DevelopmentOnlyMenu() {
         onClose={toggleMenu}
       >
         <MenuItem
-          onClick={() => ViewerController.rewardUserWithPoints(50)}
+          onClick={() => ViewerController.rewardPoints(50)}
         >
           Add 50 points
         </MenuItem>

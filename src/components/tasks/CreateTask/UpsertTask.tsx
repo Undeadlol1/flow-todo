@@ -126,7 +126,7 @@ function UpsertTaskContainer({
       await Promise.all([
         upsertTask({ name, userId }, taskId),
         pointsToAdd
-          ? ViewerController.rewardUserWithPoints(pointsToAdd || 10)
+          ? ViewerController.rewardPoints(pointsToAdd || 10)
           : Promise.resolve(),
       ]);
 

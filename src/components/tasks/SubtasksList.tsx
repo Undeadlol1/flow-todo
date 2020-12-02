@@ -71,7 +71,7 @@ const SortableItem = SortableElement(
       Snackbar.addToQueue(t('goodJobPointsRecieved', { points: 10 }));
       Promise.all([
         remove(),
-        ViewerController.rewardUserWithPoints(10),
+        ViewerController.rewardPoints(10),
       ]).catch(handleErrors);
     }
 

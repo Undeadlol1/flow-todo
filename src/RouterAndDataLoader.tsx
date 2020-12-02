@@ -71,19 +71,8 @@ export default memo((props: { children?: JSX.Element }) => {
       },
       {
         doc: userId,
-        collection: 'profiles',
         storeAs: 'profile',
-      },
-      // TODO: make sure this is never used and remove it
-      {
-        collection: 'tasks',
-        where: [
-          ['userId', '==', userId],
-          ['isDone', '==', false],
-          ['dueAt', '<', today],
-        ],
-        storeAs: 'activeTasks',
-        limit: 100,
+        collection: 'profiles',
       },
       {
         collection: 'taskLogs',
@@ -93,6 +82,7 @@ export default memo((props: { children?: JSX.Element }) => {
         ],
         limit: 100,
       },
+      // TODO remove this.
       {
         collection: 'tasks',
         where: [

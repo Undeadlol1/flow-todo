@@ -80,7 +80,7 @@ const Container = memo(() => {
   // Fetch task if needed.
   useEffect(() => {
     if (
-      get(firestoreStatus, 'requested.activeTasks') &&
+      get(firestoreStatus, 'requested.tasks') &&
       get(task, 'id') !== taskId &&
       !isLoading
     ) {

@@ -75,9 +75,6 @@ export default function TaskPage(props: TaskPageProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
   const route = useRouteMatch() || {};
-  const { t: translateEncouragements } = useTranslation(
-    'encouragingMessages',
-  );
 
   const { path } = route;
   const activeSubtasks = filter(task.subtasks, (i) => !i.isDone);
@@ -85,25 +82,11 @@ export default function TaskPage(props: TaskPageProps) {
   log('activeSubtasks: ', activeSubtasks);
 
   // Show encouraging snackbar after short delay
-  useEffect(() => {
-    const encouragingMessages = [
-      translateEncouragements('dont_think_about_it'),
-      translateEncouragements(
-        'do_you_want_it_or_do_you_force_yourself',
-      ),
-      translateEncouragements('procrastinaton_is_a_fear_of_action'),
-    ];
-    const snackBarTimeout = setTimeout(() => {
-      if (!props.shouldDisplayEncouragements) return;
-      if (tasksDoneTodayNotificationProps.isVisible) return;
-      Snackbar.addToQueue(sample(encouragingMessages) as string);
-    }, 3500);
-    return () => clearTimeout(snackBarTimeout);
-  }, [
-    translateEncouragements,
-    props.shouldDisplayEncouragements,
-    tasksDoneTodayNotificationProps.isVisible,
-  ]);
+  useEncouragingTextSnackbar({
+    isVisible:
+      props.shouldDisplayEncouragements &&
+      !tasksDoneTodayNotificationProps.isVisible,
+  });
 
   if (loading) {
     return (
@@ -204,4 +187,28 @@ export default function TaskPage(props: TaskPageProps) {
       </Grid>
     </Grid>
   );
+
+  function useEncouragingTextSnackbar({
+    isVisible,
+  }: {
+    isVisible: boolean;
+  }) {
+    const { t: translateEncouragements } = useTranslation(
+      'encouragingMessages',
+    );
+
+    useEffect(() => {
+      if (!isVisible) return;
+
+      const encouragingMessages = [
+        'dont_think_about_it',
+        'procrastinaton_is_a_fear_of_action',
+        'do_you_want_it_or_do_you_force_yourself',
+      ].map(translateEncouragements);
+      const snackBarTimeout = setTimeout(() => {
+        Snackbar.addToQueue(sample(encouragingMessages) as string);
+      }, 3500);
+      return () => clearTimeout(snackBarTimeout);
+    }, [isVisible, translateEncouragements]);
+  }
 }

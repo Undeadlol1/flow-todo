@@ -49,17 +49,19 @@ export const ProfilePage = memo((props: Props) => {
   const userId = props.user!.uid;
   const profile = useSelector(profileSelector);
 
-  function reset(fieldToReset: string) {
-    if (props.isLoading) return;
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm(t('are you sure'))) {
-      firestore
-        .doc(`profiles/${userId}`)
-        .update({
-          [fieldToReset]: 0,
-        })
-        .catch(handleErrors);
-    }
+  function reset(fieldToReset: 'points' | 'experience') {
+    return () => {
+      if (props.isLoading) return;
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm(t('are you sure'))) {
+        firestore
+          .doc(`profiles/${userId}`)
+          .update({
+            [fieldToReset]: 0,
+          })
+          .catch(handleErrors);
+      }
+    };
   }
   const photoUrl = props.user!.photoURL;
   const title =
@@ -133,12 +135,12 @@ export const ProfilePage = memo((props: Props) => {
         </Box>
         <Card>
           <List>
-            <ListItem button onClick={() => reset('points')}>
+            <ListItem button onClick={reset('points')}>
               <ListItemText>
                 {props.isLoading ? <Skeleton /> : t('reset points')}
               </ListItemText>
             </ListItem>
-            <ListItem button onClick={() => reset('experience')}>
+            <ListItem button onClick={reset('experience')}>
               <ListItemText>
                 {props.isLoading ? (
                   <Skeleton />

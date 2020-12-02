@@ -8,7 +8,6 @@ export type Task = {
   note?: string;
   isDone: boolean;
   isCurrent?: boolean;
-  isPinned?: boolean;
   repetitionLevel?: number;
   subtasks?: Subtask[];
   history?: TaskHistory[];

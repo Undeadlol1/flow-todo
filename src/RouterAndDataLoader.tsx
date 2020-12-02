@@ -82,16 +82,6 @@ export default memo((props: { children?: JSX.Element }) => {
         ],
         limit: 100,
       },
-      // TODO remove this.
-      {
-        collection: 'tasks',
-        where: [
-          ['userId', '==', userId],
-          ['isPinned', '==', true],
-        ],
-        storeAs: 'pinnedTask',
-        limit: 1,
-      },
       {
         collection: 'tasks',
         where: [['userId', '==', userId]],

@@ -81,11 +81,6 @@ export const tagsOfFetchedTasksSelector = createSelector(
   },
 );
 
-export const pinnedTaskSelector = createSelector(
-  get('firestore.ordered.pinnedTask[0]'),
-  (task) => (task || {}) as Task,
-);
-
 export const fetchedTaskSelector = createSelector(
   get('firestore.ordered.currentTask[0]'),
   (task) => (task || {}) as Task,

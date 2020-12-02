@@ -49,18 +49,22 @@ export class ViewerController {
     return addPointsToUser(viewerId, points);
   }
 
-  static rewardUserForWorkingOnATask = ({
+  static rewardUserForWorkingOnATask = async ({
     points,
     snackbarMessage,
   }: {
     points: number;
-    snackbarMessage: string;
+    snackbarMessage?: string;
   }) => {
-    ViewerController.toggleTaskDoneNotification()
+    return ViewerController.toggleTaskDoneNotification()
       .then(() => promiseDelay(3500))
       .then(() => ViewerController.toggleTaskDoneNotification())
       .then(() => ViewerController.rewardUserWithPoints(points))
-      .then(() => Snackbar.addToQueue(snackbarMessage));
+      .then(() => {
+        if (snackbarMessage) {
+          return Snackbar.addToQueue(snackbarMessage);
+        }
+      });
   };
 
   private static toggleTaskDoneNotification = (): Promise<void> => {

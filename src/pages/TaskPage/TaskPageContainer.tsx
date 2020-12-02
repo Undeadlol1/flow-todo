@@ -38,7 +38,7 @@ export interface updateTaskParams {
   values: any;
   pointsToAdd?: number;
   history: TaskHistory;
-  snackbarMessage: string;
+  snackbarMessage?: string;
 }
 
 export interface deleteTaskArguments {

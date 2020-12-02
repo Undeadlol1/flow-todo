@@ -97,6 +97,7 @@ const TaskChoices = (props: Props) => {
       20 * repetitionLevel + activeSubtasks.length * rewardPerSubtask;
     props.updateTask({
       pointsToAdd,
+      snackbarMessage: '',
       values: {
         isCurrent: false,
         isDone: true,
@@ -106,9 +107,6 @@ const TaskChoices = (props: Props) => {
         createdAt: Date.now(),
         actionType: 'setDone',
       },
-      snackbarMessage: t('goodJobPointsRecieved', {
-        points: pointsToAdd,
-      }),
     });
   }
 

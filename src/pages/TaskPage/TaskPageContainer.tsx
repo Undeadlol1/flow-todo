@@ -64,12 +64,12 @@ const Container = memo(() => {
   const nextTaskId = TaskService.getRandomTaskId(
     filter(tasks, (t) => t.id !== taskId),
   );
-  const { uid: userId } = useTypedSelector(authSelector);
   const uiState = useTypedSelector(uiSelector);
-  const firestoreStatus = useTypedSelector(firestoreStatusSelector);
   const profile = useTypedSelector(profileSelector);
-  const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
+  const { uid: userId } = useTypedSelector(authSelector);
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
+  const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
+  const firestoreStatus = useTypedSelector(firestoreStatusSelector);
 
   function goHome() {
     return history.replace('/');

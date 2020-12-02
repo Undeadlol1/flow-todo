@@ -1,6 +1,4 @@
-import { Box, Drawer, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import classNames from 'classnames';
+import { Drawer } from '@material-ui/core';
 import debug from 'debug';
 import React, { memo } from 'react';
 import TasksDoneToday, {
@@ -9,40 +7,30 @@ import TasksDoneToday, {
 
 const log = debug('TasksDoneTodayNotification');
 
-const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
-
 export interface TasksDoneTodayNotificationProps
   extends TasksDoneTodayProps {
   isVisible: boolean;
   toggleVisibility: (isOpen?: boolean) => void;
-  className?: string;
 }
 
 const TasksDoneTodayNotification = memo(
-  ({
+  function TasksDoneTodayNotification({
     isVisible,
     toggleVisibility,
     ...props
-  }: TasksDoneTodayNotificationProps) => {
-    const anchor = 'top';
-    const classes = useStyles();
-    const rootClasses = classNames(classes.root, props.className);
+  }: TasksDoneTodayNotificationProps) {
     log('isVisible: ', isVisible);
 
     return (
-      <Box className={rootClasses}>
-        <Drawer
-          anchor={anchor}
-          open={isVisible}
-          onClose={() => toggleVisibility()}
-        >
-          <TasksDoneToday {...props} />
-        </Drawer>
-      </Box>
+      <Drawer
+        anchor="top"
+        open={isVisible}
+        onClose={() => toggleVisibility()}
+      >
+        <TasksDoneToday {...props} />
+      </Drawer>
     );
   },
 );
-
-TasksDoneTodayNotification.displayName = 'TasksDoneTodayNotification';
 
 export { TasksDoneTodayNotification };

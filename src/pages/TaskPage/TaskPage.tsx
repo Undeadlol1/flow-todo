@@ -16,8 +16,8 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
-import HardChoices from '../../components/tasks/HardChoices';
-import TaskChoices from '../../components/tasks/TaskChoices/TaskChoices';
+import NegativeChoices from '../../components/tasks/NegativeChoices';
+import PositiveChoices from '../../components/tasks/TaskChoices/PositiveChoices';
 import UpsertNote from '../../components/tasks/UpsertNote/UpsertNote';
 import Collapsible from '../../components/ui/Collapsible';
 import Timer from '../../components/ui/Timer';
@@ -168,10 +168,10 @@ export default function TaskPage(props: TaskPageProps) {
       <Grid container item justify="center" xs={12}>
         <Switch>
           <Route path={`${path}/isTroublesome`}>
-            <HardChoices {...props} />
+            <NegativeChoices {...props} />
           </Route>
           <Route path={`${path}/isGood`}>
-            <TaskChoices
+            <PositiveChoices
               className="IntroHandle__choices"
               {...props}
             />

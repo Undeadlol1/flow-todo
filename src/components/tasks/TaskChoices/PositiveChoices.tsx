@@ -40,7 +40,7 @@ interface Props {
   updateTask: (options: updateTaskParams) => Promise<void>;
 }
 
-const TaskChoices = (props: Props) => {
+const PositiveChoices = (props: Props) => {
   const t = useTypedTranslate();
   const classes = useStyles();
   const activeSubtasks =
@@ -193,4 +193,4 @@ const TaskChoices = (props: Props) => {
   );
 };
 
-export default TaskChoices;
+export default PositiveChoices;

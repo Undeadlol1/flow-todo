@@ -18,7 +18,7 @@
     "@types/babel__core": "^7.1.12",
     "@types/classnames": "^2.2.11",
     "@types/debug": "^4.1.5",
-    "@types/eslint": "^7.2.5",
+    "@types/eslint": "^7.2.6",
     "@types/eslint-plugin-prettier": "^3.1.0",
     "@types/faker": "^5.1.4",
     "@types/jest": "^26.0.16",

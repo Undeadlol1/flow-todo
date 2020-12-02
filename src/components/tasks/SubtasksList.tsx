@@ -22,7 +22,6 @@ import {
 import { Subtask } from '../../entities/Subtask';
 import { deleteSubtask } from '../../repositories/deleteSubtask';
 import { updateSubtasks } from '../../repositories/updateSubtasks';
-import { useTypedTranslate } from '../../services/index';
 
 const useStyles = makeStyles((theme: Theme) => {
   const color = theme.palette.text.primary;
@@ -53,7 +52,6 @@ const DragHandle = SortableHandle(() => (
 
 const SortableItem = SortableElement(
   ({ subtask }: { subtask: Subtask }) => {
-    const t = useTypedTranslate();
     const classes = useStyles();
 
     function remove() {

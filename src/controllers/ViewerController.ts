@@ -56,15 +56,17 @@ export class ViewerController {
   static async rewardPoints(points: number) {
     const { state, viewerId } = ViewerController;
     const profilePoints = profilePointsSelector(state);
-    const nextReward = getNewlyUnlockedReward(
+    const isRewardUnlocked = !!getNewlyUnlockedReward(
       profilePoints,
       points,
       rewardsSelector(state),
     );
+
     if (LevelingService.willUserLevelUp(profilePoints, points)) {
       showLevelUpAnimation();
     }
-    if (nextReward) {
+
+    if (isRewardUnlocked) {
       store.dispatch(toggleRewardModal());
     }
 

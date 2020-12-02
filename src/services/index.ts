@@ -12,7 +12,6 @@ import i18n from 'i18next';
 import formatRelative from 'date-fns/formatRelative';
 import en from 'date-fns/locale/en-US';
 import ru from 'date-fns/locale/ru';
-import PrettyError from 'pretty-error';
 import { useTranslation } from 'react-i18next';
 import engnlishStrings from '../locales/en';
 import { Reward } from '../store/rewardsSlice';
@@ -83,14 +82,14 @@ export function calculateNextRepetition(
 export function initializeFirebase() {
   if (firebase.apps.length === 0) {
     firebase.initializeApp({
-      apiKey: 'AIzaSyAmCyhaB-8xjMH5yi9PoitoAyD-KeFnNtA',
-      authDomain: 'flow-todo-5824b.firebaseapp.com',
-      databaseURL: 'https://flow-todo-5824b.firebaseio.com',
       projectId: 'flow-todo-5824b',
-      storageBucket: 'flow-todo-5824b.appspot.com',
-      messagingSenderId: '772125171665',
-      appId: '1:772125171665:web:3fffadc4031335de290af0',
       measurementId: 'G-DLFD2VSSK1',
+      messagingSenderId: '772125171665',
+      storageBucket: 'flow-todo-5824b.appspot.com',
+      authDomain: 'flow-todo-5824b.firebaseapp.com',
+      apiKey: 'AIzaSyAmCyhaB-8xjMH5yi9PoitoAyD-KeFnNtA',
+      appId: '1:772125171665:web:3fffadc4031335de290af0',
+      databaseURL: 'https://flow-todo-5824b.firebaseio.com',
     });
   }
 
@@ -118,13 +117,12 @@ export function handleErrors(
   e: Error | undefined | firebase.auth.Error,
 ) {
   if (e) {
-    var { render } = new PrettyError();
-    const message = `Error: ${
+    const errorMessage = `Error: ${
       e?.message || i18n.t('Something went wrong')
     }`;
 
-    console.error(render(e));
-    Snackbar.addToQueue(message);
+    console.error(e);
+    Snackbar.addToQueue(errorMessage);
   }
 }
 

@@ -156,7 +156,7 @@
     "jest-enzyme": "^7.1.2",
     "plop": "^2.7.4",
     "prettier": "2.2.1",
-    "react-app-rewired": "^2.1.6",
+    "react-app-rewired": "^2.1.7",
     "source-map-explorer": "^2.5.1"
   }
 }

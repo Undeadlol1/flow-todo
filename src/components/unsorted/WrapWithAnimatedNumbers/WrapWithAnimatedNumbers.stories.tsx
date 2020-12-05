@@ -14,7 +14,8 @@ export default {
 
 const props = {
   number: 100,
-  isVisible: false,
+  isVisible: true,
+  placement: 'bottom',
   children: (
     <Box p="60px" width="200px" height="200px" border="1px red solid">
       <Typography align="center">
@@ -49,3 +50,14 @@ export const Demo = (args) => {
   );
 };
 Demo.args = props;
+
+export const Placement = (args) => (
+  <>
+    <Box>Top placement:</Box>
+    <WrapWithAnimatedNumbers {...args} placement="top" />
+    <Box mb={4} />
+    <Box>Bottom placement:</Box>
+    <WrapWithAnimatedNumbers {...args} />
+  </>
+);
+Placement.args = props;

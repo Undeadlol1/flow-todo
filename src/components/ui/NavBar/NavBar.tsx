@@ -127,6 +127,7 @@ function AvatarWithLevelBadge() {
 
   return (
     <WrapWithAnimatedNumbers
+      placement="bottom"
       isVisible={isPointsRewardingInProgress}
       number={pointToDisplayDuringRewardAnimation}
     >

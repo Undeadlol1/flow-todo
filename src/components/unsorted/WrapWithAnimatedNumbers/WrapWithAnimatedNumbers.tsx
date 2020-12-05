@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     position: 'absolute',
   },
-  bottomPlacement: {
-    bottom: theme.spacing(4) * -1,
-  },
   topPlacement: {
     top: theme.spacing(4) * -1,
+  },
+  bottomPlacement: {
+    bottom: theme.spacing(4) * -1,
   },
 }));
 
@@ -33,18 +33,15 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
   props: WrapWithAnimatedNumbersProps,
 ) {
   const classes = useStyles();
+  const numbersPlacement = classNames(classes.numbersWrapper, {
+    [classes.topPlacement]: props.placement === 'top',
+    [classes.bottomPlacement]: props.placement === 'bottom',
+  });
 
   return (
     <Box className={classes.root}>
       <Box>{props.children}</Box>
-      <Box
-        className={classNames(
-          classes.numbersWrapper,
-          props.placement === 'top'
-            ? classes.topPlacement
-            : classes.bottomPlacement,
-        )}
-      >
+      <Box className={numbersPlacement}>
         <Fade mountOnEnter unmountOnExit in={props.isVisible}>
           <Typography>+ {props.number}</Typography>
         </Fade>

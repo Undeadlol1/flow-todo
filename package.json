@@ -84,7 +84,7 @@
     "workbox-precaching": "^6.0.2",
     "workbox-routing": "^6.0.2",
     "workbox-strategies": "^6.0.2",
-    "yup": "^0.31.1"
+    "yup": "^0.32.2"
   },
   "scripts": {
     "start:nofirebase": "react-scripts start",

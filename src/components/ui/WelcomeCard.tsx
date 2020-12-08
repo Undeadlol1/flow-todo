@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core';
+import { useTranslation } from 'react-i18next/*';
+import { useTypedTranslate } from '../../services';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const WelcomeCard: React.FC<{}> = () => {
   const classes = useStyles();
+  const t = useTypedTranslate();
   return (
     <Paper className={classes.container} elevation={6}>
       <Grid container justify="center">
@@ -30,15 +33,11 @@ const WelcomeCard: React.FC<{}> = () => {
           />
         </Grid>
       </Grid>
-      {/* TODO: i18n */}
       <Typography paragraph>
-        Это приложение поможет справиться с задачами, которые ты вечно
-        откладываешь в <b>долгий ящик</b>.
+        {t('this_app_will_allow_help_you_with_tasks')}
       </Typography>
       <Typography paragraph>
-        Просто добавь пару задач и смотри, как приложение с помощью
-        психологических трюков облегчает их и позволяет сдвинуться с
-        мертвой точки.
+        {t('simply_add_few_tasks_and_watch')}
       </Typography>
     </Paper>
   );

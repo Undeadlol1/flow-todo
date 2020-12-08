@@ -128,6 +128,10 @@ export default {
     pick_or_create_a_task: 'Pick or create a task',
     you_worked_enough_on_this_task:
       'You have worked enough time on this task. Don\'t hesitate to press "Advanced Forward" button. Good job.',
+    this_app_will_allow_help_you_with_tasks:
+      'This app will help you with the tasks you tend to postpone.',
+    simply_add_few_tasks_and_watch:
+      'Simply add few tasks and observe how app makes them easier via psychologic tricks',
   },
   sidebar: {
     focus_mode: 'Focus Mode (WIP)',

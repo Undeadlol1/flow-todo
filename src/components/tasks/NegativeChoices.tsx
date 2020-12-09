@@ -1,8 +1,6 @@
 import { Box, Button, ButtonProps } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Typography, {
-  TypographyProps,
-} from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import get from 'lodash/get';
 import React from 'react';
 import { ViewerController } from '../../controllers/ViewerController';
@@ -16,12 +14,6 @@ import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
 import TagsForm from './TagsForm';
 import UpsertNote from './UpsertNote/UpsertNote';
-
-const paragraphProps: TypographyProps = {
-  paragraph: true,
-  variant: 'body2',
-  color: 'textSecondary',
-};
 
 const NegativeChoices = (props: {
   task: Task;
@@ -78,12 +70,12 @@ const NegativeChoices = (props: {
           isOpen={Boolean(get(task, 'subtasks.length'))}
         >
           <>
-            <Typography {...paragraphProps}>
+            <TypicalParagraph>
               {t('any task can be split')}
-            </Typography>
-            <Typography {...paragraphProps}>
+            </TypicalParagraph>
+            <TypicalParagraph>
               {t('simplest thing to do?')}
-            </Typography>
+            </TypicalParagraph>
             <CreateSubtask
               taskId={props.taskId as string}
               callback={() => addPointsOnSuccess(5)}
@@ -101,27 +93,27 @@ const NegativeChoices = (props: {
             taskId={taskId as string}
             defaultValue={taskNote}
           >
-            <Typography {...paragraphProps}>
+            <TypicalParagraph>
               {t('sometimes you need to gather your thouthgs')}
-            </Typography>
+            </TypicalParagraph>
           </UpsertNote>
         </Collapsible>
       </Grid>
       <Grid item xs={12}>
         <Collapsible title={t('Rework task')}>
           <>
-            <Typography {...paragraphProps}>
+            <TypicalParagraph>
               {t('reformulating is a good idea')}
-            </Typography>
-            <Typography {...paragraphProps}>
+            </TypicalParagraph>
+            <TypicalParagraph>
               {t('how to formulate a task?')}
-            </Typography>
+            </TypicalParagraph>
             <UpsertTask
               taskId={props.taskId}
-              defaultValue={props.task!.name}
               resetFormOnSuccess={false}
               showSnackbarOnSuccess={false}
               callback={addPointsOnSuccess}
+              defaultValue={props.task!.name}
             />
           </>
         </Collapsible>
@@ -129,12 +121,10 @@ const NegativeChoices = (props: {
       <Grid item xs={12}>
         <Collapsible title={t('add a tag')}>
           <>
-            <Typography {...paragraphProps}>
+            <TypicalParagraph>
               {t('add tags to categorize')}
-            </Typography>
-            <Typography {...paragraphProps}>
-              {t('tagsExample')}
-            </Typography>
+            </TypicalParagraph>
+            <TypicalParagraph>{t('tagsExample')}</TypicalParagraph>
             <TagsForm
               tags={get(props, 'task.tags')}
               taskId={props.taskId as string}
@@ -145,5 +135,13 @@ const NegativeChoices = (props: {
     </Grid>
   );
 };
+
+function TypicalParagraph(props: { children: string }) {
+  return (
+    <Typography paragraph variant="body2" color="textSecondary">
+      {props.children}
+    </Typography>
+  );
+}
 
 export default NegativeChoices;

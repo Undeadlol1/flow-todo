@@ -18,8 +18,8 @@ import debug from 'debug';
 import get from 'lodash/get';
 import React, { memo } from 'react';
 import { Else, If, Then } from 'react-if';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { UiController } from '../../../controllers/UiController';
 import LevelingService from '../../../services/Leveling';
 import { useTypedSelector } from '../../../store';
 import {
@@ -28,40 +28,12 @@ import {
   profileSelector,
   usersSelector,
 } from '../../../store/selectors';
-import { toggleSidebar } from '../../../store/uiSlice';
 import { WrapWithAnimatedNumbers } from '../../unsorted/WrapWithAnimatedNumbers';
 
 const log = debug('NavBar');
 
-const useStyles = makeStyles((theme: Theme) => ({
-  title: {
-    padding: theme.spacing(0, 1),
-  },
-  link: {
-    textDecoration: 'none',
-    color: theme.palette.primary.contrastText,
-  },
-  avatar: {
-    [theme.breakpoints.up('sm')]: {
-      marginRight: theme.spacing(2),
-    },
-  },
-  loading: {
-    [theme.breakpoints.up('sm')]: {
-      marginRight: theme.spacing(2),
-    },
-    [theme.breakpoints.up('lg')]: {
-      marginRight: theme.spacing(3),
-    },
-  },
-  flexGrow: {
-    flexGrow: 1,
-  },
-}));
-
 export default memo(function NavBar() {
   const classes = useStyles();
-  const dispatch = useDispatch();
   return (
     <div className={classes.flexGrow}>
       <AppBar position="static" color="transparent" elevation={0}>
@@ -70,7 +42,7 @@ export default memo(function NavBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={() => dispatch(toggleSidebar())}
+            onClick={UiController.toggleSidebar}
           >
             <MenuIcon />
           </IconButton>
@@ -168,4 +140,32 @@ function AvatarWithLevelBadge() {
       </Box>
     </WrapWithAnimatedNumbers>
   );
+}
+
+function useStyles() {
+  return makeStyles((theme: Theme) => ({
+    title: {
+      padding: theme.spacing(0, 1),
+    },
+    link: {
+      textDecoration: 'none',
+      color: theme.palette.primary.contrastText,
+    },
+    avatar: {
+      [theme.breakpoints.up('sm')]: {
+        marginRight: theme.spacing(2),
+      },
+    },
+    loading: {
+      [theme.breakpoints.up('sm')]: {
+        marginRight: theme.spacing(2),
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginRight: theme.spacing(3),
+      },
+    },
+    flexGrow: {
+      flexGrow: 1,
+    },
+  }))();
 }

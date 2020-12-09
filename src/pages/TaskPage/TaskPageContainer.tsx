@@ -109,6 +109,10 @@ const Container = memo(() => {
   }: updateTaskParams) {
     log('updateTask is running.');
     try {
+      const points = TaskService.isStale(task)
+        ? pointsToAdd + 50
+        : pointsToAdd;
+
       history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
       await Promise.all([
@@ -128,7 +132,7 @@ const Container = memo(() => {
           createdAt: Date.now(),
         }),
         ViewerController.rewardUserForWorkingOnATask({
-          points: pointsToAdd,
+          points,
           snackbarMessage,
         }),
         TaskService.activateNextTask({

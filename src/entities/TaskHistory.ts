@@ -1,4 +1,6 @@
 export type TaskHistory = {
+  userId: string;
+  taskId: string;
   createdAt: number;
   comment?: string;
   actionType:

@@ -29,6 +29,7 @@ import {
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
 import { updateDailyStreak } from '../../repositories/updateDailyStreak';
+import { createTaskLog } from '../../repositories/createTaskLog';
 
 const log = debug('TaskPageContainer');
 
@@ -125,7 +126,8 @@ const Container = memo(() => {
           },
           task.id,
         ),
-        firestoreRedux.collection('taskLogs').add({
+        // TODO remove this? Is this used?
+        createTaskLog({
           ...historyToAdd,
           taskId,
           userId,
@@ -159,11 +161,10 @@ const Container = memo(() => {
 
   async function deleteTask() {
     log('deleteTask is running.');
-    const pointsToAdd = 10;
     toggleLoading(true);
     return Promise.all([
       deleteTaskRepo(taskId),
-      ViewerController.rewardPoints(pointsToAdd),
+      ViewerController.rewardPoints(10),
       TaskService.activateNextTask({
         nextTaskId,
         currentTasks: tasks,

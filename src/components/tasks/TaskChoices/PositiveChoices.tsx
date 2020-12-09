@@ -70,6 +70,8 @@ const PositiveChoices = (props: Props) => {
           ...nextRepetition,
         },
         history: {
+          taskId: props.task.id,
+          userId: props.task.userId,
           createdAt: Date.now(),
           // @ts-ignore
           actionType:
@@ -104,6 +106,8 @@ const PositiveChoices = (props: Props) => {
         doneAt: Date.now(),
       },
       history: {
+        taskId: props.task.id,
+        userId: props.task.userId,
         createdAt: Date.now(),
         actionType: 'setDone',
       },
@@ -116,7 +120,9 @@ const PositiveChoices = (props: Props) => {
       pointsToAdd,
       snackbarMessage: t('Good job!'),
       history: {
+        taskId: props.task.id,
         createdAt: Date.now(),
+        userId: props.task.userId,
         actionType: 'doneSubtask',
       },
       values: {

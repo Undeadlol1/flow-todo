@@ -17,14 +17,14 @@ import Snackbar from '../../services/Snackbar';
 import TaskService from '../../services/TaskService';
 import { useTypedSelector } from '../../store/index';
 import {
-  activeTaskSelector,
-  authSelector,
-  fetchedTaskSelector,
-  firestoreStatusSelector,
-  profileSelector,
-  tasksDoneTodaySelector,
-  tasksSelector,
   uiSelector,
+  authSelector,
+  tasksSelector,
+  profileSelector,
+  activeTaskSelector,
+  fetchedTaskSelector,
+  tasksDoneTodaySelector,
+  firestoreStatusSelector,
 } from '../../store/selectors';
 import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';

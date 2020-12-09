@@ -57,7 +57,7 @@ function TasksDoneToday({
         <Box mb={2}>
           <Typography variant="h6" display="inline">
             {`${t('completed_tasks_today')}: `}
-            <Box display="inline" fontWeight={isAchieved && 900}>
+            <Box display="inline" fontWeight={isAchieved ? 900 : 600}>
               <NumbersAnimatedOnUpdate
                 value={tasksToday}
                 isAnimationDisabled={isUpdateAnimationDisabled}

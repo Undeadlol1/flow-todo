@@ -8,7 +8,6 @@ import { makeStyles, withStyles } from '@material-ui/styles';
 import React from 'react';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Theme, Zoom } from '@material-ui/core';
-import classNames from 'classnames';
 import { useTypedTranslate } from '../../services/index';
 import DayliTasksStreak from './DayliTasksStreak';
 import { IDayliStreak } from '../../entities/IDayliStreak';
@@ -19,9 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '5px',
     verticalAlign: 'bottom',
     color: theme.palette.primary.main,
-  },
-  boldText: {
-    fontWeight: 900,
   },
 }));
 
@@ -50,30 +46,23 @@ function TasksDoneToday({
   const classes = useStyles();
   const t = useTypedTranslate();
 
-  const isAchieved = tasksToday >= tasksPerDay;
-  const completedTasksInpercentages = Number(
-    (100 * (tasksToday / tasksPerDay)).toFixed(),
-  );
-
-  if (!props.isLoaded)
+  if (!props.isLoaded) {
     return <Skeleton variant="rect" height="160px" />;
+  }
+
+  const isAchieved = tasksToday >= tasksPerDay;
   return (
     <Card>
       <CardContent>
         <Box mb={2}>
           <Typography variant="h6" display="inline">
             {`${t('completed_tasks_today')}: `}
-            <span
-              className={classNames({
-                [classes.boldText]: completedTasksInpercentages > 100,
-              })}
-            >
+            <Box display="inline" fontWeight={isAchieved && 900}>
               <NumbersAnimatedOnUpdate
-                value={completedTasksInpercentages}
+                value={tasksToday}
                 isAnimationDisabled={isUpdateAnimationDisabled}
               />
-              {`${completedTasksInpercentages > 0 ? '%' : ''}`}
-            </span>
+            </Box>
           </Typography>
           <Box display="inline" className={classes.successIcon}>
             {isAchieved && (

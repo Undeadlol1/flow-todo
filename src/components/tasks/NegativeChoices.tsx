@@ -1,32 +1,22 @@
+import { Box, Button, ButtonProps } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/styles';
 import Typography, {
   TypographyProps,
 } from '@material-ui/core/Typography';
 import get from 'lodash/get';
 import React from 'react';
-import { Box, Button, ButtonProps, Theme } from '@material-ui/core';
-import { TaskPageGridWidth } from '../../pages/TaskPage';
-import {
-  showSnackbar,
-  useTypedTranslate,
-} from '../../services/index';
-import { useTypedSelector } from '../../store/index';
+import { ViewerController } from '../../controllers/ViewerController';
 import { Task } from '../../entities/Task';
-import { addPointsToUser } from '../../repositories/addPointsToUser';
-import { authSelector } from '../../store/selectors';
+import { TaskPageGridWidth } from '../../pages/TaskPage';
+import { useTypedTranslate } from '../../services/index';
+import Snackbar from '../../services/Snackbar';
 import Collapsible from '../ui/Collapsible';
 import CreateSubtask from './CreateSubtask/CreateSubtask';
 import UpsertTask from './CreateTask/UpsertTask';
 import SubtasksList from './SubtasksList';
-import UpsertNote from './UpsertNote/UpsertNote';
 import TagsForm from './TagsForm';
+import UpsertNote from './UpsertNote/UpsertNote';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  form: {
-    marginBottom: theme.spacing(1),
-  },
-}));
 const paragraphProps: TypographyProps = {
   paragraph: true,
   variant: 'body2',
@@ -39,10 +29,8 @@ const NegativeChoices = (props: {
   deleteTask: () => Promise<void>;
 }) => {
   const t = useTypedTranslate();
-  const classes = useStyles();
   const { task, taskId } = props;
   const taskNote = get(task, 'note');
-  const auth = useTypedSelector(authSelector);
 
   const commonButtonProps: ButtonProps = {
     fullWidth: true,
@@ -51,12 +39,8 @@ const NegativeChoices = (props: {
   };
 
   function addPointsOnSuccess(points = 10) {
-    addPointsToUser(auth.uid, points);
-    showSnackbar(
-      t('youAreCloserToYourGoal', {
-        points,
-      }),
-    );
+    ViewerController.rewardPoints(points);
+    Snackbar.addToQueue(t('youAreCloserToYourGoal'));
   }
 
   return (
@@ -101,10 +85,10 @@ const NegativeChoices = (props: {
               {t('simplest thing to do?')}
             </Typography>
             <CreateSubtask
-              className={classes.form}
               taskId={props.taskId as string}
               callback={() => addPointsOnSuccess(5)}
             />
+            <Box height={1} />
             <SubtasksList documents={props.task!.subtasks} />
           </>
         </Collapsible>

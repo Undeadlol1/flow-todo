@@ -58,7 +58,7 @@ export default {
     'seems like anonymous upgrading failed':
       'Seems like upgrding account from anonymous failed. Sorry',
     youAreCloserToYourGoal:
-      'You are now closer to your goal. Good job! Points rewarded: {{points}}',
+      'You are now closer to your goal. Good job!',
     'you will see task again in':
       'You will see this task again in {{date}}.',
     getRidOfUnimportant:

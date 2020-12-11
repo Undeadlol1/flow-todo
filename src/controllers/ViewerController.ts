@@ -1,5 +1,4 @@
 import delay from 'lodash/delay';
-import { promiseDelay } from '../helpers/promiseDelay';
 import { addPointsToUser } from '../repositories/addPointsToUser';
 import { upsertProfile } from '../repositories/upsertProfile';
 import { getNewlyUnlockedReward } from '../services';
@@ -16,10 +15,7 @@ import {
   profileSelector,
   rewardsSelector,
 } from '../store/selectors';
-import {
-  toggleRewardModal,
-  toggleTasksDoneTodayNotification,
-} from '../store/uiSlice';
+import { toggleRewardModal } from '../store/uiSlice';
 import { showLevelUpAnimation } from '../store/uiState';
 import { UiController } from './UiController';
 

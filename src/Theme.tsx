@@ -13,7 +13,8 @@ export const Theme: FunctionComponent<{
   const uiState = useSelector(uiSelector);
   const { language } = i18n;
   const theme = React.useMemo(
-    () => createMuiTheme(
+    () =>
+      createMuiTheme(
         {
           zIndex: {
             /*
@@ -23,6 +24,14 @@ export const Theme: FunctionComponent<{
             snackbar: 0,
           },
           palette: {
+            background:
+              uiState.preferedColorScheme === 'dark'
+                ? {
+                    paper: '#2d2d2fe6',
+                    default: '#1d1d1d',
+                  }
+                : undefined,
+
             primary: { main: '#81D4FA' },
             secondary: {
               main: '#00838F',

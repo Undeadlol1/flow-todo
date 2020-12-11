@@ -5,12 +5,8 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import debug from 'debug';
-import get from 'lodash/fp/get';
-import isEmpty from 'lodash/isEmpty';
-import isUndefined from 'lodash/isUndefined';
 import React, { memo, ReactElement } from 'react';
 import { When } from 'react-if';
-import { useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import { TagsList } from '../../components/tasks/TagsList';
@@ -21,25 +17,8 @@ import { IDayliStreak } from '../../entities/IDayliStreak';
 import { Task } from '../../entities/Task';
 import { TaskHistory } from '../../entities/TaskHistory';
 import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
-import {
-  authSelector,
-  profileSelector,
-  taskLogsSelector as taskLogs,
-  tasksDoneTodaySelector,
-  tasksSelector,
-} from '../../store/selectors';
 
 const log = debug('IndexPage');
-const useStyles = makeStyles((theme: Theme) => ({
-  fullWidth: {
-    width: '100%',
-  },
-  pageContainer: {
-    marginTop: 0,
-    marginBottom: 0,
-    minHeight: 'calc(100vh - 74px)',
-  },
-}));
 
 export interface IndexPageProps {
   tasksToday: number;
@@ -105,6 +84,17 @@ export const IndexPage = memo(function IndexPage({
   );
 });
 
+const useStyles = makeStyles((theme: Theme) => ({
+  fullWidth: {
+    width: '100%',
+  },
+  pageContainer: {
+    marginTop: 0,
+    marginBottom: 0,
+    minHeight: 'calc(100vh - 74px)',
+  },
+}));
+
 function RootWrapper(props: { children: ReactElement }) {
   const classes = useStyles();
   const rootWrapperProps: GridProps = {
@@ -136,33 +126,3 @@ function Section(props: {
 
   return <Grid {...sectionProps}>{props.children}</Grid>;
 }
-
-export default memo(() => {
-  const auth = useSelector(authSelector);
-  const logs = useSelector(taskLogs);
-  const streak = useSelector(profileSelector).dailyStreak;
-  const tasksToday = useSelector(tasksDoneTodaySelector);
-  const activeTasks = useSelector(tasksSelector);
-  const { createdAtleastOneTask } = useSelector(
-    get('firestore.ordered'),
-  );
-
-  let isLoading =
-    isUndefined(createdAtleastOneTask) || isUndefined(activeTasks);
-  if (auth.isEmpty) isLoading = false;
-  if (!auth.isLoaded) isLoading = true;
-
-  return (
-    <IndexPage
-      {...{
-        logs,
-        streak,
-        tasksToday,
-        isLoading,
-        activeTasks,
-        tasksPerDay: streak?.perDay,
-        createdAtleastOneTask: !isEmpty(createdAtleastOneTask),
-      }}
-    />
-  );
-});

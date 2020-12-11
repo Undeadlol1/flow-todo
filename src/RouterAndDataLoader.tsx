@@ -15,7 +15,7 @@ import Sidebar from './components/ui/Sidebar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
 import FAQPage from './pages/FAQPage';
 import { FocusModePage } from './pages/FocusModePage';
-import HomePage from './pages/IndexPage/IndexPage';
+import { IndexPageContainer } from './pages/IndexPage';
 import PrivacyPage from './pages/PrivacyPage';
 import { ProfilePageContainer } from './pages/ProfilePage/ProfilePage';
 import RewardsPage from './pages/RewardsPage';
@@ -147,7 +147,7 @@ export default memo((props: { children?: JSX.Element }) => {
             <WebShareTargetPage />
           </Route>
           <Route path="/">
-            <HomePage />
+            <IndexPageContainer />
           </Route>
         </Switch>
       </Container>

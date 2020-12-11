@@ -10,18 +10,17 @@ import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { When } from 'react-if';
+import { useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import { TasksList } from '../../components/tasks/TasksList';
-import AppTour from '../../components/ui/AppTour';
 import WelcomeCard from '../../components/ui/WelcomeCard';
-import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
-import { useSelector } from 'react-redux';
 import { IDayliStreak } from '../../entities/IDayliStreak';
-import { TaskHistory } from '../../entities/TaskHistory';
 import { Task } from '../../entities/Task';
+import { TaskHistory } from '../../entities/TaskHistory';
+import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
 import {
   authSelector,
   profileSelector,
@@ -32,34 +31,42 @@ import {
 
 const log = debug('IndexPage');
 const useStyles = makeStyles((theme: Theme) => ({
+  fullWidth: {
+    width: '100%',
+  },
   pageContainer: {
     marginTop: 0,
     marginBottom: 0,
     minHeight: 'calc(100vh - 74px)',
   },
-  randomButtonContainer: {},
-  fullWidth: {
-    width: '100%',
-  },
 }));
 
 export interface IndexPageProps {
-  logs: TaskHistory[];
-  streak: IDayliStreak;
-  tasksPerDay: number;
   tasksToday: number;
-  activeTasks?: Task[];
+  logs: TaskHistory[];
+  tasksPerDay: number;
   isLoading?: boolean;
+  streak: IDayliStreak;
+  activeTasks?: Task[];
   createdAtleastOneTask: boolean;
 }
 
-const sectionProps = {
-  item: true,
-  xs: 12,
+const rootWrapperProps: GridProps = {
+  spacing: 2,
+  container: true,
+  justify: 'center',
+  direction: 'column',
+  alignItems: 'stretch',
+  alignContent: 'center',
+};
+
+const sectionProps: GridProps = {
   sm: 8,
   md: 8,
   lg: 6,
-} as GridProps;
+  xs: 12,
+  item: true,
+};
 
 export const IndexPage = memo(
   ({
@@ -71,15 +78,7 @@ export const IndexPage = memo(
     const classes = useStyles();
     const isScreeenNarrow = useIsScreenNarrow();
 
-    const wrapperProps: GridProps = {
-      spacing: 2,
-      container: true,
-      justify: 'center',
-      direction: 'column',
-      alignItems: 'stretch',
-      alignContent: 'center',
-      className: classes.pageContainer,
-    };
+    rootWrapperProps.className = classes.pageContainer;
 
     log('isLoading: ', isLoading);
     log('activeTasks: %O', activeTasks);
@@ -87,7 +86,7 @@ export const IndexPage = memo(
 
     if (isLoading) {
       return (
-        <Grid {...wrapperProps}>
+        <Grid {...rootWrapperProps}>
           <Grid {...sectionProps}>
             <Skeleton height="200px" width="350px" variant="rect" />
           </Grid>
@@ -96,13 +95,13 @@ export const IndexPage = memo(
     }
 
     return (
-      <Grid {...wrapperProps}>
+      <Grid {...rootWrapperProps}>
         <Grid {...sectionProps}>
           <When condition={!!createdAtleastOneTask}>
             <TasksDoneToday
               dailyStreak={props.streak}
-              tasksPerDay={props.tasksPerDay}
               tasksToday={props.tasksToday}
+              tasksPerDay={props.tasksPerDay}
               isLoaded={isLoaded(props.logs)}
               isUpdateAnimationDisabled={true}
             />
@@ -110,10 +109,9 @@ export const IndexPage = memo(
         </Grid>
         <Grid
           {...sectionProps}
-          className={clsx(
-            classes.randomButtonContainer,
-            isScreeenNarrow && classes.fullWidth,
-          )}
+          className={clsx({
+            [classes.fullWidth]: isScreeenNarrow,
+          })}
         >
           {createdAtleastOneTask ? (
             <TasksList tasks={activeTasks} loading={false} />
@@ -122,15 +120,10 @@ export const IndexPage = memo(
           )}
         </Grid>
         <Grid {...sectionProps}>
-          <Box mt={2}>
-            <TagsList />
-          </Box>
+          <Box mt={2} />
+          <TagsList />
         </Grid>
-        <CreateTaskFab
-          isHidden={isLoading}
-          className="IntroHandle__createTask"
-        />
-        <AppTour />
+        <CreateTaskFab isHidden={isLoading} />
       </Grid>
     );
   },
@@ -138,7 +131,7 @@ export const IndexPage = memo(
 
 IndexPage.displayName = 'IndexPage';
 
-export default memo((props) => {
+export default memo(() => {
   const auth = useSelector(authSelector);
   const logs = useSelector(taskLogs);
   const streak = useSelector(profileSelector).dailyStreak;

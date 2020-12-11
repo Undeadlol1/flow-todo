@@ -9,6 +9,9 @@ import isUndefined from 'lodash/isUndefined';
 import React, { memo } from 'react';
 import { Profile } from '../../../entities/Profile';
 import LevelingService from '../../../services/Leveling';
+import { useTypedSelector } from '../../../store';
+import { animationSelector } from '../../../store/selectors';
+import { WrapWithAnimatedNumbers } from '../../unsorted/WrapWithAnimatedNumbers';
 
 const log = debug('ExpirienceProgressBar');
 const useStyles = makeStyles((theme: Theme) => ({
@@ -23,10 +26,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'fixed',
   },
   animatedNumbers: {
-    bottom: 0,
-    height: 10,
-    left: '50%',
     width: '100%',
+    bottom: '20px',
     position: 'fixed',
   },
 }));
@@ -38,6 +39,7 @@ export const ExpirienceProgressBar: React.FC<{
   const classes = useStyles();
   const userPoints = get(props.profile, 'experience', 0);
   const level = LevelingService.calculateUserLevel(userPoints);
+  const uiState = useTypedSelector(animationSelector);
 
   const pointsToReachPreviousLevel = LevelingService.calculateTotalPointsToReachALevel(
     level,
@@ -70,26 +72,39 @@ export const ExpirienceProgressBar: React.FC<{
     );
   }
   return (
-    <Box>
-      <Tooltip
-        arrow
-        title={`${userPoints - pointsToReachPreviousLevel}/${
-          pointsToReachNextLevel - pointsToReachPreviousLevel
-        }`}
+    <WrapWithAnimatedNumbers
+      placement="top"
+      className={classes.animatedNumbers}
+      isVisible={uiState.isPointsRewardingInProgress}
+      number={uiState.pointToDisplayDuringRewardAnimation}
+    >
+      <Box
+        // TODO delete thsis classes.
+        className={cx(
+          classes.progress,
+          !props.profile && classes.hidden,
+        )}
       >
-        <LinearProgress
-          color="secondary"
-          value={progressPercent === 100 ? 0 : progressPercent}
-          className={cx(
-            classes.progress,
-            !props.profile && classes.hidden,
-          )}
-          variant={
-            isAnimationActive ? 'indeterminate' : 'determinate'
-          }
-        />
-      </Tooltip>
-    </Box>
+        <Tooltip
+          arrow
+          title={`${userPoints - pointsToReachPreviousLevel}/${
+            pointsToReachNextLevel - pointsToReachPreviousLevel
+          }`}
+        >
+          <LinearProgress
+            color="secondary"
+            className={cx(
+              classes.progress,
+              !props.profile && classes.hidden,
+            )}
+            value={progressPercent === 100 ? 0 : progressPercent}
+            variant={
+              isAnimationActive ? 'indeterminate' : 'determinate'
+            }
+          />
+        </Tooltip>
+      </Box>
+    </WrapWithAnimatedNumbers>
   );
 });
 

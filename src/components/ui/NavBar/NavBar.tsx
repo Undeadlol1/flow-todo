@@ -23,12 +23,10 @@ import { UiController } from '../../../controllers/UiController';
 import LevelingService from '../../../services/Leveling';
 import { useTypedSelector } from '../../../store';
 import {
-  animationSelector,
   authSelector,
   profileSelector,
   usersSelector,
 } from '../../../store/selectors';
-import { WrapWithAnimatedNumbers } from '../../unsorted/WrapWithAnimatedNumbers';
 
 const log = debug('NavBar');
 
@@ -69,10 +67,6 @@ function AvatarWithLevelBadge() {
 
   const user = useTypedSelector(authSelector);
   const profile = useTypedSelector(profileSelector);
-  const {
-    isPointsRewardingInProgress,
-    pointToDisplayDuringRewardAnimation,
-  } = useTypedSelector(animationSelector);
   const { isLevelUpAnimationActive } = useTypedSelector(
     usersSelector,
   );
@@ -85,8 +79,6 @@ function AvatarWithLevelBadge() {
     get(user, 'photoURL') || get(user, 'providerData[0].photoURL');
 
   log('profile: %O', profile);
-  log('Is reward animation going: ', isPointsRewardingInProgress);
-  log('Points to display: ', pointToDisplayDuringRewardAnimation);
 
   if (!user.isLoaded) {
     return (
@@ -98,47 +90,41 @@ function AvatarWithLevelBadge() {
   }
 
   return (
-    <WrapWithAnimatedNumbers
-      placement="bottom"
-      isVisible={isPointsRewardingInProgress}
-      number={pointToDisplayDuringRewardAnimation}
+    <Box
+      mr={0.5}
+      // Prevent "Slide" component animation to
+      // cause scrollbars to appear.
+      overflow="hidden"
     >
-      <Box
-        mr={0.5}
-        // Prevent "Slide" component animation to
-        // cause scrollbars to appear.
-        overflow="hidden"
-      >
-        <Slide in timeout={500} direction="left">
-          <Button
-            to="/profile"
-            component={Link}
-            className={clsx(
-              classes.link,
-              isLevelUpAnimationActive && 'animated pulse infinite',
-            )}
+      <Slide in timeout={500} direction="left">
+        <Button
+          to="/profile"
+          component={Link}
+          className={clsx(
+            classes.link,
+            isLevelUpAnimationActive && 'animated pulse infinite',
+          )}
+        >
+          <Badge
+            overlap="circle"
+            color="secondary"
+            badgeContent={userLevel}
           >
-            <Badge
-              overlap="circle"
-              color="secondary"
-              badgeContent={userLevel}
-            >
-              <If condition={!!photoUrl}>
-                <Then>
-                  <Avatar src={photoUrl} className={classes.avatar} />
-                </Then>
-                <Else>
-                  <AccountCircle
-                    fontSize="large"
-                    className={classes.avatar}
-                  />
-                </Else>
-              </If>
-            </Badge>
-          </Button>
-        </Slide>
-      </Box>
-    </WrapWithAnimatedNumbers>
+            <If condition={!!photoUrl}>
+              <Then>
+                <Avatar src={photoUrl} className={classes.avatar} />
+              </Then>
+              <Else>
+                <AccountCircle
+                  fontSize="large"
+                  className={classes.avatar}
+                />
+              </Else>
+            </If>
+          </Badge>
+        </Button>
+      </Slide>
+    </Box>
   );
 }
 

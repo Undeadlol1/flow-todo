@@ -1,9 +1,9 @@
-import { useTypedSelector } from '../../store';
-import React, { memo, ReactElement } from 'react';
-import { animationSelector } from '../../store/selectors';
-import { WrapWithAnimatedNumbers } from '../unsorted/WrapWithAnimatedNumbers';
 import { Box } from '@material-ui/core';
 import classNames from 'classnames';
+import React, { memo, ReactElement } from 'react';
+import { useTypedSelector } from '../../store';
+import { animationSelector } from '../../store/selectors';
+import { WrapWithAnimatedNumbers } from '../unsorted/WrapWithAnimatedNumbers';
 
 export const WrapWithAnimatedPoints = memo(
   function WrapWithAnimatedPoints(props: {

@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export interface WrapWithAnimatedNumbersProps {
   number: number;
   isVisible: boolean;
+  className?: string;
   children: ReactElement;
   placement: 'top' | 'bottom';
 }
@@ -33,13 +34,14 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
   props: WrapWithAnimatedNumbersProps,
 ) {
   const classes = useStyles();
+  const rootClasses = classNames(classes.root, props.className);
   const numbersPlacement = classNames(classes.numbersWrapper, {
     [classes.topPlacement]: props.placement === 'top',
     [classes.bottomPlacement]: props.placement === 'bottom',
   });
 
   return (
-    <Box className={classes.root}>
+    <Box className={rootClasses}>
       <Box>{props.children}</Box>
       <Box className={numbersPlacement}>
         <Fade mountOnEnter unmountOnExit in={props.isVisible}>

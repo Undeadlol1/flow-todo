@@ -21,6 +21,7 @@ import {
   toggleTasksDoneTodayNotification,
 } from '../store/uiSlice';
 import { showLevelUpAnimation } from '../store/uiState';
+import { UiController } from './UiController';
 
 export class ViewerController {
   private static get state() {
@@ -42,15 +43,15 @@ export class ViewerController {
     points: number;
     snackbarMessage?: string;
   }) => {
-    return ViewerController.toggleTaskDoneNotification()
-      .then(() => promiseDelay(3500))
-      .then(() => ViewerController.toggleTaskDoneNotification())
-      .then(() => ViewerController.rewardPoints(points))
-      .then(() => {
-        if (snackbarMessage) {
-          return Snackbar.addToQueue(snackbarMessage);
-        }
-      });
+    try {
+      await UiController.temporaryDisplayTaskDoneNotification();
+      await ViewerController.rewardPoints(points);
+      if (snackbarMessage) {
+        return Snackbar.addToQueue(snackbarMessage);
+      }
+    } catch (error) {
+      return Promise.reject(error);
+    }
   };
 
   static async rewardPoints(points: number) {
@@ -88,9 +89,4 @@ export class ViewerController {
       experience: 0,
     });
   }
-
-  private static toggleTaskDoneNotification = (): Promise<void> => {
-    store.dispatch(toggleTasksDoneTodayNotification());
-    return Promise.resolve();
-  };
 }

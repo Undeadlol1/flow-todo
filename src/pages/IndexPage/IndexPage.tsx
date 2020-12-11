@@ -8,7 +8,7 @@ import debug from 'debug';
 import get from 'lodash/fp/get';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
-import React, { memo } from 'react';
+import React, { memo, ReactElement } from 'react';
 import { When } from 'react-if';
 import { useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
@@ -51,52 +51,32 @@ export interface IndexPageProps {
   createdAtleastOneTask: boolean;
 }
 
-const rootWrapperProps: GridProps = {
-  spacing: 2,
-  container: true,
-  justify: 'center',
-  direction: 'column',
-  alignItems: 'stretch',
-  alignContent: 'center',
-};
+export const IndexPage = memo(function IndexPage({
+  isLoading,
+  activeTasks = [],
+  createdAtleastOneTask,
+  ...props
+}: IndexPageProps) {
+  const isScreeenNarrow = useIsScreenNarrow();
 
-const sectionProps: GridProps = {
-  sm: 8,
-  md: 8,
-  lg: 6,
-  xs: 12,
-  item: true,
-};
+  log('isLoading: ', isLoading);
+  log('activeTasks: %O', activeTasks);
+  log('createdAtleastOneTask: ', createdAtleastOneTask);
 
-export const IndexPage = memo(
-  ({
-    isLoading,
-    activeTasks = [],
-    createdAtleastOneTask,
-    ...props
-  }: IndexPageProps) => {
-    const classes = useStyles();
-    const isScreeenNarrow = useIsScreenNarrow();
-
-    rootWrapperProps.className = classes.pageContainer;
-
-    log('isLoading: ', isLoading);
-    log('activeTasks: %O', activeTasks);
-    log('createdAtleastOneTask: ', createdAtleastOneTask);
-
-    if (isLoading) {
-      return (
-        <Grid {...rootWrapperProps}>
-          <Grid {...sectionProps}>
-            <Skeleton height="200px" width="350px" variant="rect" />
-          </Grid>
-        </Grid>
-      );
-    }
-
+  if (isLoading) {
     return (
-      <Grid {...rootWrapperProps}>
-        <Grid {...sectionProps}>
+      <RootWrapper>
+        <Section>
+          <Skeleton height="200px" width="350px" variant="rect" />
+        </Section>
+      </RootWrapper>
+    );
+  }
+
+  return (
+    <RootWrapper>
+      <>
+        <Section>
           <When condition={!!createdAtleastOneTask}>
             <TasksDoneToday
               dailyStreak={props.streak}
@@ -106,30 +86,56 @@ export const IndexPage = memo(
               isUpdateAnimationDisabled={true}
             />
           </When>
-        </Grid>
-        <Grid
-          {...sectionProps}
-          className={clsx({
-            [classes.fullWidth]: isScreeenNarrow,
-          })}
-        >
+        </Section>
+        <Section isFullWidth={isScreeenNarrow}>
           {createdAtleastOneTask ? (
             <TasksList tasks={activeTasks} loading={false} />
           ) : (
             <WelcomeCard />
           )}
-        </Grid>
-        <Grid {...sectionProps}>
-          <Box mt={2} />
-          <TagsList />
-        </Grid>
+        </Section>
+        <Section>
+          <Box mt={2}>
+            <TagsList />
+          </Box>
+        </Section>
         <CreateTaskFab isHidden={isLoading} />
-      </Grid>
-    );
-  },
-);
+      </>
+    </RootWrapper>
+  );
+});
 
-IndexPage.displayName = 'IndexPage';
+function RootWrapper(props: { children: ReactElement }) {
+  const classes = useStyles();
+  const rootWrapperProps: GridProps = {
+    spacing: 2,
+    container: true,
+    justify: 'center',
+    direction: 'column',
+    alignItems: 'stretch',
+    alignContent: 'center',
+    className: classes.pageContainer,
+  };
+
+  return <Grid {...rootWrapperProps}>{props.children}</Grid>;
+}
+
+function Section(props: {
+  isFullWidth?: boolean;
+  children: ReactElement;
+}) {
+  const classes = useStyles();
+  const sectionProps: GridProps = {
+    sm: 8,
+    md: 8,
+    lg: 6,
+    xs: 12,
+    item: true,
+    className: clsx(props.isFullWidth && classes.fullWidth),
+  };
+
+  return <Grid {...sectionProps}>{props.children}</Grid>;
+}
 
 export default memo(() => {
   const auth = useSelector(authSelector);

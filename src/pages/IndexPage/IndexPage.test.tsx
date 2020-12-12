@@ -20,16 +20,16 @@ describe('<HomePage />', () => {
 
   describe('"add task" button', () => {
     test('is hidden during loading', () => {
-      // const wrapper = shallow(<IndexPage isLoading />);
-      // const Fab = wrapper.find('.IntroHandle__createTask');
-      // expect(Fab.exists()).toBeTruthy();
+      const wrapper = shallow(<IndexPage {...props} isLoading />);
+      const Fab = wrapper.find('CreateTaskFab');
+      expect(Fab.exists()).toBeFalsy();
     });
 
     test('is visible after loading', () => {
       const wrapper = shallow(
         <IndexPage {...props} isLoading={false} />,
       );
-      const Fab = wrapper.find('.IntroHandle__createTask');
+      const Fab = wrapper.find('CreateTaskFab');
       expect(Fab.prop('isHidden')).toBeFalsy();
     });
   });

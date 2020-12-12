@@ -10,16 +10,18 @@ import Fab from '../ui/Fab';
 import UpsertTask from './CreateTask/UpsertTask';
 
 interface Props {
-  isHidden?: boolean;
   activeTasks?: [];
+  isHidden?: boolean;
   createdAtleastOneTask?: [];
-  className?: string;
 }
 
-export const CreateTaskFab: React.FC<Props> = props => {
+export const CreateTaskFab: React.FC<Props> = (props) => {
   const [t] = useTranslation();
   const [isDialogOpen, toggleDialog] = useToggle(false);
   const createdTasksBefore = !isEmpty(props.createdAtleastOneTask);
+  const fabClasses = cx(
+    !createdTasksBefore && 'animated pulse infinite',
+  );
   return (
     <>
       <Dialog
@@ -36,13 +38,9 @@ export const CreateTaskFab: React.FC<Props> = props => {
         </DialogContent>
       </Dialog>
       <Fab
-        aria-label={t('createTask')}
-        className={cx([
-          props.className,
-          'IntroHandle__createTask',
-          !createdTasksBefore && 'animated pulse infinite',
-        ])}
+        className={fabClasses}
         isHidden={props.isHidden}
+        aria-label={t('createTask')}
         onClick={toggleDialog}
       >
         {createdTasksBefore && isEmpty(props.activeTasks) ? (

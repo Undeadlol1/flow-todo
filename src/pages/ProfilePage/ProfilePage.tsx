@@ -1,8 +1,6 @@
 import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,18 +11,16 @@ import debug from 'debug';
 import firebase from 'firebase/app';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Else, If, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { FirebaseReducer } from 'react-redux-firebase';
 import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
-import { MyUserPoints } from '../../components/users/MyUserPoints';
+import { UserOverviewCard } from '../../components/users/UserOverviewCard';
 import { ViewerController } from '../../controllers/ViewerController';
 import { Profile } from '../../entities/Profile';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { handleErrors } from '../../services/index';
-import LevelingService from '../../services/Leveling';
 import { authSelector, profileSelector } from '../../store/selectors';
 
 const log = debug('ProfilePage');
@@ -64,12 +60,6 @@ export const ProfilePage = memo((props: Props) => {
       return;
     };
   }
-  const photoUrl = props.user!.photoURL;
-  const title =
-    props.user!.displayName || props.user!.email || t('anonymous');
-  // TODO get rid of + 1
-  const userLevel =
-    LevelingService.calculateUserLevel(profile.experience) + 1;
 
   function updateProfile(profile: Profile) {
     profile.userId = userId;
@@ -87,33 +77,11 @@ export const ProfilePage = memo((props: Props) => {
       className={classes.pageContainer}
     >
       <Grid item xs={12} sm={6}>
-        <If condition={props.isLoading}>
-          <Then>
-            <Skeleton component={Box} width="100%" height="200px" />
-          </Then>
-          <Else>
-            <Card>
-              <CardHeader
-                title={title}
-                subheader={
-                  <>
-                    <Grid container justify="space-between">
-                      <Grid item xs={6}>
-                        {t('level_is', { level: userLevel })}{' '}
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Box textAlign="right">
-                          {t('points')}: <MyUserPoints />
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </>
-                }
-              />
-              <CardMedia component="img" src={photoUrl as string} />
-            </Card>
-          </Else>
-        </If>
+        <UserOverviewCard
+          profile={profile}
+          user={props.user}
+          isLoading={props.isLoading}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
         <Box mb={2}>

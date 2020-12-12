@@ -84,8 +84,8 @@ function TasksDoneToday({
         />
         <Box mt={2}>
           <DayliTasksStreak
+            isUpdateAnimationDisabled
             streak={props.dailyStreak}
-            isUpdateAnimationDisabled={isUpdateAnimationDisabled}
           />
         </Box>
       </CardContent>

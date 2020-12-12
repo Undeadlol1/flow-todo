@@ -13,9 +13,10 @@ const props = {
 } as IndexPageProps;
 
 describe('<HomePage />', () => {
-  test('displays WelcomeCard if user never created any tasks', () => {
+  test('displays WelcomeCard by default', () => {
     const wrapper = shallow(<IndexPage {...props} />);
-    expect(wrapper.find(WelcomeCard)).toHaveLength(1);
+    const welcomeCard = wrapper.find(WelcomeCard);
+    expect(welcomeCard.exists()).toBeTruthy();
   });
 
   describe('"add task" button', () => {

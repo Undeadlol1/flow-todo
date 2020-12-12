@@ -9,7 +9,7 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
 import { When } from 'react-if';
-import { tasksPerPage } from '../../../contants';
+import { tasksPerPage } from '../../../constants';
 import { Task } from '../../../entities/Task';
 import { TasksListItem } from '../TasksListItem';
 

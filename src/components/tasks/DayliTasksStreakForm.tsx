@@ -45,7 +45,7 @@ function DayliTasksStreakForm() {
           type="number"
           name="perDay"
           autoComplete="off"
-          disabled={!profile?.userId}
+          disabled={!profile.isLoaded}
           label={t('tasks_per_day')}
           defaultValue={tasksPerDay}
           onChange={onChange}

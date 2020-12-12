@@ -1,4 +1,4 @@
-name: run tests
+name: Check Pull Request Compatability
 
 on:
   pull_request:

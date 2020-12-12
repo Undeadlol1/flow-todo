@@ -7,6 +7,7 @@ on:
 
 jobs:
   pre_job:
+    # Prevent sending email on job cancelation.
     continue-on-error: true
     runs-on: ubuntu-latest
     outputs:

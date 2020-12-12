@@ -6,7 +6,8 @@
         {
             "label": "pull changes, install deps and start",
             "type": "shell",
-            "command": "git pull && npm i && npm start"
+            "command": "git pull && npm i && npm start",
+            "problemMatcher": []
         }
     ]
 }

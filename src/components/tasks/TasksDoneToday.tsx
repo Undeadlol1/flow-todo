@@ -1,33 +1,30 @@
+import { Theme, Zoom } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Typography from '@material-ui/core/Typography';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles, withStyles } from '@material-ui/styles';
-import React from 'react';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { Theme, Zoom } from '@material-ui/core';
-import { useTypedTranslate } from '../../services/index';
-import DayliTasksStreak from './DayliTasksStreak';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import { IDayliStreak } from '../../entities/IDayliStreak';
+import { useTypedTranslate } from '../../services/index';
 import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
+import DayliTasksStreak from './DayliTasksStreak';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  progress: {
+    padding: 0,
+    width: '100%',
+    height: '6px',
+  },
   successIcon: {
     marginLeft: '5px',
     verticalAlign: 'bottom',
     color: theme.palette.primary.main,
   },
 }));
-
-const StyledMobileStepper = withStyles({
-  progress: {
-    padding: 0,
-    width: '100%',
-    height: '6px',
-  },
-})(MobileStepper);
 
 export interface TasksDoneTodayProps {
   isLoaded?: boolean;
@@ -45,12 +42,11 @@ function TasksDoneToday({
 }: TasksDoneTodayProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
+  const isAchieved = tasksToday >= tasksPerDay;
 
   if (!props.isLoaded) {
     return <Skeleton variant="rect" height="160px" />;
   }
-
-  const isAchieved = tasksToday >= tasksPerDay;
   return (
     <Card>
       <CardContent>
@@ -72,22 +68,24 @@ function TasksDoneToday({
             )}
           </Box>
         </Box>
-        <StyledMobileStepper
+        <MobileStepper
           position="static"
           variant="progress"
           nextButton={<div />}
           backButton={<div />}
           steps={tasksPerDay + 1}
+          classes={{
+            progress: classes.progress,
+          }}
           activeStep={
             tasksToday > tasksPerDay ? tasksPerDay : tasksToday
           }
         />
-        <Box mt={2}>
-          <DayliTasksStreak
-            isUpdateAnimationDisabled
-            streak={props.dailyStreak}
-          />
-        </Box>
+        <Box mt={2} />
+        <DayliTasksStreak
+          isUpdateAnimationDisabled
+          streak={props.dailyStreak}
+        />
       </CardContent>
     </Card>
   );

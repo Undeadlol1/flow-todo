@@ -30,7 +30,7 @@ export const Theme: FunctionComponent<{
                     paper: '#2d2d2fe6',
                     default: '#1d1d1d',
                   }
-                : undefined,
+                : {},
 
             primary: { main: '#81D4FA' },
             secondary: {

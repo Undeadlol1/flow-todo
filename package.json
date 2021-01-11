@@ -71,7 +71,7 @@
     "react-scripts": "4.0.1",
     "react-sortable-hoc": "^1.10.1",
     "react-test-renderer": "^16.14.0",
-    "react-use": "^15.3.6",
+    "react-use": "^15.3.8",
     "react-use-toggle": "^0.1.0",
     "react-use-web-share": "^1.0.1",
     "redux": "^4.0.4",

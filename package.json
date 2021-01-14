@@ -78,7 +78,7 @@
     "redux-firestore": "^0.14.0",
     "reselect": "^4.0.0",
     "typescript": "4.1.3",
-    "web-vitals": "^1.0.1",
+    "web-vitals": "^1.1.0",
     "workbox-core": "^6.0.2",
     "workbox-expiration": "^6.0.2",
     "workbox-precaching": "^6.0.2",

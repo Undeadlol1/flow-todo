@@ -14,7 +14,7 @@
     "@storybook/addon-knobs": "^6.1.15",
     "@storybook/addon-links": "^6.1.16",
     "@storybook/addons": "^6.1.16",
-    "@storybook/react": "^6.1.15",
+    "@storybook/react": "^6.1.16",
     "@types/babel__core": "^7.1.12",
     "@types/classnames": "^2.2.11",
     "@types/debug": "^4.1.5",

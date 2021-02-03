@@ -8,11 +8,11 @@ The app is hosted [here](https://flow-todo-5824b.web.app/).
 
 **How to run:**
 
-```
+```bash
 git clone https://github.com/Undeadlol1/flow-todo.git
-| cd flow-todo
-| npm i 
-| npm start
+cd flow-todo
+npm i 
+npm start
 ```
 
 If you want to connect live database comment out this two lines:

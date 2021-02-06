@@ -1,11 +1,11 @@
 import React from 'react';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
-import CommentForDevelopers from './DayliTasksStreak';
+import DailyTasksStreak from './DayliTasksStreak';
 
 export default {
-  component: CommentForDevelopers,
-  title: `${sections.tasks}DayliTasksStreak`,
+  component: DailyTasksStreak,
+  title: `${sections.tasks}DailyTasksStreak`,
 };
 
 const HeaderWithComment = ({ value: title }: { value: string }) => {
@@ -23,12 +23,12 @@ const HeaderWithComment = ({ value: title }: { value: string }) => {
 export const Demos = () => (
   <>
     <HeaderWithComment value="Demo when task was done yesterday (meaning user is still working on a streak, it is not yet broken):" />
-    <CommentForDevelopers streak={streaks.doneTasksYesterday} />
+    <DailyTasksStreak streak={streaks.doneTasksYesterday} />
     <HeaderWithComment value="Streak was done today:" />
-    <CommentForDevelopers streak={streaks.doneTasksToday} />
+    <DailyTasksStreak streak={streaks.doneTasksToday} />
     <HeaderWithComment value="Streak is done few days in a row:" />
-    <CommentForDevelopers streak={streaks.doneTasksFewDays} />
+    <DailyTasksStreak streak={streaks.doneTasksFewDays} />
     <HeaderWithComment value="Streak is broken:" />
-    <CommentForDevelopers streak={streaks.streakIsBroken} />
+    <DailyTasksStreak streak={streaks.streakIsBroken} />
   </>
 );

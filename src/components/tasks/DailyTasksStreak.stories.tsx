@@ -23,7 +23,7 @@ const HeaderWithComment = ({ value: title }: { value: string }) => {
 
 export const Demos = (args) => (
   <>
-    <HeaderWithComment value="Demo when task was done yesterday (meaning user is still working on a streak, it is not yet broken):" />
+    <HeaderWithComment value="Demo when streak was done yesterday (meaning user is still working on a streak, it is not yet broken):" />
     <DailyTasksStreak {...args} streak={streaks.doneTasksYesterday} />
     <HeaderWithComment value="Streak was done today:" />
     <DailyTasksStreak {...args} streak={streaks.doneTasksToday} />

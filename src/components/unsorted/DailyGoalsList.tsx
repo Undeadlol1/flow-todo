@@ -57,4 +57,4 @@ const DailyGoalsList = memo((props: Props) => {
 
 DailyGoalsList.displayName = componentName;
 
-export { DailyGoalsList as DailyGoalsList };
+export { DailyGoalsList };

@@ -28,7 +28,7 @@ export const Demos = () => (
     <DayliTasksStreak streak={streaks.doneTasksToday} />
     <Header title="Few days:" />
     <DayliTasksStreak streak={streaks.doneTasksFewDays} />
-    <Header title="Noting will be shown if streak is broken:" />
+    <Header title="Nothing will be shown if streak is broken:" />
     <DayliTasksStreak streak={streaks.streakIsBroken} />
   </>
 );

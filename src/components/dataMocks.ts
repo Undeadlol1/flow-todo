@@ -1,6 +1,6 @@
 import { random } from 'faker';
 import subDays from 'date-fns/esm/subDays';
-import { IDailyStreak } from '../entities/IDailyStreak';
+import { IDailyStreak } from '../entities/IDailyiStreak';
 import { TasksDoneTodayProps } from './tasks/TasksDoneToday';
 import { Task } from '../entities/Task';
 
@@ -49,7 +49,7 @@ export const streaks = {
 };
 /**
  * NOTE: placed here because if this is placed
- * inside a story, the story book we break
+ * inside a story, the story book will break
  * because all exports are stories.
  */
 export const TasksDoneTodaySampleProps = {

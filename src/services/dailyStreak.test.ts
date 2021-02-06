@@ -2,7 +2,7 @@ import DailyStreak from './dailyStreak';
 import addDays from 'date-fns/addDays';
 import subDays from 'date-fns/esm/subDays';
 import isSameDay from 'date-fns/esm/isSameDay';
-import { IDayliStreak } from '../entities/IDayliStreak';
+import { IDailyStreak } from '../entities/IDailyStreak';
 
 const today = Date.now();
 const tommorow = addDays(today, 1).getTime();
@@ -13,7 +13,7 @@ const threeDaysAgo = subDays(today, 3).getTime();
 function getStreakThatStartsAtAndUpdatedAt(
   startsAt: number,
   updatedAt: number,
-): IDayliStreak {
+): IDailyStreak {
   return {
     perDay: 3,
     startsAt,
@@ -159,7 +159,7 @@ describe('DailyStreak', () => {
 
   it('.isBroken returns true if no  arguments provided.', () => {
     const result = DailyStreak.isBroken(
-      (undefined as unknown) as IDayliStreak,
+      (undefined as unknown) as IDailyStreak,
     );
     expect(result).toEqual(true);
   });

@@ -10,7 +10,7 @@ import uniq from 'lodash/uniq';
 import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
 import { createSelector } from 'reselect';
-import { IDayliStreak } from '../entities/IDayliStreak';
+import { IDailyStreak } from '../entities/IDailyStreak';
 import { Profile } from '../entities/Profile';
 import { Task } from '../entities/Task';
 import { TaskHistory } from '../entities/TaskHistory';
@@ -109,7 +109,7 @@ export const profileSelector = createSelector(
         perDay: 3,
         startsAt: null,
         updatedAt: null,
-      } as IDayliStreak;
+      } as IDailyStreak;
     }
     return profile as Profile;
   },

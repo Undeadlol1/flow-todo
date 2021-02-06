@@ -2,7 +2,7 @@ import differenceInDays from 'date-fns/esm/differenceInDays';
 import isSameDay from 'date-fns/esm/isSameDay';
 import debug from 'debug';
 import format from 'date-fns/esm/format';
-import { IDayliStreak } from '../entities/IDayliStreak';
+import { IDailyStreak } from '../entities/IDailyStreak';
 
 const log = debug('DailyStreakService');
 
@@ -13,9 +13,9 @@ export default class DailyStreak {
     streak: currentStreak,
     tasksDoneToday,
   }: {
-    streak: IDayliStreak;
+    streak: IDailyStreak;
     tasksDoneToday: number;
-  }): IDayliStreak {
+  }): IDailyStreak {
     const isStreakBroken = this.isBroken(currentStreak);
     const shouldStreakUpdate = this.shouldUpdate({
       streak: currentStreak,
@@ -39,7 +39,7 @@ export default class DailyStreak {
     streak,
   }: {
     tasksDoneToday: number;
-    streak: IDayliStreak;
+    streak: IDailyStreak;
   }): boolean {
     const isTaskGoalReached = tasksDoneToday >= streak.perDay;
     const isUpdatedToday = isSameDay(
@@ -54,7 +54,7 @@ export default class DailyStreak {
     else return isTaskGoalReached && !isUpdatedToday;
   }
 
-  static isBroken(streak: IDayliStreak): boolean {
+  static isBroken(streak: IDailyStreak): boolean {
     try {
       const difference = differenceInDays(
         this.today,
@@ -70,25 +70,25 @@ export default class DailyStreak {
     }
   }
 
-  static daysInARow({ startsAt, updatedAt }: IDayliStreak): number {
+  static daysInARow({ startsAt, updatedAt }: IDailyStreak): number {
     if (!updatedAt || !startsAt) return 0;
     return differenceInDays(updatedAt, startsAt) + 1;
   }
 
-  static daysSinceUpdate(streak: IDayliStreak): number | undefined {
+  static daysSinceUpdate(streak: IDailyStreak): number | undefined {
     if (!streak.updatedAt) return undefined;
     return differenceInDays(this.today, streak.updatedAt);
   }
 
-  static getEmptyStreak(): IDayliStreak {
+  static getEmptyStreak(): IDailyStreak {
     return {
       startsAt: null,
       updatedAt: null,
       perDay: 3,
-    } as IDayliStreak;
+    } as IDailyStreak;
   }
 
-  static log(streak: IDayliStreak) {
+  static log(streak: IDailyStreak) {
     const pattern = 'dd/MM';
     log('startsAt', format(streak.startsAt || 0, pattern));
     log('updatedAt', format(streak.updatedAt || 0, pattern));

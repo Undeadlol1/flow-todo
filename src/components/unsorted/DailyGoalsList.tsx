@@ -14,7 +14,7 @@ import Card from '@material-ui/core/Card';
 
 import { DailyGoal } from '../../entities/DailyGoal';
 
-const componentName = 'DayliGoalsList';
+const componentName = 'DailyGoalsList';
 const log = debug(componentName);
 const useStyles = makeStyles((theme: Theme) => ({ root: {} }));
 
@@ -57,4 +57,4 @@ const DailyGoalsList = memo((props: Props) => {
 
 DailyGoalsList.displayName = componentName;
 
-export { DailyGoalsList as DayliGoalsList };
+export { DailyGoalsList as DailyGoalsList };

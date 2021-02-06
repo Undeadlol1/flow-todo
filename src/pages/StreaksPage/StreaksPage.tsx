@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { UpsertDailyGoal } from '../../components/unsorted/UpsertDailyGoal';
-import { DayliGoalsList } from '../../components/unsorted/DayliGoalsList';
+import { DailyGoalsList } from '../../components/unsorted/DailyGoalsList';
 
 export const StreaksPage = memo((props) => (
   <Grid container>
@@ -14,7 +14,7 @@ export const StreaksPage = memo((props) => (
       <UpsertDailyGoal />
     </Grid>
     <Grid xs={12}>
-      <DayliGoalsList goals={[]} />
+      <DailyGoalsList goals={[]} />
     </Grid>
   </Grid>
-  ));
+));

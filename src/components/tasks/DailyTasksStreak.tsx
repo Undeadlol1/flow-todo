@@ -4,18 +4,18 @@ import debug from 'debug';
 import React, { memo } from 'react';
 import { useTypedTranslate } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
-import { IDayliStreak } from '../../entities/IDayliStreak';
+import { IDailyStreak } from '../../entities/IDailyStreak';
 import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 
-const componentName = 'DayliTasksStreak';
+const componentName = 'DailyTasksStreak';
 const log = debug(componentName);
 
 interface Props {
-  streak: IDayliStreak;
+  streak: IDailyStreak;
   isUpdateAnimationDisabled?: boolean;
 }
 
-const DayliTasksStreak = memo(
+const DailyTasksStreak = memo(
   ({ streak, isUpdateAnimationDisabled }: Props) => {
     const t = useTypedTranslate();
 
@@ -44,4 +44,4 @@ const DayliTasksStreak = memo(
   },
 );
 
-export default memo(DayliTasksStreak);
+export default memo(DailyTasksStreak);

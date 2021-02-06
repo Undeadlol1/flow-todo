@@ -13,7 +13,7 @@ import { TagsList } from '../../components/tasks/TagsList';
 import TasksDoneToday from '../../components/tasks/TasksDoneToday';
 import { TasksList } from '../../components/tasks/TasksList';
 import WelcomeCard from '../../components/ui/WelcomeCard';
-import { IDayliStreak } from '../../entities/IDayliStreak';
+import { IDailyStreak } from '../../entities/IDailyStreak';
 import { Task } from '../../entities/Task';
 import { TaskHistory } from '../../entities/TaskHistory';
 import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
@@ -25,7 +25,7 @@ export interface IndexPageProps {
   logs: TaskHistory[];
   tasksPerDay: number;
   isLoading?: boolean;
-  streak: IDayliStreak;
+  streak: IDailyStreak;
   activeTasks?: Task[];
   createdAtleastOneTask: boolean;
 }

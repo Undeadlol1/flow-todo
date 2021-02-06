@@ -13,7 +13,7 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { FirebaseReducer } from 'react-redux-firebase';
-import DayliTasksStreakForm from '../../components/tasks/DayliTasksStreakForm';
+import DailyTasksStreakForm from '../../components/tasks/DailyTasksStreakForm';
 import DarkOrLightThemePicker from '../../components/ui/DarkOrLightThemePicker';
 import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMessages';
 import { UserOverviewCard } from '../../components/users/UserOverviewCard';
@@ -85,7 +85,7 @@ export const ProfilePage = memo((props: Props) => {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Box mb={2}>
-          <DayliTasksStreakForm />
+          <DailyTasksStreakForm />
         </Box>
         <Box mb={2}>
           <DarkOrLightThemePicker />

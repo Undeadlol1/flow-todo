@@ -8,10 +8,10 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import { IDayliStreak } from '../../entities/IDayliStreak';
+import { IDailyStreak } from '../../entities/IDailyStreak';
 import { useTypedTranslate } from '../../services/index';
 import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
-import DayliTasksStreak from './DayliTasksStreak';
+import DailyTasksStreak from './DailyTasksStreak';
 
 const useStyles = makeStyles((theme: Theme) => ({
   progress: {
@@ -30,7 +30,7 @@ export interface TasksDoneTodayProps {
   isLoaded?: boolean;
   tasksPerDay: number;
   tasksToday: number;
-  dailyStreak: IDayliStreak;
+  dailyStreak: IDailyStreak;
   isUpdateAnimationDisabled?: boolean;
 }
 
@@ -82,7 +82,7 @@ function TasksDoneToday({
           }
         />
         <Box mt={2} />
-        <DayliTasksStreak
+        <DailyTasksStreak
           isUpdateAnimationDisabled
           streak={props.dailyStreak}
         />

@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { useTypedTranslate } from '../../services';
 
-const log = debug('DayliTasksStreakForm');
+const log = debug('DailyTasksStreakForm');
 
-function DayliTasksStreakForm() {
+function DailyTasksStreakForm() {
   const t = useTypedTranslate();
   const profile = useSelector(profileSelector);
   const tasksPerDay = profile?.dailyStreak?.perDay;
@@ -55,4 +55,4 @@ function DayliTasksStreakForm() {
   );
 }
 
-export default memo(DayliTasksStreakForm);
+export default memo(DailyTasksStreakForm);

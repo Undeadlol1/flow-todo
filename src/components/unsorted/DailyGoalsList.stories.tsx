@@ -4,11 +4,11 @@ import DailyStreak from '../../services/dailyStreak';
 import { DailyGoal } from '../../store/types';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
-import { DayliGoalsList } from './DayliGoalsList';
+import { DailyGoalsList } from './DailyGoalsList';
 
 export default {
-  component: DayliGoalsList,
-  title: `${sections.streaks}DayliGoalsList`,
+  component: DailyGoalsList,
+  title: `${sections.streaks}DailyGoalsList`,
 };
 
 const goals = [
@@ -29,5 +29,5 @@ const goals = [
   },
 ] as DailyGoal[];
 
-export const Demo = (args) => <DayliGoalsList {...args} />;
+export const Demo = (args) => <DailyGoalsList {...args} />;
 Demo.args = { goals };

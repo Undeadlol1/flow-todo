@@ -1,7 +1,7 @@
 import React from 'react';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
-import DailyTasksStreak from './DayliTasksStreak';
+import DailyTasksStreak from './DailyTasksStreak';
 
 export default {
   component: DailyTasksStreak,

@@ -8,14 +8,12 @@ export default {
   title: `${sections.tasks}TasksDoneToday`,
 };
 
-const props = TasksDoneTodaySampleProps;
-
-export const Demos = () => {
+export const Demos = (args) => {
   const [amount, setAmount] = useState(0);
   // Change amount completed tasks every few seconds.
   useEffect(() => {
     const interval = setInterval(
-      () => setAmount(i => (i < props.tasksPerDay ? i + 1 : 0)),
+      () => setAmount((i) => (i < args.tasksPerDay ? i + 1 : 0)),
       2000,
     );
     return () => clearInterval(interval);
@@ -24,13 +22,15 @@ export const Demos = () => {
   return (
     <>
       Change animation:
-      <TasksDoneToday {...props} tasksToday={amount} />
+      <TasksDoneToday {...args} tasksToday={amount} />
       Is achieved:
-      <TasksDoneToday {...props} />
+      <TasksDoneToday {...args} />
       Is loading:
-      <TasksDoneToday {...props} isLoaded={false} />
+      <TasksDoneToday {...args} isLoaded={false} />
       If done more than necessary:
-      <TasksDoneToday {...props} tasksToday={5} />
+      <TasksDoneToday {...args} tasksToday={5} />
     </>
   );
 };
+
+Demos.args = TasksDoneTodaySampleProps;

@@ -34,7 +34,3 @@ export const withItems = () => <TasksList {...props} />;
 export const canDelete = () => (
   <TasksList {...{ ...props, canDelete: true }} />
 );
-
-export const empty = () => <TasksList />;
-
-export const loading = () => <TasksList loading />;

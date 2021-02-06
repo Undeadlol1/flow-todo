@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import useInterval from 'react-use/esm/useInterval';
 import RewardModal from './components/rewards/RewardModal';
 import DevelopmentOnlyMenu from './components/ui/DevelopmentOnlyMenu';
-import { GlobalSnackbar } from './components/ui/GlobalSnackbar';
+import { GlobalSnackbarContainer } from './components/ui/GlobalSnackbar';
 import NavBar from './components/ui/NavBar/NavBar';
 import Sidebar from './components/ui/Sidebar';
 import { ExpirienceProgressBar } from './components/users/ExpirienceProgressBar';
@@ -108,7 +108,7 @@ export default memo((props: { children?: JSX.Element }) => {
       />
       <Sidebar isOpen={isSidebarOpen} isLoggedIn={!user.isEmpty} />
       <RewardModal isOpen={isRewardModalOpen} />
-      <GlobalSnackbar />
+      <GlobalSnackbarContainer />
       <Container>
         <Switch>
           <Route path="/tasks/:taskId">

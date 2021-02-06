@@ -19,43 +19,47 @@ const StyledSnackbar = withStyles((theme: Theme) => ({
 }))(Snackbar);
 
 export interface GlobalSnackbarProps {
-  _isOpenForDevPurposes?: boolean;
+  open: boolean;
+  message: string;
+  onClose: () => void;
 }
 
-const GlobalSnackbar = memo(
-  ({ _isOpenForDevPurposes = false }: GlobalSnackbarProps) => {
-    const {
-      isSnackbarShown,
-      snackbarMessage,
-      toggleSnackbar,
-    } = useSnackbars({ _isOpenForDevPurposes });
-    return (
-      <StyledSnackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={isSnackbarShown}
-        message={snackbarMessage}
-        onClose={() => toggleSnackbar()}
-      />
-    );
-  },
-);
+const GlobalSnackbar = memo((props: GlobalSnackbarProps) => {
+  return (
+    <StyledSnackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      open={props.open}
+      message={props.message}
+      onClose={props.onClose}
+    />
+  );
+});
 
-function useSnackbars({
-  _isOpenForDevPurposes = false,
-}: {
-  _isOpenForDevPurposes?: boolean;
-}): {
+const GlobalSnackbarContainer = memo(() => {
+  const {
+    isSnackbarShown,
+    snackbarMessage,
+    toggleSnackbar,
+  } = useSnackbars();
+  return (
+    <GlobalSnackbar
+      open={isSnackbarShown}
+      message={snackbarMessage}
+      onClose={() => toggleSnackbar()}
+    />
+  );
+});
+
+function useSnackbars(): {
   snackbarQueue: string[];
   snackbarMessage: string;
   isSnackbarShown: boolean;
   toggleSnackbar: (boolean?: boolean) => void;
 } {
-  const [isDialogOpen, toggleSnackbar] = useToggle(
-    _isOpenForDevPurposes,
-  );
+  const [isDialogOpen, toggleSnackbar] = useToggle(false);
   const { isTasksDoneTodayNotificationOpen } = useSelector(
     uiSelector,
   );
@@ -98,9 +102,9 @@ function useSnackbars({
   return {
     toggleSnackbar,
     snackbarQueue: [],
-    snackbarMessage: snackbarMessage,
     isSnackbarShown: isDialogOpen,
+    snackbarMessage: snackbarMessage,
   };
 }
 
-export { GlobalSnackbar };
+export { GlobalSnackbarContainer, GlobalSnackbar };

@@ -143,7 +143,7 @@ const Container = memo(() => {
         }),
         updateDailyStreak({
           profile,
-          userId: profile.userId,
+          userId,
           // NOTE: +1 because when this function is called task
           // update is not registred yet, thus task may look as it is nt done yet.
           tasksDoneToday: tasksDoneToday + 1,

@@ -10,9 +10,10 @@ export default {
   title: `${sections.ui}GlobalSnackbar`,
 };
 
-const props = {
-  _isOpenForDevPurposes: true,
-} as GlobalSnackbarProps;
-
 export const Demo = (args) => <GlobalSnackbar {...args} />;
-Demo.args = props;
+
+Demo.args = {
+  open: true,
+  message: 'This is a message',
+  onClose: () => console.log('onClose() was called.'),
+} as GlobalSnackbarProps;

@@ -2,6 +2,7 @@ import React from 'react';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
 import DailyTasksStreak from './DailyTasksStreak';
+import { DailyTasksStreakProps } from './DailyTasksStreak';
 
 export default {
   component: DailyTasksStreak,
@@ -20,15 +21,20 @@ const HeaderWithComment = ({ value: title }: { value: string }) => {
   );
 };
 
-export const Demos = () => (
+export const Demos = (args) => (
   <>
     <HeaderWithComment value="Demo when task was done yesterday (meaning user is still working on a streak, it is not yet broken):" />
-    <DailyTasksStreak streak={streaks.doneTasksYesterday} />
+    <DailyTasksStreak {...args} streak={streaks.doneTasksYesterday} />
     <HeaderWithComment value="Streak was done today:" />
-    <DailyTasksStreak streak={streaks.doneTasksToday} />
+    <DailyTasksStreak {...args} streak={streaks.doneTasksToday} />
     <HeaderWithComment value="Streak is done few days in a row:" />
-    <DailyTasksStreak streak={streaks.doneTasksFewDays} />
+    <DailyTasksStreak {...args} streak={streaks.doneTasksFewDays} />
     <HeaderWithComment value="Streak is broken:" />
-    <DailyTasksStreak streak={streaks.streakIsBroken} />
+    <DailyTasksStreak {...args} streak={streaks.streakIsBroken} />
   </>
 );
+
+Demos.args = {
+  streak: streaks.doneTasksYesterday,
+  isUpdateAnimationDisabled: false,
+} as DailyTasksStreakProps;

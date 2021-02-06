@@ -10,13 +10,13 @@ import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 const componentName = 'DailyTasksStreak';
 const log = debug(componentName);
 
-interface Props {
+export interface DailyTasksStreakProps {
   streak: IDailyStreak;
   isUpdateAnimationDisabled?: boolean;
 }
 
 const DailyTasksStreak = memo(
-  ({ streak, isUpdateAnimationDisabled }: Props) => {
+  ({ streak, isUpdateAnimationDisabled }: DailyTasksStreakProps) => {
     const t = useTypedTranslate();
 
     let daysInARow = DailyStreak.daysInARow(streak);

@@ -1,7 +1,7 @@
-import { IDailyStreak } from './IDailyStreak';
+import { DailyStreak } from './DailyStreak';
 
 export type DailyGoal = {
   id: string;
   name: string;
-  streak: IDailyStreak;
+  streak: DailyStreak;
 };

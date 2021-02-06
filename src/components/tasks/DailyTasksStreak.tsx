@@ -4,7 +4,7 @@ import debug from 'debug';
 import React, { memo } from 'react';
 import { useTypedTranslate } from '../../services';
 import DailyStreak from '../../services/dailyStreak';
-import { IDailyStreak } from '../../entities/IDailyStreak';
+import { DailyStreak as IDailyStreak } from '../../entities/DailyStreak';
 import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 
 const componentName = 'DailyTasksStreak';

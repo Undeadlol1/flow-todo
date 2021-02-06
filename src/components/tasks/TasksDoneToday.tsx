@@ -8,7 +8,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import { IDailyStreak } from '../../entities/IDailyStreak';
+import { DailyStreak } from '../../entities/DailyStreak';
 import { useTypedTranslate } from '../../services/index';
 import { NumbersAnimatedOnUpdate } from '../ui/NumbersAnimatedOnUpdate';
 import DailyTasksStreak from './DailyTasksStreak';
@@ -30,7 +30,7 @@ export interface TasksDoneTodayProps {
   isLoaded?: boolean;
   tasksPerDay: number;
   tasksToday: number;
-  dailyStreak: IDailyStreak;
+  dailyStreak: DailyStreak;
   isUpdateAnimationDisabled?: boolean;
 }
 

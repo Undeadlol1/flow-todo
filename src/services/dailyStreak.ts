@@ -2,7 +2,7 @@ import differenceInDays from 'date-fns/esm/differenceInDays';
 import isSameDay from 'date-fns/esm/isSameDay';
 import debug from 'debug';
 import format from 'date-fns/esm/format';
-import { IDailyStreak } from '../entities/IDailyStreak';
+import { DailyStreak as IDailyStreak } from '../entities/DailyStreak';
 
 const log = debug('DailyStreakService');
 

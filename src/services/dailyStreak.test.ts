@@ -2,7 +2,7 @@ import DailyStreak from './dailyStreak';
 import addDays from 'date-fns/addDays';
 import subDays from 'date-fns/esm/subDays';
 import isSameDay from 'date-fns/esm/isSameDay';
-import { IDailyStreak } from '../entities/IDailyStreak';
+import { DailyStreak as IDailyStreak } from '../entities/DailyStreak';
 
 const today = Date.now();
 const tommorow = addDays(today, 1).getTime();

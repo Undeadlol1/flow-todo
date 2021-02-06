@@ -1,6 +1,6 @@
 import { random } from 'faker';
 import subDays from 'date-fns/esm/subDays';
-import { IDailyStreak } from '../entities/IDailyiStreak';
+import { DailyStreak } from '../entities/DailyStreak';
 import { TasksDoneTodayProps } from './tasks/TasksDoneToday';
 import { Task } from '../entities/Task';
 
@@ -30,22 +30,22 @@ export const streaks = {
     perDay,
     startsAt: yesterday,
     updatedAt: yesterday,
-  } as IDailyStreak,
+  } as DailyStreak,
   doneTasksToday: {
     perDay,
     startsAt: today,
     updatedAt: today,
-  } as IDailyStreak,
+  } as DailyStreak,
   doneTasksFewDays: {
     perDay,
     startsAt: subDays(today, 4).getTime(),
     updatedAt: today,
-  } as IDailyStreak,
+  } as DailyStreak,
   streakIsBroken: {
     perDay,
     startsAt: subDays(today, 5).getTime(),
     updatedAt: subDays(today, 3).getTime(),
-  } as IDailyStreak,
+  } as DailyStreak,
 };
 /**
  * NOTE: placed here because if this is placed

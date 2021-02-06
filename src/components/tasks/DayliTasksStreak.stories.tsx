@@ -1,14 +1,14 @@
 import React from 'react';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
-import DayliTasksStreak from './DayliTasksStreak';
+import CommentForDevelopers from './DayliTasksStreak';
 
 export default {
-  component: DayliTasksStreak,
+  component: CommentForDevelopers,
   title: `${sections.tasks}DayliTasksStreak`,
 };
 
-const Header = ({ title }: { title: string }) => {
+const HeaderWithComment = ({ value: title }: { value: string }) => {
   return (
     <div
       style={{ backgroundColor: 'lightblue', fontStyle: 'italic' }}
@@ -22,13 +22,13 @@ const Header = ({ title }: { title: string }) => {
 
 export const Demos = () => (
   <>
-    <Header title="Done yesterday (meaning user is working on a streak, it is not yet broken):" />
-    <DayliTasksStreak streak={streaks.doneTasksYesterday} />
-    <Header title="Done today:" />
-    <DayliTasksStreak streak={streaks.doneTasksToday} />
-    <Header title="Few days:" />
-    <DayliTasksStreak streak={streaks.doneTasksFewDays} />
-    <Header title="Nothing will be shown if streak is broken:" />
-    <DayliTasksStreak streak={streaks.streakIsBroken} />
+    <HeaderWithComment value="Demo when task was done yesterday (meaning user is still working on a streak, it is not yet broken):" />
+    <CommentForDevelopers streak={streaks.doneTasksYesterday} />
+    <HeaderWithComment value="Streak was done today:" />
+    <CommentForDevelopers streak={streaks.doneTasksToday} />
+    <HeaderWithComment value="Streak is done few days in a row:" />
+    <CommentForDevelopers streak={streaks.doneTasksFewDays} />
+    <HeaderWithComment value="Streak is broken:" />
+    <CommentForDevelopers streak={streaks.streakIsBroken} />
   </>
 );

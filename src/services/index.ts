@@ -202,7 +202,7 @@ export function initializeI18n() {
     .use(languageDetector)
     .use(initReactI18next)
     .init({
-      lng: 'ru',
+      lng: 'en',
       debug: false,
       fallbackLng: 'en',
       interpolation: {

@@ -3,16 +3,18 @@ import subDays from 'date-fns/subDays';
 import { getUniqueId } from '../helpers/getUniqueId';
 import { getFirestore, handleErrors } from '../services/index';
 
-export function upsertTask(
-  values: {
-    name?: string;
-    tags?: string[];
-    userId?: string;
-    isCurrent?: boolean;
-  },
-  taskId?: string,
-): Promise<void | Error> {
-  const isCreate = !taskId;
+export function upsertTask(values: {
+  id?: string;
+  name: string;
+  userId: string;
+  tags?: string[];
+  isCurrent?: boolean;
+}): Promise<void | Error> {
+  const isCreate = !values.id;
+
+  if (isCreate) {
+    delete values.id;
+  }
   if (isCreate && !values.userId) {
     return Promise.reject('You forgot to add userId');
   }
@@ -33,7 +35,7 @@ export function upsertTask(
 
   return getFirestore()
     .collection('tasks')
-    .doc(taskId || getUniqueId())
+    .doc(values.id || getUniqueId())
     .set(payload, { merge: true })
     .catch(handleErrors);
 }

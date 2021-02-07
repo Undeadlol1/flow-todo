@@ -118,14 +118,11 @@ const Container = memo(() => {
 
       await Promise.all([
         TaskService.deactivateActiveTasks(tasks),
-        upsertTask(
-          {
-            ...task,
-            ...values,
-            history: [...get(task, 'history', []), historyToAdd],
-          },
-          task.id,
-        ),
+        upsertTask({
+          ...task,
+          ...values,
+          history: [...get(task, 'history', []), historyToAdd],
+        }),
         createTaskLog({
           ...historyToAdd,
           taskId,

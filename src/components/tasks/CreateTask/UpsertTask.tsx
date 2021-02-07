@@ -124,7 +124,7 @@ function UpsertTaskContainer({
       invoke(props, 'beforeSubmitHook');
 
       await Promise.all([
-        upsertTask({ name, userId }, taskId),
+        upsertTask({ id: taskId, name, userId }),
         pointsToAdd
           ? ViewerController.rewardPoints(pointsToAdd || 10)
           : Promise.resolve(),

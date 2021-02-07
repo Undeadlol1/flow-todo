@@ -126,7 +126,6 @@ const Container = memo(() => {
           },
           task.id,
         ),
-        // TODO remove this? Is this used?
         createTaskLog({
           ...historyToAdd,
           taskId,

@@ -19,7 +19,7 @@ export const Demo = (args) => {
       <hr />
       Normal:
       <hr />
-      <TasksListItem {...args} />
+      <TasksListItem {...args} isStale={false} />
       <hr />
       Stale:
       <hr />

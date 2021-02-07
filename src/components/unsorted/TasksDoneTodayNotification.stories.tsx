@@ -10,13 +10,14 @@ export default {
   title: `${sections.tasks}TasksDoneTodayNotification`,
 };
 
-export const Normal = () => {
+export const Normal = (args) => {
   const [isOpen, toggleVisibility] = useToggle(true);
   return (
     <>
       <TasksDoneTodayNotification
+        args
         isVisible={isOpen}
-        {...TasksDoneTodaySampleProps}
+        {...args}
         toggleVisibility={toggleVisibility}
       />
       <Button onClick={() => toggleVisibility()}>
@@ -25,3 +26,4 @@ export const Normal = () => {
     </>
   );
 };
+Normal.args = TasksDoneTodaySampleProps;

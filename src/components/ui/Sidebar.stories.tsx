@@ -7,4 +7,8 @@ export default {
   title: `${sections.ui}Sidebar`,
 };
 
-export const Normal = () => <Sidebar isOpen isLoggedIn />;
+export const Normal = (args) => <Sidebar {...args} />;
+Normal.args = {
+  isOpen: true,
+  isLoggedIn: false,
+};

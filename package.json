@@ -60,7 +60,7 @@
     "react-dom": "^16.14.0",
     "react-firebaseui-localized": "^1.0.8",
     "react-hook-form": "^6.15.1",
-    "react-i18next": "^11.8.6",
+    "react-i18next": "^11.8.7",
     "react-if": "^4.0.1",
     "react-joyride": "^2.3.0",
     "react-kawaii": "^0.17.0",

@@ -45,7 +45,7 @@
     "firebase-tools": "^9.4.0",
     "firebaseui": "^4.7.3",
     "formik": "^2.2.6",
-    "i18next": "^19.8.8",
+    "i18next": "^19.8.9",
     "i18next-browser-languagedetector": "^6.0.1",
     "lodash": "^4.17.15",
     "lorem-ipsum": "^2.0.3",

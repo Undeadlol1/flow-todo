@@ -81,7 +81,7 @@
     "web-vitals": "^1.1.0",
     "workbox-core": "^6.1.1",
     "workbox-expiration": "^6.1.0",
-    "workbox-precaching": "^6.1.0",
+    "workbox-precaching": "^6.1.1",
     "workbox-routing": "^6.1.0",
     "workbox-strategies": "^6.1.0",
     "yup": "^0.32.9"

@@ -58,7 +58,7 @@
     "react-compound-timer": "^1.1.15",
     "react-countup": "^4.2.3",
     "react-dom": "^16.14.0",
-    "react-firebaseui-localized": "^1.0.8",
+    "react-firebaseui-localized": "^1.1.0",
     "react-hook-form": "^6.15.4",
     "react-i18next": "^11.8.8",
     "react-if": "^4.0.1",

@@ -46,7 +46,7 @@
     "firebaseui": "^4.8.0",
     "formik": "^2.2.6",
     "i18next": "^19.9.2",
-    "i18next-browser-languagedetector": "^6.0.1",
+    "i18next-browser-languagedetector": "^6.1.0",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.3",
     "material-ui-chip-input": "^1.1.0",

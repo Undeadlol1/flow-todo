@@ -7,7 +7,7 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@reach/window-size": "^0.13.2",
+    "@reach/window-size": "^0.14.0",
     "@reduxjs/toolkit": "^1.5.1",
     "@storybook/addon-actions": "^6.1.21",
     "@storybook/addon-console": "^1.2.3",

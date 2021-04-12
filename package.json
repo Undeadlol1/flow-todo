@@ -41,7 +41,7 @@
     "clsx": "^1.0.4",
     "date-fns": "^2.19.0",
     "debug": "^4.3.1",
-    "firebase": "^8.3.2",
+    "firebase": "^8.3.3",
     "firebase-tools": "^9.9.0",
     "firebaseui": "^4.8.0",
     "formik": "^2.2.6",

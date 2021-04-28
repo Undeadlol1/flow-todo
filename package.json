@@ -74,7 +74,7 @@
     "react-use": "^17.2.4",
     "react-use-toggle": "^0.1.0",
     "react-use-web-share": "^1.0.1",
-    "redux": "^4.0.4",
+    "redux": "^4.1.0",
     "redux-firestore": "^0.14.0",
     "reselect": "^4.0.0",
     "typescript": "4.2.3",

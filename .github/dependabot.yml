@@ -1,0 +1,54 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@hookform/resolvers"
+    versions:
+    - "> 1.3.0, < 1.4"
+  - dependency-name: react-hook-form
+    versions:
+    - 7.0.2
+    - 7.0.3
+    - 7.0.4
+    - 7.1.0
+    - 7.2.1
+    - 7.2.3
+    - 7.3.4
+  - dependency-name: "@storybook/addons"
+    versions:
+    - 6.2.8
+  - dependency-name: i18next
+    versions:
+    - 20.0.0
+    - 20.1.0
+    - 20.2.1
+  - dependency-name: eslint-config-prettier
+    versions:
+    - 8.0.0
+    - 8.1.0
+    - 8.2.0
+  - dependency-name: concurrently
+    versions:
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: "@storybook/addon-links"
+    versions:
+    - 6.2.2
+  - dependency-name: "@types/prettier"
+    versions:
+    - 2.2.0
+    - 2.2.2
+  - dependency-name: firebase
+    versions:
+    - 8.3.0
+  - dependency-name: typescript
+    versions:
+    - 4.1.4
+    - 4.1.5
+  - dependency-name: react-use
+    versions:
+    - 17.0.1

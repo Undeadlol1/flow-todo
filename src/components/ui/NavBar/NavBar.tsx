@@ -98,7 +98,7 @@ function AvatarWithLevelBadge() {
     >
       <Slide in timeout={500} direction="left">
         <Button
-          to="/profile"
+          to={user.isEmpty ? '/signIn' : '/profile'}
           component={Link}
           className={clsx(
             classes.link,

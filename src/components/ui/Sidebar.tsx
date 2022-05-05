@@ -110,18 +110,6 @@ function Sidebar({
           </ListItemIcon>
           <StyledListText primary={t('faq')} />
         </ListItem>
-        <ListItem
-          button
-          onClick={() => {
-            window.location.href =
-              'https://t.me/joinchat/G46MVRxzggOOlOfVfjqVrA';
-          }}
-        >
-          <ListItemIcon>
-            <TelegramIcon />
-          </ListItemIcon>
-          <StyledListText primary={t('telegram_group')} />
-        </ListItem>
         <When condition={isShareSupported}>
           <ListItem button onClick={shareMainPage}>
             <ListItemIcon>
@@ -138,12 +126,6 @@ function Sidebar({
             <StyledListText primary={t('feedback')} />
           </ListItem>
         </MailTo>
-        <ListItem button onClick={redirectAndCloseSidebar('/focus')}>
-          <ListItemIcon>
-            <FocusIcon />
-          </ListItemIcon>
-          <StyledListText primary={sidebarTranslator('focus_mode')} />
-        </ListItem>
         <ListItem button onClick={logoutOrRedirect}>
           <ListItemIcon>
             {isLoggedIn ? <AccountBoxIcon /> : <ExitIcon />}

@@ -15,7 +15,6 @@ import { makeStyles, withStyles } from '@material-ui/styles';
 import debug from 'debug';
 import get from 'lodash/get';
 import React, { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
@@ -60,7 +59,6 @@ function Sidebar({
   const cx = useStyles();
   const history = useHistory();
   const t = useTypedTranslate();
-  const { t: sidebarTranslator } = useTranslation('sidebar');
   log('isLoggedIn: ', isLoggedIn);
   log('isOpen: ', isOpen);
 

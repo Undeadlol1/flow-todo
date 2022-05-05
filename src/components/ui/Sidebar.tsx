@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: 'none',
   },
   backgroundColor: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 

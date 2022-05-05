@@ -11,11 +11,11 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import ShareIcon from '@material-ui/icons/Share';
-import TelegramIcon from '@material-ui/icons/Telegram';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import debug from 'debug';
 import get from 'lodash/get';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import MailTo from 'react-mailto.js';
 import { getFirebase } from 'react-redux-firebase';
@@ -25,8 +25,6 @@ import {
   handleErrors,
   useTypedTranslate,
 } from '../../services/index';
-import FocusIcon from '@material-ui/icons/FilterCenterFocus';
-import { useTranslation } from 'react-i18next';
 import { toggleSidebar } from '../../store/uiState';
 
 const log = debug('Sidebar');

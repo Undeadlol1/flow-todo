@@ -19,6 +19,7 @@ import ToggleEncouragingMessages from '../../components/ui/ToggleEncouragingMess
 import { UserOverviewCard } from '../../components/users/UserOverviewCard';
 import { ViewerController } from '../../controllers/ViewerController';
 import { Profile } from '../../entities/Profile';
+import { useIsScreenNarrow } from '../../hooks/useIsScreenNarrow';
 import { upsertProfile } from '../../repositories/upsertProfile';
 import { handleErrors } from '../../services/index';
 import { authSelector, profileSelector } from '../../store/selectors';
@@ -44,6 +45,7 @@ export const ProfilePage = memo((props: Props) => {
   const [t] = useTranslation();
   const userId = props.user!.uid;
   const profile = useSelector(profileSelector);
+  const isScreenNarrow = useIsScreenNarrow();
 
   function reset(fieldToReset: 'points' | 'experience') {
     return () => {
@@ -121,6 +123,7 @@ export const ProfilePage = memo((props: Props) => {
           </List>
         </Card>
       </Grid>
+      {isScreenNarrow ? <Grid item /> : null}
     </Grid>
   );
 });

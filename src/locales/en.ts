@@ -105,6 +105,7 @@ export default {
     unpin: 'Unpin',
     'reset intervals': 'Reset intervals counter',
     select_theme: 'Select a theme',
+    select_theme_auto: 'Auto',
     select_theme_dark: 'Dark',
     select_theme_light: 'Light',
     telegram_group: 'Telegram Group',

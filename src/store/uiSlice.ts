@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type UiColorScheme = 'light' | 'dark';
+export type UiColorScheme = 'light' | 'dark' | 'auto';
 
 export type UiState = {
   loading: boolean;
@@ -21,7 +21,7 @@ const initialState: UiState = {
   isAppTourActive: false,
   isRewardModalOpen: false,
   isTasksDoneTodayNotificationOpen: false,
-  preferedColorScheme: prereferedColorScheme || 'light',
+  preferedColorScheme: prereferedColorScheme || 'auto',
 };
 
 const uiSlice = createSlice({

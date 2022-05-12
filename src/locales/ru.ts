@@ -106,6 +106,7 @@ export default {
     unpin: 'Открепить',
     'reset intervals': 'Обнулить счетчик интервалов',
     select_theme: 'Выберите тему',
+    select_theme_auto: 'Автоматически',
     select_theme_dark: 'Тëмная',
     select_theme_light: 'Светлая',
     telegram_group: 'Группа в Телеграмме',

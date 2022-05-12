@@ -36,6 +36,7 @@ const DarkOrLightThemePicker = () => {
             value={uiState.preferedColorScheme}
             onChange={setTheme}
           >
+            <MenuItem value="auto">{t('select_theme_auto')}</MenuItem>
             <MenuItem value="dark">{t('select_theme_dark')}</MenuItem>
             <MenuItem value="light">
               {t('select_theme_light')}

@@ -6,12 +6,20 @@ import { useSelector } from 'react-redux';
 import { ruRU, enUS } from '@material-ui/core/locale/';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { uiSelector } from './store/selectors';
+import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 
 export const Theme: FunctionComponent<{
   isMobile?: boolean;
 }> = React.memo(({ isMobile, children }) => {
   const uiState = useSelector(uiSelector);
   const { language } = i18n;
+  const isBrowserSetToDarkMode = useMediaQuery(
+    '(prefers-color-scheme: dark)',
+  );
+  const isDarkModeEnabled =
+    uiState.preferedColorScheme === 'auto'
+      ? isBrowserSetToDarkMode
+      : uiState.preferedColorScheme === 'dark';
   const theme = React.useMemo(
     () =>
       createMuiTheme(
@@ -24,20 +32,19 @@ export const Theme: FunctionComponent<{
             snackbar: 0,
           },
           palette: {
-            background:
-              uiState.preferedColorScheme === 'dark'
-                ? {
-                    paper: '#2d2d2fe6',
-                    default: '#1d1d1d',
-                  }
-                : {},
+            background: isDarkModeEnabled
+              ? {
+                  paper: '#2d2d2fe6',
+                  default: '#1d1d1d',
+                }
+              : {},
 
             primary: { main: '#81D4FA' },
             secondary: {
               main: '#00838F',
               contrastText: '#ffffff',
             },
-            type: uiState.preferedColorScheme,
+            type: isDarkModeEnabled ? 'dark' : 'light',
           },
           props: isMobile
             ? {
@@ -71,7 +78,7 @@ export const Theme: FunctionComponent<{
         // @ts-ignore
         { ru: ruRU, en: enUS }[language],
       ),
-    [language, uiState.preferedColorScheme, isMobile],
+    [language, isDarkModeEnabled, isMobile],
   );
   // Make font sizes responsive
   // @ts-ignore

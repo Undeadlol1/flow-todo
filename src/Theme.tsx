@@ -11,15 +11,16 @@ import { uiSelector } from './store/selectors';
 export const Theme: FunctionComponent<{
   isMobile?: boolean;
 }> = React.memo(({ isMobile, children }) => {
-  const uiState = useSelector(uiSelector);
   const { language } = i18n;
+  const { preferedColorScheme } = useSelector(uiSelector);
   const isBrowserSetToDarkMode = useMediaQuery(
     '(prefers-color-scheme: dark)',
   );
   const isDarkModeEnabled =
-    uiState.preferedColorScheme === 'auto'
+    preferedColorScheme === 'auto'
       ? isBrowserSetToDarkMode
-      : uiState.preferedColorScheme === 'dark';
+      : preferedColorScheme === 'dark';
+
   const theme = React.useMemo(
     () =>
       createMuiTheme(

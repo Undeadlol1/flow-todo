@@ -1,12 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { enUS, ruRU } from '@material-ui/core/locale/';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { ThemeProvider } from '@material-ui/styles';
 import i18n from 'i18next';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
-import { ruRU, enUS } from '@material-ui/core/locale/';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { uiSelector } from './store/selectors';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 
 export const Theme: FunctionComponent<{
   isMobile?: boolean;

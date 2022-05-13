@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import firebase from 'firebase/app';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +18,12 @@ const useStyles = makeStyles({
   },
 });
 
-const UpsertNote = (props) => {
+const UpsertNote = (props: {
+  error?: string;
+  taskId: string | undefined;
+  defaultValue: string | undefined;
+  children?: React.ReactElement;
+}) => {
   const classes = useStyles();
   const [t] = useTranslation();
   const user = useSelector(authSelector);
@@ -42,7 +46,7 @@ const UpsertNote = (props) => {
     if (!note && !props.defaultValue) return;
     if (note === props.defaultValue) return;
     if (note.length > 5000) {
-      setError('note', 'tooLong', t('validation.textIsTooLong'));
+      setError('note', { message: t('validation.textIsTooLong') });
       return;
     }
 
@@ -56,7 +60,7 @@ const UpsertNote = (props) => {
         note: note && note.trim(),
       })
       .then(() => showSnackbar(t('Successfully saved')))
-      .catch((e) => setError(e && e.message));
+      .catch((e) => setError('note', { message: e && e.message }));
   }
 
   return (
@@ -91,13 +95,6 @@ const UpsertNote = (props) => {
       </Box>
     </form>
   );
-};
-
-UpsertNote.propTypes = {
-  children: PropTypes.element,
-  error: PropTypes.string,
-  defaultValue: PropTypes.string,
-  taskId: PropTypes.string.isRequired,
 };
 
 export default UpsertNote;

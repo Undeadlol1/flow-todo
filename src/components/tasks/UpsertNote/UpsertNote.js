@@ -19,16 +19,16 @@ const useStyles = makeStyles({
   },
 });
 
-const UpsertNote = props => {
+const UpsertNote = (props) => {
   const classes = useStyles();
   const [t] = useTranslation();
-  const user  = useSelector(authSelector)
+  const user = useSelector(authSelector);
   const {
     register,
     errors,
     setError,
     getValues,
-    clearError,
+    clearErrors,
     handleSubmit,
   } = useForm();
 
@@ -46,8 +46,9 @@ const UpsertNote = props => {
       return;
     }
 
-    clearError('note');
-    firebase.firestore()
+    clearErrors('note');
+    firebase
+      .firestore()
       .collection('tasks')
       .doc(props.taskId)
       .update({
@@ -55,7 +56,7 @@ const UpsertNote = props => {
         note: note && note.trim(),
       })
       .then(() => showSnackbar(t('Successfully saved')))
-      .catch(e => setError(e && e.message));
+      .catch((e) => setError(e && e.message));
   }
 
   return (

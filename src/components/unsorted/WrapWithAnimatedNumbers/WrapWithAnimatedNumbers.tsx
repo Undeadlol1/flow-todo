@@ -1,4 +1,4 @@
-import { Box, Fade, Theme, Typography } from '@material-ui/core';
+import { Box, Zoom, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import React, { memo, ReactElement } from 'react';
@@ -14,9 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     position: 'absolute',
   },
-  topPlacement: {
-    top: theme.spacing(4) * -1,
-  },
+  topPlacement: { top: theme.spacing(4) * -0.8 },
   bottomPlacement: {
     bottom: theme.spacing(4) * -1,
   },
@@ -44,9 +42,22 @@ const WrapWithAnimatedNumbers = memo(function WrapWithAnimatedNumbers(
     <Box className={rootClasses}>
       <Box>{props.children}</Box>
       <Box className={numbersPlacement}>
-        <Fade mountOnEnter unmountOnExit in={props.isVisible}>
-          <Typography>+ {props.number}</Typography>
-        </Fade>
+        <Zoom
+          mountOnEnter
+          unmountOnExit
+          timeout={{
+            exit: 300,
+            enter: 300,
+            appear: 1200,
+          }}
+          in={props.isVisible}
+        >
+          <Typography>
+            <Box component="div" fontWeight="fontWeightBold">
+              +{props.number}
+            </Box>
+          </Typography>
+        </Zoom>
       </Box>
     </Box>
   );

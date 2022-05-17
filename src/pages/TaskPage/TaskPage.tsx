@@ -198,14 +198,15 @@ export default function TaskPage(props: TaskPageProps) {
     useEffect(() => {
       if (!isVisible) return;
 
-      const encouragement = flow(
-        sample,
-        translate,
-      )([
+      const encouragingMessages = [
         'dont_think_about_it',
         'procrastinaton_is_a_fear_of_action',
         'do_you_want_it_or_do_you_force_yourself',
-      ]);
+      ];
+      const encouragement = flow(
+        sample,
+        translate,
+      )(encouragingMessages);
       const snackBarTimeout = setTimeout(
         Snackbar.addToQueueFP(encouragement),
         3500,

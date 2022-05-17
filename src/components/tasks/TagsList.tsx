@@ -1,14 +1,14 @@
 import { Theme } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import useTheme from '@material-ui/core/styles/useTheme';
 import { makeStyles } from '@material-ui/styles';
+import classnames from 'classnames';
 import debug from 'debug';
+import isEmpty from 'lodash/isEmpty';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   excludedTagsSelector,
-  fetchedTasksSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
@@ -16,6 +16,9 @@ import { toggleTag } from '../../store/tasksSlice';
 const log = debug('TagsList');
 
 const useStyles = makeStyles((theme: Theme) => ({
+  isInactive: {
+    color: theme.palette.action.disabled,
+  },
   button: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -25,38 +28,35 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const TagsList: React.FC<{}> = memo(() => {
   const cx = useStyles();
-  const theme = useTheme();
   const dispatch = useDispatch();
 
-  const tasks = useSelector(fetchedTasksSelector);
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
   const exludedTags = useSelector(excludedTagsSelector);
 
   log('uniqueTags: ', uniqueTags);
   log('exludedTags: ', exludedTags);
 
-  if (!tasks) return null;
+  if (isEmpty(uniqueTags)) return null;
   return (
     <Box textAlign="center">
-      {uniqueTags.map(tag => {
-          const isActive = !exludedTags.includes(tag);
-          const color = isActive
-            ? 'inherit'
-            : theme.palette.grey[300];
+      {uniqueTags.map((tag) => {
+        const classNames = classnames({
+          [cx.button]: true,
+          [cx.isInactive]: exludedTags.includes(tag),
+        });
 
-          return (
-            <Button
-              key={tag}
-              style={{ color }}
-              className={cx.button}
-              onClick={() => dispatch(toggleTag(tag))}
-            >
-              {tag}
-            </Button>
-          );
-        })}
+        return (
+          <Button
+            key={tag}
+            className={classNames}
+            onClick={() => dispatch(toggleTag(tag))}
+          >
+            {tag}
+          </Button>
+        );
+      })}
     </Box>
-    );
+  );
 });
 
 TagsList.displayName = 'TagsList';

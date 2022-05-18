@@ -68,8 +68,13 @@ export class ViewerController {
     }
 
     store.dispatch(startPointsRewardingAnimation(points));
-    delay(() => store.dispatch(stopPointsRewardingAnimation()), 3500);
-    return addPointsToUser(viewerId, points);
+
+    addPointsToUser(viewerId, points);
+
+    return new Promise(resolve => delay(() => {
+      store.dispatch(stopPointsRewardingAnimation());
+      resolve(undefined);
+    }, 3700))
   }
 
   static async resetPoints() {

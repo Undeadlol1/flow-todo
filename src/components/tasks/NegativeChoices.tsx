@@ -31,8 +31,9 @@ const NegativeChoices = (props: {
   };
 
   function addPointsOnSuccess(points = 10) {
-    ViewerController.rewardPoints(points);
-    Snackbar.addToQueue(t('youAreCloserToYourGoal'));
+    ViewerController.rewardPoints(points).then(() =>
+      Snackbar.addToQueue(t('youAreCloserToYourGoal')),
+    );
   }
 
   return (
@@ -111,7 +112,6 @@ const NegativeChoices = (props: {
             <UpsertTask
               taskId={props.taskId}
               resetFormOnSuccess={false}
-              showSnackbarOnSuccess={false}
               callback={addPointsOnSuccess}
               defaultValue={props.task!.name}
             />

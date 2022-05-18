@@ -4,7 +4,6 @@ import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
-import invoke from 'lodash/invoke';
 import isUndefined from 'lodash/isUndefined';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,10 +12,7 @@ import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
 import { ViewerController } from '../../../controllers/ViewerController';
 import { upsertTask } from '../../../repositories/upsertTask';
-import {
-  handleErrors,
-  useTypedTranslate,
-} from '../../../services/index';
+import { handleErrors } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
 import { authSelector } from '../../../store/selectors';
 
@@ -66,7 +62,7 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        onSubmit={form.handleSubmit((values: any) =>
+        onSubmit={form.handleSubmit((values) =>
           props.onSubmit(values, form.reset),
         )}
       >
@@ -100,7 +96,6 @@ export function UpsertTask(props: ComponentProps) {
 interface ContainerProps extends CommonProps {
   callback?: Function;
   beforeSubmitHook?: Function;
-  showSnackbarOnSuccess?: boolean;
   resetFormOnSuccess?: boolean;
   pointsToAdd?: number;
 }
@@ -108,12 +103,10 @@ interface ContainerProps extends CommonProps {
 function UpsertTaskContainer({
   taskId,
   pointsToAdd,
-  showSnackbarOnSuccess = true,
   resetFormOnSuccess = true,
   ...props
 }: ContainerProps) {
   const [t] = useTranslation();
-  const translate = useTypedTranslate();
   const userId = useSelector(authSelector).uid;
 
   async function createDocumentAndReset(
@@ -121,32 +114,21 @@ function UpsertTaskContainer({
     reset: Function,
   ) {
     try {
-      invoke(props, 'beforeSubmitHook');
+      props.beforeSubmitHook?.();
 
       await Promise.all([
         upsertTask({ id: taskId, name, userId }),
         pointsToAdd
-          ? ViewerController.rewardPoints(pointsToAdd || 10)
+          ? ViewerController.rewardPoints(pointsToAdd)
           : Promise.resolve(),
       ]);
 
-      invoke(props, 'callback');
+      props.callback?.();
+
       if (resetFormOnSuccess) reset();
-      if (showSnackbarOnSuccess) {
-        Snackbar.addToQueue(
-          pointsToAdd
-            ? `${translate('Successfully saved')}. ${translate(
-                'points added',
-                {
-                  points: pointsToAdd,
-                },
-              )}`
-            : translate('Successfully saved'),
-        );
-      }
     } catch (error) {
       Snackbar.addToQueue(t('Something went wrong'));
-      setTimeout(() => handleErrors(error), 4000);
+      setTimeout(() => handleErrors(error as Error), 4000);
     }
   }
   const mergedProps = {

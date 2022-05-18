@@ -1,4 +1,3 @@
-import delay from 'lodash/delay';
 import { addPointsToUser } from '../repositories/addPointsToUser';
 import { upsertProfile } from '../repositories/upsertProfile';
 import { getNewlyUnlockedReward } from '../services';
@@ -68,13 +67,9 @@ export class ViewerController {
     }
 
     store.dispatch(startPointsRewardingAnimation(points));
-
     addPointsToUser(viewerId, points);
-
-    return new Promise(resolve => delay(() => {
-      store.dispatch(stopPointsRewardingAnimation());
-      resolve(undefined);
-    }, 3700))
+    await this.promisedTimeout(3700);
+    store.dispatch(stopPointsRewardingAnimation());
   }
 
   static async resetPoints() {
@@ -90,4 +85,8 @@ export class ViewerController {
       experience: 0,
     });
   }
+
+  private static promisedTimeout = function (delay: number) {
+    return new Promise(resolve => setTimeout(resolve, delay));
+  };
 }

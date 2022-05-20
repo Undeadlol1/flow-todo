@@ -59,6 +59,7 @@ export function TasksList({
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">
           <Pagination
+            boundaryCount={1}
             count={numberOfPAges}
             onChange={(e, pageNumber) => setPage(pageNumber)}
           />

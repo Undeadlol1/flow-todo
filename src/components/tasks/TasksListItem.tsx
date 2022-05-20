@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/styles';
+import classnames from 'classnames';
 import React, { memo, useState } from 'react';
 import { When } from 'react-if';
 import { Link } from 'react-router-dom';
@@ -38,10 +39,7 @@ const TasksListItem = memo(function TasksListItem({
   const text =
     TaskService.getFirstActiveSubtask(task)?.name || task.name;
 
-  function toggleTooltip(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) {
-    event.preventDefault();
+  function toggleTooltip(event: React.SyntheticEvent) {
     event.stopPropagation();
     setTooltipVisibility(!isTooltipVisible);
   }
@@ -54,7 +52,11 @@ const TasksListItem = memo(function TasksListItem({
       to={`/tasks/${task.id}${isStale ? '/isHard' : ''}`}
     >
       <When condition={isStale}>
-        <Tooltip title={t('task_is_stale')} onClick={toggleTooltip}>
+        <Tooltip
+          title={t('task_is_stale')}
+          onTouchMove={toggleTooltip}
+          onMouseOver={toggleTooltip}
+        >
           <ListItemIcon>
             <BrokenImageIcon />
           </ListItemIcon>
@@ -64,32 +66,26 @@ const TasksListItem = memo(function TasksListItem({
         primary={text}
         classes={{
           primary: classes.text,
-          root: classes.textWrapper,
+          root: classnames({
+            [classes.textWrapper]: true,
+            [classes.blurEffect]: isStale,
+          }),
         }}
       />
-      <DeleteButton
-        isVisible={canDelete}
-        onClick={() => deleteTask && deleteTask(task.id)}
-      />
+      <When condition={canDelete}>
+        <DeleteButton onClick={() => deleteTask?.(task.id)} />
+      </When>
     </ListItem>
   );
 });
 
-function DeleteButton({
-  onClick,
-  isVisible,
-}: {
-  onClick: () => void;
-  isVisible: Props['canDelete'];
-}) {
+function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
-    <When condition={!!isVisible}>
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="Delete" onClick={onClick}>
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </When>
+    <ListItemSecondaryAction>
+      <IconButton edge="end" aria-label="Delete" onClick={onClick}>
+        <DeleteIcon />
+      </IconButton>
+    </ListItemSecondaryAction>
   );
 }
 
@@ -101,6 +97,9 @@ function useStyles() {
     link: {
       textDecoration: 'none',
       color: theme.palette.text.primary,
+    },
+    blurEffect: {
+      filter: 'blur(2.5px)',
     },
     textWrapper: {
       overflow: 'hidden',

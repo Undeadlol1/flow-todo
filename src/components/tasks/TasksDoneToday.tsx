@@ -42,7 +42,7 @@ function TasksDoneToday({
 }: TasksDoneTodayProps) {
   const classes = useStyles();
   const t = useTypedTranslate();
-  const isAchieved = tasksToday >= tasksPerDay;
+  const isDailyGoalAchieved = tasksToday >= tasksPerDay;
 
   if (!props.isLoaded) {
     return <Skeleton variant="rect" height="160px" />;
@@ -53,7 +53,10 @@ function TasksDoneToday({
         <Box mb={2}>
           <Typography variant="h6" display="inline">
             {`${t('completed_tasks_today')}: `}
-            <Box display="inline" fontWeight={isAchieved ? 900 : 600}>
+            <Box
+              display="inline"
+              fontWeight={isDailyGoalAchieved ? 900 : 600}
+            >
               <NumbersAnimatedOnUpdate
                 value={tasksToday}
                 isAnimationDisabled={isUpdateAnimationDisabled}
@@ -61,7 +64,7 @@ function TasksDoneToday({
             </Box>
           </Typography>
           <Box display="inline" className={classes.successIcon}>
-            {isAchieved && (
+            {isDailyGoalAchieved && (
               <Zoom in>
                 <CheckCircleOutlineIcon />
               </Zoom>
@@ -77,9 +80,7 @@ function TasksDoneToday({
           classes={{
             progress: classes.progress,
           }}
-          activeStep={
-            tasksToday > tasksPerDay ? tasksPerDay : tasksToday
-          }
+          activeStep={isDailyGoalAchieved ? tasksPerDay : tasksToday}
         />
         <Box mt={2} />
         <DailyTasksStreak

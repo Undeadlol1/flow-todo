@@ -22,17 +22,20 @@ describe('<HomePage />', () => {
 
   describe('"add task" button', () => {
     test('is hidden during loading', () => {
-      const fab = shallow(<IndexPage {...props} isLoading />).find(
+      const button = shallow(<IndexPage {...props} isLoading />).find(
         CreateTaskFab,
       );
-      expect(fab.exists()).toBeFalsy();
+
+      expect(button.exists()).toBeFalsy();
     });
 
     test('is visible after loading', () => {
-      const fab = shallow(
+      const button = shallow(
         <IndexPage {...props} isLoading={false} />,
       ).find(CreateTaskFab);
-      expect(fab.prop('isHidden')).toBeFalsy();
+
+      expect(button.exists()).toBeTruthy();
+      expect(button.prop('isHidden')).toBeFalsy();
     });
   });
 });

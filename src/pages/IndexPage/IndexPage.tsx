@@ -46,7 +46,11 @@ export const IndexPage = memo(function IndexPage({
     return (
       <RootWrapper>
         <Section>
-          <Skeleton height="200px" width="350px" variant="rect" />
+          <Skeleton
+            height="200px"
+            variant="rect"
+            width={isScreeenNarrow ? '320px' : '400px'}
+          />
         </Section>
       </RootWrapper>
     );

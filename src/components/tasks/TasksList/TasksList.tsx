@@ -3,7 +3,10 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination, {
+  PaginationRenderItemParams,
+} from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -61,6 +64,7 @@ export function TasksList({
           <Pagination
             boundaryCount={1}
             count={numberOfPAges}
+            renderItem={renderOnlyPaginationArrows}
             onChange={(e, pageNumber) => setPage(pageNumber)}
           />
         </Box>
@@ -83,4 +87,16 @@ function useStyles() {
       },
     };
   })();
+}
+
+function renderOnlyPaginationArrows(
+  paginationItemParams: PaginationRenderItemParams,
+): JSX.Element | null {
+  if (
+    paginationItemParams.type === 'previous' ||
+    paginationItemParams.type === 'next'
+  ) {
+    return <PaginationItem {...paginationItemParams} />;
+  }
+  return null;
 }

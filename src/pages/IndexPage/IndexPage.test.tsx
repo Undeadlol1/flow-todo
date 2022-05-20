@@ -3,6 +3,7 @@ import React from 'react';
 import WelcomeCard from '../../components/ui/WelcomeCard';
 import { IndexPage, IndexPageProps } from './IndexPage';
 import DailyStreak from '../../services/dailyStreak';
+import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 
 const props = {
   logs: [],
@@ -21,17 +22,17 @@ describe('<HomePage />', () => {
 
   describe('"add task" button', () => {
     test('is hidden during loading', () => {
-      const wrapper = shallow(<IndexPage {...props} isLoading />);
-      const Fab = wrapper.find('CreateTaskFab');
-      expect(Fab.exists()).toBeFalsy();
+      const fab = shallow(<IndexPage {...props} isLoading />).find(
+        CreateTaskFab,
+      );
+      expect(fab.exists()).toBeFalsy();
     });
 
     test('is visible after loading', () => {
-      const wrapper = shallow(
+      const fab = shallow(
         <IndexPage {...props} isLoading={false} />,
-      );
-      const Fab = wrapper.find('CreateTaskFab');
-      expect(Fab.prop('isHidden')).toBeFalsy();
+      ).find(CreateTaskFab);
+      expect(fab.prop('isHidden')).toBeFalsy();
     });
   });
 });

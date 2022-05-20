@@ -19,17 +19,19 @@ const DailyTasksStreak = memo(
   ({ streak, isUpdateAnimationDisabled }: DailyTasksStreakProps) => {
     const t = useTypedTranslate();
 
-    let daysInARow = DailyStreak.daysInARow(streak);
-    const daysSinceUpdate = DailyStreak.daysSinceUpdate(streak);
+    const dailyStreakService = new DailyStreak(streak);
+    let daysInARow = dailyStreakService.getDaysInARow();
+    const daysSinceUpdate = dailyStreakService.daysSinceUpdate();
+
+    if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
+      daysInARow = 0;
+    }
 
     log('streak.startsAt: ', new Date(streak?.startsAt as number));
     log('streak.updatedAt: ', new Date(streak?.updatedAt as number));
     log('daysInARow: ', daysInARow);
     log('daysSinceUpdate: ', daysSinceUpdate);
 
-    if (daysSinceUpdate === undefined || daysSinceUpdate > 1) {
-      daysInARow = 0;
-    }
     return (
       <Typography variant="h6">
         <Box fontWeight={100}>

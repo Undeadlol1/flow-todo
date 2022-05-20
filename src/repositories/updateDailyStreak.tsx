@@ -11,12 +11,14 @@ export async function updateDailyStreak({
   profile: Profile;
   tasksDoneToday: number;
 }) {
+  const updatedStreak = new DailyStreak(
+    profile.dailyStreak,
+  ).getUpdatedStreak({
+    tasksDoneToday,
+  });
   return upsertProfile({
     ...profile,
     userId,
-    dailyStreak: DailyStreak.getUpdatedStreak({
-      tasksDoneToday,
-      streak: profile.dailyStreak,
-    }),
+    dailyStreak: updatedStreak,
   });
 }

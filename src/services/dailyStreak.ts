@@ -7,24 +7,23 @@ import { DailyStreak as IDailyStreak } from '../entities/DailyStreak';
 const log = debug('DailyStreakService');
 
 export default class DailyStreak {
+  constructor(private streak: IDailyStreak) { }
   static today = Date.now();
 
-  static getUpdatedStreak({
-    streak: currentStreak,
+  getUpdatedStreak({
     tasksDoneToday,
   }: {
-    streak: IDailyStreak;
     tasksDoneToday: number;
   }): IDailyStreak {
-    const isStreakBroken = this.isBroken(currentStreak);
+    const currentStreak = this.streak;
+    const isStreakBroken = this.isBroken();
     const shouldStreakUpdate = this.shouldUpdate({
-      streak: currentStreak,
       tasksDoneToday,
     });
     const updatedStreak = {
       ...currentStreak,
-      updatedAt: this.today,
-      startsAt: isStreakBroken ? this.today : currentStreak.startsAt,
+      updatedAt: DailyStreak.today,
+      startsAt: isStreakBroken ? DailyStreak.today : currentStreak.startsAt,
     };
 
     log('Returning updated streak: ', shouldStreakUpdate);
@@ -34,17 +33,15 @@ export default class DailyStreak {
    * Streak should only update if goal is reached
    * and streak was not updated today.
    */
-  static shouldUpdate({
+  shouldUpdate({
     tasksDoneToday = 0,
-    streak,
   }: {
     tasksDoneToday: number;
-    streak: IDailyStreak;
   }): boolean {
-    const isTaskGoalReached = tasksDoneToday >= streak.perDay;
+    const isTaskGoalReached = tasksDoneToday >= this.streak.perDay;
     const isUpdatedToday = isSameDay(
-      streak?.updatedAt || 0,
-      this.today,
+      this.streak?.updatedAt || 0,
+      DailyStreak.today,
     );
 
     log('isTaskGoalReached: ', isTaskGoalReached);
@@ -54,11 +51,11 @@ export default class DailyStreak {
     else return isTaskGoalReached && !isUpdatedToday;
   }
 
-  static isBroken(streak: IDailyStreak): boolean {
+  isBroken(): boolean {
     try {
       const difference = differenceInDays(
-        this.today,
-        streak.updatedAt as number,
+        DailyStreak.today,
+        this.streak.updatedAt as number,
       );
       log(`Streak updated ${difference} days ago.`);
 
@@ -70,14 +67,15 @@ export default class DailyStreak {
     }
   }
 
-  static daysInARow({ startsAt, updatedAt }: IDailyStreak): number {
+  getDaysInARow(): number {
+    const { startsAt, updatedAt } = this.streak
     if (!updatedAt || !startsAt) return 0;
     return differenceInDays(updatedAt, startsAt) + 1;
   }
 
-  static daysSinceUpdate(streak: IDailyStreak): number | undefined {
-    if (!streak.updatedAt) return undefined;
-    return differenceInDays(this.today, streak.updatedAt);
+  daysSinceUpdate(): number | undefined {
+    if (!this.streak.updatedAt) return undefined;
+    return differenceInDays(DailyStreak.today, this.streak.updatedAt);
   }
 
   static getEmptyStreak(): IDailyStreak {

@@ -1,7 +1,7 @@
 import React from 'react';
+import { DailyGoal } from '../../entities/DailyGoal';
 import { getUniqueId } from '../../helpers/getUniqueId';
 import DailyStreak from '../../services/dailyStreak';
-import { DailyGoal } from '../../store/types';
 import { streaks } from '../dataMocks';
 import { sections } from '../storybookContants';
 import { DailyGoalsList } from './DailyGoalsList';

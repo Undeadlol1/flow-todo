@@ -24,7 +24,7 @@ const RewardsPage: React.FC<{}> = () => {
   return (
     <Grid container justify="center" className={cx.pageContainer}>
       <Grid item xs={12} sm={8} md={8} lg={6}>
-        <TasksList tasks={tasks || []} loading={false} />
+        <TasksList tasks={tasks || []} isLoading={false} />
       </Grid>
     </Grid>
   );

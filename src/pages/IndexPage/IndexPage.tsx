@@ -72,7 +72,7 @@ export const IndexPage = memo(function IndexPage({
         </Section>
         <Section isFullWidth={isScreeenNarrow}>
           {createdAtleastOneTask ? (
-            <TasksList tasks={activeTasks} loading={false} />
+            <TasksList tasks={activeTasks} isLoading={false} />
           ) : (
             <WelcomeCard />
           )}

@@ -18,19 +18,17 @@ import { TasksListItem } from '../TasksListItem';
 
 const log = debug('TasksList');
 
-interface TasksListProps {
-  tasks: Task[];
-  loading: boolean;
-  canDelete?: boolean;
-  deleteTask?: (id: string) => void;
-}
-
 export function TasksList({
-  loading,
+  isLoading,
   tasks = [],
   canDelete,
   deleteTask,
-}: TasksListProps) {
+}: {
+  tasks: Task[];
+  isLoading: boolean;
+  canDelete?: boolean;
+  deleteTask?: (id: string) => void;
+}) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
 
@@ -42,7 +40,7 @@ export function TasksList({
   log('page: ', page);
   log('numberOfPAges: ', numberOfPAges);
 
-  if (loading || isEmpty(tasks) || get(tasks, 'empty')) {
+  if (isLoading || isEmpty(tasks) || get(tasks, 'empty')) {
     return null;
   }
   return (

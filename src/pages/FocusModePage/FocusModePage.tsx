@@ -40,7 +40,10 @@ const FocusModePage = memo(function FocusModePage({
         }}
       />
       <Box mb={2}>
-        <TasksList tasks={tasks || tasksToList} loading={isLoading} />
+        <TasksList
+          tasks={tasks || tasksToList}
+          isLoading={isLoading}
+        />
       </Box>
       <If condition={!isLoading}>
         <WhatDoYouFeelSlider onChange={console.log} />

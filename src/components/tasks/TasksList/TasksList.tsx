@@ -49,8 +49,8 @@ export function TasksList({
         {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
           return (
             <TasksListItem
-              task={task}
               key={task.id}
+              task={task}
               canDelete={canDelete}
               deleteTask={deleteTask}
             />

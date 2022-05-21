@@ -99,7 +99,7 @@ function useStyles() {
       color: theme.palette.text.primary,
     },
     blurEffect: {
-      filter: 'blur(2.5px)',
+      filter: 'blur(6px)',
     },
     textWrapper: {
       overflow: 'hidden',

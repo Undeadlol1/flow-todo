@@ -11,7 +11,7 @@ import debug from 'debug';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import React, { useState } from 'react';
-import { When } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { tasksPerPage } from '../../../constants';
 import { Task } from '../../../entities/Task';
 import { TasksListItem } from '../TasksListItem';
@@ -35,27 +35,41 @@ export function TasksList({
   const sliceTasksTo = tasksPerPage * page;
   const sliceTasksFrom = tasksPerPage * (page - 1);
   const numberOfPAges = Math.ceil(tasks.length / tasksPerPage);
+  const isListLoading =
+    isLoading || isEmpty(tasks) || get(tasks, 'empty');
 
   log('tasks: %O', tasks);
   log('page: ', page);
   log('numberOfPAges: ', numberOfPAges);
 
-  if (isLoading || isEmpty(tasks) || get(tasks, 'empty')) {
-    return null;
-  }
   return (
     <Paper className={classes.paper}>
       <List className={classes.list}>
-        {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
-          return (
-            <TasksListItem
-              key={task.id}
-              task={task}
-              canDelete={canDelete}
-              deleteTask={deleteTask}
-            />
-          );
-        })}
+        <If condition={isListLoading}>
+          <Then>
+            {Array(tasksPerPage)
+              .fill(undefined)
+              .map((index) => (
+                <TasksListItem
+                  isStale={false}
+                  task={{} as Task}
+                  isLoading={isListLoading}
+                />
+              ))}
+          </Then>
+          <Else>
+            {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
+              return (
+                <TasksListItem
+                  key={task.id}
+                  task={task}
+                  canDelete={canDelete}
+                  deleteTask={deleteTask}
+                />
+              );
+            })}
+          </Else>
+        </If>
       </List>
       <When condition={tasks.length > tasksPerPage}>
         <Box display="flex" justifyContent="center">

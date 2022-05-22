@@ -1,4 +1,5 @@
 import {
+  Box,
   IconButton,
   ListItem,
   ListItemIcon,
@@ -9,10 +10,11 @@ import {
 import Tooltip from '@material-ui/core/Tooltip';
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
 import React, { memo, useState } from 'react';
-import { When } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { Link } from 'react-router-dom';
 import { Task } from '../../entities/Task';
 import { useTypedTranslate } from '../../services/index';
@@ -21,6 +23,7 @@ import TaskService from '../../services/TaskService';
 interface Props {
   task: Task;
   isStale?: boolean;
+  isLoading?: boolean;
   canDelete?: boolean;
   deleteTask?: (id: string) => void;
 }
@@ -34,7 +37,10 @@ const TasksListItem = memo(function TasksListItem({
   const classes = useStyles();
   const t = useTypedTranslate();
 
-  const isStale = TaskService.isStale(task) || !!props.isStale;
+  const isStale =
+    props.isStale === undefined
+      ? TaskService.isStale(task)
+      : props.isStale;
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
   const text =
     TaskService.getFirstActiveSubtask(task)?.name || task.name;
@@ -49,7 +55,11 @@ const TasksListItem = memo(function TasksListItem({
       button
       component={Link}
       className={classes.link}
-      to={`/tasks/${task.id}${isStale ? '/isHard' : ''}`}
+      to={
+        props.isLoading
+          ? ''
+          : `/tasks/${task.id}${isStale ? '/isHard' : ''}`
+      }
     >
       <When condition={isStale}>
         <Tooltip
@@ -62,16 +72,25 @@ const TasksListItem = memo(function TasksListItem({
           </ListItemIcon>
         </Tooltip>
       </When>
-      <ListItemText
-        primary={text}
-        classes={{
-          primary: classes.text,
-          root: classnames({
-            [classes.textWrapper]: true,
-            [classes.blurEffect]: isStale,
-          }),
-        }}
-      />
+      <If condition={props.isLoading}>
+        <Then>
+          <Box width="100%">
+            <Skeleton height={32} />
+          </Box>
+        </Then>
+        <Else>
+          <ListItemText
+            primary={text}
+            classes={{
+              primary: classes.text,
+              root: classnames({
+                [classes.textWrapper]: true,
+                [classes.blurEffect]: isStale,
+              }),
+            }}
+          />
+        </Else>
+      </If>
       <When condition={canDelete}>
         <DeleteButton onClick={() => deleteTask?.(task.id)} />
       </When>

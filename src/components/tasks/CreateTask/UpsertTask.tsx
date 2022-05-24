@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
+import replace from 'lodash/fp/replace';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import React, { useState } from 'react';
@@ -45,7 +46,7 @@ export function UpsertTask(props: ComponentProps) {
 
   const tagsRegExp = /#[a-z]+/gi;
   const [text = '', setText] = useState<string>();
-  const tags = text.match(tagsRegExp) || [];
+  const tags = (text.match(tagsRegExp) || []).map(replace('#', ''));
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(
@@ -98,6 +99,7 @@ export function UpsertTask(props: ComponentProps) {
           <Box height={20} />
           <TagsForm
             tags={tags}
+            disabled={true}
             // TODO there is no id during creation.
             taskId={props.taskId as string}
           />

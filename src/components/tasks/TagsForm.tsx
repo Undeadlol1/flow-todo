@@ -19,6 +19,7 @@ export const TagsForm: React.FC<Props> = (props) => {
       variant="outlined"
       defaultValue={props.tags?.map(lowerFirst)}
       disabled={props.disabled}
+      readOnly={props.disabled}
       onChange={(tags) => changeTags(props.taskId, tags)}
     />
   );

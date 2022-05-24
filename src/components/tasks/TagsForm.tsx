@@ -1,11 +1,13 @@
-import React from 'react';
+import lowerFirst from 'lodash/lowerCase';
 import ChipInput from 'material-ui-chip-input';
+import React from 'react';
 import { changeTags } from '../../repositories/changeTags';
 import { useTypedTranslate } from '../../services/index';
 
 interface Props {
   taskId: string;
   tags?: string[];
+  disabled?: boolean;
 }
 
 export const TagsForm: React.FC<Props> = (props) => {
@@ -15,10 +17,11 @@ export const TagsForm: React.FC<Props> = (props) => {
       fullWidth
       label={t('tags')}
       variant="outlined"
-      defaultValue={props.tags}
+      defaultValue={props.tags?.map(lowerFirst)}
+      disabled={props.disabled}
       onChange={(tags) => changeTags(props.taskId, tags)}
     />
   );
 };
 
-export default TagsForm;
+export default React.memo(TagsForm);

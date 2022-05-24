@@ -103,11 +103,7 @@ export function UpsertTask(props: ComponentProps) {
         />
         <When condition={tags.length !== 0}>
           <Box height={20} />
-          <TagsForm
-            tags={tags}
-            disabled={props.task === undefined}
-            taskId={props.task?.id as string}
-          />
+          <TagsForm tags={tags} taskId={props.task?.id as string} />
         </When>
         <Button
           type="submit"

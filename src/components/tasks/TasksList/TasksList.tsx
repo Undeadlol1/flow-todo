@@ -47,15 +47,7 @@ export function TasksList({
       <List className={classes.list}>
         <If condition={isListLoading}>
           <Then>
-            {Array(tasksPerPage)
-              .fill(undefined)
-              .map((index) => (
-                <TasksListItem
-                  isStale={false}
-                  task={{} as Task}
-                  isLoading={isListLoading}
-                />
-              ))}
+            <ListSkeleton />
           </Then>
           <Else>
             {tasks.slice(sliceTasksFrom, sliceTasksTo).map((task) => {
@@ -71,18 +63,61 @@ export function TasksList({
           </Else>
         </If>
       </List>
-      <When condition={tasks.length > tasksPerPage}>
-        <Box display="flex" justifyContent="center">
-          <Pagination
-            boundaryCount={1}
-            count={numberOfPAges}
-            renderItem={renderOnlyPaginationArrows}
-            onChange={(e, pageNumber) => setPage(pageNumber)}
-          />
-        </Box>
-      </When>
+      <TasksPagination
+        tasks={tasks}
+        setPage={setPage}
+        numberOfPAges={numberOfPAges}
+      />
     </Paper>
   );
+}
+
+function ListSkeleton() {
+  return (
+    <>
+      {Array(tasksPerPage)
+        .fill(undefined)
+        .map((index) => (
+          <TasksListItem
+            key={index}
+            isStale={false}
+            task={{} as Task}
+            isLoading={true}
+          />
+        ))}
+    </>
+  );
+}
+
+function TasksPagination(props: {
+  tasks: Task[];
+  numberOfPAges: number | undefined;
+  setPage: (arg0: number) => void;
+}) {
+  return (
+    <When condition={props.tasks.length > tasksPerPage}>
+      <Box display="flex" justifyContent="center">
+        <Pagination
+          boundaryCount={1}
+          count={props.numberOfPAges}
+          renderItem={renderOnlyPaginationArrows}
+          onChange={(_, pageNumber) => props.setPage(pageNumber)}
+        />
+      </Box>
+    </When>
+  );
+}
+
+function renderOnlyPaginationArrows(
+  paginationItemParams: PaginationRenderItemParams,
+): JSX.Element | null {
+  if (
+    paginationItemParams.type === 'previous' ||
+    paginationItemParams.type === 'next'
+  ) {
+    return <PaginationItem {...paginationItemParams} />;
+  }
+  return null;
 }
 
 function useStyles() {
@@ -99,16 +134,4 @@ function useStyles() {
       },
     };
   })();
-}
-
-function renderOnlyPaginationArrows(
-  paginationItemParams: PaginationRenderItemParams,
-): JSX.Element | null {
-  if (
-    paginationItemParams.type === 'previous' ||
-    paginationItemParams.type === 'next'
-  ) {
-    return <PaginationItem {...paginationItemParams} />;
-  }
-  return null;
 }

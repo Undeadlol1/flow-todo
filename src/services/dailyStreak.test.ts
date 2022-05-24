@@ -10,17 +10,6 @@ const yesterday = subDays(today, 1).getTime();
 const twoDaysAgo = subDays(today, 2).getTime();
 const threeDaysAgo = subDays(today, 3).getTime();
 
-function getStreakThatStartsAtAndUpdatedAt(
-  startsAt: number,
-  updatedAt: number,
-): IDailyStreak {
-  return {
-    perDay: 3,
-    startsAt,
-    updatedAt,
-  };
-}
-
 describe('DailyStreak', () => {
   it('Detects days in a row properly.', () => {
     const daysInARow = new DailyStreak({
@@ -36,7 +25,7 @@ describe('DailyStreak', () => {
     const result = new DailyStreak({
       perDay: 3,
       startsAt: yesterday,
-      updatedAt: tommorow,
+      updatedAt: null,
     }).shouldUpdate({
       tasksDoneToday: 3,
     });
@@ -45,9 +34,11 @@ describe('DailyStreak', () => {
   });
 
   it('Should not update twice per day.', () => {
-    const result = new DailyStreak(
-      getStreakThatStartsAtAndUpdatedAt(twoDaysAgo, today),
-    ).shouldUpdate({
+    const result = new DailyStreak({
+      perDay: 3,
+      startsAt: twoDaysAgo,
+      updatedAt: today,
+    }).shouldUpdate({
       tasksDoneToday: 5,
     });
 
@@ -143,37 +134,43 @@ describe('DailyStreak', () => {
     ).toBeTruthy();
   });
 
-  it('.isBroken detects today properly.', () => {
-    const isBroken = new DailyStreak({
-      perDay: 3,
-      startsAt: yesterday,
-      updatedAt: today,
-    }).isBroken();
+  describe('.isBroken returns', () => {
+    it('false if streak started yesterday and was updated today.', () => {
+      const isBroken = new DailyStreak({
+        perDay: 3,
+        startsAt: yesterday,
+        updatedAt: today,
+      }).isBroken();
 
-    expect(isBroken).toEqual(false);
-  });
+      expect(isBroken).toEqual(false);
+    });
 
-  it('.isBroken returns false for yesterday.', () => {
-    const isBroken = new DailyStreak(
-      getStreakThatStartsAtAndUpdatedAt(yesterday, yesterday),
-    ).isBroken();
+    it('false for yesterday.', () => {
+      const isBroken = new DailyStreak({
+        perDay: 3,
+        startsAt: yesterday,
+        updatedAt: yesterday,
+      }).isBroken();
 
-    expect(isBroken).toEqual(false);
-  });
+      expect(isBroken).toEqual(false);
+    });
 
-  it('.isBroken returns true for tomorrow.', () => {
-    const isBroken = new DailyStreak(
-      getStreakThatStartsAtAndUpdatedAt(threeDaysAgo, twoDaysAgo),
-    ).isBroken();
+    it('true for tomorrow.', () => {
+      const isBroken = new DailyStreak({
+        perDay: 3,
+        startsAt: threeDaysAgo,
+        updatedAt: twoDaysAgo,
+      }).isBroken();
 
-    expect(isBroken).toEqual(true);
-  });
+      expect(isBroken).toEqual(true);
+    });
 
-  it('.isBroken returns true if no  arguments provided.', () => {
-    const isBroken = new DailyStreak(
-      (undefined as unknown) as IDailyStreak,
-    ).isBroken();
+    it('true if no arguments provided.', () => {
+      const isBroken = new DailyStreak(
+        (undefined as unknown) as IDailyStreak,
+      ).isBroken();
 
-    expect(isBroken).toEqual(true);
+      expect(isBroken).toEqual(true);
+    });
   });
 });

@@ -112,7 +112,7 @@ const NegativeChoices = (props: {
             <UpsertTask
               task={task}
               resetFormOnSuccess={false}
-              callback={addPointsOnSuccess}
+              afterSubmit={addPointsOnSuccess}
               defaultValue={props.task!.name}
             />
           </>

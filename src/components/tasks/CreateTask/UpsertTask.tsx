@@ -120,8 +120,8 @@ export function UpsertTask(props: ComponentProps) {
 }
 
 interface ContainerProps extends CommonProps {
-  callback?: Function;
-  beforeSubmitHook?: Function;
+  afterSubmit?: Function;
+  beforeSubmit?: Function;
   resetFormOnSuccess?: boolean;
   pointsToAdd?: number;
 }
@@ -140,7 +140,7 @@ function UpsertTaskContainer({
     reset: Function,
   ) {
     try {
-      props.beforeSubmitHook?.();
+      props.beforeSubmit?.();
 
       await Promise.all([
         upsertTask({ ...payload, userId, id: task?.id }),
@@ -149,7 +149,7 @@ function UpsertTaskContainer({
           : Promise.resolve(),
       ]);
 
-      props.callback?.();
+      props.afterSubmit?.();
 
       if (resetFormOnSuccess) reset();
     } catch (error) {

@@ -25,7 +25,7 @@ export const CreateTaskFab: React.FC<Props> = (props) => {
           <UpsertTask
             autoFocus
             pointsToAdd={10}
-            beforeSubmitHook={toggleDialog}
+            beforeSubmit={toggleDialog}
           />
         </DialogContent>
       </Dialog>

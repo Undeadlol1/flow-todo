@@ -110,7 +110,7 @@ const NegativeChoices = (props: {
               {t('how to formulate a task?')}
             </TypicalParagraph>
             <UpsertTask
-              taskId={props.taskId}
+              task={task}
               resetFormOnSuccess={false}
               callback={addPointsOnSuccess}
               defaultValue={props.task!.name}

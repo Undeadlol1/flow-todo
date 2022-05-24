@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/styles';
 import replace from 'lodash/fp/replace';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
+import uniq from 'lodash/uniq';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ import { When } from 'react-if';
 import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
 import { ViewerController } from '../../../controllers/ViewerController';
+import { Task } from '../../../entities/Task';
 import { upsertTask } from '../../../repositories/upsertTask';
 import { handleErrors } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
@@ -28,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 interface CommonProps {
-  taskId?: string;
+  task?: Task;
   autoFocus?: boolean;
   defaultValue?: string | null;
 }
@@ -46,7 +48,11 @@ export function UpsertTask(props: ComponentProps) {
 
   const tagsRegExp = /#[a-z]+/gi;
   const [text = '', setText] = useState<string>();
-  const tags = (text.match(tagsRegExp) || []).map(replace('#', ''));
+  const tags = uniq(
+    (text.match(tagsRegExp) || [])
+      .concat(props.task?.tags || [])
+      .map(replace('#', '')),
+  );
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(
@@ -92,16 +98,15 @@ export function UpsertTask(props: ComponentProps) {
           inputRef={form.register}
           autoFocus={props.autoFocus}
           defaultValue={props.defaultValue}
-          label={props.taskId ? t('Rework task') : t('createTask')}
+          label={props.task ? t('Rework task') : t('createTask')}
           onChange={(event) => setText(event.target.value)}
         />
         <When condition={tags.length !== 0}>
           <Box height={20} />
           <TagsForm
             tags={tags}
-            disabled={true}
-            // TODO there is no id during creation.
-            taskId={props.taskId as string}
+            disabled={props.task === undefined}
+            taskId={props.task?.id as string}
           />
         </When>
         <Button
@@ -126,7 +131,7 @@ interface ContainerProps extends CommonProps {
 }
 
 function UpsertTaskContainer({
-  taskId,
+  task,
   pointsToAdd,
   resetFormOnSuccess = true,
   ...props
@@ -142,7 +147,7 @@ function UpsertTaskContainer({
       props.beforeSubmitHook?.();
 
       await Promise.all([
-        upsertTask({ ...payload, userId, id: taskId }),
+        upsertTask({ ...payload, userId, id: task?.id }),
         pointsToAdd
           ? ViewerController.rewardPoints(pointsToAdd)
           : Promise.resolve(),
@@ -157,7 +162,7 @@ function UpsertTaskContainer({
     }
   }
   const mergedProps = {
-    taskId,
+    task,
     userId,
     autoFocus: props.autoFocus,
     defaultValue: props.defaultValue,

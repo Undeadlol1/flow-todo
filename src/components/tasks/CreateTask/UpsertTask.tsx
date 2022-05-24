@@ -101,7 +101,7 @@ export function UpsertTask(props: ComponentProps) {
           label={props.task ? t('Rework task') : t('createTask')}
           onChange={(event) => setText(event.target.value)}
         />
-        <When condition={tags.length !== 0}>
+        <When condition={!props.defaultValue && tags.length !== 0}>
           <Box height={20} />
           <TagsForm tags={tags} taskId={props.task?.id as string} />
         </When>

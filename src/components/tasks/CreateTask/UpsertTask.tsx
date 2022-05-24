@@ -1,13 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { When } from 'react-if';
 import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
 import { ViewerController } from '../../../controllers/ViewerController';
@@ -15,6 +17,7 @@ import { upsertTask } from '../../../repositories/upsertTask';
 import { handleErrors } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
 import { authSelector } from '../../../store/selectors';
+import TagsForm from '../TagsForm';
 
 const useStyles = makeStyles({
   button: {
@@ -39,6 +42,11 @@ interface ComponentProps extends CommonProps {
 export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
+
+  const tagsRegExp = /#[a-z]+/gi;
+  const [text = '', setText] = useState<string>();
+  const tags = text.match(tagsRegExp) || [];
+
   const form = useForm<{ name: string }>({
     resolver: yupResolver(
       YupObject({
@@ -62,9 +70,16 @@ export function UpsertTask(props: ComponentProps) {
   return (
     <Grow in timeout={800}>
       <form
-        onSubmit={form.handleSubmit((values) =>
-          props.onSubmit(values, form.reset),
-        )}
+        onSubmit={form.handleSubmit((values) => {
+          values.name = values.name.replace(tagsRegExp, '');
+          props.onSubmit(
+            {
+              ...values,
+              tags,
+            },
+            form.reset,
+          );
+        })}
       >
         <TextField
           fullWidth
@@ -75,10 +90,18 @@ export function UpsertTask(props: ComponentProps) {
           error={Boolean(error)}
           inputRef={form.register}
           autoFocus={props.autoFocus}
-          className="CreateTask__input"
           defaultValue={props.defaultValue}
           label={props.taskId ? t('Rework task') : t('createTask')}
+          onChange={(event) => setText(event.target.value)}
         />
+        <When condition={tags.length !== 0}>
+          <Box height={20} />
+          <TagsForm
+            tags={tags}
+            // TODO there is no id during creation.
+            taskId={props.taskId as string}
+          />
+        </When>
         <Button
           type="submit"
           color="secondary"
@@ -110,14 +133,14 @@ function UpsertTaskContainer({
   const userId = useSelector(authSelector).uid;
 
   async function createDocumentAndReset(
-    { name }: { name: string },
+    payload: { name: string; tags?: string[] },
     reset: Function,
   ) {
     try {
       props.beforeSubmitHook?.();
 
       await Promise.all([
-        upsertTask({ id: taskId, name, userId }),
+        upsertTask({ ...payload, userId, id: taskId }),
         pointsToAdd
           ? ViewerController.rewardPoints(pointsToAdd)
           : Promise.resolve(),

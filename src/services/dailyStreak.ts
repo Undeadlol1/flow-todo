@@ -7,8 +7,18 @@ import { DailyStreak as IDailyStreak } from '../entities/DailyStreak';
 const log = debug('DailyStreakService');
 
 export default class DailyStreak {
-  constructor(private streak: IDailyStreak) { }
-  static today = Date.now();
+  constructor(
+    private streak: IDailyStreak,
+    private dependencies?: {
+      getTodaysDate: () => number;
+    },
+  ) {}
+
+  get today(): number {
+    return this.dependencies?.getTodaysDate === undefined
+      ? Date.now()
+      : this.dependencies?.getTodaysDate();
+  }
 
   getUpdatedStreak({
     tasksDoneToday,
@@ -22,8 +32,8 @@ export default class DailyStreak {
     });
     const updatedStreak = {
       ...currentStreak,
-      updatedAt: DailyStreak.today,
-      startsAt: isStreakBroken ? DailyStreak.today : currentStreak.startsAt,
+      updatedAt: this.today,
+      startsAt: isStreakBroken ? this.today : currentStreak.startsAt,
     };
 
     log('Returning updated streak: ', shouldStreakUpdate);
@@ -41,7 +51,7 @@ export default class DailyStreak {
     const isTaskGoalReached = tasksDoneToday >= this.streak.perDay;
     const isUpdatedToday = isSameDay(
       this.streak?.updatedAt || 0,
-      DailyStreak.today,
+      this.today,
     );
 
     log('isTaskGoalReached: ', isTaskGoalReached);
@@ -54,7 +64,7 @@ export default class DailyStreak {
   isBroken(): boolean {
     try {
       const difference = differenceInDays(
-        DailyStreak.today,
+        this.today,
         this.streak.updatedAt as number,
       );
       log(`Streak updated ${difference} days ago.`);
@@ -68,14 +78,14 @@ export default class DailyStreak {
   }
 
   getDaysInARow(): number {
-    const { startsAt, updatedAt } = this.streak
+    const { startsAt, updatedAt } = this.streak;
     if (!updatedAt || !startsAt) return 0;
     return differenceInDays(updatedAt, startsAt) + 1;
   }
 
   daysSinceUpdate(): number | undefined {
     if (!this.streak.updatedAt) return undefined;
-    return differenceInDays(DailyStreak.today, this.streak.updatedAt);
+    return differenceInDays(this.today, this.streak.updatedAt);
   }
 
   static getEmptyStreak(): IDailyStreak {

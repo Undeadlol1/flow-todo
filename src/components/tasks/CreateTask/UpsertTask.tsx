@@ -46,7 +46,7 @@ export function UpsertTask(props: ComponentProps) {
   const classes = useStyles();
   const [t] = useTranslation();
 
-  const tagsRegExp = / #[a-z]+/gi;
+  const tagsRegExp = / #([^\s]+)+/gi;
   const [text = '', setText] = useState<string>();
   const tags = uniq(
     (text.match(tagsRegExp) || [])

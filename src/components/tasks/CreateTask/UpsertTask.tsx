@@ -135,10 +135,10 @@ function UpsertTaskContainer({
   const [t] = useTranslation();
   const userId = useSelector(authSelector).uid;
 
-  async function createDocumentAndReset(
-    payload: { name: string; tags?: string[] },
-    reset: Function,
-  ) {
+  async function createDocument(payload: {
+    name: string;
+    tags?: string[];
+  }) {
     try {
       props.beforeSubmit?.();
 
@@ -150,19 +150,24 @@ function UpsertTaskContainer({
       ]);
 
       props.afterSubmit?.();
-
-      if (resetFormOnSuccess) reset();
     } catch (error) {
       Snackbar.addToQueue(t('Something went wrong'));
       setTimeout(() => handleErrors(error as Error), 4000);
     }
   }
+
   const mergedProps = {
     task,
     userId,
     autoFocus: props.autoFocus,
     defaultValue: props.defaultValue,
-    onSubmit: createDocumentAndReset,
+    onSubmit: function (
+      payload: { name: string; tags?: string[] },
+      reset: () => void,
+    ) {
+      if (resetFormOnSuccess) createDocument(payload).then(reset);
+      else createDocument(payload);
+    },
   };
   return <UpsertTask {...mergedProps} />;
 }

@@ -83,10 +83,10 @@ const TasksListItem = memo(function TasksListItem({
             primary={text}
             classes={{
               primary: classes.text,
-              root: classnames(
-                classes.textWrapper,
-                classes.blurEffect,
-              ),
+              root: classnames({
+                [classes.textWrapper]: true,
+                [classes.blurEffect]: isStale,
+              }),
             }}
           />
         </Else>

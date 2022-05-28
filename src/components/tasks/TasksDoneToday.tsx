@@ -45,7 +45,9 @@ function TasksDoneToday({
   const isDailyGoalAchieved = tasksToday >= tasksPerDay;
 
   if (!props.isLoaded) {
-    return <Skeleton variant="rect" height="160px" />;
+    return (
+      <Skeleton animation="wave" variant="rect" height="160px" />
+    );
   }
   return (
     <Card>

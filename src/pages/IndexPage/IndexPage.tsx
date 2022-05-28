@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import debug from 'debug';
 import React, { memo, ReactElement } from 'react';
-import { When } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { isLoaded } from 'react-redux-firebase';
 import CreateTaskFab from '../../components/tasks/CreateTaskFab';
 import { TagsList } from '../../components/tasks/TagsList';
@@ -33,14 +33,14 @@ export interface IndexPageProps {
 export const IndexPage = memo(function IndexPage({
   isLoading,
   activeTasks = [],
-  createdAtleastOneTask,
+  createdAtleastOneTask: hasCreatedAtleastOneTask,
   ...props
 }: IndexPageProps) {
   const isScreeenNarrow = useIsScreenNarrow();
 
   log('isLoading: ', isLoading);
   log('activeTasks: %O', activeTasks);
-  log('createdAtleastOneTask: ', createdAtleastOneTask);
+  log('createdAtleastOneTask: ', hasCreatedAtleastOneTask);
 
   if (isLoading) {
     return (
@@ -49,6 +49,7 @@ export const IndexPage = memo(function IndexPage({
           <Skeleton
             height="200px"
             variant="rect"
+            animation="wave"
             width={isScreeenNarrow ? '320px' : '400px'}
           />
         </Section>
@@ -59,8 +60,8 @@ export const IndexPage = memo(function IndexPage({
   return (
     <RootWrapper>
       <>
-        <Section>
-          <When condition={!!createdAtleastOneTask}>
+        <When condition={hasCreatedAtleastOneTask}>
+          <Section>
             <TasksDoneToday
               dailyStreak={props.streak}
               tasksToday={props.tasksToday}
@@ -68,14 +69,17 @@ export const IndexPage = memo(function IndexPage({
               isLoaded={isLoaded(props.logs)}
               isUpdateAnimationDisabled={true}
             />
-          </When>
-        </Section>
+          </Section>
+        </When>
         <Section isFullWidth={isScreeenNarrow}>
-          {createdAtleastOneTask ? (
-            <TasksList tasks={activeTasks} isLoading={false} />
-          ) : (
-            <WelcomeCard />
-          )}
+          <If condition={hasCreatedAtleastOneTask}>
+            <Then>
+              <TasksList tasks={activeTasks} isLoading={false} />
+            </Then>
+            <Else>
+              <WelcomeCard />
+            </Else>
+          </If>
         </Section>
         <Section>
           <Box mt={2}>

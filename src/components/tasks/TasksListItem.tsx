@@ -75,7 +75,7 @@ const TasksListItem = memo(function TasksListItem({
       <If condition={props.isLoading}>
         <Then>
           <Box width="100%">
-            <Skeleton height={32} />
+            <Skeleton animation="wave" height={32} />
           </Box>
         </Then>
         <Else>

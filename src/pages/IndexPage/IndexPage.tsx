@@ -1,5 +1,7 @@
-import { Theme } from '@material-ui/core';
+import { Theme, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Grid, { GridProps } from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/styles';
@@ -61,7 +63,7 @@ export const IndexPage = memo(function IndexPage({
     <RootWrapper>
       <>
         <When condition={hasCreatedAtleastOneTask}>
-          <Section>
+          <Section isFullWidth={true}>
             <TasksDoneToday
               dailyStreak={props.streak}
               tasksToday={props.tasksToday}
@@ -71,21 +73,38 @@ export const IndexPage = memo(function IndexPage({
             />
           </Section>
         </When>
-        <Section isFullWidth={isScreeenNarrow}>
-          <If condition={hasCreatedAtleastOneTask}>
-            <Then>
-              <TasksList tasks={activeTasks} isLoading={false} />
-            </Then>
-            <Else>
-              <WelcomeCard />
-            </Else>
-          </If>
-        </Section>
-        <Section>
-          <Box mt={2}>
-            <TagsList />
-          </Box>
-        </Section>
+        <If condition={props.tasksPerDay > props.tasksToday}>
+          <Then>
+            <Section isFullWidth={isScreeenNarrow}>
+              <If condition={hasCreatedAtleastOneTask}>
+                <Then>
+                  <>
+                    <TasksList
+                      tasks={activeTasks}
+                      isLoading={false}
+                    />
+                    <Box mt={2}>
+                      <TagsList />
+                    </Box>
+                  </>
+                </Then>
+                <Else>
+                  <WelcomeCard />
+                </Else>
+              </If>
+            </Section>
+          </Then>
+          <Else>
+            <Section>
+              <Card>
+                <CardContent>
+                  <Typography paragraph>You did well!</Typography>
+                  <Typography>Come back tomorrow</Typography>
+                </CardContent>
+              </Card>
+            </Section>
+          </Else>
+        </If>
         <CreateTaskFab isHidden={isLoading} />
       </>
     </RootWrapper>
@@ -118,9 +137,12 @@ function RootWrapper(props: { children: ReactElement }) {
   return <Grid {...rootWrapperProps}>{props.children}</Grid>;
 }
 
-function Section(props: {
-  isFullWidth?: boolean;
+function Section({
+  isFullWidth = true,
+  ...props
+}: {
   children: ReactElement;
+  isFullWidth?: boolean;
 }) {
   const classes = useStyles();
   const sectionProps: GridProps = {
@@ -129,7 +151,7 @@ function Section(props: {
     lg: 6,
     xs: 12,
     item: true,
-    className: clsx(props.isFullWidth && classes.fullWidth),
+    className: clsx(isFullWidth && classes.fullWidth),
   };
 
   return <Grid {...sectionProps}>{props.children}</Grid>;

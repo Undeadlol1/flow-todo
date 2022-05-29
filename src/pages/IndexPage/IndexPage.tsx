@@ -73,38 +73,21 @@ export const IndexPage = memo(function IndexPage({
             />
           </Section>
         </When>
-        <If condition={props.tasksPerDay > props.tasksToday}>
-          <Then>
-            <Section isFullWidth={isScreeenNarrow}>
-              <If condition={hasCreatedAtleastOneTask}>
-                <Then>
-                  <>
-                    <TasksList
-                      tasks={activeTasks}
-                      isLoading={false}
-                    />
-                    <Box mt={2}>
-                      <TagsList />
-                    </Box>
-                  </>
-                </Then>
-                <Else>
-                  <WelcomeCard />
-                </Else>
-              </If>
-            </Section>
-          </Then>
-          <Else>
-            <Section>
-              <Card>
-                <CardContent>
-                  <Typography paragraph>You did well!</Typography>
-                  <Typography>Come back tomorrow</Typography>
-                </CardContent>
-              </Card>
-            </Section>
-          </Else>
-        </If>
+        <Section isFullWidth={isScreeenNarrow}>
+          <If condition={hasCreatedAtleastOneTask}>
+            <Then>
+              <>
+                <TasksList tasks={activeTasks} isLoading={false} />
+                <Box mt={2}>
+                  <TagsList />
+                </Box>
+              </>
+            </Then>
+            <Else>
+              <WelcomeCard />
+            </Else>
+          </If>
+        </Section>
         <CreateTaskFab isHidden={isLoading} />
       </>
     </RootWrapper>

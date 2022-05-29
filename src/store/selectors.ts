@@ -75,7 +75,7 @@ export const tagsOfFetchedTasksSelector = createSelector(
       .filter((t) => !isEmpty(t.tags))
       .forEach((t) => {
         (t.tags as string[]).forEach((tag) =>
-          allTags.push(tag.toLowerCase()),
+          allTags.push(tag.toLowerCase().trim()),
         );
       });
     return uniq(allTags);

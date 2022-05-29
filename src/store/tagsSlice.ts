@@ -1,27 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface TagsState {
-  includedTags: string[];
+  activeTags: string[];
 }
 
 const initialState: TagsState = {
-  includedTags: [],
+  activeTags: [],
 };
 
 const tagsSlice = createSlice({
   name: 'tags',
   initialState,
   reducers: {
-    toggleTag(state, action: PayloadAction<string>) {
-      state.includedTags.includes(action.payload)
-        ? (state.includedTags = state.includedTags.filter(
+    toggleActiveTag(state, action: PayloadAction<string>) {
+      state.activeTags.includes(action.payload)
+        ? (state.activeTags = state.activeTags.filter(
             (tag) => !action.payload.includes(tag),
           ))
-        : state.includedTags.push(action.payload);
+        : state.activeTags.push(action.payload);
     },
   },
 });
 
-export const { toggleTag } = tagsSlice.actions;
+export const { toggleActiveTag } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

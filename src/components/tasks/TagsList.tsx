@@ -8,10 +8,10 @@ import isEmpty from 'lodash/isEmpty';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  includedTagsSelector,
+  activeTagsSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
-import { toggleTag } from '../../store/tagsSlice';
+import { toggleActiveTag } from '../../store/tagsSlice';
 
 const log = debug('TagsList');
 
@@ -31,7 +31,7 @@ const TagsList: React.FC<{}> = memo(() => {
   const dispatch = useDispatch();
 
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
-  const includedTags = useSelector(includedTagsSelector);
+  const includedTags = useSelector(activeTagsSelector);
 
   log('uniqueTags: ', uniqueTags);
   log('includedTags: ', includedTags);
@@ -49,7 +49,7 @@ const TagsList: React.FC<{}> = memo(() => {
           <Button
             key={tag}
             className={classNames}
-            onClick={() => dispatch(toggleTag(tag))}
+            onClick={() => dispatch(toggleActiveTag(tag))}
           >
             {tag}
           </Button>

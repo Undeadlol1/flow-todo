@@ -45,12 +45,12 @@ export const tasksDoneTodaySelector = createSelector(
     ).true || 0,
 );
 
-export const includedTagsSelector = (state: RootReducer) =>
-  state.tags.includedTags;
+export const activeTagsSelector = (state: RootReducer) =>
+  state.tags.activeTags;
 
 export const tasksSelector = createSelector(
   fetchedTasksSelector,
-  includedTagsSelector,
+  activeTagsSelector,
   (tasks: Task[], includedTags) => {
     // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;

@@ -30,6 +30,7 @@ import { toggleTasksDoneTodayNotification } from '../../store/uiSlice';
 import TaskPage, { TaskPageProps } from './TaskPage';
 import { updateDailyStreak } from '../../repositories/updateDailyStreak';
 import { createTaskLog } from '../../repositories/createTaskLog';
+import RewardedPointsCalculator from '../../features/tasks/RewardedPointsCalculator';
 
 const log = debug('TaskPageContainer');
 
@@ -62,7 +63,7 @@ const Container = memo(() => {
   const profile = useTypedSelector(profileSelector);
   const { uid: userId } = useTypedSelector(authSelector);
   const fetchedTask = useTypedSelector(fetchedTaskSelector);
-  const tasksDoneToday = useTypedSelector(tasksDoneTodaySelector);
+  const tasksToday = useTypedSelector(tasksDoneTodaySelector);
   const firestoreStatus = useTypedSelector(firestoreStatusSelector);
 
   function redirectHome() {
@@ -110,9 +111,13 @@ const Container = memo(() => {
   }: updateTaskParams) {
     log('updateTask is running.');
     try {
-      const points = TaskService.isStale(task)
-        ? pointsToAdd + 50
-        : pointsToAdd;
+      const tasksDoneToday = tasksToday + 1;
+      const points = new RewardedPointsCalculator().calculate({
+        task,
+        minimumAmountOfPoints: pointsToAdd,
+        isDailyGoalReached:
+          tasksDoneToday >= profile.dailyStreak.perDay,
+      });
 
       history.replace(nextTaskId ? `/tasks/${nextTaskId}` : '/');
 
@@ -140,9 +145,7 @@ const Container = memo(() => {
         updateDailyStreak({
           profile,
           userId,
-          // NOTE: +1 because when this function is called task
-          // update is not registred yet, thus task may look as it is nt done yet.
-          tasksDoneToday: tasksDoneToday + 1,
+          tasksDoneToday,
         }),
       ]);
     } catch (error) {
@@ -186,7 +189,7 @@ const Container = memo(() => {
     shouldDisplayEncouragements: !profile.areEcouragingMessagesDisabled,
     tasksDoneTodayNotificationProps: {
       isLoaded: true,
-      tasksToday: tasksDoneToday,
+      tasksToday,
       dailyStreak: profile.dailyStreak,
       tasksPerDay: profile.dailyStreak.perDay,
       toggleVisibility: toggleTasksDoneTodayNotification,

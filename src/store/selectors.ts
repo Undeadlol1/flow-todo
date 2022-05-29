@@ -21,6 +21,7 @@ import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
 import { AnimationState } from './animationSlice';
 import shuffle from 'lodash/shuffle';
+import { activeTagsSelector } from '../features/tags/store/tagsSelectors';
 
 export const fetchedTasksSelector = createSelector(
   get('firestore.ordered.tasks'),
@@ -45,20 +46,17 @@ export const tasksDoneTodaySelector = createSelector(
     ).true || 0,
 );
 
-export const activeTagsSelector = (state: RootReducer) =>
-  state.tags.activeTags;
-
 export const tasksSelector = createSelector(
   fetchedTasksSelector,
   activeTagsSelector,
-  (tasks: Task[], includedTags) => {
+  (tasks: Task[], activeTags) => {
     // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;
 
-    if (includedTags.length !== 0) {
+    if (activeTags.length !== 0) {
       return filter(shuffle(tasks), ({ tags = [] }) =>
         tags.some((tag) =>
-          includedTags.includes(tag.toLowerCase().trim()),
+          activeTags.includes(tag.toLowerCase().trim()),
         ),
       );
     }

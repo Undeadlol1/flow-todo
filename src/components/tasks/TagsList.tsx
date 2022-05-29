@@ -7,11 +7,9 @@ import debug from 'debug';
 import isEmpty from 'lodash/isEmpty';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  activeTagsSelector,
-  tagsOfFetchedTasksSelector,
-} from '../../store/selectors';
-import { toggleActiveTag } from '../../store/tagsSlice';
+import { activeTagsSelector } from '../../features/tags/store/tagsSelectors';
+import { toggleActiveTag } from '../../features/tags/store/tagsSlice';
+import { tagsOfFetchedTasksSelector } from '../../store/selectors';
 
 const log = debug('TagsList');
 

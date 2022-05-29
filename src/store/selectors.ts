@@ -48,17 +48,25 @@ export const tasksDoneTodaySelector = createSelector(
 export const excludedTagsSelector = (state: RootReducer) =>
   state.tasks.excludedTags;
 
+export const includedTagsSelector = (state: RootReducer) =>
+  state.tasks.includedTags;
+
 export const tasksSelector = createSelector(
   fetchedTasksSelector,
-  excludedTagsSelector,
-  (tasks: Task[], excludedTags) => {
+  includedTagsSelector,
+  (tasks: Task[], includedTags) => {
     // This is needed to check that tasks are loading.
     if (isUndefined(tasks)) return tasks;
-    return filter(
-      shuffle(tasks),
-      ({ tags = [] }) =>
-        !tags.some((tag) => excludedTags.includes(tag.toLowerCase())),
-    );
+
+    if (includedTags.length !== 0) {
+      return filter(shuffle(tasks), ({ tags = [] }) =>
+        tags.some((tag) =>
+          includedTags.includes(tag.toLowerCase().trim()),
+        ),
+      );
+    }
+
+    return shuffle(tasks);
   },
 );
 

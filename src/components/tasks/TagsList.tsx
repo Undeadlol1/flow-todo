@@ -9,6 +9,7 @@ import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   excludedTagsSelector,
+  includedTagsSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
 import { toggleTag } from '../../store/tasksSlice';
@@ -32,9 +33,11 @@ const TagsList: React.FC<{}> = memo(() => {
 
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
   const exludedTags = useSelector(excludedTagsSelector);
+  const includedTags = useSelector(includedTagsSelector);
 
   log('uniqueTags: ', uniqueTags);
   log('exludedTags: ', exludedTags);
+  log('includedTags: ', includedTags);
 
   if (isEmpty(uniqueTags)) return null;
   return (
@@ -42,7 +45,7 @@ const TagsList: React.FC<{}> = memo(() => {
       {uniqueTags.map((tag) => {
         const classNames = classnames({
           [cx.button]: true,
-          [cx.isInactive]: exludedTags.includes(tag),
+          [cx.isInactive]: !includedTags.includes(tag),
         });
 
         return (

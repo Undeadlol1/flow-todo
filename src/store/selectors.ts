@@ -45,11 +45,8 @@ export const tasksDoneTodaySelector = createSelector(
     ).true || 0,
 );
 
-export const excludedTagsSelector = (state: RootReducer) =>
-  state.tasks.excludedTags;
-
 export const includedTagsSelector = (state: RootReducer) =>
-  state.tasks.includedTags;
+  state.tags.includedTags;
 
 export const tasksSelector = createSelector(
   fetchedTasksSelector,

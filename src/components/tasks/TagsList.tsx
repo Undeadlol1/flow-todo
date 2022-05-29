@@ -8,11 +8,10 @@ import isEmpty from 'lodash/isEmpty';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  excludedTagsSelector,
   includedTagsSelector,
   tagsOfFetchedTasksSelector,
 } from '../../store/selectors';
-import { toggleTag } from '../../store/tasksSlice';
+import { toggleTag } from '../../store/tagsSlice';
 
 const log = debug('TagsList');
 
@@ -32,11 +31,9 @@ const TagsList: React.FC<{}> = memo(() => {
   const dispatch = useDispatch();
 
   const uniqueTags = useSelector(tagsOfFetchedTasksSelector);
-  const exludedTags = useSelector(excludedTagsSelector);
   const includedTags = useSelector(includedTagsSelector);
 
   log('uniqueTags: ', uniqueTags);
-  log('exludedTags: ', exludedTags);
   log('includedTags: ', includedTags);
 
   if (isEmpty(uniqueTags)) return null;

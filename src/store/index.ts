@@ -11,6 +11,7 @@ import { initializeFirebase } from '../services/index';
 import animationSlice from './animationSlice';
 import rewardsSlice from './rewardsSlice';
 import snackbarsSlice from './snackbarsSlice';
+import tagsSlice from './tagsSlice';
 import tasksSlice from './tasksSlice';
 import uiSlice from './uiSlice';
 import userSlice from './usersSlice';
@@ -19,6 +20,7 @@ initializeFirebase();
 
 const rootReducer = combineReducers({
   ui: uiSlice,
+  tags: tagsSlice,
   users: userSlice,
   tasks: tasksSlice,
   rewards: rewardsSlice,
@@ -46,8 +48,8 @@ export const store = configureStore({
 
 export type RootReducer = ReturnType<typeof rootReducer>;
 
-export const useTypedSelector: TypedUseSelectorHook<ReturnType<
-  typeof rootReducer
->> = useSelector;
+export const useTypedSelector: TypedUseSelectorHook<
+  ReturnType<typeof rootReducer>
+> = useSelector;
 
 export default store;

@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
+import toggle from 'lodash/xor';
 import replace from 'lodash/fp/replace';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
@@ -16,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { object as YupObject, string as YupString } from 'yup';
 import { ViewerController } from '../../../controllers/ViewerController';
 import { Task } from '../../../entities/Task';
+import SuggestedTags from '../../../features/tags/SuggestedTags';
 import { upsertTask } from '../../../repositories/upsertTask';
 import { handleErrors } from '../../../services/index';
 import Snackbar from '../../../services/Snackbar';
@@ -48,11 +50,18 @@ export function UpsertTask(props: ComponentProps) {
 
   const tagsRegExp = / #([^\s]+)+/gi;
   const [text = '', setText] = useState<string>();
+  // TODO rename
+  const [suggestedTags = [], setSuggestedTag] = useState<string[]>();
   const tags = uniq(
     (text.match(tagsRegExp) || [])
+      .concat(suggestedTags)
       .concat(props.task?.tags || [])
       .map(replace('#', '')),
   );
+
+  function setTagsSomething(tag: string) {
+    setSuggestedTag(toggle(suggestedTags, [tag]));
+  }
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(
@@ -101,9 +110,15 @@ export function UpsertTask(props: ComponentProps) {
           label={props.task ? t('Rework task') : t('createTask')}
           onChange={(event) => setText(event.target.value)}
         />
+        <Box height={20} />
+        <SuggestedTags onClick={setTagsSomething} />
         <When condition={!props.defaultValue && tags.length !== 0}>
           <Box height={20} />
-          <TagsForm tags={tags} taskId={props.task?.id as string} />
+          <TagsForm
+            isUseCaseCallDisabled
+            tags={tags}
+            taskId={props.task?.id as string}
+          />
         </When>
         <Button
           type="submit"

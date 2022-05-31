@@ -1,6 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { enUS, ruRU } from '@material-ui/core/locale/';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { createTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { ThemeProvider } from '@material-ui/styles';
 import i18n from 'i18next';
@@ -23,7 +23,7 @@ export const Theme: FunctionComponent<{
 
   const theme = React.useMemo(
     () =>
-      createMuiTheme(
+      createTheme(
         {
           zIndex: {
             /*

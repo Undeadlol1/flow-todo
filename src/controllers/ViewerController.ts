@@ -87,6 +87,6 @@ export class ViewerController {
   }
 
   private static promisedTimeout = function (delay: number) {
-    return new Promise(resolve => setTimeout(resolve, delay));
+    return new Promise((resolve) => setTimeout(resolve, delay));
   };
 }

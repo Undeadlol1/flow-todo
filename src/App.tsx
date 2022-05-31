@@ -1,4 +1,3 @@
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import firebase from 'firebase/app';
 import React, { useMemo, memo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -11,6 +10,7 @@ import { initializeI18n } from './services';
 import { useDebouncedWindowSize } from './hooks/useDebouncedWindowSize';
 import store from './store';
 import { Theme } from './Theme';
+import { createTheme } from '@material-ui/core/styles';
 
 initializeI18n();
 
@@ -28,7 +28,7 @@ export function App(props: {
   isStorybookEnv?: boolean;
   children?: JSX.Element;
 }) {
-  const theme = useMemo(() => createMuiTheme(), []);
+  const theme = useMemo(() => createTheme(), []);
   const isMobile =
     // @ts-ignore
     useDebouncedWindowSize(500).width < theme.breakpoints.values.sm;

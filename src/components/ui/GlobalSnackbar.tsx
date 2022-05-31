@@ -7,8 +7,9 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useToggle from 'react-use/lib/useToggle';
 import SnackbarService from '../../services/Snackbar';
-import { snackbarsSelector, uiSelector } from '../../store/selectors';
+import { uiSelector } from '../../store/selectors';
 import debug from 'debug';
+import { RootReducer } from '../../store';
 
 const log = debug('GlobalSnackbar');
 
@@ -63,7 +64,9 @@ function useSnackbars(): {
   const { isTasksDoneTodayNotificationOpen } = useSelector(
     uiSelector,
   );
-  const snackbarsInQueue = useSelector(snackbarsSelector).queue;
+  const snackbarsInQueue = useSelector(
+    (store: RootReducer) => store.snackbars,
+  ).queue;
   const [snackbarMessage, setSnackbarMessage] = useState('');
   log('snackbarsInQueue: ', snackbarsInQueue);
 

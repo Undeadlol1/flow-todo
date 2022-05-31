@@ -6,6 +6,7 @@ import get from 'lodash/fp/get';
 import getOr from 'lodash/fp/getOr';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
+import shuffle from 'lodash/shuffle';
 import uniq from 'lodash/uniq';
 import includes from 'ramda/es/includes';
 import { FirebaseReducer } from 'react-redux-firebase';
@@ -14,21 +15,20 @@ import { DailyStreak } from '../entities/DailyStreak';
 import { Profile } from '../entities/Profile';
 import { Task } from '../entities/Task';
 import { TaskHistory } from '../entities/TaskHistory';
+import { activeTagsSelector } from '../features/tags/store/tagsSelectors';
+import { AnimationState } from './animationSlice';
 import { RootReducer } from './index';
 import { Reward } from './rewardsSlice';
 import { SnackbarsState } from './snackbarsSlice';
 import { UiState } from './uiSlice';
 import { UsersState } from './usersSlice';
-import { AnimationState } from './animationSlice';
-import shuffle from 'lodash/shuffle';
-import { activeTagsSelector } from '../features/tags/store/tagsSelectors';
 
-export const fetchedTasksSelector = createSelector(
+export const fetchedTasksSelector = createSelector<any, Task[]>(
   get('firestore.ordered.tasks'),
-  (tasks: Task[]) => tasks,
+  (tasks: Task[]): Task[] => tasks,
 );
 
-export const taskLogsSelector = createSelector(
+export const taskLogsSelector = createSelector<any, TaskHistory[]>(
   get('firestore.ordered.taskLogs'),
   (tasks: TaskHistory[]) => tasks,
 );
@@ -85,20 +85,20 @@ export const tagsOfFetchedTasksSelector = createSelector(
   },
 );
 
-export const fetchedTaskSelector = createSelector(
+export const fetchedTaskSelector = createSelector<any, Task>(
   get('firestore.ordered.currentTask[0]'),
-  (task) => (task || {}) as Task,
+  (task: Task) => (task || {}) as Task,
 );
 
-export const rewardsSelector = createSelector(
+export const rewardsSelector = createSelector<any, Reward[]>(
   get('firestore.ordered.rewards'),
-  (rewards) => rewards as Reward[],
+  (rewards: Reward[]) => rewards as Reward[],
 );
 
-export const profileSelector = createSelector(
+export const profileSelector = createSelector<any, Profile>(
   get('firebase.profile'),
   // Add default values to profile.
-  (value) => {
+  (value: Profile) => {
     // New object is created to avoid "no mutations" error.
     const profile = Object.assign(
       {},
@@ -118,42 +118,38 @@ export const profileSelector = createSelector(
   },
 );
 
-export const profilePointsSelector = createSelector(
+export const profilePointsSelector = createSelector<any, number>(
   profileSelector,
   getOr(0, 'points'),
 );
 
 export const authSelector = createSelector(
   get('firebase.auth'),
-  (auth) => auth as firebase.UserInfo & FirebaseReducer.AuthState,
+  (auth: any) =>
+    auth as firebase.UserInfo & FirebaseReducer.AuthState,
 );
 
 export const authErrorSelector = createSelector(
   get('firebase.authError'),
-  (error) => error as AuthError,
+  (error: any) => error as AuthError,
 );
 
 export const firestoreStatusSelector = (state: RootReducer) =>
   state.firestore.status;
 
-export const uiSelector = createSelector(
+export const uiSelector = createSelector<any, UiState>(
   get('ui'),
   (ui: UiState) => ui,
 );
 
-export const animationSelector = createSelector(
+export const animationSelector = createSelector<any, AnimationState>(
   get('animation'),
-  (animation) => animation as AnimationState,
+  (animation: AnimationState) => animation,
 );
 
-export const usersSelector = createSelector(
+export const usersSelector = createSelector<any, UsersState>(
   get('users'),
   (users: UsersState) => users,
-);
-
-export const snackbarsSelector = createSelector(
-  get('snackbars'),
-  (i) => i as SnackbarsState,
 );
 
 export const userIdSelector = get('firebase.auth.uid');

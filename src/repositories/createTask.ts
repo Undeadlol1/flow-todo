@@ -1,7 +1,7 @@
 import subDays from 'date-fns/subDays';
 import extend from 'lodash/extend';
 import { getFirestore, handleErrors } from '../services/index';
-import { Subtask } from "../entities/Subtask";
+import { Subtask } from '../entities/Subtask';
 import { getUniqueId } from '../helpers/getUniqueId';
 
 export function createTask(values: {
@@ -21,7 +21,7 @@ export function createTask(values: {
       .set(
         extend(values, {
           isDone: false,
-          cratedAt: Date.now(),
+          createdAt: Date.now(),
           dueAt: subDays(new Date(), 1).getTime(),
         }),
         { merge: true },
